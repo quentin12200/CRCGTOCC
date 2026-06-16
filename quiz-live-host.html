@@ -13,17 +13,15 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { getDatabase, ref, set, get, onValue, update } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
-    /* ─── REMPLACEZ CES VALEURS PAR VOTRE CONFIG FIREBASE ─── */
     const FIREBASE_CONFIG = {
-      apiKey: "VOTRE_API_KEY",
-      authDomain: "VOTRE_PROJECT.firebaseapp.com",
-      databaseURL: "https://VOTRE_PROJECT-default-rtdb.europe-west1.firebasedatabase.app",
-      projectId: "VOTRE_PROJECT",
-      storageBucket: "VOTRE_PROJECT.appspot.com",
-      messagingSenderId: "VOTRE_SENDER_ID",
-      appId: "VOTRE_APP_ID"
+      apiKey: "AIzaSyBtu2Vmipa2CU8Pro0kXvnesqpUxf-7Z8c",
+      authDomain: "cgt-occitanie-quiz.firebaseapp.com",
+      databaseURL: "https://cgt-occitanie-quiz-default-rtdb.europe-west1.firebasedatabase.app",
+      projectId: "cgt-occitanie-quiz",
+      storageBucket: "cgt-occitanie-quiz.firebasestorage.app",
+      messagingSenderId: "420650097260",
+      appId: "1:420650097260:web:50bdd6dfcc4930a9139649"
     };
-    /* ──────────────────────────────────────────────────────── */
 
     const QUESTIONS = [
       { q: "Quel délai a l'employeur pour déclarer un AT à la CPAM ?", choices: ["24 heures", "48 heures (hors dim. et jours fériés)", "5 jours ouvrés", "8 jours calendaires"], correct: 1 },
