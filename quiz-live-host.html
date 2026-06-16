@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Quiz Live — Formateur · CGT Occitanie</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%23E2001A'/%3E%3Ctext x='16' y='23' text-anchor='middle' font-family='sans-serif' font-weight='bold' font-size='16' fill='%23FFD200'%3ECGT%3C/text%3E%3C/svg%3E">
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+  <!-- Firebase SDK -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getDatabase, ref, set, get, onValue, update } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+    /* ─── REMPLACEZ CES VALEURS PAR VOTRE CONFIG FIREBASE ─── */
+    const FIREBASE_CONFIG = {
+      apiKey: "VOTRE_API_KEY",
+      authDomain: "VOTRE_PROJECT.firebaseapp.com",
+      databaseURL: "https://VOTRE_PROJECT-default-rtdb.europe-west1.firebasedatabase.app",
+      projectId: "VOTRE_PROJECT",
+      storageBucket: "VOTRE_PROJECT.appspot.com",
+      messagingSenderId: "VOTRE_SENDER_ID",
+      appId: "VOTRE_APP_ID"
+    };
+    /* ──────────────────────────────────────────────────────── */
+
+    const QUESTIONS = [
+      { q: "Quel délai a l'employeur pour déclarer un AT à la CPAM ?", choices: ["24 heures", "48 heures (hors dim. et jours fériés)", "5 jours ouvrés", "8 jours calendaires"], correct: 1 },
+      { q: "À partir de quel jour les IJ AT/MP passent à 80 % du salaire ?", choices: ["Dès le 1er jour", "À partir du 8e jour", "À partir du 29e jour", "À partir du 91e jour"], correct: 2 },
+      { q: "Que signifie la présomption d'imputabilité ?", choices: ["L'employeur est présumé responsable", "Le salarié doit prouver le lien avec le travail", "Tout accident au temps et lieu de travail est présumé professionnel", "La CPAM présume l'accident frauduleux"], correct: 2 },
+      { q: "La voie CRRMP est utilisée lorsque :", choices: ["La maladie est au tableau et toutes conditions remplies", "La maladie est hors tableau ou conditions non toutes réunies", "Le salarié a moins de 2 ans d'ancienneté", "La CPAM a refusé la reconnaissance"], correct: 1 },
+      { q: "Quel est le seuil d'IPP pour obtenir une rente viagère ?", choices: ["5 %", "10 %", "15 %", "25 %"], correct: 1 },
+      { q: "Délai pour engager une action en faute inexcusable de l'employeur ?", choices: ["6 mois après consolidation", "1 an après l'accident", "2 ans (prescription biennale)", "5 ans"], correct: 2 },
+      { q: "Que se passe-t-il si la CPAM ne répond pas dans les délais ?", choices: ["L'accident est refusé", "Le dossier est classé sans suite", "Le caractère professionnel est reconnu", "La CPAM dispose d'un délai supplémentaire"], correct: 2 },
+      { q: "Quelle catégorie d'invalidité = incapable d'exercer toute profession ?", choices: ["Catégorie 1", "Catégorie 2", "Catégorie 3", "Invalidité totale hors catégorie"], correct: 1 },
+      { q: "La faute inexcusable ouvre droit à :", choices: ["Doublement des IJ uniquement", "Majoration rente/capital + réparation préjudices personnels", "Remboursement frais d'avocat", "Mise en cause pénale de l'employeur"], correct: 1 },
+      { q: "Que doit faire l'employeur avant de licencier un salarié inapte d'origine prof. ?", choices: ["Accord inspection du travail", "Consulter CSE + rechercher reclassement", "Attendre 6 mois après inaptitude", "Saisir le prud'hommes"], correct: 1 },
+      { q: "Quel document permet des soins à 100 % sans avance de frais après un AT ?", choices: ["L'attestation de salaire", "La feuille d'accident du travail", "Le CERFA S6100", "L'accord de prise en charge CPAM"], correct: 1 },
+      { q: "À quelle fréquence minimum le DUERP doit-il être mis à jour ?", choices: ["Tous les 5 ans", "Uniquement après accident grave", "Au minimum une fois par an et après tout AT grave", "À la demande de l'inspection uniquement"], correct: 2 }
+    ];
+
+    const app = initializeApp(FIREBASE_CONFIG);
+    const db = getDatabase(app);
+
+    let sessionId = null;
+    let currentQ = -1;
+    let participants = {};
+    let responses = {};
+    let scores = {};
+    let revealed = false;
+
+    function genCode() {
+      const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+      let c = 'CGT-';
+      for (let i = 0; i < 4; i++) c += chars[Math.floor(Math.random() * chars.length)];
+      return c;
+    }
+
+    async function creerSession() {
+      sessionId = genCode();
+      document.getElementById('session-code').textContent = sessionId;
+
+      const joinUrl = `${location.origin}/quiz-live-join.html?s=${sessionId}`;
+      document.getElementById('join-url').textContent = joinUrl;
+
+      await set(ref(db, `sessions/${sessionId}`), {
+        status: 'lobby',
+        currentQ: -1,
+        createdAt: Date.now()
+      });
+
+      // QR code
+      QRCode.toCanvas(document.getElementById('qr-canvas'), joinUrl, {
+        width: 200, margin: 2,
+        color: { dark: '#1A1A1A', light: '#FFFFFF' }
+      });
+
+      // Écouter les participants
+      onValue(ref(db, `sessions/${sessionId}/participants`), snap => {
+        participants = snap.val() || {};
+        renderParticipants();
+      });
+
+      // Écouter les réponses
+      onValue(ref(db, `sessions/${sessionId}/responses`), snap => {
+        responses = snap.val() || {};
+        renderAnswerProgress();
+      });
+
+      document.getElementById('lobby').classList.remove('hidden');
+      document.getElementById('btn-creer').classList.add('hidden');
+      document.getElementById('intro-text').classList.add('hidden');
+    }
+
+    function renderParticipants() {
+      const list = document.getElementById('participants-list');
+      const count = document.getElementById('participants-count');
+      const names = Object.values(participants);
+      count.textContent = names.length;
+      list.innerHTML = names.map(n => `<span class="participant-chip">${n}</span>`).join('');
+      document.getElementById('btn-lancer').disabled = names.length === 0;
+    }
+
+    function renderAnswerProgress() {
+      if (currentQ < 0) return;
+      const total = Object.keys(participants).length;
+      const answered = Object.values(responses).filter(r => r.q === currentQ).length;
+      document.getElementById('answer-count').textContent = `${answered} / ${total} réponses`;
+      document.getElementById('answer-progress').style.width = total > 0 ? (answered / total * 100) + '%' : '0%';
+
+      // Mise à jour des barres par choix
+      if (revealed) renderReveal();
+    }
+
+    async function lancerQuiz() {
+      currentQ = 0;
+      await update(ref(db, `sessions/${sessionId}`), { status: 'question', currentQ: 0 });
+      afficherQuestion();
+    }
+
+    async function afficherQuestion() {
+      revealed = false;
+      const q = QUESTIONS[currentQ];
+      document.getElementById('lobby').classList.add('hidden');
+      document.getElementById('question-panel').classList.remove('hidden');
+      document.getElementById('resultat-panel').classList.add('hidden');
+
+      document.getElementById('q-num-host').textContent = `Question ${currentQ + 1} / ${QUESTIONS.length}`;
+      document.getElementById('q-text-host').textContent = q.q;
+
+      const letters = ['A', 'B', 'C', 'D'];
+      document.getElementById('choices-host').innerHTML = q.choices.map((c, i) =>
+        `<div class="choice-bar" id="bar-${i}">
+          <span class="choice-letter">${letters[i]}</span>
+          <span class="choice-label">${c}</span>
+          <span class="choice-count" id="count-${i}">0</span>
+          <div class="bar-track"><div class="bar-fill" id="fill-${i}" style="width:0%"></div></div>
+        </div>`
+      ).join('');
+
+      document.getElementById('btn-reveler').classList.remove('hidden');
+      document.getElementById('btn-suivante').classList.add('hidden');
+      document.getElementById('answer-count').textContent = '0 / ' + Object.keys(participants).length + ' réponses';
+      document.getElementById('answer-progress').style.width = '0%';
+
+      // Publier la question SANS la bonne réponse
+      await update(ref(db, `sessions/${sessionId}`), {
+        status: 'question',
+        currentQ: currentQ,
+        questionText: q.q,
+        choices: q.choices,
+        correctIndex: -1
+      });
+    }
+
+    async function reveler() {
+      revealed = true;
+      const q = QUESTIONS[currentQ];
+      await update(ref(db, `sessions/${sessionId}`), {
+        status: 'reveal',
+        correctIndex: q.correct
+      });
+
+      // Calculer les scores
+      const resps = responses || {};
+      Object.entries(resps).forEach(([uid, r]) => {
+        if (r.q === currentQ && r.choice === q.correct) {
+          scores[uid] = (scores[uid] || 0) + 1;
+        }
+      });
+
+      renderReveal();
+      document.getElementById('btn-reveler').classList.add('hidden');
+      document.getElementById('btn-suivante').classList.remove('hidden');
+      document.getElementById('btn-suivante').textContent =
+        currentQ < QUESTIONS.length - 1 ? 'Question suivante →' : 'Voir le classement →';
+    }
+
+    function renderReveal() {
+      const q = QUESTIONS[currentQ];
+      const total = Object.keys(participants).length || 1;
+      const resps = Object.values(responses).filter(r => r.q === currentQ);
+      const letters = ['A', 'B', 'C', 'D'];
+
+      q.choices.forEach((_, i) => {
+        const cnt = resps.filter(r => r.choice === i).length;
+        const pct = Math.round(cnt / total * 100);
+        const countEl = document.getElementById(`count-${i}`);
+        const fillEl = document.getElementById(`fill-${i}`);
+        const barEl = document.getElementById(`bar-${i}`);
+        if (countEl) countEl.textContent = cnt;
+        if (fillEl) fillEl.style.width = pct + '%';
+        if (barEl) {
+          if (revealed) {
+            barEl.classList.toggle('correct-bar', i === q.correct);
+            barEl.classList.toggle('wrong-bar', i !== q.correct);
+          }
+        }
+      });
+    }
+
+    async function question_suivante() {
+      if (currentQ >= QUESTIONS.length - 1) {
+        // Classement final
+        await update(ref(db, `sessions/${sessionId}`), {
+          status: 'scoreboard',
+          scores: scores
+        });
+        afficherClassement();
+      } else {
+        currentQ++;
+        afficherQuestion();
+      }
+    }
+
+    function afficherClassement() {
+      document.getElementById('question-panel').classList.add('hidden');
+      document.getElementById('resultat-panel').classList.remove('hidden');
+
+      const sorted = Object.entries(scores)
+        .map(([uid, s]) => ({ name: participants[uid] || uid, score: s }))
+        .sort((a, b) => b.score - a.score);
+
+      const medals = ['🥇', '🥈', '🥉'];
+      document.getElementById('classement').innerHTML = sorted.map((p, i) => `
+        <div class="rank-row ${i < 3 ? 'top' : ''}">
+          <span class="rank-pos">${medals[i] || (i + 1)}</span>
+          <span class="rank-name">${p.name}</span>
+          <span class="rank-score">${p.score} / ${QUESTIONS.length}</span>
+        </div>
+      `).join('') || '<p style="color:#9A9A9A;text-align:center">Aucune réponse enregistrée.</p>';
+    }
+
+    // Exposer au HTML
+    window.creerSession = creerSession;
+    window.lancerQuiz = lancerQuiz;
+    window.reveler = reveler;
+    window.question_suivante = question_suivante;
+  </script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --rouge: #E2001A; --jaune: #FFD200;
+      --fond: #141414; --card: #1E1E1E;
+      --texte: #FBFAF6; --muted: #9A9A9A;
+      --border: #2E2E2E;
+      --vert: #2ECC71; --vert-bg: #0F3320;
+    }
+    body { background: var(--fond); color: var(--texte); font-family: 'Archivo', sans-serif; min-height: 100vh; }
+
+    .topbar { background: var(--rouge); padding: .75rem 1.5rem; display: flex; align-items: center; justify-content: space-between; }
+    .topbar-title { font-family: 'Anton', sans-serif; font-size: 1rem; letter-spacing: .05em; }
+    .topbar a { font-size: .72rem; color: rgba(255,255,255,.8); text-decoration: none; border: 1px solid rgba(255,255,255,.3); padding: .25rem .6rem; }
+    .stripe { height: 5px; background: var(--jaune); }
+
+    .scene { max-width: 900px; margin: 0 auto; padding: 2rem 1.25rem; }
+    .hidden { display: none !important; }
+
+    /* INTRO */
+    .intro-box { text-align: center; padding: 2rem 0; }
+    .big-cgt { background: var(--rouge); color: var(--jaune); font-family: 'Anton', sans-serif; font-size: 2.5rem; padding: 1rem 1.5rem; display: inline-block; letter-spacing: .1em; margin-bottom: 1.5rem; }
+    #intro-text h1 { font-family: 'Anton', sans-serif; font-size: 1.6rem; margin-bottom: .5rem; }
+    #intro-text p { color: var(--muted); font-size: .9rem; margin-bottom: 1.5rem; }
+    .btn-primary { background: var(--rouge); color: #fff; border: none; padding: .85rem 2rem; font-family: 'Archivo', sans-serif; font-size: .9rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; cursor: pointer; transition: background .15s; }
+    .btn-primary:hover { background: #C40017; }
+    .btn-primary:disabled { background: #444; cursor: default; }
+    .btn-secondary { background: transparent; color: var(--muted); border: 1px solid var(--border); padding: .75rem 1.5rem; font-family: 'Archivo', sans-serif; font-size: .85rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; cursor: pointer; transition: all .15s; margin-left: .5rem; }
+    .btn-secondary:hover { border-color: var(--texte); color: var(--texte); }
+
+    /* LOBBY */
+    #lobby { display: grid; grid-template-columns: auto 1fr; gap: 2rem; align-items: start; }
+    .qr-block { background: #fff; padding: 1rem; display: flex; flex-direction: column; align-items: center; gap: .75rem; }
+    .qr-block .session-badge { background: var(--rouge); color: #fff; font-family: 'Anton', sans-serif; font-size: 1.4rem; letter-spacing: .12em; padding: .4rem 1rem; }
+    .qr-block .qr-hint { font-size: .72rem; color: #555; text-align: center; max-width: 200px; }
+    .lobby-right { display: flex; flex-direction: column; gap: 1rem; }
+    .lobby-right h2 { font-family: 'Anton', sans-serif; font-size: 1.1rem; color: var(--texte); }
+    .participants-count { font-size: 2.5rem; font-family: 'Anton', sans-serif; color: var(--jaune); }
+    #participants-list { display: flex; flex-wrap: wrap; gap: .4rem; min-height: 40px; }
+    .participant-chip { background: var(--card); border: 1px solid var(--border); padding: .3rem .65rem; font-size: .82rem; color: var(--texte); }
+    .join-url { font-size: .7rem; color: var(--muted); word-break: break-all; padding: .5rem; background: var(--card); border: 1px solid var(--border); }
+
+    /* QUESTION PANEL */
+    #question-panel { display: flex; flex-direction: column; gap: 1rem; }
+    .host-q-meta { display: flex; align-items: center; gap: 1rem; }
+    .host-q-num { font-size: .72rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+    .answer-progress-wrap { flex: 1; background: var(--card); height: 8px; }
+    .answer-progress-fill { height: 100%; background: var(--vert); transition: width .3s; }
+    #answer-count { font-size: .78rem; color: var(--muted); white-space: nowrap; }
+    #q-text-host { font-family: 'Anton', sans-serif; font-size: clamp(1.3rem, 3vw, 2rem); line-height: 1.3; }
+    .choice-bar { display: flex; align-items: center; gap: .75rem; padding: .7rem .85rem; background: var(--card); border: 2px solid var(--border); transition: border-color .2s; }
+    .choice-bar.correct-bar { border-color: var(--vert); background: var(--vert-bg); }
+    .choice-bar.wrong-bar { border-color: #333; opacity: .6; }
+    .choice-letter { font-family: 'Anton', sans-serif; font-size: .9rem; color: var(--muted); width: 20px; flex-shrink: 0; }
+    .choice-label { flex: 1; font-size: .9rem; }
+    .choice-count { font-family: 'Anton', sans-serif; font-size: 1rem; color: var(--jaune); width: 28px; text-align: right; flex-shrink: 0; }
+    .bar-track { width: 80px; height: 6px; background: #2E2E2E; flex-shrink: 0; }
+    .bar-fill { height: 100%; background: var(--rouge); transition: width .4s; }
+    .correct-bar .bar-fill { background: var(--vert); }
+    .btn-row { display: flex; gap: .75rem; margin-top: .5rem; }
+
+    /* CLASSEMENT */
+    #resultat-panel { }
+    .podium-title { font-family: 'Anton', sans-serif; font-size: 1.5rem; margin-bottom: 1rem; }
+    .rank-row { display: flex; align-items: center; gap: 1rem; padding: .75rem 1rem; background: var(--card); border: 1px solid var(--border); margin-bottom: .4rem; }
+    .rank-row.top { border-color: var(--jaune); }
+    .rank-pos { font-family: 'Anton', sans-serif; font-size: 1.1rem; width: 32px; }
+    .rank-name { flex: 1; font-size: .95rem; }
+    .rank-score { font-family: 'Anton', sans-serif; font-size: 1.1rem; color: var(--jaune); }
+
+    #choices-host { display: flex; flex-direction: column; gap: .5rem; }
+
+    @media (max-width: 600px) {
+      #lobby { grid-template-columns: 1fr; }
+      .qr-block { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+<script>if(sessionStorage.getItem('cgt_auth')!=='ok'){location.replace('/login.html?from='+encodeURIComponent(location.pathname));}</script>
+
+<div class="topbar">
+  <span class="topbar-title">Quiz Live — Mode Formateur</span>
+  <a href="/">← Accueil</a>
+</div>
+<div class="stripe"></div>
+
+<div class="scene">
+
+  <!-- INTRO -->
+  <div class="intro-box">
+    <div class="big-cgt">CGT</div>
+    <div id="intro-text">
+      <h1>Quiz AT/MP — Session en direct</h1>
+      <p>Créez une session · Les stagiaires scannent le QR code · Les résultats s'affichent en temps réel.</p>
+    </div>
+    <button class="btn-primary" id="btn-creer" onclick="creerSession()">Créer une session</button>
+  </div>
+
+  <!-- LOBBY -->
+  <div id="lobby" class="hidden">
+    <div class="qr-block">
+      <canvas id="qr-canvas"></canvas>
+      <div class="session-badge" id="session-code">CGT-XXXX</div>
+      <div class="qr-hint">Les stagiaires scannent ce QR code avec leur téléphone</div>
+    </div>
+    <div class="lobby-right">
+      <h2>Participants connectés</h2>
+      <div class="participants-count" id="participants-count">0</div>
+      <div id="participants-list"></div>
+      <div class="join-url" id="join-url"></div>
+      <div class="btn-row">
+        <button class="btn-primary" id="btn-lancer" onclick="lancerQuiz()" disabled>Lancer le quiz</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- QUESTION PANEL -->
+  <div id="question-panel" class="hidden">
+    <div class="host-q-meta">
+      <span class="host-q-num" id="q-num-host">Question 1 / 12</span>
+      <div class="answer-progress-wrap"><div class="answer-progress-fill" id="answer-progress" style="width:0%"></div></div>
+      <span id="answer-count">0 / 0 réponses</span>
+    </div>
+    <div id="q-text-host"></div>
+    <div id="choices-host"></div>
+    <div class="btn-row">
+      <button class="btn-primary" id="btn-reveler" onclick="reveler()">Révéler la réponse</button>
+      <button class="btn-primary hidden" id="btn-suivante" onclick="question_suivante()">Question suivante →</button>
+    </div>
+  </div>
+
+  <!-- CLASSEMENT FINAL -->
+  <div id="resultat-panel" class="hidden">
+    <div class="podium-title">Classement final</div>
+    <div id="classement"></div>
+    <br>
+    <button class="btn-primary" onclick="location.reload()">Nouvelle session</button>
+  </div>
+
+</div>
+</body>
+</html>
