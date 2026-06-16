@@ -68,8 +68,8 @@
         createdAt: Date.now()
       });
 
-      // QR code
-      QRCode.toCanvas(document.getElementById('qr-canvas'), joinUrl, {
+      // QR code (window.QRCode car module scope isolé)
+      window.QRCode.toCanvas(document.getElementById('qr-canvas'), joinUrl, {
         width: 200, margin: 2,
         color: { dark: '#1A1A1A', light: '#FFFFFF' }
       });
