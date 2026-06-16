@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Déroulé AT/MP 2 jours — CGT Occitanie</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%23E2001A'/%3E%3Ctext x='16' y='23' text-anchor='middle' font-family='sans-serif' font-weight='bold' font-size='16' fill='%23FFD200'%3ECGT%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --rouge: #E2001A; --rouge-dark: #C40017;
+      --jaune: #FFD200;
+      --fond: #F5F4F0; --fond-card: #FFFFFF;
+      --texte: #1A1A1A; --texte-muted: #6B6B6B;
+      --border: #E0DED8; --border-card: #E8E6E0;
+    }
+    body { background: var(--fond); color: var(--texte); font-family: 'Archivo', sans-serif; min-height: 100vh; display: flex; flex-direction: column; }
+
+    header { background: var(--rouge); padding: 1rem 2rem; display: flex; align-items: center; gap: 1.25rem; box-shadow: 0 2px 8px rgba(0,0,0,.18); }
+    .logo-wrap { flex-shrink: 0; height: 56px; display: flex; align-items: center; }
+    .logo-wrap img { height: 56px; width: auto; background: white; padding: 3px 5px; }
+    .header-divider { width: 2px; height: 42px; background: rgba(255,255,255,.3); flex-shrink: 0; }
+    .header-title { flex: 1; }
+    .header-title h1 { font-family: 'Anton', sans-serif; font-size: 1.1rem; letter-spacing: .04em; color: #fff; line-height: 1.2; }
+    .header-title span { font-size: .75rem; color: rgba(255,255,255,.75); }
+    .header-back { margin-left: auto; }
+    .header-back a { font-size: .75rem; color: rgba(255,255,255,.8); text-decoration: none; border: 1px solid rgba(255,255,255,.3); padding: .3rem .7rem; transition: background .15s; }
+    .header-back a:hover { background: rgba(255,255,255,.1); color: #fff; }
+    .stripe { height: 5px; background: var(--jaune); }
+
+    main { flex: 1; max-width: 1040px; width: 100%; margin: 0 auto; padding: 2rem 1.5rem 3rem; }
+
+    .page-intro { background: var(--fond-card); border: 1px solid var(--border-card); border-left: 4px solid var(--rouge); padding: 1rem 1.25rem; margin-bottom: 2rem; font-size: .875rem; color: var(--texte-muted); line-height: 1.6; }
+
+    .print-bar { display: flex; justify-content: flex-end; margin-bottom: 1.5rem; gap: .75rem; }
+    .btn-print { background: var(--rouge); color: #fff; border: none; padding: .55rem 1rem; font-family: 'Archivo', sans-serif; font-size: .78rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; cursor: pointer; display: flex; align-items: center; gap: .4rem; transition: background .15s; text-decoration: none; }
+    .btn-print:hover { background: var(--rouge-dark); }
+
+    /* JOUR */
+    .jour { margin-bottom: 2.5rem; }
+    .jour-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.25rem; }
+    .jour-badge { background: var(--rouge); color: #fff; font-family: 'Anton', sans-serif; font-size: .75rem; letter-spacing: .08em; padding: .3rem .75rem; text-transform: uppercase; white-space: nowrap; }
+    .jour-title { font-family: 'Anton', sans-serif; font-size: 1.3rem; color: var(--texte); letter-spacing: .02em; }
+    .jour-title::after { content: ''; display: block; height: 3px; background: var(--jaune); width: 100%; margin-top: .25rem; }
+
+    /* TABLE */
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; background: var(--fond-card); font-size: .85rem; }
+    thead { background: var(--texte); color: #fff; }
+    thead th { padding: .65rem .85rem; text-align: left; font-weight: 700; letter-spacing: .05em; font-size: .72rem; text-transform: uppercase; white-space: nowrap; }
+    tbody tr { border-bottom: 1px solid var(--border-card); transition: background .1s; }
+    tbody tr:hover { background: #FAFAF8; }
+    tbody tr.pause-row { background: #F0EEE8; color: var(--texte-muted); font-style: italic; }
+    tbody tr.pause-row:hover { background: #ECEAE4; }
+    tbody tr.intercalaire { background: #FFF8D6; }
+    td { padding: .7rem .85rem; vertical-align: top; }
+    td.horaire { white-space: nowrap; font-weight: 600; color: var(--rouge); width: 120px; }
+    td.duree { white-space: nowrap; color: var(--texte-muted); width: 70px; font-size: .8rem; }
+    td.diapos { color: var(--texte-muted); width: 70px; font-size: .8rem; }
+    td.theme strong { display: block; font-weight: 600; margin-bottom: .2rem; }
+    td.theme ul { margin: .2rem 0 0 1rem; }
+    td.theme li { font-size: .82rem; color: var(--texte-muted); line-height: 1.5; }
+    td.anim { font-size: .82rem; color: var(--texte-muted); font-style: italic; }
+
+    .note-bas { font-size: .8rem; color: var(--texte-muted); border-top: 1px solid var(--border); margin-top: 1rem; padding-top: .75rem; }
+
+    footer { border-top: 1px solid var(--border); background: #EEECEA; padding: 1.1rem 1.5rem; text-align: center; font-size: .73rem; color: var(--texte-muted); }
+    footer strong { color: var(--rouge); }
+
+    @media print {
+      header, .print-bar { display: none !important; }
+      .stripe { display: none; }
+      body { background: white; font-size: 11pt; }
+      .print-header { display: block !important; border-bottom: 3px solid #E2001A; margin-bottom: 1rem; padding-bottom: .5rem; }
+      table { font-size: 9pt; }
+      .jour { break-before: page; }
+      .jour:first-child { break-before: auto; }
+    }
+    .print-header { display: none; }
+    .print-header h2 { font-family: 'Anton', sans-serif; font-size: 1.3rem; }
+    .print-header p { font-size: .8rem; color: #666; margin-top: .2rem; }
+
+    @media (max-width: 520px) {
+      header { padding: .85rem 1rem; gap: .75rem; }
+      .logo-wrap img { height: 44px; }
+      main { padding: 1.5rem 1rem; }
+      td.duree, td.diapos { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo-wrap"><img src="/assets/logo-cgt-occitanie.jpg" alt="CGT Comité Régional Occitanie"></div>
+  <div class="header-divider"></div>
+  <div class="header-title">
+    <h1>Déroulé pédagogique — AT/MP 2 jours</h1>
+    <span>Calé sur le diaporama CGT Occitanie · Durées estimatives</span>
+  </div>
+  <div class="header-back"><a href="/">← Accueil</a></div>
+</header>
+<div class="stripe"></div>
+
+<main>
+
+  <div class="print-header">
+    <h2>Déroulé minuté — AT/MP 2 jours · CGT Occitanie</h2>
+    <p>Tranches horaires calées sur le diaporama AT/MP. Durées estimatives à ajuster selon le groupe.</p>
+  </div>
+
+  <div class="page-intro">
+    Tranches horaires calées sur le diaporama AT/MP (CGT). Durées estimatives à ajuster selon le groupe.
+    Chaque jour : 9 h 00 – 17 h 00 (déjeuner 12 h 45 – 13 h 45 / 13 h 30).
+  </div>
+
+  <div class="print-bar">
+    <button class="btn-print" onclick="window.print()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+      Imprimer
+    </button>
+  </div>
+
+  <!-- JOUR 1 -->
+  <div class="jour">
+    <div class="jour-header">
+      <span class="jour-badge">Jour 1</span>
+      <div class="jour-title">Comprendre, déclarer, faire reconnaître</div>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Horaire</th>
+            <th>Durée</th>
+            <th>Diapos</th>
+            <th>Thème et contenu</th>
+            <th>Animation / repère CGT</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="horaire">9 h 00 – 9 h 30</td>
+            <td class="duree">30 min</td>
+            <td class="diapos">1 – 3</td>
+            <td class="theme"><strong>Accueil et ouverture</strong>
+              <ul><li>Présentation, objectifs, programme des 2 jours.</li><li>Méthode CGT : partir du vécu des stagiaires.</li></ul></td>
+            <td class="anim">Tour de table ; recueil des attentes au paperboard.</td>
+          </tr>
+          <tr>
+            <td class="horaire">9 h 30 – 10 h 30</td>
+            <td class="duree">60 min</td>
+            <td class="diapos">4 – 6</td>
+            <td class="theme"><strong>Les enjeux de la santé au travail</strong>
+              <ul><li>Chiffres AT/MP, sous-déclaration et invisibilisation.</li><li>La santé au travail comme bataille syndicale.</li></ul></td>
+            <td class="anim">Brainstorm sur les situations vécues ; apport court.</td>
+          </tr>
+          <tr class="pause-row">
+            <td class="horaire">10 h 30 – 10 h 45</td>
+            <td class="duree">15 min</td>
+            <td class="diapos">—</td>
+            <td class="theme">Pause</td>
+            <td class="anim"></td>
+          </tr>
+          <tr>
+            <td class="horaire">10 h 45 – 11 h 45</td>
+            <td class="duree">60 min</td>
+            <td class="diapos">7 – 9</td>
+            <td class="theme"><strong>Définitions : AT, trajet, MP</strong>
+              <ul><li>Accident du travail (L.411-1), accident de trajet (L.411-2).</li><li>Maladie professionnelle ; la présomption d'imputabilité.</li></ul></td>
+            <td class="anim">Tri de cas (AT / trajet / MP) en sous-groupes.</td>
+          </tr>
+          <tr>
+            <td class="horaire">11 h 45 – 12 h 45</td>
+            <td class="duree">60 min</td>
+            <td class="diapos">10 – 13</td>
+            <td class="theme"><strong>Déclarer un accident du travail</strong>
+              <ul><li>Délais 24 h / 48 h ; DAT, CMI, feuille d'accident.</li><li>Cerfa sécurisés (sept. 2025) ; employeur défaillant → 2 ans.</li></ul></td>
+            <td class="anim">Démonstration pas à pas ; mémo procédure.</td>
+          </tr>
+          <tr class="pause-row">
+            <td class="horaire">12 h 45 – 13 h 45</td>
+            <td class="duree">60 min</td>
+            <td class="diapos">—</td>
+            <td class="theme">Déjeuner</td>
+            <td class="anim"></td>
+          </tr>
+          <tr>
+            <td class="horaire">13 h 45 – 14 h 30</td>
+            <td class="duree">45 min</td>
+            <td class="diapos">14 – 15</td>
+            <td class="theme"><strong>L'instruction par la CPAM</strong>
+              <ul><li>Délais 30 → 90 jours ; phase contradictoire.</li><li>Silence vaut acceptation (R.441-10).</li></ul></td>
+            <td class="anim">Frise des délais à reconstituer.</td>
+          </tr>
+          <tr>
+            <td class="horaire">14 h 30 – 15 h 30</td>
+            <td class="duree">60 min</td>
+            <td class="diapos">16 – 19</td>
+            <td class="theme"><strong>Les maladies professionnelles</strong>
+              <ul><li>Tableaux vs CRRMP ; présomption d'origine.</li><li>Enjeux : TMS, amiante, affections psychiques, usure.</li></ul></td>
+            <td class="anim">Lecture guidée d'un tableau de MP en sous-groupes.</td>
+          </tr>
+          <tr class="pause-row">
+            <td class="horaire">15 h 30 – 15 h 45</td>
+            <td class="duree">15 min</td>
+            <td class="diapos">—</td>
+            <td class="theme">Pause</td>
+            <td class="anim"></td>
+          </tr>
+          <tr>
+            <td class="horaire">15 h 45 – 16 h 45</td>
+            <td class="duree">60 min</td>
+            <td class="diapos">20</td>
+            <td class="theme"><strong>Mise en situation — « Le premier réflexe »</strong>
+              <ul><li>Cas Karim : bons réflexes, délais, refus de déclaration.</li><li>Constitution du dossier ; qui alerter.</li></ul></td>
+            <td class="anim">Jeu de rôle en binômes puis restitution collective.</td>
+          </tr>
+          <tr>
+            <td class="horaire">16 h 45 – 17 h 00</td>
+            <td class="duree">15 min</td>
+            <td class="diapos">21</td>
+            <td class="theme"><strong>Bilan du jour 1</strong>
+              <ul><li>Ce que je retiens ; questions pour le jour 2.</li></ul></td>
+            <td class="anim">Tour de table express.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- JOUR 2 -->
+  <div class="jour">
+    <div class="jour-header">
+      <span class="jour-badge">Jour 2</span>
+      <div class="jour-title">Indemnisation, séquelles &amp; action syndicale</div>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Horaire</th>
+            <th>Durée</th>
+            <th>Diapos</th>
+            <th>Thème et contenu</th>
+            <th>Animation / repère CGT</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="horaire">9 h 00 – 9 h 20</td>
+            <td class="duree">20 min</td>
+            <td class="diapos">22</td>
+            <td class="theme"><strong>Reprise et réveil pédagogique</strong>
+              <ul><li>Quiz éclair sur les acquis du jour 1.</li><li>Réponses aux questions en suspens.</li></ul></td>
+            <td class="anim">Quiz oral (cartons A-B-C-D).</td>
+          </tr>
+          <tr>
+            <td class="horaire">9 h 20 – 10 h 20</td>
+            <td class="duree">60 min</td>
+            <td class="diapos">23 – 25</td>
+            <td class="theme"><strong>Indemnisation et séquelles</strong>
+              <ul><li>IJ majorées, soins 100 %, consolidation.</li><li>Taux d'IPP : capital (&lt; 10 %) ou rente (≥ 10 %).</li></ul></td>
+            <td class="anim">Apport + cas chiffré commenté.</td>
+          </tr>
+          <tr>
+            <td class="horaire">10 h 20 – 11 h 00</td>
+            <td class="duree">40 min</td>
+            <td class="diapos">26 – 27</td>
+            <td class="theme"><strong>Inaptitude et reclassement</strong>
+              <ul><li>Avis du médecin du travail ; obligation de reclassement.</li><li>Protections renforcées en origine professionnelle (L.1226-14).</li></ul></td>
+            <td class="anim">Étude de cas en sous-groupes.</td>
+          </tr>
+          <tr class="pause-row">
+            <td class="horaire">11 h 00 – 11 h 15</td>
+            <td class="duree">15 min</td>
+            <td class="diapos">—</td>
+            <td class="theme">Pause</td>
+            <td class="anim"></td>
+          </tr>
+          <tr>
+            <td class="horaire">11 h 15 – 12 h 30</td>
+            <td class="duree">75 min</td>
+            <td class="diapos">28 – 31</td>
+            <td class="theme"><strong>La faute inexcusable de l'employeur</strong>
+              <ul><li>Définition (conscience du danger + absence de mesures).</li><li>Effets (majoration + préjudices L.452-3) ; procédure ; prescription.</li></ul></td>
+            <td class="anim">Analyse d'un cas réel anonymisé ; appui UD.</td>
+          </tr>
+          <tr class="pause-row">
+            <td class="horaire">12 h 30 – 13 h 30</td>
+            <td class="duree">60 min</td>
+            <td class="diapos">—</td>
+            <td class="theme">Déjeuner</td>
+            <td class="anim"></td>
+          </tr>
+          <tr>
+            <td class="horaire">13 h 30 – 14 h 15</td>
+            <td class="duree">45 min</td>
+            <td class="diapos">32 – 33</td>
+            <td class="theme"><strong>Recours et prescription</strong>
+              <ul><li>Contestation médicale (commission de recours amiable) / pôle social.</li><li>Contestation du taux d'IPP ; délais à surveiller.</li></ul></td>
+            <td class="anim">Arbre de décision « quel recours ? ».</td>
+          </tr>
+          <tr>
+            <td class="horaire">14 h 15 – 15 h 30</td>
+            <td class="duree">75 min</td>
+            <td class="diapos">34 – 37</td>
+            <td class="theme"><strong>Le rôle du CSE/CSSCT et du syndicat</strong>
+              <ul><li>Enquête, droit d'alerte/retrait, DUERP.</li><li>Arbre des causes ; du cas individuel à la revendication.</li></ul></td>
+            <td class="anim">Atelier « arbre des causes » + mini plan d'action.</td>
+          </tr>
+          <tr class="pause-row">
+            <td class="horaire">15 h 30 – 15 h 45</td>
+            <td class="duree">15 min</td>
+            <td class="diapos">—</td>
+            <td class="theme">Pause</td>
+            <td class="anim"></td>
+          </tr>
+          <tr>
+            <td class="horaire">15 h 45 – 16 h 30</td>
+            <td class="duree">45 min</td>
+            <td class="diapos">38</td>
+            <td class="theme"><strong>Mise en situation — « De l'accident à la prévention »</strong>
+              <ul><li>AT grave : enquête CSE, suites DUERP, revendication.</li></ul></td>
+            <td class="anim">Travail collectif puis restitution.</td>
+          </tr>
+          <tr>
+            <td class="horaire">16 h 30 – 17 h 00</td>
+            <td class="duree">30 min</td>
+            <td class="diapos">39 – 41</td>
+            <td class="theme"><strong>Évaluation, ressources et clôture</strong>
+              <ul><li>Évaluation à chaud ; ressources utiles.</li><li>Essaimage dans les UD ; engagements.</li></ul></td>
+            <td class="anim">Tour de table des engagements.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note-bas">Astuce : les intercalaires et les chiffres se commentent vite ; réservez le temps fort aux mises en situation et aux échanges à partir du vécu des stagiaires.</p>
+  </div>
+
+</main>
+
+<footer>
+  <strong>CGT</strong> Comité Régional Occitanie — Formation syndicale secteur privé
+</footer>
+
+</body>
+</html>

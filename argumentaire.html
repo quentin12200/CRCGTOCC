@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Argumentaire formateur AT/MP — CGT Occitanie</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%23E2001A'/%3E%3Ctext x='16' y='23' text-anchor='middle' font-family='sans-serif' font-weight='bold' font-size='16' fill='%23FFD200'%3ECGT%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --rouge: #E2001A; --rouge-dark: #C40017;
+      --jaune: #FFD200;
+      --fond: #F5F4F0; --fond-card: #FFFFFF;
+      --texte: #1A1A1A; --texte-muted: #6B6B6B;
+      --border: #E0DED8; --border-card: #E8E6E0;
+      --cgt-accent: #FFF3D0;
+    }
+    body { background: var(--fond); color: var(--texte); font-family: 'Archivo', sans-serif; min-height: 100vh; display: flex; flex-direction: column; }
+
+    header { background: var(--rouge); padding: 1rem 2rem; display: flex; align-items: center; gap: 1.25rem; box-shadow: 0 2px 8px rgba(0,0,0,.18); }
+    .logo-wrap { flex-shrink: 0; height: 56px; display: flex; align-items: center; }
+    .logo-wrap img { height: 56px; width: auto; background: white; padding: 3px 5px; }
+    .header-divider { width: 2px; height: 42px; background: rgba(255,255,255,.3); flex-shrink: 0; }
+    .header-title { flex: 1; }
+    .header-title h1 { font-family: 'Anton', sans-serif; font-size: 1.1rem; letter-spacing: .04em; color: #fff; line-height: 1.2; }
+    .header-title span { font-size: .75rem; color: rgba(255,255,255,.75); }
+    .header-back { margin-left: auto; }
+    .header-back a { font-size: .75rem; color: rgba(255,255,255,.8); text-decoration: none; border: 1px solid rgba(255,255,255,.3); padding: .3rem .7rem; transition: background .15s; }
+    .header-back a:hover { background: rgba(255,255,255,.1); color: #fff; }
+    .stripe { height: 5px; background: var(--jaune); }
+
+    main { flex: 1; max-width: 860px; width: 100%; margin: 0 auto; padding: 2rem 1.5rem 3rem; }
+
+    .page-intro { background: var(--fond-card); border: 1px solid var(--border-card); border-left: 4px solid var(--rouge); padding: 1rem 1.25rem; margin-bottom: 2rem; font-size: .875rem; color: var(--texte-muted); line-height: 1.6; }
+
+    .print-bar { display: flex; justify-content: flex-end; margin-bottom: 1.75rem; }
+    .btn-print { background: var(--rouge); color: #fff; border: none; padding: .55rem 1rem; font-family: 'Archivo', sans-serif; font-size: .78rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; cursor: pointer; display: flex; align-items: center; gap: .4rem; transition: background .15s; }
+    .btn-print:hover { background: var(--rouge-dark); }
+
+    /* NAV JOUR */
+    .nav-jours { display: flex; gap: .5rem; margin-bottom: 2rem; flex-wrap: wrap; }
+    .nav-jour { font-size: .75rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; padding: .4rem .9rem; background: var(--fond-card); border: 2px solid var(--border); color: var(--texte-muted); text-decoration: none; transition: all .15s; cursor: pointer; }
+    .nav-jour:hover, .nav-jour.active { background: var(--rouge); border-color: var(--rouge); color: #fff; }
+
+    /* CHAPITRE (Jour) */
+    .chapitre { margin-bottom: 3rem; }
+    .chapitre-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; padding-bottom: .6rem; border-bottom: 4px solid var(--jaune); }
+    .chapitre-badge { background: var(--rouge); color: #fff; font-family: 'Anton', sans-serif; font-size: .75rem; letter-spacing: .08em; padding: .3rem .75rem; text-transform: uppercase; white-space: nowrap; }
+    .chapitre-title { font-family: 'Anton', sans-serif; font-size: 1.2rem; color: var(--texte); }
+
+    /* SECTION (ex: Ouverture) */
+    .section-label { font-size: .68rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--rouge); margin: 1.5rem 0 .75rem; display: flex; align-items: center; gap: .6rem; }
+    .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+    /* DIAPO */
+    .diapo { background: var(--fond-card); border: 1px solid var(--border-card); margin-bottom: .85rem; overflow: hidden; }
+    .diapo-header { display: flex; align-items: baseline; gap: .75rem; padding: .85rem 1.1rem .5rem; flex-wrap: wrap; }
+    .diapo-num { font-family: 'Anton', sans-serif; font-size: .8rem; color: var(--rouge); letter-spacing: .06em; white-space: nowrap; }
+    .diapo-title { font-family: 'Anton', sans-serif; font-size: 1rem; color: var(--texte); letter-spacing: .02em; }
+    .diapo-body { padding: 0 1.1rem 1rem; }
+    .message-cle { font-size: .78rem; font-weight: 700; color: var(--texte-muted); text-transform: uppercase; letter-spacing: .06em; margin-bottom: .4rem; }
+    .message-cle span { font-weight: 400; text-transform: none; letter-spacing: 0; color: var(--texte); font-size: .875rem; }
+    .dev-label { font-size: .72rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--texte-muted); margin: .6rem 0 .3rem; }
+    .diapo ul { margin-left: 1.1rem; }
+    .diapo li { font-size: .875rem; color: var(--texte-muted); line-height: 1.65; margin-bottom: .15rem; }
+    .diapo li strong { color: var(--texte); font-weight: 600; }
+    .ref { font-size: .76rem; color: #888; margin-top: .5rem; font-style: italic; }
+    .ref::before { content: 'Réf. '; font-weight: 600; color: var(--texte-muted); font-style: normal; }
+    .angle-cgt { background: var(--cgt-accent); border-left: 3px solid var(--jaune); padding: .5rem .75rem; margin-top: .6rem; font-size: .82rem; color: #6A5500; line-height: 1.55; }
+    .angle-cgt::before { content: '⚑ CGT — '; font-weight: 700; }
+
+    footer { border-top: 1px solid var(--border); background: #EEECEA; padding: 1.1rem 1.5rem; text-align: center; font-size: .73rem; color: var(--texte-muted); }
+    footer strong { color: var(--rouge); }
+
+    @media print {
+      header, .print-bar, .nav-jours { display: none !important; }
+      .stripe { display: none; }
+      body { background: white; font-size: 10pt; }
+      .print-header { display: block !important; border-bottom: 3px solid #E2001A; margin-bottom: 1rem; padding-bottom: .5rem; }
+      .diapo { break-inside: avoid; border: 1px solid #CCC !important; }
+      .chapitre { break-before: page; }
+      .chapitre:first-child { break-before: auto; }
+    }
+    .print-header { display: none; }
+    .print-header h2 { font-family: 'Anton', sans-serif; font-size: 1.3rem; }
+    .print-header p { font-size: .8rem; color: #666; margin-top: .2rem; }
+
+    @media (max-width: 520px) {
+      header { padding: .85rem 1rem; gap: .75rem; }
+      .logo-wrap img { height: 44px; }
+      main { padding: 1.5rem 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo-wrap"><img src="/assets/logo-cgt-occitanie.jpg" alt="CGT Comité Régional Occitanie"></div>
+  <div class="header-divider"></div>
+  <div class="header-title">
+    <h1>Livret formateur — Argumentaire diapo par diapo</h1>
+    <span>AT/MP 2 jours · CGT Occitanie</span>
+  </div>
+  <div class="header-back"><a href="/">← Accueil</a></div>
+</header>
+<div class="stripe"></div>
+
+<main>
+
+  <div class="print-header">
+    <h2>Livret du formateur — Argumentaire AT/MP · CGT Occitanie</h2>
+    <p>Pour chaque diapositive : message clé, points à développer, angle syndical CGT.</p>
+  </div>
+
+  <div class="page-intro">
+    Pour chaque diapositive : message clé, points à développer à l'oral, références juridiques et angle CGT.
+    Support : diaporama « Accident du travail &amp; maladie professionnelle » (CGT Occitanie, 2 jours).
+  </div>
+
+  <div class="print-bar">
+    <button class="btn-print" onclick="window.print()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+      Imprimer
+    </button>
+  </div>
+
+  <div class="nav-jours">
+    <a class="nav-jour" href="#ouverture">Ouverture</a>
+    <a class="nav-jour" href="#jour1">Jour 1</a>
+    <a class="nav-jour" href="#jour2">Jour 2</a>
+  </div>
+
+  <!-- OUVERTURE -->
+  <div class="chapitre" id="ouverture">
+    <div class="chapitre-header">
+      <span class="chapitre-badge">Ouverture</span>
+      <div class="chapitre-title">Diapos 1 – 3</div>
+    </div>
+
+    <div class="diapo">
+      <div class="diapo-header"><span class="diapo-num">Diapo 1</span><span class="diapo-title">Page de titre</span></div>
+      <div class="diapo-body">
+        <div class="message-cle">Message clé — <span>Poser le cadre et la méthode CGT.</span></div>
+        <div class="dev-label">À développer</div>
+        <ul>
+          <li>Présenter les animateur·rices, le déroulé sur 2 jours et les objectifs.</li>
+          <li>Annoncer la méthode : on part du vécu des stagiaires, pas d'un cours magistral.</li>
+          <li>Rappeler que la santé au travail est un champ d'action syndicale, pas un sujet « technique » réservé aux experts.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="diapo">
+      <div class="diapo-header"><span class="diapo-num">Diapo 2</span><span class="diapo-title">Objectifs de la formation</span></div>
+      <div class="diapo-body">
+        <div class="message-cle">Message clé — <span>Donner le cap et recueillir les attentes.</span></div>
+        <div class="dev-label">À développer</div>
+        <ul>
+          <li>Lire les six objectifs ; demander à chacun ce qu'il vient chercher et noter au paperboard.</li>
+          <li>Préciser qu'à la fin, chacun doit pouvoir accompagner un·e collègue, pas seulement « comprendre ».</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="diapo">
+      <div class="diapo-header"><span class="diapo-num">Diapo 3</span><span class="diapo-title">Programme — 2 jours</span></div>
+      <div class="diapo-body">
+        <div class="message-cle">Message clé — <span>Montrer la logique : J1 = faire reconnaître, J2 = faire réparer et agir.</span></div>
+        <div class="dev-label">À développer</div>
+        <ul>
+          <li>Jour 1 : du fait accidentel à la reconnaissance par la CPAM.</li>
+          <li>Jour 2 : l'indemnisation, la faute inexcusable, les recours, et le passage du cas individuel à la prévention collective.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- JOUR 1 -->
+  <div class="chapitre" id="jour1">
+    <div class="chapitre-header">
+      <span class="chapitre-badge">Jour 1</span>
+      <div class="chapitre-title">Comprendre, déclarer, faire reconnaître</div>
+    </div>
+
+    <div class="section-label">Enjeux &amp; définitions — Diapos 4 – 9</div>
+
+    <div class="diapo">
+      <div class="diapo-header"><span class="diapo-num">Diapo 4</span><span class="diapo-title">Intercalaire Jour 1</span></div>
+      <div class="diapo-body">
+        <div class="message-cle">Message clé — <span>Annoncer le fil de la journée.</span></div>
+        <ul><li>Insister : tout commence par un bon réflexe de déclaration ; un dossier mal engagé se rattrape difficilement.</li></ul>
+      </div>
+    </div>
+
+    <div class="diapo">
+      <div class="diapo-header"><span class="diapo-num">Diapo 5</span><span class="diapo-title">Les AT/MP en France (chiffres)</span></div>
+      <div class="diapo-body">
+        <div class="message-cle">Message clé — <span>Mesurer l'ampleur — et l'ampleur de ce qu'on ne voit pas.</span></div>
+        <div class="dev-label">À développer</div>
+        <ul>
+          <li>Commenter : près de la moitié des AT sont liés à des manutentions manuelles ; les chutes suivent.</li>
+          <li>Les décès au travail ne reculent pas ; les MP augmentent (TMS ~90 %, amiante, affections psychiques).</li>
+          <li>Rappeler la sous-déclaration : beaucoup d'AT bénins « passés en maladie », de MP jamais déclarées.</li>
+        </ul>
+        <p class="ref">Source : Assurance Maladie – Risques professionnels, données 2023 (à actualiser chaque année).</p>
+        <div class="angle-cgt">Derrière chaque chiffre, des conditions de travail. La sous-déclaration est un transfert de coûts vers la Sécu et les victimes.</div>
+      </div>
+    </div>
+
+    <div class="diapo">
+      <div class="diapo-header"><span class="diapo-num">Diapo 6</span><span class="diapo-title">Un enjeu syndical majeur</span></div>
+      <div class="diapo-body">
+        <div class="message-cle">Message clé — <span>Dire pourquoi la CGT s'en empare.</span></div>
+        <div class="dev-label">À développer</div>
+        <ul>
+          <li>La sous-déclaration prive les victimes de leurs droits (soins 100 %, IJ majorées, rente).</li>
+          <li>L'invisibilisation masque la réalité du travail et freine la prévention.</li>
+          <li>L'employeur a une obligation de sécurité : la faire respecter est un levier.</li>
+        </ul>
+        <div class="angle-cgt">« La santé ne se négocie pas. » Faire reconnaître un AT/MP, c'est défendre une personne et rendre visible une réalité collective.</div>
+      </div>
+    </div>
+
+    <div class="diapo">
+      <div class="diapo-header"><span class="diapo-num">Diapo 7</span><span class="diapo-title">L'accident du travail (AT)</span></div>
+      <div class="diapo-body">
+        <div class="message-cle">Message clé — <span>Trois critères : un fait soudain, une lésion, un lien avec le travail.</span></div>
+        <div class="dev-label">À développer</div>
+        <ul>
+          <li>Soudaineté : c'est ce qui distingue l'AT de la MP (exposition progressive).</li>
+          <li>La lésion peut être physique mais aussi psychique (choc, malaise, agression).</li>
+          <li>« Par le fait ou à l'occasion du travail » : la notion est large (pause, déplacement interne, mission).</li>
+        </ul>
+        <p class="ref">Art. L.411-1 du Code de la sécurité sociale (CSS).</p>
+      </div>
+    </div>
+
+    <div class="diapo">
+      <div class="diapo-header"><span class="diapo-num">Diapo 8</span><span class="diapo-title">Les trois notions à distinguer</span></div>
+      <div class="diapo-body">
+        <div class="message-cle">Message clé — <span>AT, trajet et MP n'ouvrent pas les mêmes règles.</span></div>
+        <div class="dev-label">À développer</div>
+        <ul>
+          <li><strong>AT :</strong> fait soudain au travail.</li>
+          <li><strong>Accident de trajet :</strong> protégé entre domicile et travail (ou lieu de restauration) ; détours admis (covoiturage, nécessité familiale).</li>
+          <li><strong>MP :</strong> exposition durable à un risque.</li>
+          <li>Piège classique : l'accident de mission relève de l'AT (et non du trajet).</li>
+        </ul>
+        <p class="ref">AT : L.411-1 ; trajet : L.411-2.</p>
+      </div>
+    </div>
+
+    <div class="diapo">
+      <div class="diapo-header"><span class="diapo-num">Diapo 9</span><span class="diapo-title">La présomption d'imputabilité</span></div>
+      <div class="diapo-body">
+        <div class="message-cle">Message clé — <span>C'est l'atout maître : la charge de la preuve pèse sur l'employeur.</span></div>
+        <div class="dev-label">À développer</div>
+        <ul>
+          <li>Un accident survenu au temps et au lieu de travail est présumé professionnel.</li>
+          <li>C'est à l'employeur de prouver une cause totalement étrangère au travail.</li>
+          <li>D'où l'importance de bien situer l'accident (heure, lieu, témoins) dès le départ.</li>
+        </ul>
+        <div class="angle-cgt">Ne pas se laisser intimider par les « réserves » de l'employeur : la présomption protège le ou la salarié·e.</div>
+      </div>
+    </div>
+
+    <div class="section-label">Déclarer un AT — Diapos 10 – 15</div>
+
+    <div class="diapo">
+      <div class="diapo-header"><span class="diapo-num">Diapo 10</span><span class="diapo-title">Intercalaire — Déclarer un AT</span></div>
+      <div class="diapo-body">
+        <div class="message-cle">Message clé — <span>Passer à la procédure : vite et dans les formes.</span></div>
+        <ul><li>Le bon réflexe dans les premières heures conditionne tout le dossier.</li></ul>
+      </div>
+    </div>
+
+    <div class="diapo">
+      <div class="diapo-header"><span class="diapo-num">Diapo 11</span><span class="diapo-title">Les délais à respecter</span></div>
+      <div class="diapo-body">
+        <div class="message-cle">Message clé — <span>24 h côté salarié, 48 h côté employeur.</span></div>
+        <div class="dev-label">À développer</div>
+        <ul>
+          <li>Le salarié informe l'employeur dans les 24 h (idéalement par écrit, en gardant une preuve).</li>
+          <li>L'employeur déclare à la CPAM dans les 48 h (hors dimanches et jours fériés) : la DAT.</li>
+          <li>L'employeur peut joindre des « réserves motivées » : expliquer ce que c'est et comment y répondre.</li>
+          <li>La feuille d'accident est remise au salarié : soins pris en charge à 100 %, sans avance de frais.</li>
+        </ul>
+        <p class="ref">Art. R.441-2 (salarié), R.441-3 (employeur), L.441-5 (feuille d'accident).</p>
+      </div>
+    </div>
+
+    <div class="diapo">
+      <div class="diapo-header"><span class="diapo-num">Diapo 12</span><span class="diapo-title">Les documents clés</span></div>
+      <div class="diapo-body">
+        <div class="message-cle">Message clé — <span>Le dossier se gagne sur les pièces.</span></div>
+        <div class="dev-label">À développer</div>
+        <ul>
+          <li>La DAT (employeur) ; le certificat médical initial (CMI) établi par le médecin.</li>
+          <li>Sur le CMI : faire décrire <strong>toutes les lésions</strong>, même mineures — ce qui n'y figure pas sera difficile à rattacher ensuite.</li>
+          <li>La feuille d'accident (tiers payant) ; les certificats de prolongation puis le certificat final.</li>
+          <li>Depuis le 1er septembre 2025 : nouveaux Cerfa sécurisés obligatoires (les anciens sont rejetés).</li>
+        </ul>
+        <div class="angle-cgt">Conseil : tout dater, tout conserver (copies). Un dossier, ça se constitue dès le premier jour.</div>
+      </div>
+    </div>
+
+    <div class="diapo">
+      <div class="diapo-header"><span class="diapo-num">Diapo 13</span><span class="diapo-title">Si l'employeur refuse de déclarer</span></div>
+      <div class="diapo-body">
+        <div class="message-cle">Message clé — <span>La défaillance de l'employeur ne fait pas perdre les droits.</span></div>
+        <div class="dev-label">À développer</div>
+        <ul>
+          <li>Le salarié peut déclarer lui-même l'AT à la CPAM dans un délai de 2 ans.</li>
+          <li>Réunir témoignages, écrits, éventuelle main courante ; informer le CSE et, si besoin, l'inspection du travail.</li>
+        </ul>
+        <div class="angle-cgt">Rôle de l'UD : ne jamais laisser un·e salarié·e seul·e face à un refus de déclaration.</div>
+      </div>
+    </div>
+
+    <div class="diapo">
+      <div class="diapo-header"><span class="diapo-num">Diapo 14</span><span class="diapo-title">L'instruction par la CPAM</span></div>
+      <div class="diapo-body">
+        <div class="message-cle">Message clé — <span>Des délais encadrés — à surveiller de près.</span></div>
+        <div class="dev-label">À développer</div>
+        <ul>
+          <li>30 jours francs pour statuer dans le cas simple.</li>
+          <li>En cas de réserves ou d'investigation (questionnaire, enquête) : délai porté jusqu'à 90 jours.</li>
+          <li>Phase contradictoire : 10 jours pour consulter le dossier et faire des observations — à utiliser systématiquement.</li>
+        </ul>
+        <p class="ref">Art. R.441-7 et suivants.</p>
+      </div>
+    </div>
+
+    <div class="diapo">
+      <div class="diapo-header"><span class="diapo-num">Diapo 15</span><span class="diapo-title">Silence vaut acceptation</span></div>
+      <div class="diapo-body">
+        <div class="message-cle">Message clé — <span>Le silence de la CPAM joue en faveur de la victime.</span></div>
+        <div class="dev-label">À développer</div>
+        <ul>
+          <li>Sans décision dans le délai, le caractère professionnel est reconnu.</li>
+          <li>Noter précisément les dates ; ne pas « relancer » au point de provoquer une décision de rejet hâtive.</li>
+        </ul>
+        <p class="ref">Art. R.441-10.</p>
+      </div>
+    </div>
+
+    <div class="section-label">Maladies professionnelles — Diapos 16 – 21</div>
+
+    <div class="diapo">
+      <div class="diapo-header"><span class="diapo-num">Diapo 16</span><span class="diapo-title">Intercalaire — Les maladies professionnelles</span></div>
+      <div class="diapo-body">
+        <div class="message-cle">Message clé — <span>Changer de logique : la MP est progressive.</span></div>
+        <ul><li>Annoncer les deux voies de reconnaissance et leur enjeu de preuve.</li></ul>
+      </div>
+    </div>
+
+    <div class="diapo">
+      <div class="diapo-header"><span class="diapo-num">Diapo 17</span><span class="diapo-title">Deux voies de reconnaissance</span></div>
+      <div class="diapo-body">
+        <div class="message-cle">Message clé — <span>Tableau (présomption) ou CRRMP (preuve du lien).</span></div>
+        <div class="dev-label">À développer</div>
+        <ul>
+          <li>Voie tableau : si toutes les conditions sont réunies → présomption d'origine, pas besoin de prouver le lien.</li>
+          <li>Voie CRRMP : maladie en tableau mais conditions non toutes remplies (lien direct), OU maladie hors tableau (lien direct et essentiel à démontrer).</li>
+        </ul>
+        <p class="ref">Art. L.461-1 CSS.</p>
+      </div>
+    </div>
+
+    <div class="diapo">
+      <div class="diapo-header"><span class="diapo-num">Diapo 18</span><span class="diapo-title">Le système des tableaux</span></div>
+      <div class="diapo-body">
+        <div class="message-cle">Message clé — <span>Savoir lire un tableau de MP.</span></div>
+        <div class="dev-label">À développer</div>
+        <ul>
+          <li>Trois éléments : désignation de la maladie ; délai de prise en charge après exposition ; liste de travaux (limitative ou indicative selon le tableau).</li>
+          <li>Bien repérer les dates d'exposition et l'employeur concerné.</li>
+          <li>Où les trouver : INRS et Légifrance (mis à jour régulièrement).</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="diapo">
+      <div class="diapo-header"><span class="diapo-num">Diapo 19</span><span class="diapo-title">Les enjeux actuels</span></div>
+      <div class="diapo-body">
+        <div class="message-cle">Message clé — <span>Les MP d'aujourd'hui sont surtout des TMS et des atteintes invisibles.</span></div>
+        <div class="dev-label">À développer</div>
+        <ul>
+          <li>TMS : près de 90 % des MP reconnues ; amiante toujours présente.</li>
+          <li>Affections psychiques (burn-out) : souvent hors tableau → passage par le CRRMP.</li>
+          <li>Usure professionnelle, expositions chimiques : forte sous-déclaration.</li>
+        </ul>
+        <div class="angle-cgt">Faire reconnaître, c'est rendre visible pour pouvoir prévenir et revendiquer.</div>
+      </div>
+    </div>
+
+    <div class="diapo">
+      <div class="diapo-header"><span class="diapo-num">Diapo 20</span><span class="diapo-title">Mise en situation — « Le premier réflexe »</span></div>
+      <div class="diapo-body">
+        <div class="message-cle">Message clé — <span>Faire appliquer les acquis (cas Karim).</span></div>
+        <div class="dev-label">À développer</div>
+        <ul>
+          <li>Animation en binômes (15 min) puis restitution.</li>
+          <li>Corrigé attendu : information employeur 24 h, CMI détaillé, feuille d'accident, déclaration directe si refus, alerte du CSE.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="diapo">
+      <div class="diapo-header"><span class="diapo-num">Diapo 21</span><span class="diapo-title">Bilan du jour 1</span></div>
+      <div class="diapo-body">
+        <div class="message-cle">Message clé — <span>Consolider et préparer le jour 2.</span></div>
+        <ul>
+          <li>Tour de table : ce que je retiens, ce que je réutiliserai.</li>
+          <li>Recueillir les questions en suspens.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- JOUR 2 -->
+  <div class="chapitre" id="jour2">
+    <div class="chapitre-header">
+      <span class="chapitre-badge">Jour 2</span>
+      <div class="chapitre-title">Indemnisation, séquelles &amp; action syndicale</div>
+    </div>
+
+    <div class="section-label">Indemnisation &amp; séquelles — Diapos 22 – 27</div>
+
+    <div class="diapo">
+      <div class="diapo-header"><span class="diapo-num">Diapo 22</span><span class="diapo-title">Intercalaire Jour 2</span></div>
+      <div class="diapo-body">
+        <div class="message-cle">Message clé — <span>Annoncer : après la reconnaissance, la réparation et l'action.</span></div>
+        <ul><li>Rappeler le fil : indemnisation → séquelles → faute inexcusable → recours → rôle collectif.</li></ul>
+      </div>
+    </div>
+
+    <div class="diapo">
+      <div class="diapo-header"><span class="diapo-num">Diapo 23</span><span class="diapo-title">Le parcours d'indemnisation</span></div>
+      <div class="diapo-body">
+        <div class="message-cle">Message clé — <span>Les droits sont plus favorables qu'en maladie « simple ».</span></div>
+        <div class="dev-label">À développer</div>
+        <ul>
+          <li>IJ majorées : 60 % du salaire journalier de base, puis 80 % à partir du 29e jour d'arrêt.</li>
+          <li>Soins pris en charge à 100 % du tarif Sécu ; le jour de l'accident est payé par l'employeur.</li>
+          <li>La situation évolue vers la guérison ou la consolidation.</li>
+        </ul>
+        <p class="ref">Régime AT/MP des indemnités journalières (taux à vérifier au moment de la session).</p>
+      </div>
+    </div>
+
+    <div class="diapo">
+      <div class="diapo-header"><span class="diapo-num">Diapo 24</span><span class="diapo-title">Guérison ou consolidation ?</span></div>
+      <div class="diapo-body">
+        <div class="message-cle">Message clé — <span>Notion charnière qui ouvre l'indemnisation des séquelles.</span></div>
+        <div class="dev-label">À développer</div>
+        <ul>
+          <li><strong>Guérison :</strong> retour à l'état antérieur, sans séquelle.</li>
+          <li><strong>Consolidation :</strong> état stabilisé avec séquelles → c'est là qu'on évalue le taux d'IPP.</li>
+          <li>Après consolidation, une rechute ou une aggravation reste possible (nouveau certificat).</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="diapo">
+      <div class="diapo-header"><span class="diapo-num">Diapo 25</span><span class="diapo-title">Indemnisation des séquelles</span></div>
+      <div class="diapo-body">
+        <div class="message-cle">Message clé — <span>Le seuil de 10 % d'IPP commande tout.</span></div>
+        <div class="dev-label">À développer</div>
+        <ul>
+          <li>Taux d'IPP &lt; 10 % : indemnité en capital (versée en une fois).</li>
+          <li>Taux ≥ 10 % : rente viagère, calculée sur le salaire annuel de référence × « taux utile ».</li>
+          <li>Le taux est fixé par le médecin-conseil selon un barème indicatif.</li>
+        </ul>
+        <p class="ref">Salaire annuel de référence encadré par un plancher et un plafond (montants à actualiser).</p>
+        <div class="angle-cgt">Vérifier systématiquement le taux : un taux sous-évalué, ça se conteste.</div>
+      </div>
+    </div>
+
+    <div class="diapo">
+      <div class="diapo-header"><span class="diapo-num">Diapo 26</span><span class="diapo-title">Inaptitude et reclassement</span></div>
+      <div class="diapo-body">
+        <div class="message-cle">Message clé — <span>Protéger l'emploi du ou de la salarié·e.</span></div>
+        <div class="dev-label">À développer</div>
+        <ul>
+          <li>L'inaptitude est prononcée par le médecin du travail.</li>
+          <li>L'employeur a une obligation de reclassement (recherche sérieuse et loyale) ; le CSE est consulté.</li>
+          <li>À défaut de reclassement ou de licenciement, l'employeur doit reprendre le versement du salaire après 1 mois.</li>
+        </ul>
+        <p class="ref">Art. L.1226-10 et suivants (inaptitude d'origine professionnelle).</p>
+      </div>
+    </div>
+
+    <div class="diapo">
+      <div class="diapo-header"><span class="diapo-num">Diapo 27</span><span class="diapo-title">Inaptitude d'origine professionnelle</span></div>
+      <div class="diapo-body">
+        <div class="message-cle">Message clé — <span>Des protections financières renforcées.</span></div>
+        <div class="dev-label">À développer</div>
+        <ul>
+          <li>Indemnité spéciale de licenciement (en principe le double de l'indemnité légale).</li>
+          <li>Indemnité compensatrice (équivalente au préavis).</li>
+          <li>Tout licenciement doit être motivé par l'impossibilité de reclassement.</li>
+        </ul>
+        <p class="ref">Art. L.1226-14.</p>
+      </div>
+    </div>
+
+    <div class="section-label">Faute inexcusable — Diapos 28 – 31</div>
+
+    <div class="diapo">
+      <div class="diapo-header"><span class="diapo-num">Diapo 28</span><span class="diapo-title">Intercalaire — La faute inexcusable</span></div>
+      <div class="diapo-body">
+        <div class="message-cle">Message clé — <span>Le levier de la réparation renforcée.</span></div>
+        <ul><li>C'est l'outil qui permet d'aller au-delà de l'indemnisation forfaitaire.</li></ul>
+      </div>
+    </div>
+
+    <div class="diapo">
+      <div class="diapo-header"><span class="diapo-num">Diapo 29</span><span class="diapo-title">La faute inexcusable — c'est quoi ?</span></div>
+      <div class="diapo-body">
+        <div class="message-cle">Message clé — <span>Un manquement à l'obligation de sécurité de l'employeur.</span></div>
+        <div class="dev-label">À développer</div>
+        <ul>
+          <li>L'employeur avait, ou aurait dû avoir, conscience du danger.</li>
+          <li>Il n'a pas pris les mesures de protection nécessaires.</li>
+          <li>Origine jurisprudentielle (arrêts « amiante » de 2002), assise sur l'obligation de sécurité.</li>
+        </ul>
+        <p class="ref">Obligation de sécurité : L.4121-1 ; faute inexcusable : L.452-1 et s.</p>
+      </div>
+    </div>
+
+    <div class="diapo">
+      <div class="diapo-header"><span class="diapo-num">Diapo 30</span><span class="diapo-title">Les effets de la faute inexcusable</span></div>
+      <div class="diapo-body">
+        <div class="message-cle">Message clé — <span>Une réparation qui se rapproche du préjudice réel.</span></div>
+        <div class="dev-label">À développer</div>
+        <ul>
+          <li>Majoration de la rente ou du capital (souvent doublement).</li>
+          <li>Réparation des préjudices personnels : souffrances physiques et morales, préjudice esthétique, d'agrément, perte ou diminution de possibilités de promotion professionnelle.</li>
+          <li>La CPAM avance les sommes puis les récupère auprès de l'employeur.</li>
+        </ul>
+        <p class="ref">Majoration : L.452-2 ; préjudices : L.452-3 (élargi par le Conseil constitutionnel en 2010).</p>
+        <div class="angle-cgt">Levier puissant, mais le dossier se monte avec l'appui juridique de l'UD.</div>
+      </div>
+    </div>
+
+    <div class="diapo">
+      <div class="diapo-header"><span class="diapo-num">Diapo 31</span><span class="diapo-title">La procédure</span></div>
+      <div class="diapo-body">
+        <div class="message-cle">Message clé — <span>Les étapes et le délai à ne pas manquer.</span></div>
+        <div class="dev-label">À développer</div>
+        <ul>
+          <li>Action de la victime (ou de ses ayants droit).</li>
+          <li>Tentative de conciliation auprès de la CPAM, puis saisine du pôle social du tribunal judiciaire.</li>
+          <li><strong>Prescription : 2 ans</strong> — d'où l'urgence d'agir.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="section-label">Recours &amp; action syndicale — Diapos 32 – 41</div>
+
+    <div class="diapo">
+      <div class="diapo-header"><span class="diapo-num">Diapo 32</span><span class="diapo-title">Contester une décision</span></div>
+      <div class="diapo-body">
+        <div class="message-cle">Message clé — <span>Deux circuits selon la nature du litige.</span></div>
+        <div class="dev-label">À développer</div>
+        <ul>
+          <li>Contestation d'ordre médical (taux d'IPP, état de santé) : commission médicale de recours amiable, puis pôle social.</li>
+          <li>Autres litiges : pôle social du tribunal judiciaire.</li>
+          <li>Les délais de recours sont courts : agir sans attendre.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="diapo">
+      <div class="diapo-header"><span class="diapo-num">Diapo 33</span><span class="diapo-title">La prescription</span></div>
+      <div class="diapo-body">
+        <div class="message-cle">Message clé — <span>Surveiller les délais, c'est le réflexe vital.</span></div>
+        <div class="dev-label">À développer</div>
+        <ul>
+          <li>En AT/MP, beaucoup d'actions se prescrivent par 2 ans.</li>
+          <li>Repérer le point de départ du délai au cas par cas.</li>
+          <li>En cas de doute : saisir tôt l'UD et, si besoin, un avocat.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="diapo">
+      <div class="diapo-header"><span class="diapo-num">Diapo 34</span><span class="diapo-title">Intercalaire — Rôle du CSE/CSSCT et du syndicat</span></div>
+      <div class="diapo-body">
+        <div class="message-cle">Message clé — <span>Passer du dossier individuel à l'action collective.</span></div>
+        <ul><li>C'est ici que la formation prend tout son sens syndical.</li></ul>
+      </div>
+    </div>
+
+    <div class="diapo">
+      <div class="diapo-header"><span class="diapo-num">Diapo 35</span><span class="diapo-title">Les leviers du CSE / CSSCT</span></div>
+      <div class="diapo-body">
+        <div class="message-cle">Message clé — <span>Des outils concrets et opposables.</span></div>
+        <div class="dev-label">À développer</div>
+        <ul>
+          <li>Enquête du CSE après un AT (notamment grave).</li>
+          <li>Droit d'alerte en cas de danger grave et imminent ; droit de retrait du ou des salarié·es.</li>
+          <li>Analyse et mise à jour du DUERP ; recours possible à une expertise.</li>
+        </ul>
+        <p class="ref">Enquêtes : L.2312-13 ; alerte/retrait : L.4131-1 et s. ; DUERP : R.4121-1.</p>
+      </div>
+    </div>
+
+    <div class="diapo">
+      <div class="diapo-header"><span class="diapo-num">Diapo 36</span><span class="diapo-title">L'enquête : l'arbre des causes</span></div>
+      <div class="diapo-body">
+        <div class="message-cle">Message clé — <span>Une méthode pour comprendre, pas pour accuser.</span></div>
+        <div class="dev-label">À développer</div>
+        <ul>
+          <li>Recueillir les faits immédiatement, sans chercher de coupable.</li>
+          <li>Remonter les causes : techniques, humaines, organisationnelles (logique multicausale).</li>
+          <li>Aboutir à des mesures de prévention, puis en assurer le suivi.</li>
+        </ul>
+        <div class="angle-cgt">Refuser l'explication paresseuse par « l'erreur humaine » : presque toujours, l'organisation est en cause.</div>
+      </div>
+    </div>
+
+    <div class="diapo">
+      <div class="diapo-header"><span class="diapo-num">Diapo 37</span><span class="diapo-title">Du cas individuel au collectif</span></div>
+      <div class="diapo-body">
+        <div class="message-cle">Message clé — <span>La finalité syndicale de la démarche.</span></div>
+        <div class="dev-label">À développer</div>
+        <ul>
+          <li>Chaque AT/MP révèle un problème d'organisation du travail.</li>
+          <li>En faire une revendication : effectifs, cadences, matériel, formation, aménagements.</li>
+          <li>Inscrire les mesures au DUERP et au programme annuel de prévention.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="diapo">
+      <div class="diapo-header"><span class="diapo-num">Diapo 38</span><span class="diapo-title">Mise en situation — « De l'accident à la prévention »</span></div>
+      <div class="diapo-body">
+        <div class="message-cle">Message clé — <span>Mettre en pratique l'enquête et la revendication.</span></div>
+        <ul>
+          <li>Cas d'un AT grave sur une ligne de production.</li>
+          <li>Construire collectivement : enquête (arbre des causes), suites DUERP, revendication.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="diapo">
+      <div class="diapo-header"><span class="diapo-num">Diapo 39</span><span class="diapo-title">Évaluation et bilan des 2 jours</span></div>
+      <div class="diapo-body">
+        <div class="message-cle">Message clé — <span>Mesurer les acquis et préparer la suite.</span></div>
+        <ul>
+          <li>Évaluation à chaud, puis à froid (2 à 3 mois après).</li>
+          <li>Chacun repart avec un mini plan d'action ; organiser l'essaimage dans les UD.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="diapo">
+      <div class="diapo-header"><span class="diapo-num">Diapo 40</span><span class="diapo-title">Ressources utiles</span></div>
+      <div class="diapo-body">
+        <div class="message-cle">Message clé — <span>Où trouver l'information fiable.</span></div>
+        <ul>
+          <li><strong>ameli.fr</strong> – Risques professionnels : procédures, formulaires, feuille d'accident.</li>
+          <li><strong>Légifrance :</strong> L.411-1, L.411-2, R.441-2, R.441-10, L.452-1 et s., tableaux de MP.</li>
+          <li><strong>INRS :</strong> tableaux, prévention, risques par métier ; service-public.fr.</li>
+          <li><strong>CGT :</strong> collectif santé au travail de l'UD et appui juridique.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="diapo">
+      <div class="diapo-header"><span class="diapo-num">Diapo 41</span><span class="diapo-title">Clôture — Merci</span></div>
+      <div class="diapo-body">
+        <div class="message-cle">Message clé — <span>Ouvrir sur l'action.</span></div>
+        <ul>
+          <li>Donner les contacts de l'UD et du collectif santé au travail.</li>
+          <li>Encourager chacun à accompagner un premier dossier et à revenir vers le réseau CGT.</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+
+</main>
+
+<footer>
+  <strong>CGT</strong> Comité Régional Occitanie — Formation syndicale secteur privé
+</footer>
+
+</body>
+</html>
