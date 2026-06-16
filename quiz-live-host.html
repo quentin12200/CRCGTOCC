@@ -7,7 +7,7 @@
   <title>Quiz Live — Formateur · CGT Occitanie</title>
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%23E2001A'/%3E%3Ctext x='16' y='23' text-anchor='middle' font-family='sans-serif' font-weight='bold' font-size='16' fill='%23FFD200'%3ECGT%3C/text%3E%3C/svg%3E">
   <link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600&display=swap" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <!-- Firebase SDK -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
@@ -68,10 +68,14 @@
         createdAt: Date.now()
       });
 
-      // QR code (window.QRCode car module scope isolé)
-      window.QRCode.toCanvas(document.getElementById('qr-canvas'), joinUrl, {
-        width: 200, margin: 2,
-        color: { dark: '#1A1A1A', light: '#FFFFFF' }
+      // QR code
+      const qrContainer = document.getElementById('qr-canvas');
+      qrContainer.innerHTML = '';
+      new window.QRCode(qrContainer, {
+        text: joinUrl,
+        width: 200, height: 200,
+        colorDark: '#1A1A1A', colorLight: '#FFFFFF',
+        correctLevel: window.QRCode.CorrectLevel.M
       });
 
       // Écouter les participants
@@ -338,7 +342,7 @@
   <!-- LOBBY -->
   <div id="lobby" class="hidden">
     <div class="qr-block">
-      <canvas id="qr-canvas"></canvas>
+      <div id="qr-canvas"></div>
       <div class="session-badge" id="session-code">CGT-XXXX</div>
       <div class="qr-hint">Les stagiaires scannent ce QR code avec leur téléphone</div>
     </div>
