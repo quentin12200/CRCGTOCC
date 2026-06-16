@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Quiz Live — CGT Occitanie</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%23E2001A'/%3E%3Ctext x='16' y='23' text-anchor='middle' font-family='sans-serif' font-weight='bold' font-size='16' fill='%23FFD200'%3ECGT%3C/text%3E%3C/svg%3E">
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600&display=swap" rel="stylesheet">
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getDatabase, ref, set, onValue, get } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+    const FIREBASE_CONFIG = {
+      apiKey: "AIzaSyBtu2Vmipa2CU8Pro0kXvnesqpUxf-7Z8c",
+      authDomain: "cgt-occitanie-quiz.firebaseapp.com",
+      databaseURL: "https://cgt-occitanie-quiz-default-rtdb.europe-west1.firebasedatabase.app",
+      projectId: "cgt-occitanie-quiz",
+      storageBucket: "cgt-occitanie-quiz.firebasestorage.app",
+      messagingSenderId: "420650097260",
+      appId: "1:420650097260:web:50bdd6dfcc4930a9139649"
+    };
+
+    const app = initializeApp(FIREBASE_CONFIG);
+    const db = getDatabase(app);
+
+    const params = new URLSearchParams(location.search);
+    const sessionId = params.get('s');
+    let uid = null;
+    let currentQ = -1;
+    let answered = false;
+    let myScore = 0;
+
+    function uid_gen() {
+      return Math.random().toString(36).substring(2, 10);
+    }
+
+    async function rejoindre() {
+      const name = document.getElementById('prenom').value.trim();
+      if (!name) return;
+
+      // Vérifier que la session existe
+      const snap = await get(ref(db, `sessions/${sessionId}`));
+      if (!snap.exists()) {
+        document.getElementById('join-error').textContent = 'Session introuvable. Vérifiez le code.';
+        return;
+      }
+
+      uid = uid_gen();
+      await set(ref(db, `sessions/${sessionId}/participants/${uid}`), name);
+
+      document.getElementById('join-screen').classList.add('hidden');
+      document.getElementById('wait-screen').classList.remove('hidden');
+      document.getElementById('wait-name').textContent = name;
+
+      // Écouter l'état de la session
+      onValue(ref(db, `sessions/${sessionId}`), snap => {
+        const data = snap.val();
+        if (!data) return;
+
+        if (data.status === 'question' && data.currentQ !== currentQ) {
+          currentQ = data.currentQ;
+          answered = false;
+          afficherQuestion(data);
+        } else if (data.status === 'reveal' && data.correctIndex !== undefined && data.correctIndex >= 0) {
+          afficherReveal(data.correctIndex);
+        } else if (data.status === 'scoreboard') {
+          afficherScore(data.scores);
+        }
+      });
+    }
+
+    function afficherQuestion(data) {
+      document.getElementById('wait-screen').classList.add('hidden');
+      document.getElementById('result-screen').classList.add('hidden');
+      document.getElementById('question-screen').classList.remove('hidden');
+
+      document.getElementById('q-num-join').textContent = `Question ${data.currentQ + 1} / 12`;
+      document.getElementById('q-text-join').textContent = data.questionText;
+
+      const letters = ['A', 'B', 'C', 'D'];
+      document.getElementById('choices-join').innerHTML = (data.choices || []).map((c, i) =>
+        `<button class="choice-btn" id="choice-${i}" onclick="choisir(${i})">
+          <span class="cl">${letters[i]}</span>
+          <span>${c}</span>
+        </button>`
+      ).join('');
+      document.getElementById('wait-answer').classList.add('hidden');
+    }
+
+    function afficherReveal(correctIndex) {
+      const btns = document.querySelectorAll('.choice-btn');
+      btns.forEach((b, i) => {
+        b.disabled = true;
+        if (i === correctIndex) b.classList.add('correct');
+        else b.classList.add('wrong');
+      });
+      document.getElementById('wait-answer').classList.add('hidden');
+    }
+
+    async function choisir(idx) {
+      if (answered) return;
+      answered = true;
+      const btns = document.querySelectorAll('.choice-btn');
+      btns.forEach(b => b.disabled = true);
+      btns[idx].classList.add('selected');
+      document.getElementById('wait-answer').classList.remove('hidden');
+      await set(ref(db, `sessions/${sessionId}/responses/${uid}_${currentQ}`), {
+        q: currentQ, choice: idx, uid
+      });
+    }
+
+    function afficherScore(scores) {
+      document.getElementById('question-screen').classList.add('hidden');
+      document.getElementById('result-screen').classList.remove('hidden');
+      const myS = (scores && scores[uid]) || 0;
+      document.getElementById('my-score').textContent = myS;
+    }
+
+    window.rejoindre = rejoindre;
+    window.choisir = choisir;
+    document.addEventListener('DOMContentLoaded', () => {
+      if (!sessionId) {
+        document.getElementById('join-error').textContent = 'Lien invalide — demandez le QR code à votre formateur.';
+      }
+      document.getElementById('prenom').addEventListener('keydown', e => {
+        if (e.key === 'Enter') rejoindre();
+      });
+    });
+  </script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --rouge: #E2001A; --jaune: #FFD200;
+      --fond: #141414; --card: #1E1E1E;
+      --texte: #FBFAF6; --muted: #9A9A9A;
+      --vert: #2ECC71; --vert-bg: #0F3320;
+      --rouge-bg: #3A0008;
+    }
+    body {
+      background: var(--fond);
+      color: var(--texte);
+      font-family: 'Archivo', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 1.25rem;
+    }
+    .box { width: 100%; max-width: 420px; display: flex; flex-direction: column; gap: 0; }
+    .box-header { background: var(--rouge); padding: 1.1rem 1.25rem; display: flex; align-items: center; gap: .75rem; }
+    .cgt-badge { font-family: 'Anton', sans-serif; font-size: 1.1rem; letter-spacing: .08em; color: var(--jaune); }
+    .box-header h1 { font-family: 'Anton', sans-serif; font-size: .95rem; letter-spacing: .04em; color: #fff; line-height: 1.2; }
+    .stripe { height: 5px; background: var(--jaune); }
+    .box-body { background: var(--card); padding: 1.5rem 1.25rem; display: flex; flex-direction: column; gap: 1rem; }
+
+    .hidden { display: none !important; }
+
+    /* JOIN */
+    label { font-size: .7rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); display: block; margin-bottom: .4rem; }
+    input[type=text] { width: 100%; background: var(--fond); border: 2px solid #2E2E2E; color: var(--texte); font-family: 'Archivo', sans-serif; font-size: 1.1rem; padding: .75rem 1rem; outline: none; transition: border-color .15s; }
+    input[type=text]:focus { border-color: var(--rouge); }
+    .btn-join { background: var(--rouge); color: #fff; border: none; width: 100%; padding: .85rem; font-family: 'Archivo', sans-serif; font-size: .9rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; cursor: pointer; transition: background .15s; }
+    .btn-join:hover { background: #C40017; }
+    .join-error { color: #FF6B7A; font-size: .8rem; }
+
+    /* WAIT */
+    .wait-icon { font-size: 2.5rem; text-align: center; }
+    .wait-msg { text-align: center; font-size: .9rem; color: var(--muted); line-height: 1.6; }
+    .wait-msg strong { color: var(--texte); display: block; font-size: 1.1rem; margin-bottom: .25rem; }
+    .dots { display: inline-block; animation: dots 1.4s infinite; }
+    @keyframes dots { 0%, 20% { content: '.'; } 40% { content: '..'; } 60%, 100% { content: '...'; } }
+
+    /* QUESTION */
+    .q-num-join { font-size: .7rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin-bottom: .5rem; }
+    .q-text-join { font-family: 'Anton', sans-serif; font-size: clamp(1rem, 4vw, 1.3rem); line-height: 1.3; margin-bottom: 1rem; }
+    .choices-join { display: flex; flex-direction: column; gap: .6rem; }
+    .choice-btn {
+      background: #1E1E1E; border: 2px solid #2E2E2E;
+      color: var(--texte); font-family: 'Archivo', sans-serif;
+      font-size: clamp(.9rem, 3.5vw, 1rem);
+      padding: .9rem 1rem; text-align: left; cursor: pointer;
+      display: flex; gap: .6rem; align-items: flex-start;
+      line-height: 1.4; transition: border-color .12s, background .12s;
+      width: 100%;
+    }
+    .choice-btn:hover:not(:disabled) { border-color: var(--rouge); background: #2A1010; }
+    .choice-btn.selected { border-color: var(--jaune); background: #2A2500; }
+    .choice-btn.correct { border-color: var(--vert); background: var(--vert-bg); }
+    .choice-btn.wrong { border-color: #333; opacity: .5; }
+    .choice-btn:disabled { cursor: default; }
+    .cl { font-family: 'Anton', sans-serif; font-size: .85rem; color: var(--muted); flex-shrink: 0; margin-top: 1px; }
+    .choice-btn.selected .cl { color: var(--jaune); }
+    .choice-btn.correct .cl { color: var(--vert); }
+    #wait-answer { font-size: .78rem; color: var(--muted); text-align: center; padding: .5rem; }
+
+    /* SCORE */
+    .score-wrap { text-align: center; padding: 1rem 0; }
+    .score-num { font-family: 'Anton', sans-serif; font-size: 3.5rem; color: var(--jaune); display: block; }
+    .score-label { font-size: .85rem; color: var(--muted); margin-top: .25rem; }
+    .score-bravo { font-family: 'Anton', sans-serif; font-size: 1.2rem; margin-top: 1rem; color: var(--texte); }
+  </style>
+</head>
+<body>
+
+  <div class="box">
+    <div class="box-header">
+      <span class="cgt-badge">CGT</span>
+      <h1>Quiz AT/MP<br>Formation en direct</h1>
+    </div>
+    <div class="stripe"></div>
+    <div class="box-body">
+
+      <!-- JOIN -->
+      <div id="join-screen">
+        <div>
+          <label for="prenom">Votre prénom</label>
+          <input type="text" id="prenom" placeholder="Marie, Pierre..." autocomplete="off" autofocus>
+        </div>
+        <button class="btn-join" onclick="rejoindre()">Rejoindre la session</button>
+        <div class="join-error" id="join-error"></div>
+      </div>
+
+      <!-- WAIT -->
+      <div id="wait-screen" class="hidden">
+        <div class="wait-icon">⏳</div>
+        <div class="wait-msg">
+          <strong id="wait-name"></strong>
+          Le formateur va lancer le quiz<span class="dots">...</span>
+        </div>
+      </div>
+
+      <!-- QUESTION -->
+      <div id="question-screen" class="hidden">
+        <div class="q-num-join" id="q-num-join">Question 1 / 12</div>
+        <div class="q-text-join" id="q-text-join"></div>
+        <div class="choices-join" id="choices-join"></div>
+        <div id="wait-answer" class="hidden">Réponse envoyée — attendez la correction…</div>
+      </div>
+
+      <!-- SCORE FINAL -->
+      <div id="result-screen" class="hidden">
+        <div class="score-wrap">
+          <span class="score-num" id="my-score">0</span>
+          <div class="score-label">bonnes réponses sur 12</div>
+          <div class="score-bravo">Merci pour votre participation !</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</body>
+</html>
