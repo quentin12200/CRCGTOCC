@@ -212,62 +212,49 @@
 
     .btn-ouvrir svg { flex-shrink: 0; }
 
-    /* ── DOCUMENTS ── */
-    .documents-list {
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
+    /* ── RESSOURCES ── */
+    .ressources-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1rem;
       margin-bottom: 2.5rem;
     }
 
-    .doc-item {
+    .ressource-item {
       display: flex;
       align-items: center;
-      gap: 1rem;
+      gap: 0.9rem;
       background: var(--fond-card);
       border: 1px solid var(--border-card);
-      padding: 0.85rem 1rem;
+      border-left: 3px solid var(--border);
+      padding: 0.9rem 1rem;
       text-decoration: none;
       color: var(--texte);
-      transition: background 0.12s, box-shadow 0.12s;
+      transition: border-left-color 0.15s, box-shadow 0.15s;
       box-shadow: 0 1px 3px rgba(0,0,0,0.04);
     }
 
-    .doc-item:hover {
-      background: #FAFAF8;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    .ressource-item:hover {
+      border-left-color: var(--rouge);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.09);
     }
 
-    .doc-icon {
-      width: 34px;
-      height: 34px;
-      background: #EAF0FA;
+    .ressource-icon {
+      width: 36px;
+      height: 36px;
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
-      font-size: 0.6rem;
-      font-weight: 700;
-      color: #3D6BB5;
-      letter-spacing: 0.04em;
-      border: 1px solid #D6E2F5;
+      background: #F0EEE8;
+      border: 1px solid var(--border);
     }
 
-    .doc-name {
-      font-size: 0.875rem;
-      font-weight: 500;
-      flex: 1;
-      color: var(--texte);
-    }
+    .ressource-icon svg { color: var(--rouge); }
 
-    .doc-dl {
-      font-size: 0.7rem;
-      color: var(--rouge);
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      white-space: nowrap;
-    }
+    .ressource-text { flex: 1; }
+    .ressource-name { font-size: 0.875rem; font-weight: 600; color: var(--texte); display: block; line-height: 1.3; }
+    .ressource-desc { font-size: 0.72rem; color: var(--texte-muted); margin-top: 0.1rem; }
 
     /* ── FOOTER ── */
     footer {
@@ -346,18 +333,35 @@
 
   </div>
 
-  <div class="section-label">Documents à télécharger</div>
+  <div class="section-label">Ressources formateur</div>
 
-  <div class="documents-list">
-    <a class="doc-item" href="/documents/Derouler_ATMP_2jours.docx" download>
-      <div class="doc-icon">DOC</div>
-      <span class="doc-name">Déroulé pédagogique — AT/MP 2 jours (par diapo)</span>
-      <span class="doc-dl">↓ Télécharger</span>
+  <div class="ressources-grid">
+    <a class="ressource-item" href="/deroulement.html">
+      <div class="ressource-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      </div>
+      <div class="ressource-text">
+        <span class="ressource-name">Déroulé AT/MP — 2 jours</span>
+        <span class="ressource-desc">Planning minuté diapo par diapo</span>
+      </div>
     </a>
-    <a class="doc-item" href="/documents/Livret_formateur_AT-MP_argumentaire.docx" download>
-      <div class="doc-icon">DOC</div>
-      <span class="doc-name">Livret formateur — Argumentaire AT/MP</span>
-      <span class="doc-dl">↓ Télécharger</span>
+    <a class="ressource-item" href="/argumentaire.html">
+      <div class="ressource-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+      </div>
+      <div class="ressource-text">
+        <span class="ressource-name">Livret formateur — Argumentaire</span>
+        <span class="ressource-desc">Notes et angles CGT pour chaque diapo</span>
+      </div>
+    </a>
+    <a class="ressource-item" href="/lexique.html">
+      <div class="ressource-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+      </div>
+      <div class="ressource-text">
+        <span class="ressource-name">Lexique AT/MP &amp; Prévoyance</span>
+        <span class="ressource-desc">50+ définitions, recherche, imprimable</span>
+      </div>
     </a>
   </div>
 

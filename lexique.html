@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Lexique — Formation CGT Occitanie</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%23E2001A'/%3E%3Ctext x='16' y='23' text-anchor='middle' font-family='sans-serif' font-weight='bold' font-size='16' fill='%23FFD200'%3ECGT%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --rouge: #E2001A; --rouge-dark: #C40017;
+      --jaune: #FFD200;
+      --fond: #F5F4F0; --fond-card: #FFFFFF;
+      --texte: #1A1A1A; --texte-muted: #6B6B6B;
+      --border: #E0DED8; --border-card: #E8E6E0;
+    }
+    body { background: var(--fond); color: var(--texte); font-family: 'Archivo', sans-serif; min-height: 100vh; display: flex; flex-direction: column; }
+
+    /* HEADER */
+    header { background: var(--rouge); padding: 1rem 2rem; display: flex; align-items: center; gap: 1.25rem; box-shadow: 0 2px 8px rgba(0,0,0,.18); }
+    .logo-wrap { flex-shrink: 0; height: 56px; display: flex; align-items: center; }
+    .logo-wrap img { height: 56px; width: auto; background: white; padding: 3px 5px; }
+    .header-divider { width: 2px; height: 42px; background: rgba(255,255,255,.3); flex-shrink: 0; }
+    .header-title h1 { font-family: 'Anton', sans-serif; font-size: 1.1rem; letter-spacing: .04em; color: #fff; line-height: 1.2; }
+    .header-title span { font-size: .75rem; color: rgba(255,255,255,.75); }
+    .header-back { margin-left: auto; }
+    .header-back a { font-size: .75rem; color: rgba(255,255,255,.8); text-decoration: none; border: 1px solid rgba(255,255,255,.3); padding: .3rem .7rem; letter-spacing: .04em; transition: background .15s; }
+    .header-back a:hover { background: rgba(255,255,255,.1); color: #fff; }
+    .stripe { height: 5px; background: var(--jaune); }
+
+    /* MAIN */
+    main { flex: 1; max-width: 980px; width: 100%; margin: 0 auto; padding: 2rem 1.5rem 2.5rem; }
+
+    /* BARRE RECHERCHE */
+    .search-bar { position: relative; margin-bottom: 1.75rem; }
+    .search-bar input {
+      width: 100%; padding: .8rem 1rem .8rem 2.8rem;
+      border: 2px solid var(--border-card); background: var(--fond-card);
+      font-family: 'Archivo', sans-serif; font-size: .95rem; color: var(--texte);
+      outline: none; transition: border-color .15s;
+    }
+    .search-bar input:focus { border-color: var(--rouge); }
+    .search-bar input::placeholder { color: #AAAAAA; }
+    .search-bar svg { position: absolute; left: .85rem; top: 50%; transform: translateY(-50%); color: var(--texte-muted); pointer-events: none; }
+
+    /* FILTRES THÈME */
+    .filters { display: flex; gap: .5rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
+    .filter-btn {
+      font-family: 'Archivo', sans-serif; font-size: .7rem; font-weight: 700;
+      letter-spacing: .08em; text-transform: uppercase;
+      padding: .35rem .75rem; border: 2px solid var(--border); background: var(--fond-card);
+      color: var(--texte-muted); cursor: pointer; transition: all .15s;
+    }
+    .filter-btn:hover { border-color: var(--rouge); color: var(--rouge); }
+    .filter-btn.active { background: var(--rouge); border-color: var(--rouge); color: #fff; }
+
+    /* NAVIGATION ALPHA */
+    .alpha-nav { display: flex; flex-wrap: wrap; gap: .25rem; margin-bottom: 1.75rem; }
+    .alpha-btn {
+      font-family: 'Anton', sans-serif; font-size: .85rem;
+      width: 2rem; height: 2rem; display: flex; align-items: center; justify-content: center;
+      border: 1px solid var(--border); background: var(--fond-card); cursor: pointer;
+      color: var(--texte-muted); transition: all .15s; text-decoration: none;
+    }
+    .alpha-btn:hover, .alpha-btn.has-terms:hover { background: var(--rouge); border-color: var(--rouge); color: #fff; }
+    .alpha-btn.has-terms { color: var(--texte); border-color: #CCC; }
+    .alpha-btn.disabled { opacity: .35; cursor: default; pointer-events: none; }
+
+    /* GROUPE LETTRE */
+    .letter-group { margin-bottom: 2rem; }
+    .letter-anchor { font-family: 'Anton', sans-serif; font-size: 1.8rem; color: var(--rouge); margin-bottom: .75rem; padding-bottom: .3rem; border-bottom: 3px solid var(--jaune); display: inline-block; min-width: 2.5rem; }
+
+    /* ENTRÉE LEXIQUE */
+    .entry {
+      background: var(--fond-card); border: 1px solid var(--border-card);
+      border-left: 4px solid transparent; padding: 1rem 1.1rem;
+      margin-bottom: .6rem; transition: border-color .15s;
+    }
+    .entry:hover { border-left-color: var(--rouge); }
+    .entry[data-theme="atmp"] { border-left-color: #E2001A22; }
+    .entry[data-theme="prevoyance"] { border-left-color: #FFD20044; }
+    .entry:hover { border-left-color: var(--rouge) !important; }
+    .entry-header { display: flex; align-items: baseline; gap: .75rem; flex-wrap: wrap; margin-bottom: .4rem; }
+    .entry-term { font-family: 'Anton', sans-serif; font-size: 1rem; letter-spacing: .02em; color: var(--texte); }
+    .entry-abbr { font-size: .7rem; font-weight: 700; color: var(--texte-muted); letter-spacing: .06em; background: var(--fond); padding: .1rem .4rem; border: 1px solid var(--border); }
+    .tag-theme {
+      font-size: .62rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase;
+      padding: .15rem .45rem; margin-left: auto;
+    }
+    .tag-theme.atmp { background: #FFE8EA; color: var(--rouge); }
+    .tag-theme.prevoyance { background: #FFF8D6; color: #8A6D00; }
+    .entry-def { font-size: .875rem; color: var(--texte-muted); line-height: 1.7; }
+    .entry-def strong { color: var(--texte); font-weight: 600; }
+
+    /* COMPTEUR */
+    .result-count { font-size: .78rem; color: var(--texte-muted); margin-bottom: 1rem; }
+    .result-count span { font-weight: 700; color: var(--texte); }
+
+    /* AUCUN RÉSULTAT */
+    .no-result { text-align: center; padding: 3rem 1rem; color: var(--texte-muted); font-size: .9rem; }
+
+    /* BOUTON IMPRIMER */
+    .print-bar { display: flex; justify-content: flex-end; margin-bottom: 1.5rem; }
+    .btn-print { background: var(--rouge); color: #fff; border: none; padding: .6rem 1.1rem; font-family: 'Archivo', sans-serif; font-size: .78rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; cursor: pointer; display: flex; align-items: center; gap: .4rem; transition: background .15s; }
+    .btn-print:hover { background: var(--rouge-dark); }
+
+    /* FOOTER */
+    footer { border-top: 1px solid var(--border); background: #EEECEA; padding: 1.1rem 1.5rem; text-align: center; font-size: .73rem; color: var(--texte-muted); }
+    footer strong { color: var(--rouge); }
+
+    /* PRINT */
+    @media print {
+      header, .search-bar, .filters, .alpha-nav, .print-bar, footer { display: none !important; }
+      .print-header { display: block !important; }
+      body { background: white; }
+      .entry { break-inside: avoid; border: 1px solid #CCC !important; margin-bottom: .4rem; }
+      .letter-group { break-inside: avoid; }
+    }
+    .print-header { display: none; padding: 1rem 0 .5rem; border-bottom: 3px solid #E2001A; margin-bottom: 1rem; }
+    .print-header h2 { font-family: 'Anton', sans-serif; font-size: 1.4rem; }
+    .print-header p { font-size: .8rem; color: #666; margin-top: .25rem; }
+
+    @media (max-width: 520px) {
+      header { padding: .85rem 1rem; gap: .75rem; }
+      .logo-wrap img { height: 44px; }
+      main { padding: 1.5rem 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo-wrap">
+    <img src="/assets/logo-cgt-occitanie.jpg" alt="CGT Comité Régional Occitanie">
+  </div>
+  <div class="header-divider"></div>
+  <div class="header-title">
+    <h1>Lexique Formation Syndicale</h1>
+    <span>AT/MP · Prévoyance · Invalidité</span>
+  </div>
+  <div class="header-back"><a href="/">← Accueil</a></div>
+</header>
+<div class="stripe"></div>
+
+<main>
+
+  <div class="print-header">
+    <h2>Lexique — Formation Syndicale CGT Occitanie</h2>
+    <p>AT/MP · Prévoyance · Invalidité — CGT Comité Régional Occitanie, secteur privé</p>
+  </div>
+
+  <div class="print-bar">
+    <button class="btn-print" onclick="window.print()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+      Imprimer le lexique
+    </button>
+  </div>
+
+  <div class="search-bar">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <input type="text" id="search" placeholder="Rechercher un terme…" autocomplete="off">
+  </div>
+
+  <div class="filters">
+    <button class="filter-btn active" data-filter="all">Tous</button>
+    <button class="filter-btn" data-filter="atmp">AT/MP</button>
+    <button class="filter-btn" data-filter="prevoyance">Prévoyance / Invalidité</button>
+  </div>
+
+  <div class="alpha-nav" id="alpha-nav"></div>
+
+  <div class="result-count" id="result-count"></div>
+
+  <div id="lexique-content"></div>
+  <div class="no-result" id="no-result" style="display:none">Aucun terme trouvé pour cette recherche.</div>
+
+</main>
+
+<footer>
+  <strong>CGT</strong> Comité Régional Occitanie — Formation syndicale secteur privé
+</footer>
+
+<script>
+const TERMS = [
+  /* ===== AT/MP ===== */
+  { term: "Accident du travail", abbr: "AT", theme: "atmp", def: "Est considéré comme accident du travail, quelle qu'en soit la cause, l'accident survenu par le fait ou à l'occasion du travail à toute personne salariée (art. L. 411-1 CSS). Il doit être soudain, provoquer une lésion corporelle ou psychique et survenir pendant le temps et sur le lieu de travail." },
+  { term: "Accident de trajet", abbr: "", theme: "atmp", def: "Accident survenu pendant le trajet aller-retour entre la résidence principale et le lieu de travail, ou entre le lieu de travail et le lieu de restauration habituel (art. L. 411-2 CSS). Ouvre droit aux mêmes prestations que l'AT, sauf en matière de faute inexcusable de l'employeur." },
+  { term: "Maladie professionnelle", abbr: "MP", theme: "atmp", def: "Affection contractée dans les conditions de travail déterminées par un tableau de maladies professionnelles (présomption d'imputabilité) ou, hors tableau, reconnue par le CRRMP après expertise médicale. La présomption d'imputabilité dispense le salarié de prouver le lien de causalité." },
+  { term: "Comité régional de reconnaissance des maladies professionnelles", abbr: "CRRMP", theme: "atmp", def: "Instance pluridisciplinaire qui instruit les demandes de reconnaissance de maladie professionnelle hors tableaux, ou dans les cas où les conditions des tableaux ne sont pas entièrement remplies. Il évalue le lien direct et essentiel entre la maladie et l'activité professionnelle habituelle." },
+  { term: "Incapacité temporaire de travail", abbr: "ITT", theme: "atmp", def: "Période pendant laquelle le salarié victime d'un AT/MP est dans l'impossibilité temporaire d'exercer son activité professionnelle, donnant droit aux indemnités journalières AT/MP versées par la CPAM dès le 1er jour (sans délai de carence)." },
+  { term: "Indemnités journalières AT/MP", abbr: "IJ", theme: "atmp", def: "Prestations versées par la CPAM en cas d'incapacité temporaire. Montant : 60 % du salaire journalier de référence du 1er au 28e jour d'arrêt, puis 80 % à partir du 29e jour. Le salaire journalier est calculé sur la base du salaire du mois précédent l'accident, plafonné." },
+  { term: "Consolidation", abbr: "", theme: "atmp", def: "Date à laquelle l'état de santé de la victime est stabilisé et où les lésions sont fixées définitivement. Elle marque la fin de l'indemnisation en incapacité temporaire. La consolidation est fixée par le médecin-conseil de la CPAM, avec possibilité de contestation médicale." },
+  { term: "Incapacité permanente partielle", abbr: "IPP", theme: "atmp", def: "Séquelle définitive résultant d'un AT/MP, évaluée en pourcentage après consolidation. En dessous de 10 % : capital versé en une fois. À partir de 10 % : rente viagère versée trimestriellement. Le taux est fixé par le médecin-conseil selon le barème indicatif d'invalidité." },
+  { term: "Rente AT", abbr: "", theme: "atmp", def: "Indemnisation sous forme de rente viagère lorsque le taux d'IPP est égal ou supérieur à 10 %. Son montant est calculé sur la base du salaire annuel et du taux d'IPP, éventuellement majoré ou minoré selon les barèmes. Elle est réévaluée annuellement." },
+  { term: "Taux de cotisation AT", abbr: "", theme: "atmp", def: "Taux de cotisation AT/MP supporté intégralement par l'employeur, fixé par la CARSAT en fonction du secteur d'activité (tarification collective) ou du sinistralisme propre de l'entreprise (tarification individuelle ou mixte selon l'effectif). La prévention AT est donc financièrement incitée." },
+  { term: "Faute inexcusable de l'employeur", abbr: "FIE", theme: "atmp", def: "L'employeur est présumé avoir commis une faute inexcusable lorsqu'il avait ou aurait dû avoir conscience du danger auquel était exposé le salarié et n'a pas pris les mesures nécessaires pour l'en préserver. Elle ouvre droit à une majoration de rente et à la réparation des préjudices non indemnisés par la rente (préjudice moral, fonctionnel, etc.)." },
+  { term: "Rechute", abbr: "", theme: "atmp", def: "Aggravation des lésions consécutives à un AT/MP après consolidation, donnant lieu à une nouvelle prise en charge au titre de l'AT/MP initial. Elle peut aboutir à une révision du taux d'IPP. Elle doit être médicalement établie et déclarée auprès de la CPAM." },
+  { term: "Déclaration d'accident du travail", abbr: "DAT", theme: "atmp", def: "Obligation de l'employeur de déclarer tout AT à la CPAM dans les 48 heures (hors dimanches et jours fériés). À défaut, la victime peut déclarer elle-même l'AT jusqu'à 2 ans après l'accident. L'employeur peut émettre des réserves motivées lors de la déclaration." },
+  { term: "Délai de prescription", abbr: "", theme: "atmp", def: "En matière d'AT/MP, l'action en reconnaissance se prescrit par 2 ans à compter de l'accident, de la date de cessation du travail ou de la date de première constatation médicale de la maladie. Ce délai peut être interrompu par diverses démarches (déclaration, recours, etc.)." },
+  { term: "Subrogation", abbr: "", theme: "atmp", def: "Mécanisme par lequel l'employeur maintient le salaire pendant l'arrêt AT/MP et perçoit en contrepartie les indemnités journalières versées par la CPAM. Conditionne le droit à rembourser l'IJ. En l'absence de subrogation, la CPAM verse les IJ directement au salarié." },
+  { term: "Comité social et économique", abbr: "CSE", theme: "atmp", def: "Instance représentative du personnel unique depuis 2020 (fusion DP, CE, CHSCT). Dans les entreprises de plus de 50 salariés, il dispose de compétences en santé-sécurité et conditions de travail, d'un droit d'enquête après tout AT grave ou maladie professionnelle, et peut recourir à un expert agréé." },
+  { term: "Plan de prévention des risques professionnels", abbr: "DUERP", theme: "atmp", def: "Document Unique d'Évaluation des Risques Professionnels : obligatoire dans toute entreprise dès 1 salarié. Recense les risques identifiés et les actions de prévention mises en place. Mis à jour annuellement ou après tout accident grave. Le CSE doit être consulté lors de sa mise à jour." },
+  { term: "Rechute / révision du taux", abbr: "", theme: "atmp", def: "Toute aggravation des séquelles d'un AT/MP consolidé peut donner lieu à une demande de révision du taux d'IPP. Le délai de révision est de 2 ans et demi à compter de la fixation ou de la dernière révision du taux. La révision peut aussi être à l'initiative de la CPAM." },
+  { term: "Tableau de maladie professionnelle", abbr: "", theme: "atmp", def: "Liste annexée au Code de la Sécurité Sociale répertoriant les pathologies reconnues d'origine professionnelle (plus de 100 tableaux régime général, 60 régime agricole). Chaque tableau précise les travaux concernés, les délais de prise en charge et les conditions médicales." },
+  { term: "Capital forfaitaire", abbr: "", theme: "atmp", def: "Indemnisation versée en une seule fois lorsque le taux d'IPP est inférieur à 10 %. Son montant est fixé par arrêté ministériel selon le taux retenu et le salaire de la victime. Contrairement à la rente, il ne peut pas être révisé en cas d'aggravation." },
+
+  /* ===== PRÉVOYANCE / INVALIDITÉ ===== */
+  { term: "Prévoyance collective", abbr: "", theme: "prevoyance", def: "Ensemble des garanties souscrites par l'employeur au bénéfice des salariés pour couvrir les risques liés à la personne : décès, incapacité de travail, invalidité, et parfois dépendance. Elle peut être mise en place par accord collectif, accord d'entreprise, DUE ou référendum. La participation patronale est obligatoire." },
+  { term: "Décision unilatérale de l'employeur", abbr: "DUE", theme: "prevoyance", def: "Acte par lequel l'employeur met en place un régime de prévoyance collectif sans accord collectif. Elle doit être portée à la connaissance des salariés et exige le respect des conditions posées par l'article L. 911-1 CSS. Moins protectrice que l'accord collectif car l'employeur peut la dénoncer unilatéralement." },
+  { term: "Invalidité de 1re catégorie", abbr: "Inv. cat. 1", theme: "prevoyance", def: "Invalidité reconnue par la CPAM lorsque le salarié conserve une capacité de travail réduite aux deux tiers. Il perçoit une pension d'invalidité égale à 30 % du salaire annuel moyen. Il peut exercer une activité professionnelle à temps partiel, ses revenus cumulés ne pouvant excéder son ancien salaire." },
+  { term: "Invalidité de 2e catégorie", abbr: "Inv. cat. 2", theme: "prevoyance", def: "Invalidité reconnue lorsque le salarié est incapable d'exercer toute profession. Pension d'invalidité égale à 50 % du salaire annuel moyen. C'est la catégorie la plus fréquente. Elle ouvre souvent droit à des garanties de prévoyance complémentaires via l'accord de branche ou d'entreprise." },
+  { term: "Invalidité de 3e catégorie", abbr: "Inv. cat. 3", theme: "prevoyance", def: "Invalidité de 2e catégorie avec nécessité d'assistance d'une tierce personne pour accomplir les actes ordinaires de la vie. La pension est majorée d'une majoration pour tierce personne (MTP) fixée par arrêté, portant la pension totale au-delà de 50 % du salaire annuel moyen." },
+  { term: "Indemnités journalières complémentaires", abbr: "IJC", theme: "prevoyance", def: "Prestations versées par l'organisme de prévoyance en complément des IJ de la Sécurité Sociale, afin de garantir au salarié un niveau de revenu proche de son salaire net pendant un arrêt maladie ou maternité. Le niveau de garantie (% du salaire brut ou net) est défini par l'accord de prévoyance." },
+  { term: "Portabilité de la prévoyance", abbr: "", theme: "prevoyance", def: "Droit pour le salarié quittant l'entreprise (hors démission ou faute lourde) de conserver le bénéfice des garanties de prévoyance et mutuelle sans contribution pendant une durée égale à la durée du dernier contrat (plafonnée à 12 mois). Financée par la mutualisation entre actifs et anciens salariés (art. L. 911-8 CSS)." },
+  { term: "Accord national interprofessionnel", abbr: "ANI", theme: "prevoyance", def: "Accord conclu entre organisations patronales et syndicales représentatives au niveau national, étendu par arrêté ministériel. L'ANI du 11 janvier 2013 a notamment généralisé la complémentaire santé à tous les salariés du secteur privé, avec une participation patronale minimale de 50 % de la cotisation." },
+  { term: "Garantie décès", abbr: "", theme: "prevoyance", def: "Garantie versant un capital ou une rente aux ayants droit (conjoint, enfants, bénéficiaires désignés) en cas de décès du salarié, toutes causes ou par accident. Le montant est exprimé en multiple du salaire brut annuel (ex. : 1 fois, 2 fois le salaire). La désignation de bénéficiaires est recommandée." },
+  { term: "Rente éducation", abbr: "", theme: "prevoyance", def: "Rente versée aux enfants à charge en cas de décès du salarié, jusqu'à un âge défini par l'accord de prévoyance (souvent 18 ans, parfois 26 ans si études). Elle peut être forfaitaire ou proportionnelle au salaire. Elle complète le capital décès." },
+  { term: "Maintien de salaire", abbr: "", theme: "prevoyance", def: "Obligation légale (loi de mensualisation, art. L. 1226-1 CSS) pour l'employeur de maintenir tout ou partie du salaire en cas d'arrêt maladie non professionnel, sous conditions d'ancienneté (1 an), de justification et de prise en charge par la SS. L'accord de prévoyance peut améliorer les conditions légales." },
+  { term: "Délai de carence", abbr: "", theme: "prevoyance", def: "Période initiale d'un arrêt de travail pendant laquelle aucune indemnité journalière n'est versée. Pour la maladie non professionnelle, le délai légal de carence SS est de 3 jours. En matière de prévoyance complémentaire, le délai de carence de l'organisme peut être de 0 à 90 jours selon l'accord." },
+  { term: "Organisme assureur", abbr: "", theme: "prevoyance", def: "Entité gérant les contrats de prévoyance collective : institution de prévoyance (paritaire, ex. : Malakoff Humanis, AG2R), société d'assurance (mutuelle ou SA), ou mutuelle 45. Le choix de l'organisme peut être encadré par un accord de branche avec clause de recommandation ou de désignation (sous conditions)." },
+  { term: "Clause de désignation", abbr: "", theme: "prevoyance", def: "Clause d'un accord de branche imposant le recours à un organisme assureur unique pour l'ensemble des entreprises de la branche. Annulée par le Conseil Constitutionnel en 2013 (décision du 13 juin 2013), elle a été remplacée par la clause de recommandation, non contraignante." },
+  { term: "Clause de recommandation", abbr: "", theme: "prevoyance", def: "Mécanisme par lequel un accord de branche recommande un ou plusieurs organismes assureurs, sans les imposer. L'entreprise reste libre de choisir un autre organisme à condition de garanties au moins équivalentes. La branche peut prévoir des avantages tarifaires en cas de suivi de la recommandation." },
+  { term: "Taux d'incapacité (prévoyance)", abbr: "", theme: "prevoyance", def: "Pourcentage d'incapacité fonctionnelle retenu par le médecin-conseil pour classer un assuré en invalidité. Ne pas confondre avec le taux d'IPP AT/MP : en prévoyance, c'est la CPAM qui fixe la catégorie d'invalidité, et le contrat de prévoyance s'y réfère pour déclencher les prestations complémentaires." },
+  { term: "Subrogation (prévoyance)", abbr: "", theme: "prevoyance", def: "Mécanisme identique à celui de l'AT/MP : l'employeur maintient le salaire et perçoit les IJ SS et les IJC prévoyance. Permet une gestion simplifiée et évite les décalages de trésorerie pour le salarié. L'accord de prévoyance précise si la subrogation est systématique ou optionnelle." },
+  { term: "Rente d'invalidité (prévoyance)", abbr: "", theme: "prevoyance", def: "Prestation complémentaire versée par l'organisme de prévoyance en cas d'invalidité reconnue par la CPAM. Elle complète la pension SS pour maintenir un revenu de remplacement proche du salaire net. Le montant est calculé sur le salaire de référence (souvent les 12 derniers mois) et peut varier selon la catégorie d'invalidité." },
+  { term: "Salaire de référence (prévoyance)", abbr: "", theme: "prevoyance", def: "Assiette de calcul des prestations de prévoyance, définie par le contrat ou l'accord. Généralement : salaire brut des 12 mois précédant l'arrêt, primes incluses si l'accord le prévoit, plafonné à un multiple du PMSS. Il conditionne le montant des IJ complémentaires, de la rente d'invalidité et du capital décès." },
+  { term: "Plafond mensuel de la Sécurité Sociale", abbr: "PMSS", theme: "prevoyance", def: "Montant de référence utilisé pour calculer les cotisations et prestations SS (3 864 € en 2024). Les garanties de prévoyance y font souvent référence : ex. « garantie à hauteur de 3 PMSS ». Il est revalorisé chaque 1er janvier par arrêté." },
+  { term: "Prévoyance obligatoire de branche", abbr: "", theme: "prevoyance", def: "Régime de prévoyance imposé à toutes les entreprises d'une branche professionnelle par un accord de branche étendu. L'employeur doit au minimum respecter les garanties et niveaux de cotisation prévus par cet accord, indépendamment de l'accord d'entreprise qui peut être plus favorable." },
+  { term: "Reprise du travail après invalidité", abbr: "", theme: "prevoyance", def: "Un salarié en invalidité catégorie 1 peut reprendre une activité partielle sans perdre sa pension si ses revenus cumulés ne dépassent pas l'ancien salaire. En catégorie 2, toute reprise doit être signalée à la CPAM. À 62 ans (ou à l'âge légal de la retraite), la pension d'invalidité se transforme automatiquement en pension de retraite au même montant." },
+  { term: "Licenciement pour inaptitude", abbr: "", theme: "prevoyance", def: "Rupture du contrat consécutive à la constatation d'inaptitude par le médecin du travail. Si l'inaptitude est d'origine professionnelle (AT/MP), l'indemnité légale de licenciement est doublée. L'employeur doit au préalable tenter le reclassement. Le salarié licencié pour inaptitude d'origine non professionnelle perçoit l'allocation chômage sans délai de carence ARE." },
+  { term: "Complémentaire santé collective", abbr: "Mutuelle", theme: "prevoyance", def: "Couverture obligatoire depuis le 1er janvier 2016 (ANI 2013) dans toutes les entreprises du secteur privé. L'employeur doit financer au minimum 50 % de la cotisation d'un panier de soins minimum. Elle couvre au moins les soins courants, le ticket modérateur, le forfait journalier hospitalier et certains soins dentaires et optiques." },
+  { term: "Ticket modérateur", abbr: "TM", theme: "prevoyance", def: "Partie des dépenses de santé non remboursée par la Sécurité Sociale, à la charge de l'assuré. Les complémentaires santé (mutuelles) prennent généralement en charge tout ou partie du ticket modérateur. Le contrat responsable impose de rembourser le TM pour les actes couverts par la SS." },
+  { term: "Contrat responsable", abbr: "", theme: "prevoyance", def: "Cadre réglementaire encadrant les garanties des complémentaires santé depuis 2014 (décret du 18 nov. 2014). Pour bénéficier des avantages fiscaux et sociaux, le contrat doit respecter des planchers (remboursement du TM, forfait journalier) et des plafonds (dépassements d'honoraires hors médecin traitant)." },
+];
+
+/* =========================================================
+   MOTEUR
+   ========================================================= */
+let activeFilter = 'all';
+let searchQuery = '';
+
+function normalize(s) {
+  return s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+}
+
+function filteredTerms() {
+  return TERMS.filter(t => {
+    const matchTheme = activeFilter === 'all' || t.theme === activeFilter;
+    const q = normalize(searchQuery);
+    const matchSearch = !q ||
+      normalize(t.term).includes(q) ||
+      normalize(t.abbr || '').includes(q) ||
+      normalize(t.def).includes(q);
+    return matchTheme && matchSearch;
+  }).sort((a, b) => normalize(a.term).localeCompare(normalize(b.term)));
+}
+
+function highlight(text, q) {
+  if (!q) return text;
+  const re = new RegExp('(' + q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'gi');
+  return text.replace(re, '<mark style="background:#FFD200;color:#1A1A1A;padding:0 1px;">$1</mark>');
+}
+
+function render() {
+  const terms = filteredTerms();
+  const q = normalize(searchQuery);
+  const content = document.getElementById('lexique-content');
+  const noResult = document.getElementById('no-result');
+  const countEl = document.getElementById('result-count');
+
+  countEl.innerHTML = `<span>${terms.length}</span> terme${terms.length > 1 ? 's' : ''} affiché${terms.length > 1 ? 's' : ''}`;
+
+  if (terms.length === 0) {
+    content.innerHTML = '';
+    noResult.style.display = 'block';
+    return;
+  }
+  noResult.style.display = 'none';
+
+  // Grouper par lettre
+  const groups = {};
+  terms.forEach(t => {
+    const l = normalize(t.term)[0].toUpperCase();
+    if (!groups[l]) groups[l] = [];
+    groups[l].push(t);
+  });
+
+  content.innerHTML = Object.keys(groups).sort().map(letter => `
+    <div class="letter-group" id="letter-${letter}">
+      <div class="letter-anchor">${letter}</div>
+      ${groups[letter].map(t => `
+        <div class="entry" data-theme="${t.theme}">
+          <div class="entry-header">
+            <span class="entry-term">${highlight(t.term, q)}</span>
+            ${t.abbr ? `<span class="entry-abbr">${highlight(t.abbr, q)}</span>` : ''}
+            <span class="tag-theme ${t.theme}">${t.theme === 'atmp' ? 'AT/MP' : 'Prévoyance'}</span>
+          </div>
+          <div class="entry-def">${highlight(t.def, q)}</div>
+        </div>
+      `).join('')}
+    </div>
+  `).join('');
+
+  buildAlphaNav(Object.keys(groups));
+}
+
+function buildAlphaNav(activeLetters) {
+  const nav = document.getElementById('alpha-nav');
+  const allLetters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+  nav.innerHTML = allLetters.map(l => {
+    const has = activeLetters.includes(l);
+    return `<a class="alpha-btn ${has ? 'has-terms' : 'disabled'}" href="#letter-${l}" title="${l}">${l}</a>`;
+  }).join('');
+}
+
+// Init
+document.getElementById('search').addEventListener('input', e => {
+  searchQuery = e.target.value.trim();
+  render();
+});
+
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    activeFilter = btn.dataset.filter;
+    render();
+  });
+});
+
+render();
+</script>
+</body>
+</html>
