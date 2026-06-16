@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Fiches mémo — CGT Occitanie</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%23E2001A'/%3E%3Ctext x='16' y='23' text-anchor='middle' font-family='sans-serif' font-weight='bold' font-size='16' fill='%23FFD200'%3ECGT%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --rouge: #E2001A; --rouge-dark: #C40017;
+      --jaune: #FFD200;
+      --fond: #F5F4F0; --fond-card: #FFFFFF;
+      --texte: #1A1A1A; --texte-muted: #6B6B6B;
+      --border: #E0DED8;
+    }
+    body { background: var(--fond); color: var(--texte); font-family: 'Archivo', sans-serif; min-height: 100vh; display: flex; flex-direction: column; }
+
+    header { background: var(--rouge); padding: 1rem 2rem; display: flex; align-items: center; gap: 1.25rem; box-shadow: 0 2px 8px rgba(0,0,0,.18); }
+    .logo-wrap { flex-shrink: 0; height: 56px; display: flex; align-items: center; }
+    .logo-wrap img { height: 56px; width: auto; background: white; padding: 3px 5px; }
+    .header-divider { width: 2px; height: 42px; background: rgba(255,255,255,.3); flex-shrink: 0; }
+    .header-title { flex: 1; }
+    .header-title h1 { font-family: 'Anton', sans-serif; font-size: 1.1rem; letter-spacing: .04em; color: #fff; line-height: 1.2; }
+    .header-title span { font-size: .75rem; color: rgba(255,255,255,.75); }
+    .header-back { margin-left: auto; }
+    .header-back a { font-size: .75rem; color: rgba(255,255,255,.8); text-decoration: none; border: 1px solid rgba(255,255,255,.3); padding: .3rem .7rem; transition: background .15s; }
+    .header-back a:hover { background: rgba(255,255,255,.1); color: #fff; }
+    .stripe { height: 5px; background: var(--jaune); }
+
+    main { flex: 1; max-width: 980px; width: 100%; margin: 0 auto; padding: 2rem 1.5rem 3rem; }
+
+    .print-bar { display: flex; justify-content: flex-end; margin-bottom: 1.75rem; gap: .75rem; }
+    .btn-print { background: var(--rouge); color: #fff; border: none; padding: .55rem 1rem; font-family: 'Archivo', sans-serif; font-size: .78rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; cursor: pointer; display: flex; align-items: center; gap: .4rem; transition: background .15s; }
+    .btn-print:hover { background: var(--rouge-dark); }
+
+    /* FICHES GRID */
+    .fiches-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 1.5rem; }
+
+    .fiche {
+      background: var(--fond-card);
+      border: 1px solid #E8E6E0;
+      border-top: 4px solid var(--rouge);
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: .9rem;
+      box-shadow: 0 1px 4px rgba(0,0,0,.06);
+    }
+
+    .fiche-titre {
+      font-family: 'Anton', sans-serif;
+      font-size: 1rem;
+      letter-spacing: .03em;
+      color: var(--texte);
+      padding-bottom: .6rem;
+      border-bottom: 2px solid var(--jaune);
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+    }
+    .fiche-titre svg { color: var(--rouge); flex-shrink: 0; }
+
+    /* TABLEAU DÉLAIS */
+    .delais-table { width: 100%; border-collapse: collapse; font-size: .82rem; }
+    .delais-table tr { border-bottom: 1px solid var(--border); }
+    .delais-table tr:last-child { border-bottom: none; }
+    .delais-table td { padding: .5rem .4rem; vertical-align: top; line-height: 1.4; }
+    .delais-table td:first-child { font-weight: 700; color: var(--rouge); white-space: nowrap; padding-right: .75rem; font-size: .95rem; width: 60px; }
+    .delais-table td:last-child { color: var(--texte-muted); }
+    .delais-table td strong { color: var(--texte); }
+
+    /* BARÈME IPP */
+    .ipp-block { display: flex; flex-direction: column; gap: .5rem; }
+    .ipp-row {
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+      padding: .55rem .7rem;
+      border: 1px solid var(--border);
+      background: #FAFAF8;
+    }
+    .ipp-pct {
+      font-family: 'Anton', sans-serif;
+      font-size: 1.1rem;
+      color: var(--rouge);
+      min-width: 55px;
+      white-space: nowrap;
+    }
+    .ipp-arrow { color: var(--texte-muted); font-size: .8rem; }
+    .ipp-result { font-size: .82rem; color: var(--texte); line-height: 1.4; }
+    .ipp-result strong { color: var(--texte); }
+    .ipp-note { font-size: .75rem; color: var(--texte-muted); padding: .5rem .7rem; background: #FFF8D6; border-left: 3px solid var(--jaune); line-height: 1.5; }
+
+    /* INVALIDITÉ */
+    .inv-block { display: flex; flex-direction: column; gap: .5rem; }
+    .inv-cat {
+      border: 1px solid var(--border);
+      overflow: hidden;
+    }
+    .inv-cat-header {
+      background: var(--rouge);
+      color: #fff;
+      font-family: 'Anton', sans-serif;
+      font-size: .85rem;
+      letter-spacing: .04em;
+      padding: .4rem .75rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .inv-cat-header .pct { background: rgba(255,255,255,.2); padding: .1rem .4rem; font-size: .75rem; }
+    .inv-cat-body { padding: .6rem .75rem; font-size: .82rem; color: var(--texte-muted); line-height: 1.55; background: #FAFAF8; }
+    .inv-cat-body strong { color: var(--texte); }
+
+    /* RÉFLEXES */
+    .reflexes-list { display: flex; flex-direction: column; gap: .4rem; }
+    .reflexe {
+      display: flex;
+      gap: .6rem;
+      align-items: flex-start;
+      padding: .5rem .6rem;
+      background: #FAFAF8;
+      border: 1px solid var(--border);
+      font-size: .82rem;
+      line-height: 1.5;
+    }
+    .reflexe-num {
+      background: var(--rouge);
+      color: #fff;
+      font-family: 'Anton', sans-serif;
+      font-size: .75rem;
+      width: 20px;
+      height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .reflexe-text { color: var(--texte-muted); }
+    .reflexe-text strong { color: var(--texte); }
+
+    footer { border-top: 1px solid var(--border); background: #EEECEA; padding: 1.1rem 1.5rem; text-align: center; font-size: .73rem; color: var(--texte-muted); }
+    footer strong { color: var(--rouge); }
+
+    @media print {
+      header, .print-bar, footer { display: none !important; }
+      .stripe { display: none; }
+      body { background: white; }
+      .print-header { display: block !important; margin-bottom: 1rem; }
+      main { padding: 0; }
+      .fiches-grid { grid-template-columns: repeat(3, 1fr); gap: .75rem; }
+      .fiche { box-shadow: none; border: 1.5px solid #CCC; break-inside: avoid; }
+      @page { margin: 1.2cm; }
+    }
+    .print-header { display: none; font-family: 'Anton', sans-serif; }
+    .print-header h2 { font-size: 1.2rem; border-bottom: 3px solid #E2001A; padding-bottom: .4rem; margin-bottom: .75rem; }
+
+    @media (max-width: 520px) {
+      header { padding: .85rem 1rem; gap: .75rem; }
+      .logo-wrap img { height: 44px; }
+      main { padding: 1.5rem 1rem; }
+    }
+  </style>
+</head>
+<body>
+<script>if(sessionStorage.getItem('cgt_auth')!=='ok'){location.replace('/login.html?from='+encodeURIComponent(location.pathname));}</script>
+
+<header>
+  <div class="logo-wrap"><img src="/assets/logo-cgt-occitanie.jpg" alt="CGT Comité Régional Occitanie"></div>
+  <div class="header-divider"></div>
+  <div class="header-title">
+    <h1>Fiches mémo — AT/MP &amp; Prévoyance</h1>
+    <span>À projeter en salle · À conserver après la formation</span>
+  </div>
+  <div class="header-back"><a href="/">← Accueil</a></div>
+</header>
+<div class="stripe"></div>
+
+<main>
+  <div class="print-header">
+    <h2>Fiches mémo — AT/MP &amp; Prévoyance · CGT Occitanie</h2>
+  </div>
+
+  <div class="print-bar">
+    <button class="btn-print" onclick="window.print()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+      Imprimer les 4 fiches
+    </button>
+  </div>
+
+  <div class="fiches-grid">
+
+    <!-- FICHE 1 : DÉLAIS AT/MP -->
+    <div class="fiche">
+      <div class="fiche-titre">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        Délais AT/MP à retenir
+      </div>
+      <table class="delais-table">
+        <tr>
+          <td>24 h</td>
+          <td>Le <strong>salarié informe l'employeur</strong> de l'accident (par écrit de préférence)</td>
+        </tr>
+        <tr>
+          <td>48 h</td>
+          <td>L'<strong>employeur déclare l'AT à la CPAM</strong> (DAT) — hors dimanches et jours fériés</td>
+        </tr>
+        <tr>
+          <td>10 j</td>
+          <td><strong>Phase contradictoire</strong> : consulter le dossier CPAM et faire des observations</td>
+        </tr>
+        <tr>
+          <td>30 j</td>
+          <td>Délai de la CPAM pour statuer (cas simple) — passé ce délai, <strong>silence = acceptation</strong></td>
+        </tr>
+        <tr>
+          <td>90 j</td>
+          <td>Délai max si réserves ou enquête de la CPAM (questionnaire, investigation)</td>
+        </tr>
+        <tr>
+          <td>2 ans</td>
+          <td>Délai pour que le salarié déclare lui-même l'AT si l'employeur a refusé · Prescription générale AT/MP · Faute inexcusable</td>
+        </tr>
+        <tr>
+          <td>2 ½ ans</td>
+          <td>Délai de révision du taux d'IPP après fixation ou dernière révision</td>
+        </tr>
+      </table>
+      <div class="ipp-note">Réf. R.441-2 (salarié) · R.441-3 (employeur) · R.441-10 (silence) · L.452-1 (FIE)</div>
+    </div>
+
+    <!-- FICHE 2 : BAREME IPP -->
+    <div class="fiche">
+      <div class="fiche-titre">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg>
+        Barème IPP — après consolidation
+      </div>
+      <div class="ipp-block">
+        <div class="ipp-row">
+          <span class="ipp-pct">&lt; 10 %</span>
+          <span class="ipp-arrow">→</span>
+          <span class="ipp-result"><strong>Capital forfaitaire</strong> versé en une seule fois. Non révisable en cas d'aggravation.</span>
+        </div>
+        <div class="ipp-row">
+          <span class="ipp-pct">≥ 10 %</span>
+          <span class="ipp-arrow">→</span>
+          <span class="ipp-result"><strong>Rente viagère</strong> trimestrielle. Révisable. Majorée en cas de faute inexcusable.</span>
+        </div>
+      </div>
+      <div class="ipp-note">
+        <strong>Calcul de la rente :</strong> Salaire annuel de référence × taux utile.<br>
+        Taux utile = taux IPP réduit de moitié pour la tranche ≤ 50 %, majoré de moitié pour la tranche &gt; 50 %.<br>
+        Le taux est fixé par le médecin-conseil selon le barème indicatif d'invalidité.
+      </div>
+      <div class="ipp-note">
+        <strong>Faute inexcusable de l'employeur :</strong> majoration du capital ou de la rente + réparation des préjudices personnels (L.452-3). Prescription : <strong>2 ans</strong>.
+      </div>
+    </div>
+
+    <!-- FICHE 3 : INVALIDITÉ SS -->
+    <div class="fiche">
+      <div class="fiche-titre">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+        Invalidité Sécurité Sociale
+      </div>
+      <div class="inv-block">
+        <div class="inv-cat">
+          <div class="inv-cat-header">
+            Catégorie 1 — Réduction de capacité
+            <span class="pct">30 % du SAM</span>
+          </div>
+          <div class="inv-cat-body">
+            Salarié pouvant encore exercer une activité réduite. Pension = <strong>30 % du salaire annuel moyen</strong>. Revenus cumulés plafonné à l'ancien salaire.
+          </div>
+        </div>
+        <div class="inv-cat">
+          <div class="inv-cat-header">
+            Catégorie 2 — Incapacité totale
+            <span class="pct">50 % du SAM</span>
+          </div>
+          <div class="inv-cat-body">
+            Salarié incapable d'exercer toute profession. Pension = <strong>50 % du salaire annuel moyen</strong>. La plus fréquente — ouvre droit aux garanties de prévoyance complémentaire.
+          </div>
+        </div>
+        <div class="inv-cat">
+          <div class="inv-cat-header">
+            Catégorie 3 — Tierce personne
+            <span class="pct">50 % + MTP</span>
+          </div>
+          <div class="inv-cat-body">
+            Cat. 2 + nécessité d'assistance d'une tierce personne pour les actes ordinaires. <strong>Majoration pour tierce personne (MTP)</strong> s'ajoute à la pension.
+          </div>
+        </div>
+        <div class="ipp-note">
+          À 62 ans (ou âge légal), la pension d'invalidité se transforme automatiquement en <strong>pension de retraite au même montant</strong>.
+        </div>
+      </div>
+    </div>
+
+    <!-- FICHE 4 : RÉFLEXES -->
+    <div class="fiche">
+      <div class="fiche-titre">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        Les 8 réflexes d'un·e militant·e
+      </div>
+      <div class="reflexes-list">
+        <div class="reflexe"><span class="reflexe-num">1</span><span class="reflexe-text"><strong>Signaler l'accident à l'employeur</strong> dans les 24 h (écrit + copie conservée)</span></div>
+        <div class="reflexe"><span class="reflexe-num">2</span><span class="reflexe-text"><strong>Consulter un médecin</strong> et demander un CMI détaillant toutes les lésions</span></div>
+        <div class="reflexe"><span class="reflexe-num">3</span><span class="reflexe-text"><strong>Récupérer la feuille d'accident</strong> pour les soins à 100 % sans avance</span></div>
+        <div class="reflexe"><span class="reflexe-num">4</span><span class="reflexe-text"><strong>Surveiller les réserves</strong> de l'employeur et utiliser la phase contradictoire (10 j)</span></div>
+        <div class="reflexe"><span class="reflexe-num">5</span><span class="reflexe-text"><strong>Déclarer soi-même</strong> si l'employeur refuse (délai 2 ans)</span></div>
+        <div class="reflexe"><span class="reflexe-num">6</span><span class="reflexe-text"><strong>Contester le taux d'IPP</strong> s'il paraît sous-évalué (commission médicale)</span></div>
+        <div class="reflexe"><span class="reflexe-num">7</span><span class="reflexe-text"><strong>Envisager la faute inexcusable</strong> si l'employeur connaissait le danger (agir dans les 2 ans)</span></div>
+        <div class="reflexe"><span class="reflexe-num">8</span><span class="reflexe-text"><strong>Alerter le CSE et l'UD CGT</strong> — ne jamais laisser un·e collègue seul·e</span></div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<footer>
+  <strong>CGT</strong> Comité Régional Occitanie — Formation syndicale secteur privé
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Modèles de courriers — CGT Occitanie</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%23E2001A'/%3E%3Ctext x='16' y='23' text-anchor='middle' font-family='sans-serif' font-weight='bold' font-size='16' fill='%23FFD200'%3ECGT%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --rouge: #E2001A; --rouge-dark: #C40017;
+      --jaune: #FFD200;
+      --fond: #F5F4F0; --fond-card: #FFFFFF;
+      --texte: #1A1A1A; --texte-muted: #6B6B6B;
+      --border: #E0DED8;
+    }
+    body { background: var(--fond); color: var(--texte); font-family: 'Archivo', sans-serif; min-height: 100vh; display: flex; flex-direction: column; }
+
+    header { background: var(--rouge); padding: 1rem 2rem; display: flex; align-items: center; gap: 1.25rem; box-shadow: 0 2px 8px rgba(0,0,0,.18); }
+    .logo-wrap { flex-shrink: 0; height: 56px; display: flex; align-items: center; }
+    .logo-wrap img { height: 56px; width: auto; background: white; padding: 3px 5px; }
+    .header-divider { width: 2px; height: 42px; background: rgba(255,255,255,.3); flex-shrink: 0; }
+    .header-title { flex: 1; }
+    .header-title h1 { font-family: 'Anton', sans-serif; font-size: 1.1rem; letter-spacing: .04em; color: #fff; line-height: 1.2; }
+    .header-title span { font-size: .75rem; color: rgba(255,255,255,.75); }
+    .header-back { margin-left: auto; }
+    .header-back a { font-size: .75rem; color: rgba(255,255,255,.8); text-decoration: none; border: 1px solid rgba(255,255,255,.3); padding: .3rem .7rem; transition: background .15s; }
+    .header-back a:hover { background: rgba(255,255,255,.1); color: #fff; }
+    .stripe { height: 5px; background: var(--jaune); }
+
+    main { flex: 1; max-width: 860px; width: 100%; margin: 0 auto; padding: 2rem 1.5rem 3rem; }
+
+    .page-intro { background: var(--fond-card); border: 1px solid #E8E6E0; border-left: 4px solid var(--rouge); padding: 1rem 1.25rem; margin-bottom: 2rem; font-size: .875rem; color: var(--texte-muted); line-height: 1.6; }
+
+    /* COURRIER CARD */
+    .courrier { background: var(--fond-card); border: 1px solid #E8E6E0; margin-bottom: 1.75rem; }
+
+    .courrier-header { padding: 1rem 1.25rem .75rem; border-bottom: 1px solid var(--border); display: flex; align-items: flex-start; gap: .75rem; }
+    .courrier-num { background: var(--rouge); color: #fff; font-family: 'Anton', sans-serif; font-size: .85rem; padding: .25rem .6rem; flex-shrink: 0; line-height: 1; margin-top: 2px; }
+    .courrier-meta { flex: 1; }
+    .courrier-titre { font-family: 'Anton', sans-serif; font-size: 1.05rem; color: var(--texte); letter-spacing: .02em; margin-bottom: .2rem; }
+    .courrier-desc { font-size: .78rem; color: var(--texte-muted); }
+    .courrier-actions { display: flex; gap: .5rem; margin-left: auto; }
+    .btn-copier, .btn-imprimer-1 {
+      font-size: .7rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase;
+      padding: .35rem .7rem; border: none; cursor: pointer; display: flex; align-items: center; gap: .3rem;
+      transition: background .15s;
+    }
+    .btn-copier { background: #F0EEE8; color: var(--texte); border: 1px solid var(--border); }
+    .btn-copier:hover { background: var(--border); }
+    .btn-copier.copied { background: #E8F5E8; color: #2D7A2D; border-color: #C5E5C5; }
+    .btn-imprimer-1 { background: var(--rouge); color: #fff; }
+    .btn-imprimer-1:hover { background: var(--rouge-dark); }
+
+    /* LETTRE */
+    .lettre {
+      padding: 1.5rem 1.75rem;
+      font-family: Georgia, serif;
+      font-size: .88rem;
+      line-height: 1.85;
+      color: #1A1A1A;
+      white-space: pre-wrap;
+    }
+    .lettre mark {
+      background: #FFD200;
+      color: #1A1A1A;
+      padding: 0 2px;
+      font-style: normal;
+    }
+
+    /* AVERTISSEMENT */
+    .avertissement { padding: .75rem 1.25rem; background: #FFF8D6; border-top: 1px solid #FFE870; font-size: .75rem; color: #7A5F00; line-height: 1.5; }
+    .avertissement strong { color: #5A4000; }
+
+    footer { border-top: 1px solid var(--border); background: #EEECEA; padding: 1.1rem 1.5rem; text-align: center; font-size: .73rem; color: var(--texte-muted); }
+    footer strong { color: var(--rouge); }
+
+    @media print {
+      header, .courrier-actions, .page-intro, footer { display: none !important; }
+      .stripe { display: none; }
+      body { background: white; }
+      main { padding: 0; }
+      .courrier { break-before: page; box-shadow: none; border: 1px solid #CCC; }
+      .courrier:first-child { break-before: auto; }
+      .lettre { font-size: 10.5pt; padding: 1rem; }
+    }
+
+    @media (max-width: 520px) {
+      header { padding: .85rem 1rem; gap: .75rem; }
+      .logo-wrap img { height: 44px; }
+      main { padding: 1.5rem 1rem; }
+      .courrier-actions { flex-direction: column; }
+      .lettre { padding: 1rem; font-size: .83rem; }
+    }
+  </style>
+</head>
+<body>
+<script>if(sessionStorage.getItem('cgt_auth')!=='ok'){location.replace('/login.html?from='+encodeURIComponent(location.pathname));}</script>
+
+<header>
+  <div class="logo-wrap"><img src="/assets/logo-cgt-occitanie.jpg" alt="CGT Comité Régional Occitanie"></div>
+  <div class="header-divider"></div>
+  <div class="header-title">
+    <h1>Modèles de courriers AT/MP</h1>
+    <span>Lettres types à adapter selon la situation</span>
+  </div>
+  <div class="header-back"><a href="/">← Accueil</a></div>
+</header>
+<div class="stripe"></div>
+
+<main>
+  <div class="page-intro">
+    Les zones en <mark style="background:#FFD200;color:#1A1A1A;padding:0 3px;">surbrillance jaune</mark> sont à compléter avant envoi.
+    Envoyez toujours vos courriers en <strong>recommandé avec accusé de réception</strong> et conservez une copie datée.
+    Ces modèles sont indicatifs — en cas de doute, contactez l'UD CGT.
+  </div>
+
+  <!-- COURRIER 1 -->
+  <div class="courrier" id="c1">
+    <div class="courrier-header">
+      <span class="courrier-num">1</span>
+      <div class="courrier-meta">
+        <div class="courrier-titre">Déclaration d'AT par le salarié (employeur défaillant)</div>
+        <div class="courrier-desc">À envoyer à la CPAM si l'employeur refuse ou omet de déclarer l'accident — délai : 2 ans</div>
+      </div>
+      <div class="courrier-actions">
+        <button class="btn-copier" onclick="copier('lettre1',this)">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          Copier
+        </button>
+        <button class="btn-imprimer-1" onclick="imprimerUn('c1')">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+          Imprimer
+        </button>
+      </div>
+    </div>
+    <div class="lettre" id="lettre1"><mark>[Prénom NOM]</mark>
+<mark>[Adresse complète]</mark>
+<mark>[Code postal, Ville]</mark>
+
+À l'attention du service Risques Professionnels
+CPAM de <mark>[département]</mark>
+<mark>[Adresse CPAM]</mark>
+
+<mark>[Ville]</mark>, le <mark>[date]</mark>
+
+Objet : Déclaration d'accident du travail — salarié se substituant à l'employeur
+Recommandé avec accusé de réception
+
+Madame, Monsieur,
+
+Je soussigné·e <mark>[Prénom NOM]</mark>, salarié·e de la société <mark>[Nom de l'entreprise]</mark>, dont le siège est situé <mark>[adresse employeur]</mark>, vous informe de la survenance d'un accident du travail dans les conditions suivantes :
+
+Date et heure de l'accident : <mark>[JJ/MM/AAAA]</mark> à <mark>[heure]</mark>
+Lieu de l'accident : <mark>[lieu précis : adresse, atelier, chantier...]</mark>
+Circonstances : <mark>[description factuelle des circonstances : ce que vous faisiez, ce qui s'est passé, nature de la lésion]</mark>
+
+L'accident a été signalé à mon employeur le <mark>[date]</mark> par <mark>[courrier / oral en présence de... / mail]</mark>. L'employeur n'ayant pas procédé à la déclaration dans le délai légal de 48 heures, je me substitue à lui conformément à l'article L. 441-2 du Code de la sécurité sociale.
+
+Je vous adresse en pièces jointes :
+— Le certificat médical initial établi par le Dr <mark>[nom du médecin]</mark> le <mark>[date]</mark>
+— <mark>[Tout autre élément utile : témoignage, mail, photo...]</mark>
+
+Je reste à votre disposition pour tout renseignement complémentaire.
+
+Dans l'attente de votre accusé de réception, je vous adresse, Madame, Monsieur, mes sincères salutations.
+
+<mark>[Signature]</mark>
+<mark>[Prénom NOM]</mark></div>
+    <div class="avertissement"><strong>Important :</strong> Ce courrier est à envoyer en recommandé avec AR à votre CPAM. Délai : <strong>2 ans</strong> à compter de l'accident. Conservez l'accusé de réception. Informez également votre CSE et votre UD CGT.</div>
+  </div>
+
+  <!-- COURRIER 2 -->
+  <div class="courrier" id="c2">
+    <div class="courrier-header">
+      <span class="courrier-num">2</span>
+      <div class="courrier-meta">
+        <div class="courrier-titre">Contestation du taux d'IPP</div>
+        <div class="courrier-desc">À envoyer à la CPAM après notification d'un taux qui paraît sous-évalué</div>
+      </div>
+      <div class="courrier-actions">
+        <button class="btn-copier" onclick="copier('lettre2',this)">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          Copier
+        </button>
+        <button class="btn-imprimer-1" onclick="imprimerUn('c2')">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+          Imprimer
+        </button>
+      </div>
+    </div>
+    <div class="lettre" id="lettre2"><mark>[Prénom NOM]</mark>
+N° Sécurité Sociale : <mark>[numéro]</mark>
+<mark>[Adresse complète]</mark>
+
+Service Risques Professionnels — Commission médicale de recours amiable
+CPAM de <mark>[département]</mark>
+<mark>[Adresse CPAM]</mark>
+
+<mark>[Ville]</mark>, le <mark>[date]</mark>
+
+Objet : Contestation du taux d'IPP — Recours amiable
+Recommandé avec accusé de réception
+
+Madame, Monsieur,
+
+J'ai bien reçu votre notification en date du <mark>[date de la notification]</mark> fixant mon taux d'incapacité permanente partielle à <mark>[X %]</mark> suite à l'accident du travail survenu le <mark>[date AT]</mark>.
+
+Je conteste ce taux que j'estime sous-évalué au regard des séquelles permanentes dont je souffre depuis la consolidation de mes lésions, fixée au <mark>[date de consolidation]</mark>.
+
+En effet, <mark>[décrire les séquelles : douleurs persistantes, limitations fonctionnelles, impact sur l'activité professionnelle et la vie quotidienne]</mark>.
+
+Je sollicite par conséquent la saisine de la commission médicale de recours amiable afin qu'il soit procédé à une nouvelle évaluation de mon taux d'IPP.
+
+Je joins à ce courrier :
+— Certificat médical de mon médecin traitant, le Dr <mark>[nom]</mark>, en date du <mark>[date]</mark>
+— <mark>[Tout autre pièce médicale utile]</mark>
+
+Dans l'attente de votre réponse, je vous adresse, Madame, Monsieur, mes sincères salutations.
+
+<mark>[Signature]</mark>
+<mark>[Prénom NOM]</mark></div>
+    <div class="avertissement"><strong>Délai de recours :</strong> variable selon la date de notification — agissez rapidement, les délais sont courts. Consultez votre UD CGT avant d'envoyer ce courrier pour évaluer les chances de succès.</div>
+  </div>
+
+  <!-- COURRIER 3 -->
+  <div class="courrier" id="c3">
+    <div class="courrier-header">
+      <span class="courrier-num">3</span>
+      <div class="courrier-meta">
+        <div class="courrier-titre">Demande de reconnaissance de maladie professionnelle</div>
+        <div class="courrier-desc">À envoyer à la CPAM pour engager la procédure de reconnaissance MP</div>
+      </div>
+      <div class="courrier-actions">
+        <button class="btn-copier" onclick="copier('lettre3',this)">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          Copier
+        </button>
+        <button class="btn-imprimer-1" onclick="imprimerUn('c3')">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+          Imprimer
+        </button>
+      </div>
+    </div>
+    <div class="lettre" id="lettre3"><mark>[Prénom NOM]</mark>
+N° Sécurité Sociale : <mark>[numéro]</mark>
+<mark>[Adresse complète]</mark>
+
+Service Risques Professionnels
+CPAM de <mark>[département]</mark>
+<mark>[Adresse CPAM]</mark>
+
+<mark>[Ville]</mark>, le <mark>[date]</mark>
+
+Objet : Déclaration de maladie professionnelle
+Recommandé avec accusé de réception
+
+Madame, Monsieur,
+
+Je soussigné·e <mark>[Prénom NOM]</mark>, salarié·e de <mark>[Nom de l'entreprise]</mark> depuis le <mark>[date d'embauche]</mark>, occupant le poste de <mark>[intitulé du poste]</mark>, sollicite la reconnaissance de ma pathologie en maladie professionnelle.
+
+Description de la pathologie : <mark>[nom de la maladie / diagnostic médical]</mark>, diagnostiquée le <mark>[date]</mark> par le Dr <mark>[nom]</mark>.
+
+Expositions professionnelles : <mark>[décrire les expositions : gestes répétitifs, postures, agents chimiques, charge mentale, etc. et les durées]</mark>.
+
+Cette pathologie <mark>[correspond au tableau de maladie professionnelle n° [numéro] / ne figure pas dans un tableau mais présente un lien direct et essentiel avec mon activité professionnelle habituelle]</mark>.
+
+Je joins à ce courrier :
+— Le formulaire S6100 de déclaration de maladie professionnelle (cerfa n° 60-3950)
+— Le certificat médical initial établi par le Dr <mark>[nom]</mark>
+— <mark>[Attestations d'exposition professionnelle, certificats d'employeurs, témoignages...]</mark>
+
+Dans l'attente de votre instruction, je vous adresse, Madame, Monsieur, mes sincères salutations.
+
+<mark>[Signature]</mark>
+<mark>[Prénom NOM]</mark></div>
+    <div class="avertissement"><strong>Délai :</strong> 2 ans à compter de la première constatation médicale de la maladie. Joindre obligatoirement le formulaire CERFA S6100 (disponible sur ameli.fr). Pour les pathologies hors tableau, le dossier sera transmis au CRRMP — l'appui de l'UD CGT est vivement conseillé.</div>
+  </div>
+
+  <!-- COURRIER 4 -->
+  <div class="courrier" id="c4">
+    <div class="courrier-header">
+      <span class="courrier-num">4</span>
+      <div class="courrier-meta">
+        <div class="courrier-titre">Mise en demeure de reclassement (inaptitude d'origine professionnelle)</div>
+        <div class="courrier-desc">À envoyer à l'employeur si aucune proposition de reclassement n'est faite après l'avis d'inaptitude</div>
+      </div>
+      <div class="courrier-actions">
+        <button class="btn-copier" onclick="copier('lettre4',this)">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          Copier
+        </button>
+        <button class="btn-imprimer-1" onclick="imprimerUn('c4')">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+          Imprimer
+        </button>
+      </div>
+    </div>
+    <div class="lettre" id="lettre4"><mark>[Prénom NOM]</mark>
+<mark>[Adresse complète]</mark>
+
+<mark>[Nom de l'employeur / DRH]</mark>
+<mark>[Adresse de l'entreprise]</mark>
+
+<mark>[Ville]</mark>, le <mark>[date]</mark>
+
+Objet : Mise en demeure — obligation de reclassement suite à inaptitude d'origine professionnelle
+Recommandé avec accusé de réception
+
+Madame, Monsieur,
+
+Par avis du médecin du travail en date du <mark>[date de l'avis d'inaptitude]</mark>, j'ai été déclaré·e inapte à mon poste de <mark>[intitulé du poste]</mark>, cette inaptitude étant d'origine professionnelle consécutive à l'accident du travail / la maladie professionnelle survenu·e le <mark>[date]</mark>.
+
+Conformément aux articles L. 1226-10 et L. 1226-12 du Code du travail, vous êtes tenu de rechercher un poste de reclassement adapté à mes capacités, en consultant le comité social et économique.
+
+Or, à ce jour, soit <mark>[X semaines]</mark> après l'avis d'inaptitude, vous ne m'avez soumis aucune proposition de reclassement sérieuse et loyale.
+
+Je vous mets donc en demeure, dans un délai d'un mois à compter de la réception du présent courrier :
+— soit de me proposer un poste de reclassement conforme aux préconisations du médecin du travail ;
+— soit, si le reclassement est impossible, de me notifier votre décision motivée et de procéder à mon licenciement dans les formes légales.
+
+Je vous rappelle qu'à défaut de licenciement à l'issue de ce délai d'un mois, vous seriez tenu de reprendre le versement de mon salaire (art. L. 1226-11 C. trav.).
+
+En cas de licenciement pour inaptitude d'origine professionnelle, j'entends bénéficier de l'indemnité spéciale de licenciement (double de l'indemnité légale) et de l'indemnité compensatrice de préavis prévues à l'article L. 1226-14 du Code du travail.
+
+Dans l'attente de votre réponse, je vous adresse, Madame, Monsieur, mes salutations distinguées.
+
+<mark>[Signature]</mark>
+<mark>[Prénom NOM]</mark></div>
+    <div class="avertissement"><strong>Important :</strong> Ce courrier ne doit être envoyé qu'après consultation de votre UD CGT ou d'un conseiller juridique. La procédure d'inaptitude d'origine professionnelle est strictement encadrée — une erreur de forme peut faire perdre des droits.</div>
+  </div>
+
+</main>
+
+<footer>
+  <strong>CGT</strong> Comité Régional Occitanie — Formation syndicale secteur privé
+</footer>
+
+<script>
+function copier(id, btn) {
+  const el = document.getElementById(id);
+  const texte = el.innerText;
+  navigator.clipboard.writeText(texte).then(() => {
+    btn.classList.add('copied');
+    btn.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Copié !`;
+    setTimeout(() => {
+      btn.classList.remove('copied');
+      btn.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copier`;
+    }, 2500);
+  });
+}
+
+function imprimerUn(id) {
+  const el = document.getElementById(id);
+  const w = window.open('', '_blank', 'width=800,height=900');
+  w.document.write(`<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><title>Courrier</title>
+  <style>
+    body{font-family:Georgia,serif;font-size:11pt;line-height:1.8;padding:2.5cm;color:#111;}
+    mark{background:#FFD200;padding:0 2px;}
+    @page{margin:2.5cm;}
+  </style></head><body>${el.innerHTML}<\/body><\/html>`);
+  w.document.close();
+  w.focus();
+  setTimeout(() => { w.print(); }, 300);
+}
+</script>
+
+</body>
+</html>
