@@ -281,6 +281,7 @@
   </style>
 </head>
 <body>
+<script>if(sessionStorage.getItem('cgt_auth')!=='ok'){location.replace('/login.html?from='+encodeURIComponent(location.pathname));}</script>
 
 <header>
   <div class="logo-wrap">
@@ -361,6 +362,33 @@
       <div class="ressource-text">
         <span class="ressource-name">Lexique AT/MP &amp; Prévoyance</span>
         <span class="ressource-desc">50+ définitions, recherche, imprimable</span>
+      </div>
+    </a>
+    <a class="ressource-item" href="/fiches.html">
+      <div class="ressource-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+      </div>
+      <div class="ressource-text">
+        <span class="ressource-name">Fiches mémo</span>
+        <span class="ressource-desc">Délais, barème IPP, invalidité — à imprimer</span>
+      </div>
+    </a>
+    <a class="ressource-item" href="/courriers.html">
+      <div class="ressource-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+      </div>
+      <div class="ressource-text">
+        <span class="ressource-name">Modèles de courriers</span>
+        <span class="ressource-desc">4 lettres types AT/MP à adapter et envoyer</span>
+      </div>
+    </a>
+    <a class="ressource-item" href="/quiz-atmp.html">
+      <div class="ressource-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      </div>
+      <div class="ressource-text">
+        <span class="ressource-name">Quiz AT/MP</span>
+        <span class="ressource-desc">12 questions · évaluation à chaud en salle</span>
       </div>
     </a>
   </div>

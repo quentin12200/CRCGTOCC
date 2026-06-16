@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Quiz AT/MP — CGT Occitanie</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%23E2001A'/%3E%3Ctext x='16' y='23' text-anchor='middle' font-family='sans-serif' font-weight='bold' font-size='16' fill='%23FFD200'%3ECGT%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --rouge: #E2001A; --rouge-dark: #C40017;
+      --jaune: #FFD200;
+      --fond: #141414;
+      --texte: #FBFAF6;
+      --texte-muted: #9A9A9A;
+      --vert: #2ECC71; --vert-bg: #0F3320;
+      --rouge-bg: #3A0008;
+    }
+
+    body {
+      background: var(--fond);
+      color: var(--texte);
+      font-family: 'Archivo', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* BARRE HAUT */
+    .topbar {
+      background: var(--rouge);
+      padding: .75rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+    .topbar-title { font-family: 'Anton', sans-serif; font-size: 1rem; letter-spacing: .05em; color: #fff; }
+    .topbar a { font-size: .72rem; color: rgba(255,255,255,.8); text-decoration: none; border: 1px solid rgba(255,255,255,.3); padding: .25rem .6rem; }
+    .stripe { height: 5px; background: var(--jaune); }
+
+    /* PROGRESS */
+    .progress-bar-wrap { background: #1E1E1E; padding: .6rem 1.5rem; display: flex; align-items: center; gap: 1rem; }
+    .progress-track { flex: 1; height: 6px; background: #2E2E2E; }
+    .progress-fill { height: 100%; background: var(--rouge); transition: width .3s; }
+    .progress-label { font-size: .75rem; color: var(--texte-muted); white-space: nowrap; }
+
+    /* SCÈNE QUIZ */
+    .scene {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1.25rem;
+    }
+
+    /* INTRO */
+    #intro { text-align: center; max-width: 520px; }
+    #intro .big-badge { background: var(--rouge); color: var(--jaune); font-family: 'Anton', sans-serif; font-size: 2.5rem; padding: 1rem 1.5rem; display: inline-block; letter-spacing: .1em; margin-bottom: 1.5rem; }
+    #intro h1 { font-family: 'Anton', sans-serif; font-size: 1.6rem; letter-spacing: .04em; margin-bottom: .75rem; }
+    #intro p { font-size: .9rem; color: var(--texte-muted); line-height: 1.6; margin-bottom: 1.5rem; }
+    #intro .meta { display: flex; gap: 1rem; justify-content: center; margin-bottom: 2rem; }
+    #intro .meta span { font-size: .75rem; color: var(--texte-muted); border: 1px solid #2E2E2E; padding: .3rem .75rem; }
+
+    /* QUESTION */
+    #question-wrap { width: 100%; max-width: 680px; }
+    .q-num { font-size: .7rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--texte-muted); margin-bottom: .6rem; }
+    .q-text {
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(1.2rem, 3vw, 1.7rem);
+      line-height: 1.3;
+      letter-spacing: .02em;
+      margin-bottom: 1.5rem;
+      color: var(--texte);
+    }
+    .choices { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; }
+    .choice {
+      background: #1E1E1E;
+      border: 2px solid #2E2E2E;
+      color: var(--texte);
+      font-family: 'Archivo', sans-serif;
+      font-size: clamp(.85rem, 2.2vw, 1rem);
+      padding: 1rem 1.1rem;
+      text-align: left;
+      cursor: pointer;
+      line-height: 1.45;
+      transition: border-color .12s, background .12s;
+      display: flex;
+      gap: .6rem;
+      align-items: flex-start;
+    }
+    .choice:hover:not(:disabled) { border-color: var(--rouge); background: #2A1010; }
+    .choice.correct { border-color: var(--vert); background: var(--vert-bg); color: #fff; }
+    .choice.wrong { border-color: var(--rouge); background: var(--rouge-bg); color: #fff; }
+    .choice.reveal-correct { border-color: var(--vert); background: var(--vert-bg); }
+    .choice:disabled { cursor: default; }
+    .choice-letter { font-family: 'Anton', sans-serif; font-size: .9rem; color: var(--texte-muted); flex-shrink: 0; margin-top: 1px; }
+    .choice.correct .choice-letter, .choice.reveal-correct .choice-letter { color: var(--vert); }
+    .choice.wrong .choice-letter { color: var(--rouge); }
+
+    .explication {
+      margin-top: 1.25rem;
+      padding: .85rem 1rem;
+      font-size: .875rem;
+      line-height: 1.6;
+      border-left: 4px solid;
+      display: none;
+    }
+    .explication.show { display: block; }
+    .explication.ok { border-color: var(--vert); background: var(--vert-bg); color: #A8F0C4; }
+    .explication.ko { border-color: var(--rouge); background: var(--rouge-bg); color: #FF9FAB; }
+    .explication strong { color: #fff; }
+
+    .btn-suivant {
+      margin-top: 1.5rem;
+      background: var(--rouge);
+      color: #fff;
+      border: none;
+      padding: .85rem 2rem;
+      font-family: 'Archivo', sans-serif;
+      font-size: .9rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      cursor: pointer;
+      display: none;
+      transition: background .15s;
+    }
+    .btn-suivant:hover { background: var(--rouge-dark); }
+    .btn-suivant.show { display: inline-block; }
+
+    /* RÉSULTATS */
+    #resultats { text-align: center; max-width: 520px; }
+    .score-circle {
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+      border: 6px solid var(--rouge);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.5rem;
+    }
+    .score-circle .score-num { font-family: 'Anton', sans-serif; font-size: 2.2rem; color: var(--texte); line-height: 1; }
+    .score-circle .score-total { font-size: .75rem; color: var(--texte-muted); }
+    .score-msg { font-family: 'Anton', sans-serif; font-size: 1.4rem; margin-bottom: .5rem; }
+    .score-sub { font-size: .875rem; color: var(--texte-muted); margin-bottom: 2rem; line-height: 1.6; }
+    .recap { text-align: left; background: #1E1E1E; border: 1px solid #2E2E2E; padding: 1rem 1.25rem; margin-bottom: 1.5rem; font-size: .82rem; line-height: 1.7; }
+    .recap-item { display: flex; gap: .5rem; margin-bottom: .3rem; }
+    .recap-item .ok { color: var(--vert); font-weight: 700; }
+    .recap-item .ko { color: #FF6B7A; font-weight: 700; }
+    .btn-refaire {
+      background: var(--rouge);
+      color: #fff;
+      border: none;
+      padding: .85rem 2rem;
+      font-family: 'Archivo', sans-serif;
+      font-size: .9rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      cursor: pointer;
+      margin-right: .75rem;
+      transition: background .15s;
+    }
+    .btn-refaire:hover { background: var(--rouge-dark); }
+    .btn-accueil { font-size: .8rem; color: var(--texte-muted); text-decoration: none; border: 1px solid #2E2E2E; padding: .75rem 1.25rem; }
+
+    .hidden { display: none !important; }
+
+    @media (max-width: 560px) {
+      .choices { grid-template-columns: 1fr; }
+      .topbar { padding: .65rem 1rem; }
+    }
+
+    @media print { body { display: none; } }
+  </style>
+</head>
+<body>
+<script>if(sessionStorage.getItem('cgt_auth')!=='ok'){location.replace('/login.html?from='+encodeURIComponent(location.pathname));}</script>
+
+<div class="topbar">
+  <span class="topbar-title">Quiz — Accidents du Travail &amp; Maladies Professionnelles</span>
+  <a href="/">← Accueil</a>
+</div>
+<div class="stripe"></div>
+
+<div class="progress-bar-wrap" id="progress-wrap" style="display:none">
+  <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+  <span class="progress-label" id="progress-label">1 / 12</span>
+</div>
+
+<div class="scene">
+
+  <!-- INTRO -->
+  <div id="intro">
+    <div class="big-badge">CGT</div>
+    <h1>Quiz AT/MP<br>Évaluation des acquis</h1>
+    <p>12 questions sur les 2 jours de formation.<br>Faites-le individuellement ou collectivement en salle.</p>
+    <div class="meta">
+      <span>⏱ ~8 minutes</span>
+      <span>12 questions</span>
+      <span>Correction immédiate</span>
+    </div>
+    <button class="btn-suivant show" onclick="demarrer()" style="display:inline-block">Commencer le quiz</button>
+  </div>
+
+  <!-- QUESTION -->
+  <div id="question-wrap" class="hidden">
+    <div class="q-num" id="q-num">Question 1 / 12</div>
+    <div class="q-text" id="q-text"></div>
+    <div class="choices" id="choices"></div>
+    <div class="explication" id="explication"></div>
+    <button class="btn-suivant" id="btn-suivant" onclick="suivant()">Question suivante →</button>
+  </div>
+
+  <!-- RÉSULTATS -->
+  <div id="resultats" class="hidden">
+    <div class="score-circle">
+      <span class="score-num" id="score-num">0</span>
+      <span class="score-total" id="score-total">/ 12</span>
+    </div>
+    <div class="score-msg" id="score-msg"></div>
+    <div class="score-sub" id="score-sub"></div>
+    <div class="recap" id="recap"></div>
+    <button class="btn-refaire" onclick="refaire()">Refaire le quiz</button>
+    <a class="btn-accueil" href="/">Retour à l'accueil</a>
+  </div>
+
+</div>
+
+<script>
+const QUESTIONS = [
+  {
+    q: "Quel délai a l'employeur pour déclarer un accident du travail à la CPAM ?",
+    choices: ["24 heures", "48 heures (hors dimanches et jours fériés)", "5 jours ouvrés", "8 jours calendaires"],
+    correct: 1,
+    explication: "<strong>48 heures</strong>, hors dimanches et jours fériés (art. R.441-3 CSS). Si l'employeur ne déclare pas, le salarié peut le faire lui-même dans un délai de <strong>2 ans</strong>."
+  },
+  {
+    q: "En cas d'accident du travail, à partir de quel jour les indemnités journalières sont-elles majorées à 80 % du salaire ?",
+    choices: ["Dès le 1er jour", "À partir du 8e jour", "À partir du 29e jour", "À partir du 91e jour"],
+    correct: 2,
+    explication: "Les IJ AT/MP sont de <strong>60 %</strong> du 1er au 28e jour, puis passent à <strong>80 %</strong> à partir du 29e jour. Il n'y a <strong>pas de délai de carence</strong> (contrairement à la maladie ordinaire)."
+  },
+  {
+    q: "Qu'est-ce que la présomption d'imputabilité en matière d'accident du travail ?",
+    choices: ["L'employeur est présumé responsable de l'accident", "Le salarié doit prouver que l'accident est lié au travail", "Tout accident survenu au temps et au lieu de travail est présumé professionnel", "La CPAM présume toujours l'accident frauduleux"],
+    correct: 2,
+    explication: "La <strong>présomption d'imputabilité</strong> signifie qu'un accident survenu au temps et au lieu de travail est automatiquement présumé professionnel. C'est à l'employeur de prouver une cause totalement étrangère au travail."
+  },
+  {
+    q: "Pour une maladie professionnelle, la voie CRRMP est utilisée lorsque :",
+    choices: ["La maladie est inscrite dans un tableau et toutes les conditions sont remplies", "La maladie ne figure pas dans un tableau, ou les conditions du tableau ne sont pas toutes réunies", "Le salarié a moins de 2 ans d'ancienneté", "La CPAM a refusé la reconnaissance"],
+    correct: 1,
+    explication: "Le <strong>CRRMP</strong> (Comité Régional de Reconnaissance des MP) est saisi dans deux cas : maladie hors tableau, ou maladie en tableau mais avec des conditions non toutes remplies. Il doit établir un <strong>lien direct et essentiel</strong> avec l'activité professionnelle."
+  },
+  {
+    q: "Quel est le seuil d'IPP à partir duquel une rente viagère est versée (au lieu d'un capital) ?",
+    choices: ["5 %", "10 %", "15 %", "25 %"],
+    correct: 1,
+    explication: "Le seuil est <strong>10 %</strong>. En dessous : capital forfaitaire versé en une fois. À partir de 10 % : <strong>rente viagère</strong> trimestrielle, calculée sur le salaire annuel de référence et le taux d'IPP."
+  },
+  {
+    q: "Quel est le délai pour engager une action en faute inexcusable de l'employeur ?",
+    choices: ["6 mois après la consolidation", "1 an après l'accident", "2 ans (prescription biennale)", "5 ans"],
+    correct: 2,
+    explication: "La prescription est de <strong>2 ans</strong> (art. L.452-1 CSS). Il faut agir rapidement — le délai peut courir à partir de la date de consolidation ou de la décision définitive de la CPAM. L'appui de l'UD CGT est indispensable."
+  },
+  {
+    q: "Si la CPAM ne prend pas de décision dans le délai légal, que se passe-t-il ?",
+    choices: ["L'accident est automatiquement refusé", "Le dossier est classé sans suite", "Le caractère professionnel de l'accident est reconnu (silence vaut acceptation)", "La CPAM dispose d'un délai supplémentaire de 30 jours"],
+    correct: 2,
+    explication: "Le <strong>silence de la CPAM vaut acceptation</strong> (art. R.441-10 CSS). Le délai est de 30 jours dans les cas simples, porté à 90 jours en cas de réserves ou d'enquête. C'est un atout important pour la victime — mais il ne faut pas relancer inutilement la CPAM."
+  },
+  {
+    q: "Quelle catégorie d'invalidité correspond à un salarié incapable d'exercer toute profession ?",
+    choices: ["Catégorie 1", "Catégorie 2", "Catégorie 3", "Invalidité totale hors catégorie"],
+    correct: 1,
+    explication: "La <strong>catégorie 2</strong> correspond à l'incapacité totale à exercer toute profession. Pension = 50 % du salaire annuel moyen. La catégorie 1 autorise une activité réduite (30 % du SAM). La catégorie 3 est la 2 avec nécessité d'une tierce personne."
+  },
+  {
+    q: "Qu'est-ce que la faute inexcusable de l'employeur ouvre comme droits supplémentaires ?",
+    choices: ["Uniquement le doublement des indemnités journalières", "La majoration du capital ou de la rente + réparation des préjudices personnels", "Le remboursement des frais d'avocat", "La mise en cause pénale de l'employeur"],
+    correct: 1,
+    explication: "La <strong>faute inexcusable</strong> ouvre droit à la <strong>majoration du capital ou de la rente</strong> ET à la réparation des préjudices personnels non couverts par la rente : souffrances physiques et morales, préjudice esthétique, d'agrément, perte de promotion (art. L.452-2 et L.452-3 CSS)."
+  },
+  {
+    q: "Que doit faire obligatoirement l'employeur avant de licencier un salarié déclaré inapte d'origine professionnelle ?",
+    choices: ["Obtenir l'accord de l'inspection du travail", "Consulter le CSE et rechercher un poste de reclassement", "Attendre 6 mois après l'avis d'inaptitude", "Saisir le prud'hommes"],
+    correct: 1,
+    explication: "L'employeur doit <strong>consulter le CSE</strong> et effectuer une <strong>recherche sérieuse et loyale de reclassement</strong> (art. L.1226-10 C. trav.). En cas de licenciement, le salarié bénéficie de l'indemnité spéciale de licenciement (double de l'indemnité légale) et de l'indemnité compensatrice de préavis."
+  },
+  {
+    q: "Quel document le salarié doit-il obtenir pour bénéficier de soins à 100 % sans avance de frais après un AT ?",
+    choices: ["L'attestation de salaire", "La feuille d'accident du travail", "Le formulaire CERFA S6100", "L'accord de prise en charge de la CPAM"],
+    correct: 1,
+    explication: "La <strong>feuille d'accident du travail</strong> (remise par l'employeur lors de la DAT) permet au salarié de bénéficier du tiers payant : les soins sont pris en charge à <strong>100 % du tarif Sécu</strong>, sans avance de frais. C'est un document essentiel à réclamer dès le premier jour."
+  },
+  {
+    q: "Le Document Unique d'Évaluation des Risques Professionnels (DUERP) doit être mis à jour :",
+    choices: ["Tous les 5 ans", "Uniquement après un accident grave", "Au minimum une fois par an et après tout accident grave", "À la demande de l'inspection du travail uniquement"],
+    correct: 2,
+    explication: "Le <strong>DUERP</strong> doit être mis à jour <strong>au minimum une fois par an</strong>, ainsi qu'après tout accident grave ou modification importante des conditions de travail (art. R.4121-1 C. trav.). Le CSE doit être consulté lors de chaque mise à jour. C'est un levier essentiel pour la prévention."
+  }
+];
+
+let current = 0;
+let score = 0;
+let answered = [];
+let reponses = [];
+
+function demarrer() {
+  document.getElementById('intro').classList.add('hidden');
+  document.getElementById('progress-wrap').style.display = 'flex';
+  document.getElementById('question-wrap').classList.remove('hidden');
+  afficherQuestion();
+}
+
+function afficherQuestion() {
+  const q = QUESTIONS[current];
+  const total = QUESTIONS.length;
+
+  document.getElementById('q-num').textContent = `Question ${current + 1} / ${total}`;
+  document.getElementById('q-text').textContent = q.q;
+
+  const letters = ['A', 'B', 'C', 'D'];
+  const choicesEl = document.getElementById('choices');
+  choicesEl.innerHTML = q.choices.map((c, i) => `
+    <button class="choice" onclick="repondre(${i})">
+      <span class="choice-letter">${letters[i]}</span>
+      <span>${c}</span>
+    </button>
+  `).join('');
+
+  document.getElementById('explication').className = 'explication';
+  document.getElementById('explication').innerHTML = '';
+  document.getElementById('btn-suivant').className = 'btn-suivant';
+
+  const pct = (current / total) * 100;
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('progress-label').textContent = `${current + 1} / ${total}`;
+}
+
+function repondre(idx) {
+  const q = QUESTIONS[current];
+  const buttons = document.querySelectorAll('.choice');
+  buttons.forEach(b => b.disabled = true);
+
+  const isCorrect = idx === q.correct;
+  if (isCorrect) score++;
+  reponses.push({ q: q.q, correct: isCorrect, correctAnswer: q.choices[q.correct] });
+
+  buttons[idx].classList.add(isCorrect ? 'correct' : 'wrong');
+  if (!isCorrect) buttons[q.correct].classList.add('reveal-correct');
+
+  const expl = document.getElementById('explication');
+  expl.innerHTML = (isCorrect ? '✓ Bonne réponse ! ' : '✗ Incorrect. ') + q.explication;
+  expl.className = `explication show ${isCorrect ? 'ok' : 'ko'}`;
+
+  const btnS = document.getElementById('btn-suivant');
+  btnS.className = 'btn-suivant show';
+  btnS.textContent = current < QUESTIONS.length - 1 ? 'Question suivante →' : 'Voir les résultats →';
+}
+
+function suivant() {
+  current++;
+  if (current >= QUESTIONS.length) {
+    afficherResultats();
+  } else {
+    afficherQuestion();
+  }
+}
+
+function afficherResultats() {
+  document.getElementById('question-wrap').classList.add('hidden');
+  document.getElementById('progress-fill').style.width = '100%';
+
+  document.getElementById('score-num').textContent = score;
+  document.getElementById('score-total').textContent = '/ ' + QUESTIONS.length;
+
+  const pct = score / QUESTIONS.length;
+  let msg, sub;
+  if (pct >= .85) { msg = 'Excellent !'; sub = 'Vous maîtrisez les fondamentaux AT/MP. Vous êtes prêt·e à accompagner vos collègues.'; }
+  else if (pct >= .6) { msg = 'Bien !'; sub = 'Bonne base. Quelques points méritent d\'être revus — consultez les fiches mémo.'; }
+  else { msg = 'À retravailler.'; sub = 'Prenez le temps de relire le lexique et les fiches mémo. La formation est là pour ça.'; }
+
+  document.getElementById('score-msg').textContent = msg;
+  document.getElementById('score-sub').textContent = sub;
+
+  const recap = reponses.map((r, i) => `
+    <div class="recap-item">
+      <span class="${r.correct ? 'ok' : 'ko'}">${r.correct ? '✓' : '✗'}</span>
+      <span>Q${i+1} : ${r.q.substring(0, 60)}…${r.correct ? '' : ` <em style="color:#FF9FAB">→ ${r.correctAnswer}</em>`}</span>
+    </div>
+  `).join('');
+  document.getElementById('recap').innerHTML = recap;
+
+  document.getElementById('resultats').classList.remove('hidden');
+}
+
+function refaire() {
+  current = 0; score = 0; reponses = [];
+  document.getElementById('resultats').classList.add('hidden');
+  document.getElementById('question-wrap').classList.remove('hidden');
+  afficherQuestion();
+}
+</script>
+
+</body>
+</html>

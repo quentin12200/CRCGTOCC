@@ -97,6 +97,7 @@
   </style>
 </head>
 <body>
+<script>if(sessionStorage.getItem('cgt_auth')!=='ok'){location.replace('/login.html?from='+encodeURIComponent(location.pathname));}</script>
 
 <header>
   <div class="logo-wrap"><img src="/assets/logo-cgt-occitanie.jpg" alt="CGT Comité Régional Occitanie"></div>
