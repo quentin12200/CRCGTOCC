@@ -13,14 +13,15 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --rouge: #E2001A;
-      --jaune: #FFD200;
-      --fond: #141414;
-      --fond-card: #1E1E1E;
-      --fond-card-hover: #252525;
-      --texte: #FBFAF6;
-      --texte-muted: #9A9A9A;
-      --border: #2E2E2E;
+      --rouge:       #E2001A;
+      --rouge-dark:  #C40017;
+      --jaune:       #FFD200;
+      --fond:        #F5F4F0;
+      --fond-card:   #FFFFFF;
+      --texte:       #1A1A1A;
+      --texte-muted: #6B6B6B;
+      --border:      #E0DED8;
+      --border-card: #E8E6E0;
     }
 
     body {
@@ -34,26 +35,35 @@
 
     /* ── HEADER ── */
     header {
-      border-bottom: 3px solid var(--rouge);
-      padding: 0 1.5rem;
+      background: var(--rouge);
+      padding: 1rem 2rem;
       display: flex;
       align-items: center;
-      gap: 1rem;
-      background: #0D0D0D;
-      position: sticky;
-      top: 0;
-      z-index: 10;
+      gap: 1.25rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.18);
     }
 
-    .logo-badge {
-      background: var(--rouge);
-      color: var(--jaune);
-      font-family: 'Anton', sans-serif;
-      font-size: 1.4rem;
-      letter-spacing: 0.05em;
-      padding: 0.55rem 0.9rem;
+    .logo-wrap {
       flex-shrink: 0;
-      line-height: 1;
+      height: 64px;
+      display: flex;
+      align-items: center;
+    }
+
+    .logo-wrap img {
+      height: 64px;
+      width: auto;
+      display: block;
+      /* logo sur fond rouge : on force un fond blanc si besoin */
+      background: white;
+      padding: 4px 6px;
+    }
+
+    .header-divider {
+      width: 2px;
+      height: 48px;
+      background: rgba(255,255,255,0.3);
+      flex-shrink: 0;
     }
 
     .header-title {
@@ -62,46 +72,53 @@
 
     .header-title h1 {
       font-family: 'Anton', sans-serif;
-      font-size: 1.1rem;
+      font-size: 1.2rem;
       letter-spacing: 0.04em;
-      color: var(--texte);
+      color: #FFFFFF;
       line-height: 1.2;
     }
 
     .header-title span {
-      font-size: 0.75rem;
-      color: var(--texte-muted);
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.75);
       font-weight: 400;
+      letter-spacing: 0.02em;
     }
 
     .access-badge {
-      font-size: 0.7rem;
-      color: var(--texte-muted);
-      border: 1px solid var(--border);
-      padding: 0.3rem 0.6rem;
+      font-size: 0.68rem;
+      color: rgba(255,255,255,0.6);
+      border: 1px solid rgba(255,255,255,0.3);
+      padding: 0.3rem 0.65rem;
       white-space: nowrap;
-      letter-spacing: 0.03em;
+      letter-spacing: 0.04em;
+    }
+
+    /* ── BANDE JAUNE ── */
+    .stripe {
+      height: 5px;
+      background: var(--jaune);
     }
 
     /* ── MAIN ── */
     main {
       flex: 1;
-      max-width: 960px;
+      max-width: 980px;
       width: 100%;
       margin: 0 auto;
-      padding: 3rem 1.5rem 2rem;
+      padding: 2.5rem 1.5rem 2rem;
     }
 
     .section-label {
-      font-size: 0.7rem;
-      font-weight: 600;
-      letter-spacing: 0.12em;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
       text-transform: uppercase;
-      color: var(--jaune);
-      margin-bottom: 1.5rem;
+      color: var(--rouge);
+      margin-bottom: 1.25rem;
       display: flex;
       align-items: center;
-      gap: 0.6rem;
+      gap: 0.7rem;
     }
 
     .section-label::after {
@@ -114,101 +131,93 @@
     /* ── CARDS MODULES ── */
     .modules-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
       gap: 1.25rem;
-      margin-bottom: 3rem;
+      margin-bottom: 2.5rem;
     }
 
     .card {
       background: var(--fond-card);
-      border: 1px solid var(--border);
-      border-top: 3px solid var(--rouge);
+      border: 1px solid var(--border-card);
+      border-top: 4px solid var(--rouge);
       padding: 1.5rem;
       display: flex;
       flex-direction: column;
-      gap: 0.75rem;
-      transition: background 0.15s, border-color 0.15s;
+      gap: 0.8rem;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+      transition: box-shadow 0.15s, border-color 0.15s;
     }
 
     .card:hover {
-      background: var(--fond-card-hover);
-      border-color: #3E3E3E;
-      border-top-color: var(--rouge);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.1);
     }
 
     .card-meta {
       display: flex;
       align-items: center;
       gap: 0.5rem;
+      flex-wrap: wrap;
     }
 
     .tag-duree {
       background: var(--jaune);
-      color: #141414;
+      color: #1A1A1A;
       font-size: 0.65rem;
       font-weight: 700;
       letter-spacing: 0.08em;
       text-transform: uppercase;
-      padding: 0.2rem 0.5rem;
+      padding: 0.2rem 0.55rem;
     }
 
     .tag-type {
       font-size: 0.65rem;
       color: var(--texte-muted);
-      letter-spacing: 0.06em;
+      letter-spacing: 0.05em;
       text-transform: uppercase;
     }
 
     .card h2 {
       font-family: 'Anton', sans-serif;
-      font-size: 1.25rem;
-      letter-spacing: 0.03em;
+      font-size: 1.2rem;
+      letter-spacing: 0.02em;
       color: var(--texte);
-      line-height: 1.25;
+      line-height: 1.3;
     }
 
     .card p {
-      font-size: 0.88rem;
+      font-size: 0.875rem;
       color: var(--texte-muted);
-      line-height: 1.6;
+      line-height: 1.65;
       flex: 1;
     }
 
     .btn-ouvrir {
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
       background: var(--rouge);
-      color: var(--texte);
+      color: #FFFFFF;
       font-family: 'Archivo', sans-serif;
-      font-size: 0.82rem;
+      font-size: 0.8rem;
       font-weight: 600;
-      letter-spacing: 0.06em;
+      letter-spacing: 0.07em;
       text-transform: uppercase;
       text-decoration: none;
-      padding: 0.65rem 1.2rem;
+      padding: 0.65rem 1.1rem;
       align-self: flex-start;
-      transition: background 0.15s, transform 0.1s;
+      transition: background 0.15s;
     }
 
-    .btn-ouvrir:hover {
-      background: #c40017;
-    }
+    .btn-ouvrir:hover { background: var(--rouge-dark); }
 
-    .btn-ouvrir:active {
-      transform: scale(0.98);
-    }
-
-    .btn-ouvrir svg {
-      vertical-align: middle;
-      margin-left: 0.4rem;
-      margin-top: -2px;
-    }
+    .btn-ouvrir svg { flex-shrink: 0; }
 
     /* ── DOCUMENTS ── */
     .documents-list {
       display: flex;
       flex-direction: column;
-      gap: 0.6rem;
-      margin-bottom: 3rem;
+      gap: 0.5rem;
+      margin-bottom: 2.5rem;
     }
 
     .doc-item {
@@ -216,63 +225,70 @@
       align-items: center;
       gap: 1rem;
       background: var(--fond-card);
-      border: 1px solid var(--border);
-      padding: 0.8rem 1rem;
+      border: 1px solid var(--border-card);
+      padding: 0.85rem 1rem;
       text-decoration: none;
       color: var(--texte);
-      transition: background 0.15s;
+      transition: background 0.12s, box-shadow 0.12s;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
     }
 
     .doc-item:hover {
-      background: var(--fond-card-hover);
+      background: #FAFAF8;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
     }
 
     .doc-icon {
-      width: 32px;
-      height: 32px;
-      background: #1A2A4A;
+      width: 34px;
+      height: 34px;
+      background: #EAF0FA;
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
       font-size: 0.6rem;
       font-weight: 700;
-      color: #6CA0DC;
+      color: #3D6BB5;
       letter-spacing: 0.04em;
+      border: 1px solid #D6E2F5;
     }
 
     .doc-name {
-      font-size: 0.85rem;
+      font-size: 0.875rem;
       font-weight: 500;
       flex: 1;
+      color: var(--texte);
     }
 
     .doc-dl {
-      font-size: 0.72rem;
-      color: var(--texte-muted);
+      font-size: 0.7rem;
+      color: var(--rouge);
+      font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.06em;
+      white-space: nowrap;
     }
 
     /* ── FOOTER ── */
     footer {
       border-top: 1px solid var(--border);
-      padding: 1.25rem 1.5rem;
+      background: #EEECEA;
+      padding: 1.1rem 1.5rem;
       text-align: center;
-      font-size: 0.75rem;
+      font-size: 0.73rem;
       color: var(--texte-muted);
-      letter-spacing: 0.03em;
+      letter-spacing: 0.02em;
     }
 
-    footer strong {
-      color: var(--rouge);
-    }
+    footer strong { color: var(--rouge); }
 
     /* ── RESPONSIVE ── */
-    @media (max-width: 480px) {
-      header { padding: 0 1rem; gap: 0.75rem; }
+    @media (max-width: 520px) {
+      header { padding: 0.85rem 1rem; gap: 0.85rem; }
+      .logo-wrap img { height: 48px; }
+      .logo-wrap { height: 48px; }
       .access-badge { display: none; }
-      main { padding: 2rem 1rem 1.5rem; }
+      main { padding: 1.75rem 1rem 1.5rem; }
       .card { padding: 1.25rem; }
     }
   </style>
@@ -280,13 +296,17 @@
 <body>
 
 <header>
-  <div class="logo-badge">CGT</div>
+  <div class="logo-wrap">
+    <img src="/assets/logo-cgt-occitanie.jpg" alt="CGT Comité Régional Occitanie">
+  </div>
+  <div class="header-divider"></div>
   <div class="header-title">
     <h1>Espace Formation Syndicale</h1>
     <span>Comité Régional Occitanie — Secteur privé</span>
   </div>
   <div class="access-badge">Accès réservé — CGT Occitanie</div>
 </header>
+<div class="stripe"></div>
 
 <main>
 
@@ -299,12 +319,12 @@
         <span class="tag-duree">2 jours</span>
         <span class="tag-type">Présentation diaporama</span>
       </div>
-      <h2>Accidents du Travail & Maladies Professionnelles</h2>
+      <h2>Accidents du Travail &amp; Maladies Professionnelles</h2>
       <p>Régime AT/MP, reconnaissance, réparation, droits des accidentés et malades. Module complet pour militants et élus du CSE.</p>
       <a class="btn-ouvrir" href="/presentations/Presentation_AT-MP_CGT.html" target="_blank">
         Ouvrir
-        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M2 10L10 2M10 2H4M10 2V8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <svg width="11" height="11" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M2 10L10 2M10 2H4M10 2V8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
       </a>
     </div>
@@ -314,12 +334,12 @@
         <span class="tag-duree">Demi-journée</span>
         <span class="tag-type">Présentation diaporama</span>
       </div>
-      <h2>Prévoyance & Invalidité</h2>
+      <h2>Prévoyance &amp; Invalidité</h2>
       <p>Garanties de prévoyance collective, régimes d'invalidité, incapacité de travail et complémentaires santé en entreprise.</p>
       <a class="btn-ouvrir" href="/presentations/Prevoyance_Invalidite_CGT_Occitanie.html" target="_blank">
         Ouvrir
-        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M2 10L10 2M10 2H4M10 2V8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <svg width="11" height="11" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M2 10L10 2M10 2H4M10 2V8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
       </a>
     </div>
