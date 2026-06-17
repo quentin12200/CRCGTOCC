@@ -117,7 +117,6 @@
 
     async function lancerQuiz() {
       currentQ = 0;
-      await update(ref(db, `sessions/${sessionId}`), { status: 'question', currentQ: 0 });
       afficherQuestion();
     }
 

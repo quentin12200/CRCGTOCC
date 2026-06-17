@@ -89,6 +89,7 @@
     }
 
     function afficherReveal(correctIndex) {
+      answered = true; // bloque toute nouvelle sélection
       const btns = document.querySelectorAll('.choice-btn');
       btns.forEach((b, i) => {
         b.disabled = true;
@@ -99,10 +100,9 @@
     }
 
     async function choisir(idx) {
-      if (answered) return;
-      answered = true;
+      if (answered) return; // bloqué après révélation seulement
       const btns = document.querySelectorAll('.choice-btn');
-      btns.forEach(b => b.disabled = true);
+      btns.forEach(b => b.classList.remove('selected'));
       btns[idx].classList.add('selected');
       document.getElementById('wait-answer').classList.remove('hidden');
       await set(ref(db, `sessions/${sessionId}/responses/${uid}_${currentQ}`), {
