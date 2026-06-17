@@ -1,840 +1,1011 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="robots" content="noindex, nofollow">
-  <title>AGEFIPH · Handicap &amp; Emploi — CGT Occitanie</title>
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%23E2001A'/%3E%3Ctext x='16' y='23' text-anchor='middle' font-family='sans-serif' font-weight='bold' font-size='16' fill='%23FFD200'%3ECGT%3C/text%3E%3C/svg%3E">
-  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root {
-      --rouge: #E2001A; --jaune: #FFD200;
-      --fond: #F5F4F0; --blanc: #FFFFFF;
-      --texte: #1A1A1A; --muted: #666;
-      --vert: #1A7340; --bleu: #003189;
-    }
-    body {
-      background: var(--fond);
-      color: var(--texte);
-      font-family: 'Archivo', sans-serif;
-      font-size: 1rem;
-      line-height: 1.6;
-    }
-
-    /* HEADER */
-    .site-header {
-      background: var(--rouge);
-      padding: 1rem 2rem;
-      display: flex;
-      align-items: center;
-      gap: 1.25rem;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-    }
-    .site-header img { height: 56px; width: auto; }
-    .site-header-text h1 {
-      font-family: 'Anton', sans-serif;
-      font-size: 1.15rem;
-      letter-spacing: .05em;
-      color: #fff;
-      line-height: 1.2;
-    }
-    .site-header-text p { font-size: .8rem; color: rgba(255,255,255,.75); margin-top: .15rem; }
-    .header-stripe { height: 5px; background: var(--jaune); }
-
-    /* NAV SLIDES */
-    .nav-slides {
-      background: #fff;
-      border-bottom: 2px solid #E8E7E3;
-      padding: .5rem 2rem;
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      flex-wrap: wrap;
-      font-size: .78rem;
-      font-weight: 600;
-      letter-spacing: .05em;
-      text-transform: uppercase;
-    }
-    .nav-slides a {
-      color: var(--muted);
-      text-decoration: none;
-      padding: .3rem .6rem;
-      border-radius: 3px;
-      transition: background .15s, color .15s;
-    }
-    .nav-slides a:hover { background: var(--rouge); color: #fff; }
-
-    /* MAIN */
-    main { max-width: 960px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
-
-    /* PARTIE */
-    .partie {
-      margin-top: 3rem;
-      padding-top: 1.5rem;
-      border-top: 3px solid var(--rouge);
-    }
-    .partie-titre {
-      font-family: 'Anton', sans-serif;
-      font-size: 1.4rem;
-      letter-spacing: .06em;
-      color: var(--rouge);
-      text-transform: uppercase;
-      margin-bottom: 1.5rem;
-    }
-
-    /* SLIDE */
-    .slide {
-      background: var(--blanc);
-      border: 1px solid #DDD;
-      border-left: 5px solid var(--rouge);
-      padding: 1.5rem 1.75rem;
-      margin-bottom: 1.25rem;
-      scroll-margin-top: 120px;
-    }
-    .slide-num {
-      font-size: .7rem;
-      font-weight: 700;
-      letter-spacing: .1em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: .4rem;
-    }
-    .slide h2 {
-      font-family: 'Anton', sans-serif;
-      font-size: 1.25rem;
-      letter-spacing: .04em;
-      color: var(--texte);
-      margin-bottom: .9rem;
-      line-height: 1.25;
-    }
-    .slide h3 {
-      font-size: .9rem;
-      font-weight: 700;
-      color: var(--rouge);
-      text-transform: uppercase;
-      letter-spacing: .07em;
-      margin: 1rem 0 .4rem;
-    }
-    .slide p { margin-bottom: .65rem; color: var(--texte); }
-    .slide ul, .slide ol { padding-left: 1.4rem; margin-bottom: .65rem; }
-    .slide li { margin-bottom: .35rem; }
-    .slide strong { color: var(--rouge); }
-
-    /* CHIFFRES CLÉS */
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
-      gap: 1rem;
-      margin: 1rem 0;
-    }
-    .stat-card {
-      background: var(--fond);
-      border: 2px solid var(--rouge);
-      padding: 1.1rem 1rem;
-      text-align: center;
-    }
-    .stat-num {
-      font-family: 'Anton', sans-serif;
-      font-size: 2.2rem;
-      color: var(--rouge);
-      display: block;
-      line-height: 1;
-    }
-    .stat-label { font-size: .82rem; color: var(--muted); margin-top: .35rem; }
-
-    /* LEXIQUE TABLE */
-    .lex-table { width: 100%; border-collapse: collapse; margin: .75rem 0; font-size: .9rem; }
-    .lex-table th { background: var(--rouge); color: #fff; padding: .6rem .75rem; text-align: left; font-weight: 700; }
-    .lex-table td { padding: .55rem .75rem; border-bottom: 1px solid #E8E7E3; }
-    .lex-table tr:nth-child(even) td { background: var(--fond); }
-    .lex-table td:first-child { font-family: 'Anton', sans-serif; color: var(--rouge); font-size: 1rem; }
-
-    /* PILIERS TABLE */
-    .pilier-table { width: 100%; border-collapse: collapse; margin: .75rem 0; font-size: .88rem; }
-    .pilier-table th { background: var(--rouge); color: #fff; padding: .6rem .75rem; text-align: left; }
-    .pilier-table td { padding: .6rem .75rem; border-bottom: 1px solid #E8E7E3; vertical-align: top; }
-    .pilier-table tr:nth-child(even) td { background: var(--fond); }
-    .pilier-table td:first-child { font-weight: 700; color: var(--bleu); }
-
-    /* ÉTAPES */
-    .etapes { display: flex; flex-direction: column; gap: .75rem; margin: .75rem 0; }
-    .etape {
-      display: flex;
-      gap: 1rem;
-      align-items: flex-start;
-      background: var(--fond);
-      padding: .9rem 1rem;
-      border-left: 4px solid var(--jaune);
-    }
-    .etape-num {
-      font-family: 'Anton', sans-serif;
-      font-size: 1.5rem;
-      color: var(--rouge);
-      line-height: 1;
-      flex-shrink: 0;
-      width: 28px;
-    }
-    .etape-content h4 { font-weight: 700; margin-bottom: .25rem; }
-    .etape-content p { font-size: .88rem; color: var(--muted); margin: 0; }
-
-    /* BANDEAUX */
-    .bandeau-jaune {
-      background: #FFFBE6;
-      border-left: 5px solid var(--jaune);
-      padding: .9rem 1.1rem;
-      margin: .75rem 0;
-      font-size: .9rem;
-    }
-    .bandeau-bleu {
-      background: #EEF2FF;
-      border-left: 5px solid var(--bleu);
-      padding: .9rem 1.1rem;
-      margin: .75rem 0;
-      font-size: .9rem;
-    }
-    .bandeau-rouge {
-      background: #FFF0F0;
-      border-left: 5px solid var(--rouge);
-      padding: .9rem 1.1rem;
-      margin: .75rem 0;
-      font-size: .9rem;
-    }
-    .bandeau-vert {
-      background: #F0FFF5;
-      border-left: 5px solid var(--vert);
-      padding: .9rem 1.1rem;
-      margin: .75rem 0;
-      font-size: .9rem;
-    }
-
-    /* VISUEL PLACEHOLDER */
-    .visuel-note {
-      background: #F9F9F9;
-      border: 2px dashed #CCC;
-      padding: 1rem;
-      text-align: center;
-      font-size: .82rem;
-      color: var(--muted);
-      margin: .75rem 0;
-      font-style: italic;
-    }
-
-    /* QUIZZ */
-    .quizz-card {
-      background: var(--rouge);
-      color: #fff;
-      padding: 2rem;
-      text-align: center;
-      margin: 1rem 0;
-    }
-    .quizz-card h2 { font-family: 'Anton', sans-serif; font-size: 2rem; color: var(--jaune); margin-bottom: .5rem; }
-    .quizz-card p { color: rgba(255,255,255,.85); }
-
-    /* PRINT BUTTON */
-    #btn-print-float {
-      position: fixed;
-      bottom: 1.25rem;
-      right: 1.25rem;
-      z-index: 9999;
-      background: var(--rouge);
-      color: #fff;
-      border: none;
-      padding: .7rem 1.2rem;
-      font-family: 'Archivo', sans-serif;
-      font-size: .85rem;
-      font-weight: 700;
-      cursor: pointer;
-      box-shadow: 0 4px 12px rgba(0,0,0,.25);
-    }
-    #btn-print-float:hover { background: #C40017; }
-
-    @media print {
-      #btn-print-float, .nav-slides { display: none !important; }
-      .site-header { position: static; }
-      .slide { break-inside: avoid; }
-    }
-    @media (max-width: 640px) {
-      main { padding: 1rem 1rem 3rem; }
-      .site-header { padding: .75rem 1rem; }
-      .stats-grid { grid-template-columns: repeat(2, 1fr); }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>CGT · Handicap &amp; Emploi — AGEFIPH · OETH · RQTH</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;600;700;800&family=Spectral:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --red:#E2001A; --red-d:#A60012; --yellow:#FFD200; --ink:#141414;
+  --paper:#FBFAF6; --card:#F1EFE8; --line:#E4E0D4; --muted:#6C6A63; --white:#fff;
+  --disp:'Anton', 'Arial Narrow', Impact, sans-serif;
+  --ui:'Archivo','Helvetica Neue',Arial,sans-serif;
+  --body:'Spectral', Georgia, 'Times New Roman', serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;overflow:hidden;background:#0c0c0c;color:var(--ink);font-family:var(--body)}
+body{-webkit-font-smoothing:antialiased}
+#deck{position:fixed;top:0;right:0;bottom:0;left:0}
+.slide{position:absolute;top:0;right:0;bottom:0;left:0;display:flex;flex-direction:column;justify-content:center;
+  padding:5.5vh 7vw;opacity:0;visibility:hidden;pointer-events:none;
+  transform:translateY(14px) scale(.995);transition:opacity .45s ease, transform .45s ease;
+  background:var(--paper);
+  background-image:radial-gradient(rgba(20,20,20,.035) 1px, transparent 1px);background-size:22px 22px;}
+.slide.active{opacity:1;visibility:visible;pointer-events:auto;transform:none;z-index:2}
+.slide::before{content:"";position:absolute;left:0;top:0;bottom:0;width:14px;background:var(--red)}
+.slide.dark::before{background:var(--yellow)}
+.kicker{font-family:var(--ui);font-weight:800;letter-spacing:.22em;text-transform:uppercase;
+  font-size:clamp(11px,1.25vw,18px);color:var(--red);margin-bottom:1.4vh;display:flex;align-items:center;gap:.8em}
+.kicker .dot{width:.6em;height:.6em;background:var(--yellow);display:inline-block;transform:rotate(45deg)}
+h1,h2{font-family:var(--disp);font-weight:400;line-height:.98;letter-spacing:.01em;text-transform:uppercase}
+.title{font-size:clamp(34px,6.2vw,104px);color:var(--ink)}
+.title .em{color:var(--red)}
+.lede{font-size:clamp(16px,2.1vw,30px);max-width:60ch;margin-top:2.4vh;color:#2b2b2b}
+.foot{font-family:var(--ui);font-weight:700;color:var(--red);margin-top:auto;font-size:clamp(14px,1.6vw,22px);
+  text-transform:uppercase;letter-spacing:.12em}
+.slide.active .reveal{animation:rise .55s cubic-bezier(.2,.7,.2,1) both}
+.slide.active .reveal:nth-child(2){animation-delay:.06s}
+.slide.active .reveal:nth-child(3){animation-delay:.12s}
+.slide.active .reveal:nth-child(4){animation-delay:.18s}
+.slide.active .reveal:nth-child(5){animation-delay:.24s}
+.slide.active .reveal:nth-child(6){animation-delay:.30s}
+@keyframes rise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+.s-title .title{font-size:clamp(40px,7.4vw,128px)}
+.s-title .accent{height:14px;width:min(42vw,520px);background:var(--yellow);margin:3vh 0}
+.slide.s-divider{background:var(--ink);color:var(--white);
+  background-image:radial-gradient(rgba(255,255,255,.05) 1px,transparent 1px);background-size:24px 24px}
+.s-divider .kicker{color:var(--yellow)}
+.s-divider .title{color:var(--yellow);font-size:clamp(40px,8vw,132px)}
+.s-divider .lede{color:#e8e8e8}
+.s-divider .barline{height:10px;width:min(36vw,440px);background:var(--red);margin-top:3vh}
+.bullets{list-style:none;margin-top:2vh;display:flex;flex-direction:column;gap:1.5vh;max-width:64ch}
+.bullets li{display:flex;gap:.9em;align-items:flex-start;font-size:clamp(16px,2.05vw,30px);line-height:1.3}
+.bullets li::before{content:"";flex:0 0 auto;width:.62em;height:.62em;margin-top:.5em;background:var(--red);transform:rotate(45deg)}
+.note-strip{margin-top:2.6vh;background:var(--ink);color:var(--yellow);font-family:var(--ui);font-weight:600;
+  padding:1.4vh 1.6vw;font-size:clamp(14px,1.7vw,24px);max-width:70ch;border-left:8px solid var(--yellow)}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1.6vw;margin-top:3vh}
+.stat{background:var(--white);border:1px solid var(--line);border-top:7px solid var(--red);
+  padding:3vh 1.4vw;display:flex;flex-direction:column;justify-content:center;box-shadow:0 18px 40px -30px rgba(0,0,0,.4)}
+.stat .num{font-family:var(--disp);color:var(--red);font-size:clamp(34px,5.6vw,92px);line-height:.9}
+.stat .lab{font-family:var(--body);color:#2b2b2b;font-size:clamp(12px,1.3vw,19px);margin-top:1.4vh;line-height:1.25}
+.source{font-family:var(--ui);color:var(--muted);font-size:clamp(11px,1.1vw,16px);margin-top:2.4vh}
+.steps{display:grid;gap:1.4vw;margin-top:3vh}
+.steps.n3{grid-template-columns:repeat(3,1fr)} .steps.n4{grid-template-columns:repeat(4,1fr)}
+.step{background:var(--card);border:1px solid var(--line);padding:2.6vh 1.3vw;position:relative;
+  transition:transform .25s ease, box-shadow .25s ease}
+.step:hover{transform:translateY(-6px);box-shadow:0 22px 44px -28px rgba(0,0,0,.45)}
+.step .big{font-family:var(--disp);color:var(--red);font-size:clamp(26px,3.6vw,60px);line-height:.9}
+.step .nm{font-family:var(--ui);font-weight:800;text-transform:uppercase;letter-spacing:.04em;
+  font-size:clamp(13px,1.4vw,21px);margin-top:1.2vh}
+.step .ds{font-size:clamp(12px,1.25vw,19px);color:#333;margin-top:.7vh;line-height:1.3}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:1.8vw;margin-top:3vh}
+.tc{padding:3.2vh 1.8vw;border:1px solid var(--line);background:var(--card)}
+.tc.red{background:var(--red);color:#fff;border-color:var(--red)}
+.tc.black{background:var(--ink);color:#fff;border-color:var(--ink)}
+.tc h3{font-family:var(--ui);font-weight:800;text-transform:uppercase;letter-spacing:.03em;
+  font-size:clamp(17px,2.1vw,32px)}
+.tc.red h3,.tc.black h3{color:var(--yellow)}
+.tc.plain h3{color:var(--red)}
+.tc p{font-size:clamp(14px,1.6vw,24px);margin-top:1.6vh;line-height:1.35}
+.callout{margin-top:3vh;padding:5vh 3vw;display:flex;flex-direction:column;gap:1.6vh;max-width:80ch}
+.callout.black{background:var(--ink)} .callout.red{background:var(--red)}
+.callout .big{font-family:var(--disp);text-transform:uppercase;line-height:1;
+  font-size:clamp(24px,3.6vw,58px)}
+.callout.black .big{color:var(--yellow)} .callout.red .big{color:#fff}
+.callout .sub{font-size:clamp(15px,1.8vw,26px)} .callout.black .sub{color:#fff} .callout.red .sub{color:#fff}
+.defbox{margin-top:2.6vh;background:var(--card);border-left:12px solid var(--red);padding:3.4vh 2.4vw;max-width:82ch}
+.defbox .term{font-family:var(--ui);font-weight:800;color:var(--red);text-transform:uppercase;letter-spacing:.03em;
+  font-size:clamp(16px,1.9vw,28px)}
+.defbox .txt{font-size:clamp(17px,2.1vw,30px);margin-top:1.4vh;line-height:1.3}
+.defextra{margin-top:2.2vh;background:var(--ink);color:var(--yellow);font-family:var(--ui);font-weight:600;
+  padding:1.4vh 1.6vw;border-left:8px solid var(--yellow);font-size:clamp(14px,1.6vw,23px);max-width:82ch}
+.quiz-q{font-size:clamp(18px,2.4vw,36px);font-weight:600;margin-top:2vh;max-width:60ch}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:1.2vw;margin-top:3vh;max-width:90ch}
+.opt{font-family:var(--ui);text-align:left;background:var(--white);border:2px solid var(--line);
+  padding:1.8vh 1.4vw;font-size:clamp(14px,1.6vw,23px);cursor:pointer;transition:.2s;display:flex;gap:.7em;align-items:center}
+.opt:hover{border-color:var(--ink);transform:translateY(-3px)}
+.opt .k{font-weight:800;color:var(--red)}
+.opt.good{background:var(--yellow);border-color:var(--ink);color:var(--ink)}
+.opt.good .k{color:var(--ink)}
+.opt.bad{opacity:.45;border-style:dashed}
+.quiz-a{margin-top:2.4vh;font-family:var(--ui);font-weight:700;color:var(--red);
+  font-size:clamp(14px,1.7vw,24px);opacity:0;transition:.3s}
+.quiz-a.show{opacity:1}
+.case-sc{background:var(--card);border-left:10px solid var(--yellow);padding:2.6vh 2vw;
+  font-size:clamp(16px,1.9vw,27px);margin-top:2vh;max-width:80ch;line-height:1.35}
+.case-q{margin-top:2.2vh}
+.timer{display:flex;align-items:center;gap:1.2vw;margin-top:auto;padding-top:2.4vh}
+.tmr-display{font-family:var(--disp);font-size:clamp(34px,5vw,80px);color:var(--ink);line-height:.9;min-width:3.4ch}
+.tmr-display.run{color:var(--red)} .tmr-display.done{color:var(--red);animation:flash 1s steps(2) infinite}
+@keyframes flash{50%{opacity:.25}}
+.tbtn{font-family:var(--ui);font-weight:700;text-transform:uppercase;letter-spacing:.05em;
+  border:2px solid var(--ink);background:var(--ink);color:#fff;padding:1.1vh 1.4vw;cursor:pointer;font-size:clamp(12px,1.2vw,17px)}
+.tbtn.ghost{background:transparent;color:var(--ink)}
+.tbtn:hover{background:var(--red);border-color:var(--red);color:#fff}
+.slide.s-closing{background:var(--ink);color:#fff;justify-content:center}
+.s-closing .title{color:var(--yellow);font-size:clamp(54px,11vw,180px)}
+.s-closing .sub{font-size:clamp(16px,2vw,30px);color:#eee;margin-top:2vh}
+.s-closing .contacts{font-family:var(--ui);color:#bbb;margin-top:3vh;font-size:clamp(13px,1.4vw,20px);line-height:1.6}
+.s-closing::before{background:var(--red)}
+.svgwrap{margin-top:2.2vh;flex:1 1 auto;display:flex;align-items:center;justify-content:center;min-height:0}
+.svgwrap svg{width:100%;max-width:1100px;max-height:72vh;height:auto;display:block}
+.svgwrap text{font-family:var(--ui)}
+#ink{position:fixed;top:0;right:0;bottom:0;left:0;z-index:55;pointer-events:none;touch-action:none}
+#ink.on{pointer-events:auto;cursor:crosshair}
+#inktools{position:fixed;left:50%;transform:translateX(-50%);bottom:16px;z-index:58;display:none;gap:8px;
+  background:rgba(18,18,18,.94);padding:9px;border-radius:14px;box-shadow:0 14px 40px -16px rgba(0,0,0,.6)}
+#inktools.on{display:flex}
+.it{width:44px;height:44px;border-radius:10px;border:2px solid transparent;background:#2a2a2a;color:#fff;cursor:pointer;
+  display:grid;place-items:center;font-size:18px;font-family:var(--ui);font-weight:800;transition:.15s}
+.it:hover{background:#3a3a3a}
+.it.act{border-color:#fff;background:#000}
+.it.pen{color:var(--red)} .it.hl{color:var(--yellow)}
+#bar{position:fixed;top:0;left:0;height:6px;background:rgba(0,0,0,.12);width:100%;z-index:50}
+#bar i{display:block;height:100%;background:var(--yellow);width:0;transition:width .35s ease}
+.hud{position:fixed;z-index:50;font-family:var(--ui);font-weight:700}
+#count{left:24px;bottom:18px;color:var(--muted);font-size:14px;letter-spacing:.1em}
+#count b{color:var(--red)}
+#ctrl{right:18px;bottom:14px;display:flex;gap:8px}
+.cb{width:42px;height:42px;border:1.5px solid rgba(0,0,0,.18);background:rgba(255,255,255,.7);backdrop-filter:blur(6px);
+  border-radius:10px;cursor:pointer;display:grid;place-items:center;color:var(--ink);transition:.2s;font-size:18px}
+.cb:hover{background:var(--red);color:#fff;border-color:var(--red)}
+#brand{position:fixed;right:26px;top:16px;z-index:50;font-family:var(--disp);font-size:24px;color:var(--red);letter-spacing:.02em;
+  background:var(--yellow);padding:2px 10px 0;line-height:1.25}
+#notes{position:fixed;left:0;right:0;bottom:0;z-index:60;background:rgba(15,15,15,.96);color:#f4f4f4;
+  padding:22px 28px 26px;transform:translateY(102%);transition:.35s;max-height:46vh;overflow:auto;
+  border-top:5px solid var(--yellow);font-family:var(--ui)}
+#notes.show{transform:none}
+#notes h4{color:var(--yellow);font-size:14px;letter-spacing:.18em;text-transform:uppercase;margin-bottom:10px;font-weight:800}
+#notes .nbody{font-family:var(--body);font-size:clamp(15px,1.5vw,21px);line-height:1.5;max-width:120ch}
+#notes .nbody b{color:#fff} #notes .nbody .cgt{color:var(--yellow);font-weight:700}
+#notes .nbody .ref{color:#9fbfff;font-style:italic;font-size:.92em}
+#ov{position:fixed;top:0;right:0;bottom:0;left:0;z-index:70;background:rgba(12,12,12,.97);overflow:auto;padding:70px 5vw 60px;
+  display:none;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:18px;align-content:start}
+#ov.show{display:grid}
+.ovc{background:#1b1b1b;border:1px solid #2c2c2c;border-left:5px solid var(--red);padding:16px 16px 18px;cursor:pointer;
+  color:#eaeaea;transition:.18s;min-height:120px;display:flex;flex-direction:column;gap:6px}
+.ovc:hover{background:#262626;transform:translateY(-4px);border-left-color:var(--yellow)}
+.ovc.div{border-left-color:var(--yellow);background:#000}
+.ovc .n{font-family:var(--ui);font-weight:800;color:var(--red);font-size:12px;letter-spacing:.1em}
+.ovc .k{font-family:var(--ui);font-weight:700;color:var(--yellow);font-size:11px;letter-spacing:.12em;text-transform:uppercase}
+.ovc .t{font-family:var(--disp);font-size:19px;line-height:1.02;text-transform:uppercase;color:#fff}
+#ovhead{position:fixed;top:18px;left:5vw;z-index:71;color:#fff;font-family:var(--ui);font-weight:800;letter-spacing:.18em;
+  text-transform:uppercase;font-size:13px;display:none}
+#ov.show ~ #ovhead{display:block}
+#help{position:fixed;top:0;right:0;bottom:0;left:0;z-index:80;background:rgba(10,10,10,.9);display:none;place-items:center}
+#help.show{display:grid}
+.helpcard{background:#fff;max-width:520px;width:90%;padding:34px 38px;border-top:10px solid var(--red)}
+.helpcard h3{font-family:var(--disp);font-size:30px;color:var(--red);text-transform:uppercase;margin-bottom:18px}
+.helpcard dl{display:grid;grid-template-columns:auto 1fr;gap:10px 18px;font-family:var(--ui);font-size:15px}
+.helpcard dt{font-weight:800;color:var(--ink)}
+.helpcard kbd{background:var(--ink);color:#fff;padding:2px 9px;border-radius:5px;font-family:var(--ui);font-size:13px}
+.wordmark{font-family:var(--disp);background:var(--yellow);color:var(--red);padding:2px 10px 0;line-height:1.25;display:inline-block}
+.logo-img{display:block;height:100%}
+#brand.haslogo{background:transparent;padding:0;height:46px}
+.lockup{display:flex;align-items:center;gap:16px;margin-bottom:2.4vh}
+.lockup .wordmark{font-size:clamp(26px,3vw,40px)}
+.lockup .logo-img{height:clamp(46px,6vw,84px)}
+.s-title .lockup .logo-img{height:clamp(110px,15vh,190px)}
+.s-closing .lockup .logo-img{height:clamp(90px,12vh,150px)}
+#brand.haslogo{height:clamp(74px,9.5vh,112px)}
+@media print{
+  @page{size:landscape;margin:0}
+  html,body{height:auto!important;overflow:visible!important;background:#fff!important}
+  #bar,#ctrl,#brand,#count,#notes,#ov,#ovhead,#help{display:none!important}
+  #deck{position:static!important}
+  .slide{position:relative!important;top:auto!important;left:auto!important;right:auto!important;bottom:auto!important;
+    opacity:1!important;visibility:visible!important;transform:none!important;height:100vh!important;
+    page-break-after:always;break-after:page}
+  .reveal{animation:none!important;opacity:1!important;transform:none!important}
+  .quiz-a{opacity:1!important}
+}
+@media (max-width:760px){
+  .stats{grid-template-columns:repeat(2,1fr)} .two{grid-template-columns:1fr}
+  .steps.n3,.steps.n4{grid-template-columns:1fr 1fr} .opts{grid-template-columns:1fr}
+  .slide{padding:8vh 8vw}
+}
+</style>
 </head>
 <body>
 <script>if(sessionStorage.getItem('cgt_auth')!=='ok'){location.replace('/login.html?from='+encodeURIComponent(location.pathname));}</script>
+<div id="bar"><i></i></div>
+<div id="deck"></div>
+<div id="brand">CGT</div>
+<div class="hud" id="count"><b>01</b> / 96</div>
+<div class="hud" id="ctrl">
+  <button class="cb" id="bPrev" title="Précédent (←)">&#8249;</button>
+  <button class="cb" id="bNext" title="Suivant (→)">&#8250;</button>
+  <button class="cb" id="bOv" title="Vue d'ensemble (O)">&#9638;</button>
+  <button class="cb" id="bNotes" title="Notes formateur (N)">&#9998;</button>
+  <button class="cb" id="bFull" title="Plein écran (F)">&#9974;</button>
+  <button class="cb" id="bInk" title="Stylo (A)">&#9998;</button>
+  <button class="cb" id="bPres" title="Mode présentateur (P)">&#10697;</button>
+  <button class="cb" id="bHelp" title="Aide (?)">?</button>
+</div>
+<div id="notes"><h4>Notes du formateur — argumentaire</h4><div class="nbody"></div></div>
+<canvas id="ink"></canvas>
+<div id="inktools">
+  <button class="it pen act" data-tool="pen" title="Stylo rouge">&#9998;</button>
+  <button class="it hl" data-tool="hl" title="Surligneur jaune">&#9646;</button>
+  <button class="it" data-tool="erase" title="Gomme">&#8867;</button>
+  <button class="it" id="inkClearBtn" title="Tout effacer">&#10005;</button>
+  <button class="it" id="inkCloseBtn" title="Fermer (A)">&#9167;</button>
+</div>
+<div id="ovhead">Vue d'ensemble — cliquez une diapo</div>
+<div id="ov"></div>
+<div id="help"><div class="helpcard">
+  <h3>Raccourcis</h3>
+  <dl>
+    <dt><kbd>&#8594;</kbd> <kbd>Espace</kbd></dt><dd>Diapo suivante</dd>
+    <dt><kbd>&#8592;</kbd></dt><dd>Diapo précédente</dd>
+    <dt><kbd>O</kbd></dt><dd>Vue d'ensemble</dd>
+    <dt><kbd>P</kbd></dt><dd>Mode présentateur</dd>
+    <dt><kbd>A</kbd></dt><dd>Stylo / surligneur</dd>
+    <dt><kbd>N</kbd></dt><dd>Notes formateur</dd>
+    <dt><kbd>F</kbd></dt><dd>Plein écran</dd>
+    <dt><kbd>Échap</kbd></dt><dd>Fermer un panneau</dd>
+  </dl>
+</div></div>
 
-<header class="site-header">
-  <img src="/assets/logo-cgt-occitanie.jpg" alt="Logo CGT Occitanie">
-  <div class="site-header-text">
-    <h1>AGEFIPH · Handicap &amp; Emploi</h1>
-    <p>CGT Occitanie — Formation syndicale</p>
-  </div>
-</header>
-<div class="header-stripe"></div>
+<script>
+const CONFIG = {logo:"/assets/logo-cgt-occitanie.jpg", title:"Handicap & Emploi"};
 
-<nav class="nav-slides">
-  <a href="#partie-1">1. Définitions</a>
-  <a href="#partie-2">2. Familles de handicap</a>
-  <a href="#partie-3">3. RQTH</a>
-  <a href="#partie-4">4. Référent handicap</a>
-  <a href="#partie-5">5. Politique handicap</a>
-  <a href="#partie-6">6. Recrutement &amp; intégration</a>
-  <a href="#partie-7">7. Maintien dans l'emploi</a>
-  <a href="#partie-8">8. OETH &amp; déclaration</a>
-</nav>
+const SLIDES = [
+// 1 - Titre
+{type:"title", kicker:"Formation syndicale CGT Occitanie", title:["AGEFIPH","Handicap","& Emploi"], lede:"AGEFIPH · OETH · RQTH · Maintien dans l'emploi", foot:"Formation syndicale CGT Occitanie — Handicap & Emploi"},
 
-<main>
+// 2 - Définition
+{type:"def", kicker:"Définition", title:"Le handicap — définition",
+  term:"Le Robert",
+  text:"Limitation d'activité ou restriction de la participation à la vie en société, subie par une personne en raison d'une altération d'une fonction ou d'un trouble de santé invalidant.",
+  extra:"Mots-clés : Limitation · restriction · subie · altération · trouble · invalidant"},
 
-  <!-- SLIDE 1 — TITRE -->
-  <div class="slide" id="slide-1" style="border-left-color: var(--jaune); background: var(--rouge); color: #fff; margin-top: 1.5rem;">
-    <div class="slide-num" style="color: rgba(255,255,255,.6)">Diapo 1</div>
-    <h2 style="color: var(--jaune); font-size: 1.6rem;">AGEFIPH · OETH · RQTH · Maintien dans l'emploi</h2>
-    <p style="color: rgba(255,255,255,.85); font-size: 1rem; margin-top: .5rem;">Formation syndicale CGT Occitanie — Handicap &amp; Emploi</p>
-  </div>
+// 3 - Chiffres
+{type:"stats", kicker:"Chiffres clés", title:"Le handicap en chiffres",
+  items:[
+    {num:"20%", lab:"de la population vit avec un handicap"},
+    {num:"40%", lab:"en incluant les handicaps temporaires"},
+    {num:"80%", lab:"des handicaps sont invisibles"},
+    {num:"↗", lab:"En hausse avec le vieillissement de la population"}
+  ],
+  notes:"Insister sur les 80% invisibles — briser l'image du fauteuil roulant comme seule représentation du handicap."},
 
-  <!-- ═══════════════════════════════════════════ -->
-  <div class="partie" id="partie-1">
-    <div class="partie-titre">1 — Définitions &amp; fondamentaux</div>
+// 4 - Normal ?
+{type:"content", kicker:"Représentation", title:"C'est quoi une personne « normale » ?",
+  bullets:[
+    "Le port de lunettes est un outil de compensation : voir moins bien, c'est un handicap.",
+    "1. On donne les outils nécessaires pour fonctionner.",
+    "2. Avec l'aide technique, je me sens normal.",
+    "Se sentir normal, c'est être satisfait de l'expérience que l'on est en train de vivre."
+  ]},
 
-    <div class="slide" id="slide-2">
-      <div class="slide-num">Diapo 2</div>
-      <h2>Définition du handicap</h2>
-      <div class="bandeau-bleu">
-        <p>« Limitation d'activité ou restriction de la participation à la vie en société, subie par une personne en raison d'une altération d'une fonction ou d'un trouble de santé invalidant. »</p>
-        <p style="font-size:.8rem; color:var(--muted); margin-top:.4rem;">— Dictionnaire Le Robert</p>
+// 5 - placeholder
+{type:"placeholder", kicker:"Vidéo", title:"Vidéo — illustration"},
+
+// 6 - placeholder
+{type:"placeholder", kicker:"En synthèse", title:"En synthèse"},
+
+// 7 - placeholder
+{type:"placeholder", kicker:"Visuel", title:"Illustration"},
+
+// 8 - Conception universelle
+{type:"two", kicker:"Design inclusif", title:"Conception universelle vs universalisante",
+  a:{h:"Conception universelle", t:"Penser pour tous dès l'origine. Mais ce n'est pas suffisant.", style:"plain"},
+  b:{h:"Conception universalisante", t:"Une innovation née d'un besoin précis… qui améliore l'usage pour chacun.", style:"black"}},
+
+// 9 - Société inclusive
+{type:"content", kicker:"Inclusion", title:"Société et transition inclusive",
+  bullets:[
+    "La réussite de l'inclusion repose sur le rapprochement de deux acteurs.",
+    "Entreprises (privé/public) : embauche et maintien dans l'emploi des personnes en situation de handicap.",
+    "Secteur spécialisé (ESMS) : parcours alternatif et soutien pour monter en compétences et accéder à l'emploi.",
+    "L'objectif est de favoriser les passerelles entre ces différents univers."
+  ]},
+
+// 10 - Droit commun
+{type:"content", kicker:"Droit commun", title:"Droit commun — transition inclusive",
+  bullets:[
+    "L'enjeu : aider les entreprises à percevoir les bénéfices du recrutement des personnes en situation de handicap.",
+    "Le droit commun, c'est permettre à chacun d'accéder aux mêmes dispositifs, aux mêmes formations et aux mêmes opportunités professionnelles.",
+    "Droit commun désigne le cadre général s'appliquant à l'ensemble des citoyens, par opposition à des dispositifs spécifiques ou isolés."
+  ],
+  notes:"Le droit commun, c'est le principe d'égalité de traitement. Le handicap ne doit pas créer un régime à part mais ouvrir l'accès aux mêmes droits."},
+
+// 11 - Lexique
+{type:"table", kicker:"Lexique", title:"Lexique essentiel",
+  headers:["Sigle","Signification"],
+  rows:[
+    ["RQTH","Reconnaissance de la qualité de travailleur handicapé"],
+    ["BOETH","Bénéficiaire de l'obligation d'emploi des travailleurs handicapés"],
+    ["OETH","Obligation d'emploi des travailleurs handicapés"],
+    ["DOETH","Déclaration obligatoire d'emploi des travailleurs handicapés"],
+    ["FIPHFP","Fonds pour l'insertion des personnes handicapées dans la fonction publique"]
+  ],
+  notes:"Prendre le temps de faire lire le lexique aux stagiaires — ces acronymes reviennent dans toute la formation."},
+
+// 12 - Divider
+{type:"divider", kicker:"Partie 1", title:["Le handicap,","la situation","de handicap"]},
+
+// 13-18 - placeholders
+{type:"placeholder", kicker:"Définition", title:"Qu'est-ce que le handicap ?"},
+{type:"placeholder", kicker:"Définition", title:"Qu'est-ce qu'un travailleur handicapé ?"},
+{type:"placeholder", kicker:"Loi Handicap", title:"Les fondamentaux de la loi Handicap"},
+{type:"placeholder", kicker:"Définition traditionnelle", title:"La définition traditionnelle"},
+{type:"placeholder", kicker:"Situation de handicap", title:"La situation de handicap"},
+{type:"placeholder", kicker:"Notion", title:"La notion de situation de handicap"},
+
+// 19 - Connaissances de base
+{type:"content", kicker:"Programme", title:"Connaissances de base du handicap au travail",
+  bullets:[
+    "1. De la catégorisation à la discrimination",
+    "2. Le handicap, la situation de handicap",
+    "3. Les différents types de handicap",
+    "4. Les fondamentaux de la loi Handicap — Zoom RQTH",
+    "Ces connaissances sont indispensables pour agir efficacement dans l'entreprise."
+  ]},
+
+// 20 - Divider
+{type:"divider", kicker:"Partie 2", title:["Les différentes","familles de","handicap"]},
+
+// 21-22 - placeholders
+{type:"placeholder", kicker:"Familles", title:"Les familles de handicap (1/2)"},
+{type:"placeholder", kicker:"Familles", title:"Les familles de handicap (2/2)"},
+
+// 23 - Mental/cognitif/psychique
+{type:"content", kicker:"Distinction", title:"Différencier mental / cognitif / psychique",
+  bullets:[
+    "Mental : déficience intellectuelle, difficultés d'apprentissage et de raisonnement.",
+    "Cognitif : troubles des fonctions cognitives (mémoire, attention, langage) sans déficience intellectuelle globale. Ex : dyslexie, TDA/H.",
+    "Psychique : troubles psychiatriques (dépression sévère, schizophrénie, TOC) sans atteinte des capacités intellectuelles."
+  ]},
+
+// 24 - Visibilité
+{type:"stats", kicker:"Visibilité", title:"80% des handicaps sont invisibles",
+  items:[
+    {num:"80%", lab:"des handicaps sont invisibles"},
+    {num:"20%", lab:"seulement sont visibles"}
+  ]},
+
+// 25 - Acquis ou innés
+{type:"content", kicker:"Origine", title:"Handicaps acquis ou innés ?",
+  bullets:[
+    "La grande majorité des handicaps sont acquis : accidents, maladies, vieillissement.",
+    "Cela concerne potentiellement chaque salarié.",
+    "Le handicap n'est pas une condition figée : il peut survenir à tout moment de la vie professionnelle."
+  ]},
+
+// 26 - placeholder
+{type:"placeholder", kicker:"Familles", title:"Les familles de handicap"},
+
+// 27 - placeholder
+{type:"placeholder", kicker:"Exemples", title:"Pathologies, incapacités et modalités de compensation"},
+
+// 28 - Modalités de compensation
+{type:"content", kicker:"Compensation", title:"Les modalités de compensation du handicap",
+  bullets:[
+    "Humaines : auxiliaire de vie, interprète en langue des signes.",
+    "Techniques : fauteuil roulant, logiciel de synthèse vocale, aménagement de poste.",
+    "Organisationnelles : télétravail, aménagement des horaires, temps partiel thérapeutique.",
+    "Financières : aides AGEFIPH, Prestation de Compensation du Handicap (PCH)."
+  ]},
+
+// 29 - Divider RQTH
+{type:"divider", kicker:"Partie 3", title:["La RQTH","Reconnaissance","de la qualité de travailleur handicapé"]},
+
+// 30 - RQTH simplifiée
+{type:"content", kicker:"RQTH", title:"RQTH simplifiée — Loi du 5 septembre 2018",
+  bullets:[
+    "Démarche simplifiée : un seul formulaire Cerfa.",
+    "Durée de 1 à 10 ans (voire à vie pour les handicaps irréversibles).",
+    "Accordée par la CDAPH (Commission des droits et de l'autonomie des personnes handicapées)."
+  ],
+  strip:"L'employeur ne peut pas contraindre le salarié à déclarer sa RQTH. C'est un droit, pas une obligation.",
+  notes:"Insister sur la confidentialité : l'employeur ne peut pas contraindre le salarié à déclarer sa RQTH. C'est un droit, pas une obligation."},
+
+// 31 - placeholder
+{type:"placeholder", kicker:"RQTH", title:"Zoom RQTH — démarches et diversité des titres"},
+
+// 32-34 - Freins
+{type:"content", kicker:"Freins 1/3", title:"Les freins côté personne handicapée (1/3)",
+  bullets:[
+    "Peur de la stigmatisation en milieu professionnel.",
+    "Crainte de perdre son emploi suite à la déclaration.",
+    "Méconnaissance des droits ouverts par la RQTH."
+  ]},
+
+{type:"content", kicker:"Freins 2/3", title:"Les freins côté personne handicapée (2/3)",
+  bullets:[
+    "Déni du handicap : refus de se reconnaître comme travailleur handicapé.",
+    "Complexité administrative perçue comme décourageante.",
+    "Manque de confiance dans la confidentialité des informations transmises."
+  ]},
+
+{type:"content", kicker:"Freins 3/3", title:"Les freins — résumé",
+  bullets:[
+    "Freins psychologiques : stigmatisation, déni, peur.",
+    "Freins administratifs : complexité, délais, incertitude.",
+    "Freins relationnels : manque de confiance envers l'employeur, le médecin du travail, les RH."
+  ]},
+
+// 35 - placeholder
+{type:"placeholder", kicker:"Synthèse", title:"Pour résumer…"},
+
+// 36 - CPF
+{type:"def", kicker:"CPF", title:"Zoom CPF — majoration pour travailleurs handicapés",
+  term:"Majoration du CPF",
+  text:"Les travailleurs handicapés bénéficient d'une majoration de 300 €/an sur leur Compte Personnel de Formation, avec un plafond porté à 8 000 €.",
+  extra:"Un levier concret à mobiliser pour les formations de reconversion ou de maintien dans l'emploi."},
+
+// 37 - Étapes RQTH
+{type:"steps", kicker:"Démarche", title:"Du dépôt de dossier à la RQTH",
+  items:[
+    {big:"1", nm:"Constituer le dossier", ds:"Formulaire Cerfa + justificatifs médicaux + pièce d'identité."},
+    {big:"2", nm:"Déposer à la MDPH", ds:"En ligne ou par courrier auprès de la MDPH du département de résidence."},
+    {big:"3", nm:"Instruction CDAPH", ds:"Délai moyen 4 à 6 mois. Notification de décision par courrier."},
+    {big:"4", nm:"Transmission employeur", ds:"Optionnel — la personne choisit librement de transmettre ou non sa RQTH à l'employeur."}
+  ]},
+
+// 38-43 - placeholders
+{type:"placeholder", kicker:"Formulaire", title:"Comment formuler une demande de RQTH"},
+{type:"placeholder", kicker:"Pièces", title:"Pièces administratives requises"},
+{type:"placeholder", kicker:"Important", title:"Éléments importants de la demande"},
+{type:"placeholder", kicker:"Réponse", title:"Pour bien répondre à la demande CDAPH"},
+{type:"placeholder", kicker:"Visuel", title:"Illustration complémentaire"},
+{type:"placeholder", kicker:"Visuel", title:"Illustration complémentaire"},
+
+// 44-47 - placeholders
+{type:"placeholder", kicker:"Ressources", title:"Pour aller plus loin"},
+{type:"placeholder", kicker:"Communication", title:"Outils de communication AGEFIPH"},
+{type:"placeholder", kicker:"Visuel", title:"Illustration"},
+{type:"placeholder", kicker:"Liens", title:"Liens utiles"},
+
+// 48 - Divider référent handicap
+{type:"divider", kicker:"Partie 4", title:["Référent handicap","en entreprise"], lede:"Sensibilisation · Accompagnement · Coordination"},
+
+// 49 - placeholder
+{type:"placeholder", kicker:"Référent handicap", title:"Le référent handicap — rôle et missions"},
+
+// 50 - Obligatoire ?
+{type:"def", kicker:"Obligation", title:"Référent handicap — obligatoire ou pas ?",
+  term:"Loi du 5 septembre 2018",
+  text:"Le référent handicap est obligatoire dans toute entreprise d'au moins 250 salariés.",
+  extra:"Dans les entreprises de moins de 250 salariés, la désignation reste recommandée mais non obligatoire."},
+
+// 51 - Rôle référent
+{type:"content", kicker:"Missions", title:"Le rôle du référent handicap défini par la loi",
+  bullets:[
+    "Orienter, informer et accompagner les personnes en situation de handicap.",
+    "Faire le lien entre le salarié, l'employeur et les acteurs externes (AGEFIPH, Cap emploi…).",
+    "Contribuer à la mise en œuvre de la politique handicap de l'entreprise."
+  ]},
+
+// 52 - placeholder
+{type:"placeholder", kicker:"Acteurs", title:"Les acteurs de l'entreprise impliqués dans la politique handicap"},
+
+// 53 - placeholder
+{type:"placeholder", kicker:"Synthèse", title:"En synthèse — politique handicap"},
+
+// 54 - Question timer
+{type:"quiz", kicker:"Discussion", title:"Votre entreprise a-t-elle une politique handicap ?",
+  q:"Existe-t-il une politique handicap dans votre entreprise ? Quelles actions connaissez-vous ?",
+  opts:[{k:"A",t:"Oui, formalisée avec un accord"},{k:"B",t:"Partiellement, quelques actions isolées"},{k:"C",t:"Non, rien de formalisé"},{k:"D",t:"Je ne sais pas"}],
+  ans:-1,
+  explain:"Temps d'échange collectif — pas de bonne ou mauvaise réponse. L'objectif est de cartographier les pratiques dans vos entreprises.",
+  timer:30},
+
+// 55 - placeholder
+{type:"placeholder", kicker:"Axes", title:"Les axes structurants d'une politique handicap"},
+
+// 56 - 5 piliers
+{type:"table", kicker:"5 piliers", title:"Les 5 piliers d'une politique handicap efficace",
+  headers:["Pilier","Objectif","Bénéfices"],
+  rows:[
+    ["Engagement de la direction","Inscrire le handicap dans la stratégie globale","Légitimité, actions durables"],
+    ["Sensibilisation","Déconstruire préjugés et stéréotypes","Fait évoluer regards et comportements"],
+    ["Recrutement","Analyser compétences plutôt que limitations","Égalité des chances, tous les postes ouverts"],
+    ["Maintien dans l'emploi","Anticiper inaptitude et désinsertion","Préserve emploi et compétences"],
+    ["Suivi des résultats","Définir responsabilités, objectifs, indicateurs","Continuité des actions, mesure d'efficacité"]
+  ],
+  notes:"Les 5 piliers forment un système cohérent. Commencer par la direction sans sensibiliser, ça ne fonctionne pas."},
+
+// 57 - placeholder
+{type:"placeholder", kicker:"Recrutement", title:"Acteurs externes du recrutement et de l'intégration"},
+
+// 58 - Alternance
+{type:"content", kicker:"Alternance", title:"Zoom Alternance — dispositifs spécifiques",
+  bullets:[
+    "Aides spécifiques AGEFIPH pour l'alternance (apprentissage et contrats de professionnalisation).",
+    "Durée du contrat adaptable : dérogation possible selon le handicap.",
+    "Accompagnement renforcé du tuteur ou maître d'apprentissage."
+  ]},
+
+// 59 - placeholder
+{type:"placeholder", kicker:"Recrutement", title:"Axe 3 — Recrutement, les bonnes pratiques"},
+
+// 60 - placeholder
+{type:"placeholder", kicker:"Intégration", title:"L'accueil et l'intégration — les étapes"},
+
+// 61 - Règles d'or
+{type:"content", kicker:"Bonnes pratiques", title:"L'accueil et l'intégration — les règles d'or",
+  bullets:[
+    "Préparer l'arrivée en amont : poste, matériel, équipe informée (si accord du salarié).",
+    "Désigner un référent ou binôme d'intégration.",
+    "Ne pas sur-focaliser sur le handicap : traiter comme tout autre salarié.",
+    "Prévoir un suivi à 1 mois, 3 mois, 6 mois.",
+    "Impliquer le médecin du travail si besoin d'aménagement."
+  ]},
+
+// 62 - placeholder
+{type:"placeholder", kicker:"Outils", title:"Les outils de l'AGEFIPH"},
+
+// 63 - AGEFIPH / Cap emploi
+{type:"two", kicker:"Acteurs", title:"Zoom relation AGEFIPH / Cap emploi",
+  a:{h:"AGEFIPH", t:"Finance et pilote la politique d'emploi des personnes handicapées dans le secteur privé.", style:"plain"},
+  b:{h:"Cap emploi", t:"Opérateur de proximité — accompagne personnes ET entreprises dans le recrutement et le maintien. Intégré dans le réseau France Travail depuis 2020.", style:"black"}},
+
+// 64 - Divider maintien
+{type:"divider", kicker:"Partie 5", title:["Les étapes du","maintien dans","l'emploi"]},
+
+// 65 - 5 étapes
+{type:"steps", kicker:"Processus", title:"5 étapes-clés du maintien dans l'emploi",
+  items:[
+    {big:"1", nm:"Détection", ds:"Repérer les signaux d'alerte."},
+    {big:"2", nm:"Signalement", ds:"Avec accord du salarié, informer les acteurs."},
+    {big:"3", nm:"Analyse", ds:"Étude du poste et recherche de solutions."},
+    {big:"4", nm:"Mise en œuvre", ds:"Déploiement de la solution retenue."},
+    {big:"5", nm:"Suivi", ds:"Points réguliers pour ajuster si nécessaire."}
+  ],
+  notes:"Présenter les 5 étapes comme un processus, pas une liste. Chaque étape conditionne la suivante."},
+
+// 66 - Détection
+{type:"content", kicker:"Étape 1", title:"Détection — repérer les signaux d'alerte",
+  bullets:[
+    "Absentéisme répété ou prolongé.",
+    "Baisse de performance ou de productivité.",
+    "Arrêts de travail successifs.",
+    "Déclaration spontanée du handicap par le salarié."
+  ]},
+
+// 67 - Signalement
+{type:"content", kicker:"Étape 2", title:"Signalement — avec accord du salarié",
+  bullets:[
+    "Informer les acteurs concernés : RH, médecin du travail, référent handicap.",
+    "Le consentement du salarié est indispensable.",
+    "Respecter la confidentialité des informations médicales."
+  ]},
+
+// 68 - Analyse
+{type:"content", kicker:"Étape 3", title:"Analyse de la situation & recherche de solutions",
+  bullets:[
+    "Étude ergonomique du poste de travail.",
+    "Analyse des restrictions fonctionnelles avec le médecin du travail.",
+    "Exploration des aménagements possibles en concertation avec le salarié."
+  ]},
+
+// 69 - Solutions
+{type:"content", kicker:"Solutions", title:"Des solutions diversifiées",
+  bullets:[
+    "Aménagement du poste de travail : ergonomie, matériel adapté.",
+    "Aménagement des horaires ou du rythme de travail.",
+    "Télétravail partiel ou total.",
+    "Formation ou reconversion professionnelle.",
+    "Temps partiel thérapeutique.",
+    "Reclassement sur un autre poste.",
+    "Recours aux aides AGEFIPH / Cap emploi."
+  ]},
+
+// 70 - Mise en œuvre & suivi
+{type:"two", kicker:"Étapes 4 & 5", title:"Mise en œuvre & suivi",
+  a:{h:"4. Mise en œuvre", t:"Déploiement de la ou des solutions retenues. Coordination entre tous les acteurs.", style:"plain"},
+  b:{h:"5. Suivi", t:"Points réguliers pour s'assurer de l'efficacité des mesures et les ajuster si nécessaire.", style:"black"}},
+
+// 71 - Acteurs internes
+{type:"content", kicker:"Acteurs internes", title:"Acteurs internes du maintien / prévention",
+  bullets:[
+    "Médecin du travail (pivot central du dispositif).",
+    "Référent handicap.",
+    "Responsable RH / DRH.",
+    "Manager direct.",
+    "CSE / délégués syndicaux."
+  ]},
+
+// 72 - placeholder
+{type:"placeholder", kicker:"Bonnes pratiques", title:"Bonnes pratiques du maintien dans l'emploi"},
+
+// 73 - Acteurs externes
+{type:"content", kicker:"Acteurs externes", title:"Acteurs externes du maintien / prévention",
+  bullets:[
+    "Cap emploi : accompagnement global du parcours.",
+    "AGEFIPH : financement des aides et prestations.",
+    "CPAM : temps partiel thérapeutique, invalidité.",
+    "Médecin traitant : certificat médical, orientation.",
+    "SST : préconisations d'aménagement, visite de pré-reprise.",
+    "Experts en compensation : ergonomes, ergothérapeutes, SAMETH."
+  ]},
+
+// 74-80 - placeholders
+{type:"placeholder", kicker:"Cap emploi", title:"Les missions de Cap emploi"},
+{type:"placeholder", kicker:"Soins", title:"Les soignants — médecin traitant"},
+{type:"placeholder", kicker:"SST", title:"Le Service de Santé au Travail (SST)"},
+{type:"placeholder", kicker:"CPAM", title:"Les Caisses Primaires d'Assurance Maladie"},
+{type:"placeholder", kicker:"Reclassement", title:"Les chances de reclassement"},
+{type:"placeholder", kicker:"Experts", title:"Les experts en compensation du handicap"},
+{type:"placeholder", kicker:"Maintien", title:"Le maintien — en images"},
+
+// 81 - Aides
+{type:"content", kicker:"Aides", title:"Des aides pour les parcours et le maintien",
+  bullets:[
+    "Les aides peuvent être : Humaines / Techniques / Organisationnelles / Financières.",
+    "L'enjeu est de les mobiliser au bon moment.",
+    "Ne pas attendre la dégradation de la situation pour activer les dispositifs."
+  ]},
+
+// 82 - placeholder
+{type:"placeholder", kicker:"AGEFIPH", title:"AGEFIPH — aides et prestations entreprises, maintien dans l'emploi"},
+
+// 83 - Aides tout au long du parcours
+{type:"content", kicker:"Parcours", title:"Entreprises : des aides tout au long du parcours",
+  bullets:[
+    "Des aides mobilisables à chaque étape : recrutement, intégration, aménagement, maintien.",
+    "Les besoins peuvent apparaître à différents moments : à l'arrivée, évolution du poste, aggravation de l'état de santé, changement d'organisation.",
+    "Les aides doivent être pensées comme un accompagnement continu.",
+    "BOETH = bénéficiaire de l'obligation d'emploi des travailleurs handicapés."
+  ]},
+
+// 84-85 - placeholders
+{type:"placeholder", kicker:"Financement", title:"Financer l'aménagement d'un poste"},
+{type:"placeholder", kicker:"Autonomie", title:"Pour la personne — aides pour favoriser l'autonomie"},
+
+// 86 - Divider OETH
+{type:"divider", kicker:"Partie 6", title:["Les modalités","de déclaration","OETH"]},
+
+// 87 - Réponse à l'obligation
+{type:"content", kicker:"OETH", title:"Les modalités de réponse à l'obligation d'emploi",
+  bullets:[
+    "Emploi direct de BOETH (voie principale).",
+    "Recours à la sous-traitance auprès d'EA, ESAT ou TIH (déductible de la contribution).",
+    "Accueil de stagiaires handicapés.",
+    "Accord de branche ou d'entreprise agréé."
+  ],
+  notes:"Attention : l'accord de branche ou d'entreprise agréé SUSPEND la contribution mais impose un plan d'action sur 3 ans."},
+
+// 88 - Déclaration
+{type:"content", kicker:"DOETH", title:"Modalités de déclaration OETH",
+  bullets:[
+    "Déclaration annuelle via la DSN (Déclaration Sociale Nominative) depuis 2020.",
+    "Plus de DOETH séparée — la déclaration est intégrée dans la DSN mensuelle.",
+    "Tous les employeurs d'au moins 20 salariés sont assujettis à l'OETH."
+  ]},
+
+// 89-93 - placeholders
+{type:"placeholder", kicker:"Calcul", title:"Calcul des effectifs — assujettissement (1/2)"},
+{type:"placeholder", kicker:"Calcul", title:"Calcul des effectifs — assujettissement (2/2)"},
+{type:"placeholder", kicker:"Bénéficiaires", title:"Les bénéficiaires BOETH (1/2)"},
+{type:"placeholder", kicker:"Bénéficiaires", title:"Les bénéficiaires BOETH (2/2)"},
+{type:"placeholder", kicker:"Intérimaires", title:"Les intérimaires dans le calcul OETH"},
+
+// 94 - Déductions
+{type:"content", kicker:"Contribution", title:"Déductions de la contribution AGEFIPH",
+  bullets:[
+    "Le recours à la sous-traitance auprès d'EA (Entreprises Adaptées), ESAT ou TIH (Travailleurs Indépendants Handicapés) permet de déduire une partie de la contribution AGEFIPH.",
+    "La déduction est plafonnée à 50% de la contribution globale.",
+    "C'est une voie complémentaire, pas un substitut à l'emploi direct."
+  ]},
+
+// 95 - Quiz final
+{type:"quiz", kicker:"Quiz final", title:"QUIZZ FINAL — Handicap & Emploi",
+  q:"À partir de quel effectif l'entreprise est-elle assujettie à l'obligation d'emploi des travailleurs handicapés (OETH) ?",
+  opts:[{k:"A",t:"10 salariés"},{k:"B",t:"20 salariés"},{k:"C",t:"50 salariés"},{k:"D",t:"250 salariés"}],
+  ans:1,
+  explain:"Bonne réponse B : l'OETH s'applique à tous les employeurs d'au moins 20 salariés. Le taux d'emploi obligatoire est de 6% de l'effectif total.",
+  timer:30},
+
+// 96 - Clôture
+{type:"closing", title:"Merci.",
+  sub:"CGT Occitanie — Formation Handicap & Emploi (AGEFIPH)",
+  contacts:"CGT Comité Régional Occitanie · Formation syndicale"}
+];
+
+/* ===================== MOTEUR ===================== */
+let cur=0;
+const deck=document.getElementById('deck');
+const notesEl=document.getElementById('notes');
+const notesBody=notesEl.querySelector('.nbody');
+const countEl=document.getElementById('count');
+const barFill=document.querySelector('#bar i');
+const ovEl=document.getElementById('ov');
+const inkCanvas=document.getElementById('ink');
+const inkTools=document.getElementById('inktools');
+const ctx=inkCanvas.getContext('2d');
+let inkOn=false, inkTool='pen', drawing=false, lastX=0, lastY=0;
+
+function resizeCanvas(){inkCanvas.width=window.innerWidth;inkCanvas.height=window.innerHeight;}
+resizeCanvas(); window.addEventListener('resize',resizeCanvas);
+
+function logoMark(){
+  return `<img src="/assets/logo-cgt-occitanie.jpg" class="logo-img" alt="CGT Occitanie">`;
+}
+
+function buildSlide(s,i){
+  const div=document.createElement('div');
+  div.className='slide';
+  if(s.type==='title') div.classList.add('s-title');
+  if(s.type==='divider') div.classList.add('s-divider');
+  if(s.type==='closing') div.classList.add('s-closing');
+  if(s.dark) div.classList.add('dark');
+
+  if(s.type==='title'){
+    const titleArr=Array.isArray(s.title)?s.title:[s.title];
+    div.innerHTML=`
+      <div class="lockup reveal">${logoMark()}</div>
+      <div class="kicker reveal"><span class="dot"></span>${s.kicker||''}</div>
+      <h1 class="title reveal">${titleArr.join('<br>')}</h1>
+      <div class="accent reveal"></div>
+      <p class="lede reveal">${s.lede||''}</p>
+      <div class="foot reveal">${s.foot||''}</div>`;
+  } else if(s.type==='divider'){
+    const titleArr=Array.isArray(s.title)?s.title:[s.title];
+    div.innerHTML=`
+      <div class="kicker reveal"><span class="dot"></span>${s.kicker||''}</div>
+      <h2 class="title reveal">${titleArr.join('<br>')}</h2>
+      ${s.lede?`<p class="lede reveal">${s.lede}</p>`:''}
+      <div class="barline reveal"></div>`;
+  } else if(s.type==='closing'){
+    div.innerHTML=`
+      <div class="lockup reveal">${logoMark()}</div>
+      <h1 class="title reveal">${(s.title||'').replace(/\n/g,'<br>')}</h1>
+      <p class="sub reveal">${s.sub||''}</p>
+      <div class="contacts reveal">${s.contacts||''}</div>`;
+  } else if(s.type==='content'){
+    const bis=s.bullets||[];
+    const bhtml=bis.map(b=>`<li>${b}</li>`).join('');
+    div.innerHTML=`
+      <div class="kicker reveal"><span class="dot"></span>${s.kicker||''}</div>
+      <h2 class="title reveal" style="font-size:clamp(28px,4.5vw,72px)">${s.title||''}</h2>
+      <ul class="bullets reveal">${bhtml}</ul>
+      ${s.strip?`<div class="note-strip reveal">${s.strip}</div>`:''}`;
+  } else if(s.type==='def'){
+    div.innerHTML=`
+      <div class="kicker reveal"><span class="dot"></span>${s.kicker||''}</div>
+      <h2 class="title reveal" style="font-size:clamp(28px,4.5vw,72px)">${s.title||''}</h2>
+      <div class="defbox reveal">
+        <div class="term">${s.term||''}</div>
+        <div class="txt">${s.text||''}</div>
       </div>
-      <h3>Mots-clés</h3>
-      <ul>
-        <li><strong>Limitation</strong> — restriction des capacités d'action</li>
-        <li><strong>Subie</strong> — non choisie par la personne</li>
-        <li><strong>Altération</strong> — dégradation d'une fonction physique, sensorielle, mentale, cognitive ou psychique</li>
-        <li><strong>Trouble invalidant</strong> — qui empêche ou réduit la participation sociale</li>
-      </ul>
-    </div>
+      ${s.extra?`<div class="defextra reveal">${s.extra}</div>`:''}`;
+  } else if(s.type==='stats'){
+    const sthtml=(s.items||[]).map(it=>`
+      <div class="stat">
+        <div class="num">${it.num||''}</div>
+        <div class="lab">${it.lab||''}</div>
+      </div>`).join('');
+    const cols=s.items&&s.items.length<=2?s.items.length:4;
+    div.innerHTML=`
+      <div class="kicker reveal"><span class="dot"></span>${s.kicker||''}</div>
+      <h2 class="title reveal" style="font-size:clamp(28px,4.5vw,72px)">${s.title||''}</h2>
+      <div class="stats reveal" style="grid-template-columns:repeat(${cols},1fr)">${sthtml}</div>`;
+  } else if(s.type==='steps'){
+    const sthtml=(s.items||[]).map(it=>`
+      <div class="step">
+        <div class="big">${it.big||''}</div>
+        <div class="nm">${it.nm||''}</div>
+        <div class="ds">${it.ds||''}</div>
+      </div>`).join('');
+    const n=s.items?s.items.length:3;
+    const cls=n<=3?'n3':'n4';
+    div.innerHTML=`
+      <div class="kicker reveal"><span class="dot"></span>${s.kicker||''}</div>
+      <h2 class="title reveal" style="font-size:clamp(28px,4.5vw,72px)">${s.title||''}</h2>
+      <div class="steps ${cls} reveal">${sthtml}</div>`;
+  } else if(s.type==='two'){
+    const styleA=s.a&&s.a.style?s.a.style:'plain';
+    const styleB=s.b&&s.b.style?s.b.style:'black';
+    div.innerHTML=`
+      <div class="kicker reveal"><span class="dot"></span>${s.kicker||''}</div>
+      <h2 class="title reveal" style="font-size:clamp(28px,4.5vw,72px)">${s.title||''}</h2>
+      <div class="two reveal">
+        <div class="tc ${styleA}"><h3>${s.a&&s.a.h||''}</h3><p>${s.a&&s.a.t||''}</p></div>
+        <div class="tc ${styleB}"><h3>${s.b&&s.b.h||''}</h3><p>${s.b&&s.b.t||''}</p></div>
+      </div>`;
+  } else if(s.type==='table'){
+    const hhtml=(s.headers||[]).map(h=>`<th style="background:var(--ink);color:var(--yellow);font-family:var(--ui);font-weight:800;font-size:clamp(13px,1.4vw,20px);padding:1.2vh 1vw;text-align:left;letter-spacing:.04em;text-transform:uppercase">${h}</th>`).join('');
+    const rhtml=(s.rows||[]).map((row,ri)=>{
+      const tds=row.map(cell=>`<td style="padding:1.1vh 1vw;font-size:clamp(13px,1.4vw,19px);border-bottom:1px solid var(--line)">${cell}</td>`).join('');
+      return `<tr style="background:${ri%2===0?'var(--white)':'var(--card)'}">${tds}</tr>`;
+    }).join('');
+    div.innerHTML=`
+      <div class="kicker reveal"><span class="dot"></span>${s.kicker||''}</div>
+      <h2 class="title reveal" style="font-size:clamp(28px,4.5vw,72px)">${s.title||''}</h2>
+      <div class="reveal" style="margin-top:2.5vh;overflow:auto;max-height:65vh">
+        <table style="width:100%;border-collapse:collapse;border:1px solid var(--line)">
+          <thead><tr>${hhtml}</tr></thead>
+          <tbody>${rhtml}</tbody>
+        </table>
+      </div>`;
+  } else if(s.type==='placeholder'){
+    const safetitle=(s.title||'').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    div.innerHTML=`
+      <div class="kicker reveal"><span class="dot"></span>${s.kicker||''}</div>
+      <h2 class="title reveal" style="font-size:clamp(28px,4.5vw,72px)">${s.title||''}</h2>
+      <div class="svgwrap reveal">
+        <svg viewBox="0 0 800 300" xmlns="http://www.w3.org/2000/svg">
+          <rect width="800" height="300" fill="#F1EFE8" rx="4"/>
+          <rect x="0" y="0" width="8" height="300" fill="#E2001A"/>
+          <rect x="28" y="130" width="744" height="4" fill="#FFD200" opacity=".6"/>
+          <text x="400" y="110" text-anchor="middle" font-size="22" font-family="Arial,sans-serif" font-weight="700" fill="#6C6A63" letter-spacing="2">${safetitle}</text>
+          <text x="400" y="180" text-anchor="middle" font-size="40" font-family="Arial,sans-serif" fill="#E4E0D4">&#9635;</text>
+          <text x="400" y="240" text-anchor="middle" font-size="14" font-family="Arial,sans-serif" fill="#6C6A63">[ Slide visuelle / Support graphique ]</text>
+        </svg>
+      </div>`;
+  } else if(s.type==='quiz'){
+    const optshtml=(s.opts||[]).map((o,oi)=>`<button class="opt" data-idx="${oi}"><span class="k">${o.k}</span>${o.t}</button>`).join('');
+    const timerSec=s.timer||0;
+    div.innerHTML=`
+      <div class="kicker reveal"><span class="dot"></span>${s.kicker||''}</div>
+      <h2 class="title reveal" style="font-size:clamp(22px,3.5vw,58px)">${s.title||''}</h2>
+      <p class="quiz-q reveal">${s.q||''}</p>
+      <div class="opts reveal">${optshtml}</div>
+      <div class="quiz-a reveal">${s.explain||''}</div>
+      ${timerSec>0?`<div class="timer reveal"><div class="tmr-display" id="tmr${i}">${Math.floor(timerSec/60)}:${String(timerSec%60).padStart(2,'0')}</div><button class="tbtn" id="ts${i}">Démarrer</button><button class="tbtn ghost" id="tr${i}">Reset</button></div>`:''}`;
+    setTimeout(()=>{
+      const ans=s.ans;
+      div.querySelectorAll('.opt').forEach((btn,oi)=>{
+        btn.addEventListener('click',()=>{
+          if(ans>=0){
+            div.querySelectorAll('.opt').forEach((b,bi)=>{b.classList.toggle('good',bi===ans);b.classList.toggle('bad',bi!==ans);});
+          }
+          div.querySelector('.quiz-a').classList.add('show');
+        });
+      });
+      if(timerSec>0){
+        const disp=div.querySelector(`#tmr${i}`);
+        const startBtn=div.querySelector(`#ts${i}`);
+        const resetBtn=div.querySelector(`#tr${i}`);
+        let sec=timerSec, running=false, intv=null;
+        const fmt=t=>`${Math.floor(t/60)}:${String(t%60).padStart(2,'0')}`;
+        startBtn.addEventListener('click',()=>{
+          if(!running){running=true;startBtn.textContent='Pause';disp.classList.add('run');
+            intv=setInterval(()=>{if(sec>0){sec--;disp.textContent=fmt(sec);}else{clearInterval(intv);disp.classList.remove('run');disp.classList.add('done');startBtn.textContent='Terminé';}},1000);
+          } else {clearInterval(intv);running=false;startBtn.textContent='Reprendre';disp.classList.remove('run');}
+        });
+        resetBtn.addEventListener('click',()=>{clearInterval(intv);running=false;sec=timerSec;disp.textContent=fmt(sec);disp.classList.remove('run','done');startBtn.textContent='Démarrer';});
+      }
+    },100);
+  }
+  return div;
+}
 
-    <div class="slide" id="slide-3">
-      <div class="slide-num">Diapo 3</div>
-      <h2>Le handicap en chiffres</h2>
-      <div class="stats-grid">
-        <div class="stat-card">
-          <span class="stat-num">20 %</span>
-          <div class="stat-label">de la population vit avec un handicap</div>
-        </div>
-        <div class="stat-card">
-          <span class="stat-num">40 %</span>
-          <div class="stat-label">en incluant les handicaps temporaires</div>
-        </div>
-        <div class="stat-card">
-          <span class="stat-num">80 %</span>
-          <div class="stat-label">des handicaps sont invisibles</div>
-        </div>
-      </div>
-      <div class="bandeau-jaune">En hausse avec le vieillissement de la population.</div>
-    </div>
+SLIDES.forEach((s,i)=>deck.appendChild(buildSlide(s,i)));
+const allSlides=deck.querySelectorAll('.slide');
 
-    <div class="slide" id="slide-4">
-      <div class="slide-num">Diapo 4</div>
-      <h2>C'est quoi une personne « normale » ?</h2>
-      <p>Le port de lunettes est un outil de compensation : voir moins bien, c'est un handicap.</p>
-      <div class="etapes">
-        <div class="etape">
-          <div class="etape-num">1</div>
-          <div class="etape-content">
-            <h4>On donne les outils nécessaires pour fonctionner.</h4>
-          </div>
-        </div>
-        <div class="etape">
-          <div class="etape-num">2</div>
-          <div class="etape-content">
-            <h4>Avec l'aide technique, je me sens normal.</h4>
-          </div>
-        </div>
-      </div>
-      <div class="bandeau-vert">
-        <strong>Quelle différence entre être normal et se sentir anormal ?</strong><br>
-        Se sentir normal, c'est être satisfait de l'expérience que l'on est en train de vivre.
-      </div>
-    </div>
+function goTo(n){
+  allSlides[cur].classList.remove('active');
+  cur=Math.max(0,Math.min(n,SLIDES.length-1));
+  allSlides[cur].classList.add('active');
+  countEl.innerHTML=`<b>${String(cur+1).padStart(2,'0')}</b> / ${SLIDES.length}`;
+  barFill.style.width=`${((cur+1)/SLIDES.length)*100}%`;
+  notesBody.innerHTML=SLIDES[cur].notes||'<em>Aucune note pour cette diapositive.</em>';
+  try{localStorage.setItem('cgt-agefiph-slide',cur);}catch(e){}
+}
 
-    <div class="slide" id="slide-8">
-      <div class="slide-num">Diapo 8</div>
-      <h2>Conception universelle vs universalisante</h2>
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin:.75rem 0;">
-        <div class="bandeau-bleu">
-          <strong>Conception universelle</strong><br>
-          Penser pour tous dès l'origine.<br>
-          <em style="font-size:.82rem; color:var(--muted)">Mais ce n'est pas suffisant.</em>
-        </div>
-        <div class="bandeau-vert">
-          <strong>Conception universalisante</strong><br>
-          Une innovation née d'un besoin précis… qui améliore l'usage pour chacun.
-        </div>
-      </div>
-    </div>
+try{const saved=localStorage.getItem('cgt-agefiph-slide');if(saved!==null)goTo(+saved);else goTo(0);}catch(e){goTo(0);}
 
-    <div class="slide" id="slide-9">
-      <div class="slide-num">Diapo 9</div>
-      <h2>Société et transition inclusive</h2>
-      <p>La réussite de l'inclusion repose sur le rapprochement de deux acteurs :</p>
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin:.75rem 0;">
-        <div class="bandeau-bleu">
-          <strong>Entreprises (privé / public)</strong><br>
-          Embauche et maintien dans l'emploi des personnes en situation de handicap.
-        </div>
-        <div class="bandeau-vert">
-          <strong>Secteur spécialisé (ESMS)</strong><br>
-          Parcours alternatif et soutien pour monter en compétences et accéder à l'emploi.
-        </div>
-      </div>
-      <div class="bandeau-jaune">L'objectif est de favoriser les passerelles entre ces différents univers.</div>
-    </div>
+function buildOv(){
+  ovEl.innerHTML='';
+  SLIDES.forEach((s,i)=>{
+    const c=document.createElement('div');
+    c.className=`ovc ${s.type==='divider'?'div':''}`;
+    c.innerHTML=`<div class="n">${String(i+1).padStart(2,'0')}</div>
+      ${s.kicker?`<div class="k">${s.kicker}</div>`:''}
+      <div class="t">${Array.isArray(s.title)?s.title[0]:s.title||s.type}</div>`;
+    c.addEventListener('click',()=>{ovEl.classList.remove('show');goTo(i);});
+    ovEl.appendChild(c);
+  });
+}
+buildOv();
 
-    <div class="slide" id="slide-10">
-      <div class="slide-num">Diapo 10</div>
-      <h2>Droit commun — transition inclusive</h2>
-      <div class="bandeau-rouge">
-        <strong>L'enjeu :</strong> Aider les entreprises à percevoir les bénéfices du recrutement des personnes en situation de handicap.
-      </div>
-      <p>Le <strong>droit commun</strong>, c'est permettre à chacun d'accéder aux mêmes dispositifs, aux mêmes formations et aux mêmes opportunités professionnelles.</p>
-      <div class="bandeau-bleu">
-        <em>Droit commun désigne le cadre général s'appliquant à l'ensemble des citoyens, par opposition à des dispositifs spécifiques ou isolés.</em>
-      </div>
-    </div>
+document.addEventListener('keydown',e=>{
+  if(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA')return;
+  if(e.key==='ArrowRight'||e.key===' '||e.key==='ArrowDown'){e.preventDefault();goTo(cur+1);}
+  else if(e.key==='ArrowLeft'||e.key==='ArrowUp'){e.preventDefault();goTo(cur-1);}
+  else if(e.key==='Home'){goTo(0);}
+  else if(e.key==='End'){goTo(SLIDES.length-1);}
+  else if(e.key.toLowerCase()==='o'){ovEl.classList.toggle('show');}
+  else if(e.key.toLowerCase()==='n'){notesEl.classList.toggle('show');}
+  else if(e.key.toLowerCase()==='f'){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen();}
+  else if(e.key.toLowerCase()==='a'){toggleInk();}
+  else if(e.key.toLowerCase()==='p'){openPresenter();}
+  else if(e.key==='Escape'){ovEl.classList.remove('show');notesEl.classList.remove('show');document.getElementById('help').classList.remove('show');if(inkOn)toggleInk();}
+  else if(e.key==='?'){document.getElementById('help').classList.toggle('show');}
+});
+document.getElementById('bPrev').addEventListener('click',()=>goTo(cur-1));
+document.getElementById('bNext').addEventListener('click',()=>goTo(cur+1));
+document.getElementById('bOv').addEventListener('click',()=>{buildOv();ovEl.classList.toggle('show');});
+document.getElementById('bNotes').addEventListener('click',()=>notesEl.classList.toggle('show'));
+document.getElementById('bFull').addEventListener('click',()=>document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen());
+document.getElementById('bHelp').addEventListener('click',()=>document.getElementById('help').classList.toggle('show'));
 
-    <div class="slide" id="slide-11">
-      <div class="slide-num">Diapo 11</div>
-      <h2>Lexique</h2>
-      <table class="lex-table">
-        <thead><tr><th>Sigle</th><th>Signification</th></tr></thead>
-        <tbody>
-          <tr><td>RQTH</td><td>Reconnaissance de la qualité de travailleur handicapé</td></tr>
-          <tr><td>BOETH</td><td>Bénéficiaire de l'obligation d'emploi des travailleurs handicapés</td></tr>
-          <tr><td>OETH</td><td>Obligation d'emploi des travailleurs handicapés</td></tr>
-          <tr><td>DOETH</td><td>Déclaration obligatoire d'emploi des travailleurs handicapés</td></tr>
-          <tr><td>FIPHFP</td><td>Fonds pour l'insertion des personnes handicapées dans la fonction publique</td></tr>
-          <tr><td>AGEFIPH</td><td>Association de gestion du fonds pour l'insertion professionnelle des personnes handicapées</td></tr>
-          <tr><td>ESMS</td><td>Établissements et services médico-sociaux</td></tr>
-          <tr><td>ESAT</td><td>Établissement et service d'aide par le travail</td></tr>
-          <tr><td>EA</td><td>Entreprise adaptée</td></tr>
-          <tr><td>TIH</td><td>Travailleur indépendant handicapé</td></tr>
-          <tr><td>SST</td><td>Service de Santé au Travail</td></tr>
-          <tr><td>CPF</td><td>Compte personnel de formation</td></tr>
-        </tbody>
-      </table>
-    </div>
+let touchStartX=0;
+document.addEventListener('touchstart',e=>touchStartX=e.touches[0].clientX,{passive:true});
+document.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-touchStartX;if(Math.abs(dx)>40){if(dx<0)goTo(cur+1);else goTo(cur-1);}});
 
-    <div class="slide" id="slide-19">
-      <div class="slide-num">Diapo 19</div>
-      <h2>Connaissances de base du handicap au travail</h2>
-      <ol>
-        <li>De la catégorisation à la discrimination</li>
-        <li>Le handicap, la situation de handicap</li>
-        <li>Les différents types de handicap</li>
-        <li>Les fondamentaux de la loi Handicap — Zoom RQTH</li>
-      </ol>
-      <div class="bandeau-jaune">Ces connaissances sont indispensables pour agir efficacement dans l'entreprise.</div>
-    </div>
-  </div>
+function toggleInk(){
+  inkOn=!inkOn;
+  inkCanvas.classList.toggle('on',inkOn);
+  inkTools.classList.toggle('on',inkOn);
+  document.getElementById('bInk').classList.toggle('cb-on',inkOn);
+}
+document.getElementById('bInk').addEventListener('click',toggleInk);
+document.getElementById('inkClearBtn').addEventListener('click',()=>ctx.clearRect(0,0,inkCanvas.width,inkCanvas.height));
+document.getElementById('inkCloseBtn').addEventListener('click',()=>{if(inkOn)toggleInk();});
+document.querySelectorAll('.it[data-tool]').forEach(b=>{
+  b.addEventListener('click',()=>{
+    inkTool=b.dataset.tool;
+    document.querySelectorAll('.it[data-tool]').forEach(x=>x.classList.remove('act'));
+    b.classList.add('act');
+  });
+});
+inkCanvas.addEventListener('pointerdown',e=>{if(!inkOn)return;drawing=true;lastX=e.offsetX;lastY=e.offsetY;});
+inkCanvas.addEventListener('pointermove',e=>{
+  if(!inkOn||!drawing)return;
+  ctx.save();
+  if(inkTool==='pen'){ctx.strokeStyle='rgba(226,0,26,0.9)';ctx.lineWidth=3;ctx.globalCompositeOperation='source-over';}
+  else if(inkTool==='hl'){ctx.strokeStyle='rgba(255,210,0,0.35)';ctx.lineWidth=24;ctx.globalCompositeOperation='source-over';}
+  else{ctx.lineWidth=28;ctx.globalCompositeOperation='destination-out';}
+  ctx.lineCap='round';ctx.lineJoin='round';
+  ctx.beginPath();ctx.moveTo(lastX,lastY);ctx.lineTo(e.offsetX,e.offsetY);ctx.stroke();
+  ctx.restore();
+  lastX=e.offsetX;lastY=e.offsetY;
+});
+inkCanvas.addEventListener('pointerup',()=>drawing=false);
+allSlides.forEach(s=>s.addEventListener('click',e=>{
+  if(inkOn||e.target.classList.contains('opt')||e.target.closest('.tbtn')||e.target.closest('.it'))return;
+  const x=e.clientX/window.innerWidth;
+  if(x>0.6)goTo(cur+1);else if(x<0.4)goTo(cur-1);
+}));
 
-  <!-- ═══════════════════════════════════════════ -->
-  <div class="partie" id="partie-2">
-    <div class="partie-titre">2 — Les familles de handicap</div>
+function openPresenter(){
+  const pw=window.open('','presenterWindow','width=800,height=600,resizable=yes');
+  if(!pw)return;
+  pw.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8">
+  <style>body{margin:0;background:#111;color:#eee;font-family:Arial,sans-serif;padding:20px}
+  #pt{font-size:32px;font-weight:bold;color:#FFD200;margin-bottom:12px}
+  #pc{font-size:16px;color:#aaa;margin-bottom:20px}
+  #pnotes{font-size:18px;line-height:1.5;background:#1a1a1a;padding:16px;border-left:4px solid #FFD200}
+  #pnext{font-size:13px;color:#888;margin-top:16px}
+  #pclock{position:fixed;top:14px;right:20px;font-size:15px;color:#aaa;font-family:monospace}
+  </style></head><body>
+  <div id="pclock"></div>
+  <div id="pt">Diapo 1</div><div id="pc">1 / ${SLIDES.length}</div>
+  <div id="pnotes"></div><div id="pnext"></div>
+  <script>
+  const clk=document.getElementById('pclock');
+  setInterval(()=>{const n=new Date();clk.textContent=n.toLocaleTimeString('fr-FR');},1000);
+  window.updatePres=function(cur,total,notes,nextTitle){
+    document.getElementById('pt').textContent='Diapo '+(cur+1);
+    document.getElementById('pc').textContent=(cur+1)+' / '+total;
+    document.getElementById('pnotes').innerHTML=notes||'';
+    document.getElementById('pnext').textContent=nextTitle?'Suivante : '+nextTitle:'';
+  };
+  <\/script></body></html>`);
+  pw.document.close();
+  function syncPres(){
+    if(!pw.closed){
+      const n=SLIDES[cur].notes||'';
+      const nextT=SLIDES[cur+1]?`${Array.isArray(SLIDES[cur+1].title)?SLIDES[cur+1].title[0]:SLIDES[cur+1].title||''}`:null;
+      pw.updatePres&&pw.updatePres(cur,SLIDES.length,n,nextT);
+    }
+  }
+  const origGoTo=goTo;
+  window.goTo=function(n){origGoTo(n);syncPres();};
+  syncPres();
+}
+document.getElementById('bPres').addEventListener('click',openPresenter);
+</script>
 
-    <div class="slide" id="slide-21">
-      <div class="slide-num">Diapos 21–27</div>
-      <h2>Les « familles » de handicap</h2>
-      <div class="visuel-note">Schéma des familles de handicap — voir support visuel</div>
-      <h3>Différencier : mental / cognitif / psychique</h3>
-      <ul>
-        <li><strong>Handicap mental</strong> — déficience intellectuelle, difficultés d'apprentissage et de raisonnement</li>
-        <li><strong>Handicap cognitif</strong> — troubles des fonctions cognitives (mémoire, attention, langage) sans déficience intellectuelle globale (ex : dyslexie, TDA/H)</li>
-        <li><strong>Handicap psychique</strong> — troubles psychiatriques (dépression sévère, schizophrénie, TOC…) sans atteinte des capacités intellectuelles</li>
-      </ul>
-      <h3>Visibilité du handicap</h3>
-      <p>80 % des handicaps sont <strong>invisibles</strong> : ils ne se voient pas au premier regard mais impactent réellement la vie professionnelle.</p>
-      <h3>Handicaps acquis ou innés ?</h3>
-      <p>La grande majorité des handicaps sont <strong>acquis</strong> au cours de la vie (accidents, maladies, vieillissement). Cela concerne potentiellement chaque salarié.</p>
-    </div>
-
-    <div class="slide" id="slide-27">
-      <div class="slide-num">Diapo 27</div>
-      <h2>Exemples de pathologies, incapacités et modalités de compensation</h2>
-      <div class="visuel-note">Tableau d'exemples par famille de handicap — voir support visuel</div>
-      <h3>Modalités de compensation</h3>
-      <ul>
-        <li><strong>Humaines</strong> — auxiliaire de vie, interprète en langue des signes</li>
-        <li><strong>Techniques</strong> — fauteuil, logiciel de synthèse vocale, aménagement de poste</li>
-        <li><strong>Organisationnelles</strong> — télétravail, aménagement des horaires, temps partiel thérapeutique</li>
-        <li><strong>Financières</strong> — aides AGEFIPH, PCH (prestation de compensation du handicap)</li>
-      </ul>
-    </div>
-  </div>
-
-  <!-- ═══════════════════════════════════════════ -->
-  <div class="partie" id="partie-3">
-    <div class="partie-titre">3 — La RQTH</div>
-
-    <div class="slide" id="slide-29">
-      <div class="slide-num">Diapos 29–41</div>
-      <h2>La RQTH — Reconnaissance de la qualité de travailleur handicapé</h2>
-      <h3>Loi du 5 septembre 2018 — simplification</h3>
-      <ul>
-        <li>Démarche simplifiée : un seul formulaire Cerfa</li>
-        <li>Durée de 1 à 10 ans (voire à vie pour handicaps irréversibles)</li>
-        <li>Accordée par la <strong>CDAPH</strong> (Commission des droits et de l'autonomie des personnes handicapées)</li>
-      </ul>
-      <h3>Diversité des titres administratifs ouvrant droit à l'OETH</h3>
-      <div class="visuel-note">Tableau des titres administratifs (AAH, carte mobilité inclusion, pension invalidité…) — voir support visuel</div>
-      <h3>Les freins côté personne handicapée</h3>
-      <ul>
-        <li>Peur de la stigmatisation et du regard des collègues</li>
-        <li>Crainte de perdre son emploi ou d'être mis à l'écart</li>
-        <li>Méconnaissance des droits et des aides disponibles</li>
-        <li>Déni du handicap, refus de se reconnaître comme tel</li>
-        <li>Complexité administrative perçue comme décourageante</li>
-        <li>Manque de confiance dans la confidentialité de la démarche</li>
-      </ul>
-      <h3>Zoom CPF — droits renforcés</h3>
-      <div class="bandeau-vert">
-        Les travailleurs handicapés bénéficient d'une <strong>majoration de 300 €/an</strong> sur leur compte CPF (plafond à 8 000 €).
-      </div>
-      <h3>Du dépôt de dossier à la RQTH — étapes</h3>
-      <div class="etapes">
-        <div class="etape">
-          <div class="etape-num">1</div>
-          <div class="etape-content">
-            <h4>Constituer le dossier</h4>
-            <p>Formulaire Cerfa + justificatifs médicaux + pièces d'identité</p>
-          </div>
-        </div>
-        <div class="etape">
-          <div class="etape-num">2</div>
-          <div class="etape-content">
-            <h4>Déposer à la MDPH</h4>
-            <p>Maison Départementale des Personnes Handicapées — en ligne ou par courrier</p>
-          </div>
-        </div>
-        <div class="etape">
-          <div class="etape-num">3</div>
-          <div class="etape-content">
-            <h4>Instruction par la CDAPH</h4>
-            <p>Délai moyen : 4 à 6 mois. La décision est notifiée par courrier.</p>
-          </div>
-        </div>
-        <div class="etape">
-          <div class="etape-num">4</div>
-          <div class="etape-content">
-            <h4>Transmission à l'employeur (optionnel)</h4>
-            <p>La personne choisit librement de communiquer ou non sa RQTH à son employeur.</p>
-          </div>
-        </div>
-      </div>
-      <div class="bandeau-rouge">
-        <strong>Rôle CGT :</strong> accompagner les salariés dans la démarche, expliquer la confidentialité, lever les freins, orienter vers les ressources.
-      </div>
-    </div>
-  </div>
-
-  <!-- ═══════════════════════════════════════════ -->
-  <div class="partie" id="partie-4">
-    <div class="partie-titre">4 — Le référent handicap en entreprise</div>
-
-    <div class="slide" id="slide-48">
-      <div class="slide-num">Diapos 48–53</div>
-      <h2>Référent handicap en entreprise</h2>
-      <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; margin:.75rem 0;">
-        <div class="bandeau-bleu" style="text-align:center"><strong>Sensibilisation</strong></div>
-        <div class="bandeau-jaune" style="text-align:center"><strong>Accompagnement</strong></div>
-        <div class="bandeau-vert" style="text-align:center"><strong>Coordination</strong></div>
-      </div>
-      <h3>Obligatoire ou pas ?</h3>
-      <div class="bandeau-rouge">
-        Obligatoire dans toute entreprise d'au moins <strong>250 salariés</strong> depuis la loi du 5 septembre 2018.
-      </div>
-      <h3>Rôle défini par la loi</h3>
-      <ul>
-        <li>Orienter, informer et accompagner les personnes en situation de handicap</li>
-        <li>Faire le lien entre le salarié, l'employeur et les acteurs externes (AGEFIPH, Cap emploi…)</li>
-        <li>Contribuer à la mise en œuvre de la politique handicap de l'entreprise</li>
-      </ul>
-      <h3>Acteurs de l'entreprise impliqués dans la politique handicap</h3>
-      <div class="visuel-note">Schéma des acteurs (DRH, référent handicap, médecin du travail, CSE, manager, salarié) — voir support visuel</div>
-    </div>
-  </div>
-
-  <!-- ═══════════════════════════════════════════ -->
-  <div class="partie" id="partie-5">
-    <div class="partie-titre">5 — Politique handicap en entreprise</div>
-
-    <div class="slide" id="slide-55">
-      <div class="slide-num">Diapos 55–56</div>
-      <h2>Les 5 piliers d'une politique handicap efficace</h2>
-      <table class="pilier-table">
-        <thead>
-          <tr><th>Pilier</th><th>Objectif principal</th><th>Importance &amp; bénéfices</th></tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>1. Engagement de la direction</td>
-            <td>Inscrire le handicap dans la stratégie globale de l'entreprise.</td>
-            <td>Point de départ indispensable qui donne de la légitimité et permet de construire des actions durables.</td>
-          </tr>
-          <tr>
-            <td>2. Sensibilisation</td>
-            <td>Déconstruire les préjugés et les stéréotypes sur le handicap.</td>
-            <td>Fait évoluer les regards et les comportements. On ne peut pas inclure sans sensibiliser le collectif de travail.</td>
-          </tr>
-          <tr>
-            <td>3. Recrutement</td>
-            <td>Analyser les compétences des candidats plutôt que leurs limitations.</td>
-            <td>Favorise l'égalité des chances et ouvre tous les postes aux personnes en situation de handicap.</td>
-          </tr>
-          <tr>
-            <td>4. Maintien dans l'emploi</td>
-            <td>Anticiper les risques d'inaptitude et de désinsertion professionnelle.</td>
-            <td>Préserve l'emploi et les compétences déjà présentes dans l'entreprise dès l'apparition de problèmes de santé.</td>
-          </tr>
-          <tr>
-            <td>5. Suivi des résultats</td>
-            <td>Définir des responsabilités, des objectifs et des indicateurs de pilotage.</td>
-            <td>L'organisation (comité de pilotage, réunions de suivi) garantit la continuité des actions et mesure l'efficacité.</td>
-          </tr>
-        </tbody>
-      </table>
-      <div class="bandeau-jaune">Cette structuration permet de transformer une obligation réglementaire en un véritable levier de performance sociale et de progrès collectif.</div>
-    </div>
-  </div>
-
-  <!-- ═══════════════════════════════════════════ -->
-  <div class="partie" id="partie-6">
-    <div class="partie-titre">6 — Recrutement &amp; intégration</div>
-
-    <div class="slide" id="slide-57">
-      <div class="slide-num">Diapos 57–61</div>
-      <h2>Acteurs externes du recrutement / intégration</h2>
-      <div class="visuel-note">Schéma des acteurs externes (Cap emploi, AGEFIPH, Pôle emploi, missions locales, ESMS…) — voir support visuel</div>
-
-      <h3>Zoom Alternance</h3>
-      <ul>
-        <li>Les personnes en situation de handicap peuvent bénéficier d'aides spécifiques à l'alternance via l'AGEFIPH</li>
-        <li>Durée du contrat adaptable (dérogation possible)</li>
-        <li>Accompagnement renforcé du tuteur/maître d'apprentissage</li>
-      </ul>
-
-      <h3>L'accueil et l'intégration — étapes</h3>
-      <div class="visuel-note">Schéma des étapes d'accueil — voir support visuel</div>
-
-      <h3>Les règles d'or de l'intégration</h3>
-      <ul>
-        <li>Préparer l'arrivée en amont (poste, matériel, équipe informée si accord du salarié)</li>
-        <li>Désigner un référent ou un binôme d'intégration</li>
-        <li>Ne pas sur-focaliser sur le handicap : traiter la personne comme tout autre salarié</li>
-        <li>Prévoir un suivi à 1 mois, 3 mois, 6 mois</li>
-        <li>Impliquer le médecin du travail dès le départ si besoin d'aménagement</li>
-      </ul>
-    </div>
-
-    <div class="slide" id="slide-62">
-      <div class="slide-num">Diapos 62–63</div>
-      <h2>Les outils de l'AGEFIPH</h2>
-      <div class="visuel-note">Tableau des aides et outils AGEFIPH — voir support visuel</div>
-      <h3>Relation AGEFIPH / Cap emploi</h3>
-      <ul>
-        <li><strong>AGEFIPH</strong> — finance et pilote la politique d'emploi des personnes handicapées dans le privé</li>
-        <li><strong>Cap emploi</strong> — opérateur de proximité, accompagne les personnes ET les entreprises dans le recrutement et le maintien</li>
-        <li>Depuis 2020 : Cap emploi est intégré dans le réseau France Travail (ex-Pôle emploi) pour un service unifié</li>
-      </ul>
-    </div>
-  </div>
-
-  <!-- ═══════════════════════════════════════════ -->
-  <div class="partie" id="partie-7">
-    <div class="partie-titre">7 — Maintien dans l'emploi</div>
-
-    <div class="slide" id="slide-64">
-      <div class="slide-num">Diapos 64–80</div>
-      <h2>Les 5 étapes-clés du maintien dans l'emploi</h2>
-      <div class="etapes">
-        <div class="etape">
-          <div class="etape-num">1</div>
-          <div class="etape-content">
-            <h4>Détection</h4>
-            <p>Repérer les signaux d'alerte : absentéisme, baisse de performance, arrêts répétés, déclaration de handicap.</p>
-          </div>
-        </div>
-        <div class="etape">
-          <div class="etape-num">2</div>
-          <div class="etape-content">
-            <h4>Signalement</h4>
-            <p>Avec l'accord du salarié, informer les acteurs concernés : RH, médecin du travail, référent handicap.</p>
-          </div>
-        </div>
-        <div class="etape">
-          <div class="etape-num">3</div>
-          <div class="etape-content">
-            <h4>Analyse de la situation &amp; recherche de solutions</h4>
-            <p>Étude du poste, analyse des restrictions, exploration des aménagements possibles.</p>
-          </div>
-        </div>
-        <div class="etape">
-          <div class="etape-num">4</div>
-          <div class="etape-content">
-            <h4>Mise en œuvre de la solution</h4>
-            <p>Aménagement du poste, formation, reclassement, temps partiel thérapeutique…</p>
-          </div>
-        </div>
-        <div class="etape">
-          <div class="etape-num">5</div>
-          <div class="etape-content">
-            <h4>Suivi</h4>
-            <p>Points réguliers pour s'assurer de l'efficacité des mesures et les ajuster si nécessaire.</p>
-          </div>
-        </div>
-      </div>
-
-      <h3>Solutions diversifiées</h3>
-      <ul>
-        <li>Aménagement du poste de travail (ergonomie, matériel adapté)</li>
-        <li>Aménagement des horaires ou du rythme de travail</li>
-        <li>Télétravail partiel ou total</li>
-        <li>Formation / reconversion professionnelle</li>
-        <li>Temps partiel thérapeutique</li>
-        <li>Reclassement sur un autre poste</li>
-        <li>Recours aux aides AGEFIPH / Cap emploi</li>
-      </ul>
-
-      <h3>Acteurs internes du maintien / prévention</h3>
-      <ul>
-        <li>Médecin du travail — pivot central du maintien</li>
-        <li>Référent handicap</li>
-        <li>RH / DRH</li>
-        <li>Manager direct</li>
-        <li>CSE / délégués syndicaux</li>
-      </ul>
-
-      <h3>Acteurs externes du maintien / prévention</h3>
-      <ul>
-        <li><strong>Cap emploi</strong> — accompagnement global de la situation</li>
-        <li><strong>AGEFIPH</strong> — financement des aides et prestations</li>
-        <li><strong>CPAM</strong> — temps partiel thérapeutique, invalidité</li>
-        <li><strong>Médecin traitant</strong> — certificat médical, orientation</li>
-        <li><strong>SST (Service de Santé au Travail)</strong> — préconisations d'aménagement, visite de pré-reprise</li>
-        <li><strong>Experts en compensation du handicap</strong> — ergonomes, ergothérapeutes, SAMETH</li>
-      </ul>
-
-      <h3>Les missions de Cap emploi</h3>
-      <div class="visuel-note">Schéma des missions Cap emploi — voir support visuel</div>
-
-      <h3>Le Service de Santé au Travail (SST)</h3>
-      <div class="visuel-note">Schéma des missions SST — voir support visuel</div>
-
-      <h3>Les Caisses Primaires d'Assurance Maladie</h3>
-      <div class="visuel-note">Tableau des prestations CPAM liées au maintien — voir support visuel</div>
-    </div>
-
-    <div class="slide" id="slide-81">
-      <div class="slide-num">Diapos 81–85</div>
-      <h2>Des aides pour les parcours et le maintien</h2>
-      <p>Aides, prestations et services pour accompagner les parcours professionnels des bénéficiaires de l'obligation d'emploi (BOE) et leur maintien dans l'emploi.</p>
-      <h3>Les aides peuvent être</h3>
-      <ul>
-        <li><strong>Humaines</strong> — auxiliaire, interprète…</li>
-        <li><strong>Techniques</strong> — matériel, logiciel, aménagement…</li>
-        <li><strong>Organisationnelles</strong> — horaires, télétravail…</li>
-        <li><strong>Financières</strong> — subventions AGEFIPH…</li>
-      </ul>
-      <div class="bandeau-jaune">L'enjeu est de les mobiliser au <strong>bon moment</strong> — ni trop tôt, ni trop tard.</div>
-
-      <h3>Entreprises : aides tout au long du parcours</h3>
-      <ul>
-        <li>Les besoins peuvent apparaître à l'arrivée dans l'entreprise, par l'évolution du poste, par l'aggravation de l'état de santé ou par un changement d'organisation</li>
-        <li>Les aides doivent être pensées comme un <strong>accompagnement continu</strong></li>
-      </ul>
-      <div class="bandeau-bleu"><strong>BOETH</strong> : bénéficiaire de l'obligation d'emploi des travailleurs handicapés.</div>
-
-      <h3>Financer l'aménagement d'un poste de travail</h3>
-      <div class="visuel-note">Tableau des aides AGEFIPH pour l'aménagement de poste — voir support visuel</div>
-
-      <h3>Pour la personne — aides à l'autonomie</h3>
-      <div class="visuel-note">Tableau des aides individuelles (PCH, AAH, aides AGEFIPH personne…) — voir support visuel</div>
-    </div>
-  </div>
-
-  <!-- ═══════════════════════════════════════════ -->
-  <div class="partie" id="partie-8">
-    <div class="partie-titre">8 — OETH &amp; modalités de déclaration</div>
-
-    <div class="slide" id="slide-86">
-      <div class="slide-num">Diapos 86–94</div>
-      <h2>L'OETH — Obligation d'emploi des travailleurs handicapés</h2>
-      <div class="bandeau-rouge">
-        Toute entreprise d'au moins <strong>20 salariés</strong> doit employer des travailleurs handicapés à hauteur de <strong>6 % de son effectif</strong>.
-      </div>
-
-      <h3>Modalités de réponse à l'obligation d'emploi</h3>
-      <ul>
-        <li>Emploi direct de BOETH (la voie principale)</li>
-        <li>Recours à la sous-traitance auprès d'EA, ESAT ou TIH (déductible de la contribution)</li>
-        <li>Accueil de stagiaires handicapés</li>
-        <li>Accord de branche ou d'entreprise agréé relatif à l'emploi des travailleurs handicapés</li>
-      </ul>
-      <div class="bandeau-jaune">Si l'obligation n'est pas remplie → contribution financière versée à l'<strong>AGEFIPH</strong>.</div>
-
-      <h3>Modalités de déclaration</h3>
-      <ul>
-        <li>Déclaration annuelle via la DSN (Déclaration Sociale Nominative) depuis 2020</li>
-        <li>Plus de DOETH séparée — intégré directement dans la DSN mensuelle</li>
-      </ul>
-
-      <h3>Calcul de l'effectif d'assujettissement</h3>
-      <div class="visuel-note">Tableau de calcul de l'effectif d'assujettissement et des bénéficiaires — voir support visuel</div>
-
-      <h3>Les bénéficiaires de l'obligation d'emploi (BOE)</h3>
-      <ul>
-        <li>Travailleurs reconnus handicapés par la CDAPH (RQTH)</li>
-        <li>Victimes d'accidents du travail ou de maladies professionnelles avec IPP ≥ 10 %</li>
-        <li>Titulaires d'une pension d'invalidité (catégories 1, 2 ou 3)</li>
-        <li>Anciens militaires et assimilés titulaires d'une pension militaire d'invalidité</li>
-        <li>Titulaires de la carte mobilité inclusion (mention invalidité)</li>
-        <li>Titulaires de l'Allocation Adulte Handicapé (AAH)</li>
-      </ul>
-
-      <h3>Les intérimaires</h3>
-      <div class="visuel-note">Règles de comptabilisation des intérimaires dans l'OETH — voir support visuel</div>
-
-      <h3>Déductions de la contribution — sous-traitance EA/ESAT/TIH</h3>
-      <div class="bandeau-vert">
-        Le recours à des <strong>entreprises adaptées (EA)</strong>, <strong>ESAT</strong> ou <strong>travailleurs indépendants handicapés (TIH)</strong> permet de déduire une partie de la contribution AGEFIPH.
-      </div>
-    </div>
-  </div>
-
-  <!-- QUIZZ FINAL -->
-  <div class="slide quizz-card" id="slide-95" style="border-left: none; margin-top: 2rem;">
-    <div class="slide-num" style="color:rgba(255,255,255,.5)">Diapo 95</div>
-    <h2>QUIZZ FINAL</h2>
-    <p>Le formateur anime le quiz de clôture avec les stagiaires.</p>
-  </div>
-
-  <!-- FIN -->
-  <div class="slide" id="slide-96" style="border-left-color: var(--jaune); text-align: center; padding: 2.5rem;">
-    <div class="slide-num">Diapo 96</div>
-    <h2 style="font-size: 2rem; color: var(--rouge);">Merci.</h2>
-    <p style="color: var(--muted); margin-top: .5rem;">CGT Occitanie — Formation Handicap &amp; Emploi (AGEFIPH)</p>
-  </div>
-
-</main>
-
+<!-- Bouton impression -->
 <style>
-#btn-print-float{position:fixed;bottom:1.25rem;right:1.25rem;z-index:9999;background:#E2001A;color:#fff;border:none;padding:.7rem 1.2rem;font-family:'Archivo',sans-serif;font-size:.85rem;font-weight:700;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,.25);}
-#btn-print-float:hover{background:#C40017;}
+#btn-print-float{position:fixed;bottom:1.25rem;right:1.25rem;z-index:9999;background:#E2001A;color:#fff;border:none;border-radius:0;padding:.55rem .9rem;font-family:sans-serif;font-size:.75rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;display:flex;align-items:center;gap:.4rem;box-shadow:0 2px 8px rgba(0,0,0,.35);transition:background .15s;}
+#btn-print-float:hover{background:#c40017;}
 @media print{#btn-print-float{display:none!important;}}
 </style>
-<button id="btn-print-float" onclick="window.print()">🖨 Imprimer</button>
-
+<button id="btn-print-float" onclick="window.print()">
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+  Imprimer
+</button>
 </body>
 </html>
