@@ -143,7 +143,7 @@ const CODE = 'CGTOCC';
 function valider() {
   const v = document.getElementById('code').value.trim().toUpperCase();
   if (v === CODE) {
-    sessionStorage.setItem('cgt_auth', 'ok');
+    localStorage.setItem('cgt_auth', 'ok');
     const p = new URLSearchParams(location.search).get('from') || '/';
     location.replace(p);
   } else {
@@ -158,7 +158,7 @@ document.getElementById('code').addEventListener('keydown', e => {
 });
 
 /* Déjà connecté → rediriger */
-if (sessionStorage.getItem('cgt_auth') === 'ok') {
+if (localStorage.getItem('cgt_auth') === 'ok') {
   const p = new URLSearchParams(location.search).get('from') || '/';
   location.replace(p);
 }

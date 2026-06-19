@@ -116,6 +116,7 @@ body { font-family: Arial, sans-serif; background: #F0F0F0; color: var(--noir); 
 </style>
 </head>
 <body>
+<script>if(localStorage.getItem('cgt_auth')!=='ok'){location.replace('/login.html?from='+encodeURIComponent(location.pathname));}</script>
 
 <!-- ── SIDEBAR ── -->
 <div id="sidebar">
@@ -376,19 +377,28 @@ function generatePDF() {
   const WHITE = [255, 255, 255];
 
   // ── header ──
+  const HDR_H = 18;
   let hy = MT;
   doc.setFillColor(...ROUGE);
-  doc.rect(ML, hy, W, 14, 'F');
+  doc.rect(ML, hy, W, HDR_H, 'F');
+
+  // Logo (if loaded)
+  const LOGO_W = 22, LOGO_H = 14, LOGO_X = ML + 3, LOGO_Y = hy + 2;
+  if (logoB64) {
+    doc.addImage(logoB64, 'JPEG', LOGO_X, LOGO_Y, LOGO_W, LOGO_H);
+  }
+
+  const textX = logoB64 ? ML + LOGO_W + 7 : ML + 4;
   doc.setTextColor(...WHITE);
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(11);
   const endM = (startMonth + nbMonths - 1) % 12;
   const endY = startYear + Math.floor((startMonth + nbMonths - 1) / 12);
-  doc.text(`Planning formations AT/MP – CGT Occitanie – ${MONTH_FR[startMonth]} ${startYear} → ${MONTH_FR[endM]} ${endY}`, ML + 4, hy + 6);
+  doc.text(`Planning formations AT/MP – CGT Occitanie – ${MONTH_FR[startMonth]} ${startYear} → ${MONTH_FR[endM]} ${endY}`, textX, hy + 7);
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(7);
-  doc.text('AT/MP · Secteur privé · Document transmis à la CARSAT', ML + 4, hy + 11);
-  hy += 14;
+  doc.text('AT/MP · Secteur privé · Document transmis à la CARSAT', textX, hy + 13);
+  hy += HDR_H;
 
   // ── legend ──
   let lx = ML;
@@ -508,6 +518,20 @@ function hexToRgb(hex) {
 ['sel-start-month','sel-start-year','sel-nb-months'].forEach(id => {
   document.getElementById(id).addEventListener('change', render);
 });
+
+// Pre-load logo as base64 for PDF
+let logoB64 = null;
+(function loadLogo() {
+  const img = new Image();
+  img.crossOrigin = 'anonymous';
+  img.onload = function() {
+    const c = document.createElement('canvas');
+    c.width = img.naturalWidth; c.height = img.naturalHeight;
+    c.getContext('2d').drawImage(img, 0, 0);
+    try { logoB64 = c.toDataURL('image/jpeg', 0.9); } catch(e) {}
+  };
+  img.src = '/assets/logo-cgt-occitanie.jpg';
+})();
 
 // Init
 DEFAULT.forEach(d => addSession(d.ud, d.ville, d.j1, d.j2));
