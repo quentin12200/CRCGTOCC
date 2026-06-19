@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Espace Stagiaire — Formation AT/MP CGT Occitanie</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%23E2001A'/%3E%3Ctext x='16' y='23' text-anchor='middle' font-family='sans-serif' font-weight='bold' font-size='16' fill='%23FFD200'%3ECGT%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --rouge: #E2001A; --rouge-dark: #C40017; --jaune: #FFD200;
+      --fond: #F5F4F0; --fond-card: #FFFFFF; --texte: #1A1A1A;
+      --texte-muted: #6B6B6B; --border: #E0DED8; --border-card: #E8E6E0;
+    }
+    body { background: var(--fond); color: var(--texte); font-family: 'Archivo', sans-serif; min-height: 100vh; display: flex; flex-direction: column; }
+
+    header {
+      background: var(--rouge);
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,.18);
+    }
+    .logo-wrap { flex-shrink: 0; height: 64px; display: flex; align-items: center; }
+    .logo-wrap img { height: 64px; width: auto; background: white; padding: 4px 6px; }
+    .header-divider { width: 2px; height: 48px; background: rgba(255,255,255,.3); flex-shrink: 0; }
+    .header-title { flex: 1; }
+    .header-title h1 { font-family: 'Anton', sans-serif; font-size: 1.2rem; letter-spacing: .04em; color: #fff; line-height: 1.2; }
+    .header-title span { font-size: .78rem; color: rgba(255,255,255,.75); font-weight: 400; }
+    .access-badge {
+      font-size: .68rem; color: #1A1A1A; background: #FFD200;
+      padding: .3rem .65rem; white-space: nowrap; letter-spacing: .04em; font-weight: 700;
+    }
+    .stripe { height: 5px; background: var(--jaune); }
+
+    main { flex: 1; max-width: 980px; width: 100%; margin: 0 auto; padding: 2.5rem 1.5rem 2rem; }
+
+    .welcome-box {
+      background: #fff; border-left: 5px solid var(--rouge);
+      padding: 1.1rem 1.4rem; margin-bottom: 2rem;
+      display: flex; align-items: flex-start; gap: 1rem;
+    }
+    .welcome-box .icon { font-size: 1.8rem; flex-shrink: 0; }
+    .welcome-box h2 { font-family: 'Anton', sans-serif; font-size: 1rem; letter-spacing: .04em; color: var(--rouge); margin-bottom: .25rem; }
+    .welcome-box p { font-size: .85rem; color: var(--texte-muted); line-height: 1.6; }
+
+    .section-label {
+      font-size: .68rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
+      color: var(--rouge); margin-bottom: 1.25rem; display: flex; align-items: center; gap: .7rem;
+    }
+    .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+    .modules-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 1.25rem; margin-bottom: 2.5rem; }
+    .card {
+      background: var(--fond-card); border: 1px solid var(--border-card);
+      border-top: 4px solid var(--rouge); padding: 1.5rem;
+      display: flex; flex-direction: column; gap: .8rem;
+      box-shadow: 0 1px 4px rgba(0,0,0,.06); transition: box-shadow .15s;
+    }
+    .card:hover { box-shadow: 0 4px 16px rgba(0,0,0,.1); }
+    .card-meta { display: flex; align-items: center; gap: .5rem; flex-wrap: wrap; }
+    .tag-duree { background: var(--jaune); color: #1A1A1A; font-size: .65rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; padding: .2rem .55rem; }
+    .tag-type { font-size: .65rem; color: var(--texte-muted); letter-spacing: .05em; text-transform: uppercase; }
+    .card h2 { font-family: 'Anton', sans-serif; font-size: 1.2rem; letter-spacing: .02em; color: var(--texte); line-height: 1.3; }
+    .card p { font-size: .875rem; color: var(--texte-muted); line-height: 1.65; flex: 1; }
+    .btn-ouvrir {
+      display: inline-flex; align-items: center; gap: .45rem;
+      background: var(--rouge); color: #fff; font-family: 'Archivo', sans-serif;
+      font-size: .8rem; font-weight: 600; letter-spacing: .07em; text-transform: uppercase;
+      text-decoration: none; padding: .65rem 1.1rem; align-self: flex-start; transition: background .15s;
+    }
+    .btn-ouvrir:hover { background: var(--rouge-dark); }
+
+    .ressources-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-bottom: 2.5rem; }
+    .ressource-item {
+      display: flex; align-items: center; gap: .9rem;
+      background: var(--fond-card); border: 1px solid var(--border-card);
+      border-left: 3px solid var(--border); padding: .9rem 1rem;
+      text-decoration: none; color: var(--texte);
+      transition: border-left-color .15s, box-shadow .15s;
+      box-shadow: 0 1px 3px rgba(0,0,0,.04);
+    }
+    .ressource-item:hover { border-left-color: var(--rouge); box-shadow: 0 2px 8px rgba(0,0,0,.09); }
+    .ressource-icon { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; background: #F0EEE8; border: 1px solid var(--border); }
+    .ressource-icon svg { color: var(--rouge); }
+    .ressource-text { flex: 1; }
+    .ressource-name { font-size: .875rem; font-weight: 600; color: var(--texte); display: block; line-height: 1.3; }
+    .ressource-desc { font-size: .72rem; color: var(--texte-muted); margin-top: .1rem; }
+
+    footer { border-top: 1px solid var(--border); background: #EEECEA; padding: 1.1rem 1.5rem; text-align: center; font-size: .73rem; color: var(--texte-muted); }
+    footer strong { color: var(--rouge); }
+
+    @media (max-width: 520px) {
+      header { padding: .85rem 1rem; gap: .85rem; }
+      .logo-wrap img { height: 48px; }
+      .logo-wrap { height: 48px; }
+      .access-badge { display: none; }
+      main { padding: 1.75rem 1rem 1.5rem; }
+      .card { padding: 1.25rem; }
+    }
+  </style>
+</head>
+<body>
+<script>if(localStorage.getItem('cgt_stagiaire_auth')!=='ok'&&localStorage.getItem('cgt_auth')!=='ok'){location.replace('/login-stagiaire.html?from='+encodeURIComponent(location.pathname));}</script>
+
+<header>
+  <div class="logo-wrap">
+    <img src="/assets/logo-cgt-occitanie.jpg" alt="CGT Comité Régional Occitanie">
+  </div>
+  <div class="header-divider"></div>
+  <div class="header-title">
+    <h1>Espace Stagiaire — Formation AT/MP</h1>
+    <span>CGT Occitanie — Comité Régional, secteur privé</span>
+  </div>
+  <div class="access-badge">Stagiaire</div>
+</header>
+<div class="stripe"></div>
+
+<main>
+
+  <div class="welcome-box">
+    <div class="icon">📋</div>
+    <div>
+      <h2>Bienvenue dans votre espace de formation</h2>
+      <p>Retrouvez ici les supports de votre formation AT/MP CGT Occitanie : présentations, tableaux de maladies professionnelles, lexique et modèles de courriers. Ces documents sont réservés aux stagiaires de la session en cours.</p>
+    </div>
+  </div>
+
+  <div class="section-label">Supports de formation</div>
+
+  <div class="modules-grid">
+
+    <div class="card">
+      <div class="card-meta">
+        <span class="tag-duree">2 jours</span>
+        <span class="tag-type">Présentation diaporama</span>
+      </div>
+      <h2>Accidents du Travail &amp; Maladies Professionnelles</h2>
+      <p>Régime AT/MP, reconnaissance, réparation, droits des accidentés et malades. Support complet de la formation.</p>
+      <a class="btn-ouvrir" href="/presentations/Presentation_AT-MP_CGT.html" target="_blank">
+        Ouvrir
+        <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H4M10 2V8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+
+    <div class="card">
+      <div class="card-meta">
+        <span class="tag-duree">1 jour</span>
+        <span class="tag-type">Présentation diaporama</span>
+      </div>
+      <h2>Prévention des risques — Diagnostic SST</h2>
+      <p>DUER, analyse des AT, plan de prévention, droits du CSE, droit d'alerte. Support de la journée prévention.</p>
+      <a class="btn-ouvrir" href="/presentations/Prevention_SST_CGT_Occitanie.html" target="_blank">
+        Ouvrir
+        <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H4M10 2V8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+
+    <div class="card">
+      <div class="card-meta">
+        <span class="tag-duree">Demi-journée</span>
+        <span class="tag-type">Présentation diaporama</span>
+      </div>
+      <h2>Prévoyance &amp; Invalidité</h2>
+      <p>Garanties de prévoyance collective, régimes d'invalidité, incapacité de travail et complémentaires santé.</p>
+      <a class="btn-ouvrir" href="/presentations/Prevoyance_Invalidite_CGT_Occitanie.html" target="_blank">
+        Ouvrir
+        <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H4M10 2V8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+
+  </div>
+
+  <div class="section-label">Documents et ressources</div>
+
+  <div class="ressources-grid">
+    <a class="ressource-item" href="/maladies-pro.html">
+      <div class="ressource-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+      </div>
+      <div class="ressource-text">
+        <span class="ressource-name">Tableaux maladies professionnelles</span>
+        <span class="ressource-desc">99 tableaux régime général + commentaires CGT</span>
+      </div>
+    </a>
+    <a class="ressource-item" href="/lexique.html">
+      <div class="ressource-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+      </div>
+      <div class="ressource-text">
+        <span class="ressource-name">Lexique AT/MP &amp; Prévoyance</span>
+        <span class="ressource-desc">50+ définitions, recherche, imprimable</span>
+      </div>
+    </a>
+    <a class="ressource-item" href="/courriers.html">
+      <div class="ressource-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+      </div>
+      <div class="ressource-text">
+        <span class="ressource-name">Modèles de courriers</span>
+        <span class="ressource-desc">4 lettres types AT/MP à adapter et envoyer</span>
+      </div>
+    </a>
+    <a class="ressource-item" href="/fiches.html">
+      <div class="ressource-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+      </div>
+      <div class="ressource-text">
+        <span class="ressource-name">Fiches mémo</span>
+        <span class="ressource-desc">Délais, barème IPP, invalidité — à imprimer</span>
+      </div>
+    </a>
+  </div>
+
+</main>
+
+<footer>
+  <strong>CGT</strong> Comité Régional Occitanie — Formation AT/MP secteur privé
+</footer>
+
+</body>
+</html>

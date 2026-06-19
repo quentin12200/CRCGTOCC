@@ -281,7 +281,7 @@
   </style>
 </head>
 <body>
-<script>if(sessionStorage.getItem('cgt_auth')!=='ok'){location.replace('/login.html?from='+encodeURIComponent(location.pathname));}</script>
+<script>if(localStorage.getItem('cgt_auth')!=='ok'){location.replace('/login.html?from='+encodeURIComponent(location.pathname));}</script>
 
 <header>
   <div class="logo-wrap">
@@ -432,6 +432,15 @@
         <span class="ressource-desc">99 tableaux régime général + commentaires CGT</span>
       </div>
     </a>
+    <a class="ressource-item" href="/calendrier-formations.html">
+      <div class="ressource-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><rect x="7" y="14" width="3" height="3" fill="currentColor" rx="0.5"/><rect x="14" y="14" width="3" height="3" fill="currentColor" rx="0.5"/></svg>
+      </div>
+      <div class="ressource-text">
+        <span class="ressource-name">Calendrier formations — PDF A3</span>
+        <span class="ressource-desc">Planifier les sessions · export PDF · impression</span>
+      </div>
+    </a>
     <a class="ressource-item" href="/quiz-live-host.html">
       <div class="ressource-icon">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
@@ -447,6 +456,7 @@
 
 <footer>
   <strong>CGT</strong> Comité Régional Occitanie — Formation syndicale secteur privé
+  &nbsp;·&nbsp; <a href="/stagiaires.html" style="color:var(--rouge);text-decoration:underline">Espace stagiaire →</a>
 </footer>
 
 </body>
