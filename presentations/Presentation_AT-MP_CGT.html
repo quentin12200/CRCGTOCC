@@ -592,7 +592,54 @@ ${[[230,120,"Médecin traitant","certificat (CMI)"],[770,120,"Médecin du travai
 <text x="${a[0]}" y="${a[1]-4}" text-anchor="middle" font-size="19" font-weight="800" fill="#141414">${a[2]}</text><text x="${a[0]}" y="${a[1]+22}" text-anchor="middle" font-size="15" fill="#444">${a[3]}</text>`).join("")}
 </svg>`;
 
-insertAfter("Les trois notions à distinguer",[{type:"svg",title:"Qui fait quoi ? Les acteurs",svg:SVG_ACTEURS,caption:"Distinguer médecin traitant (CMI), médecin du travail (aptitude), médecin-conseil (taux).",notes:"<b>Clarifier les rôles.</b> Le médecin du travail ne soigne pas et ne fixe pas le taux ; le médecin-conseil de la CPAM fixe l’IPP ; le médecin traitant établit les certificats. <span class='cgt'>Le syndicat et le CSE défendent ; l’inspection du travail contrôle.</span>"}]);
+insertAfter("Comprendre, déclarer, faire reconnaître",[
+
+  /* ── HISTOIRE 1 : de 1802 à 1898 ── */
+  {type:"steps", title:"De 1802 à 1898 — naissance du droit",
+   kicker:"Histoire · Séquence 1",
+   items:[
+     {big:"1802", nm:"Premier conseil de salubrité", ds:"Visite et rapport sur les manufactures et ateliers dangereux. La santé ouvrière entre dans la loi."},
+     {big:"1841", nm:"Loi Villermé", ds:"Limite la durée du travail des enfants dans l’industrie. Premier texte protégeant le corps du travailleur."},
+     {big:"1880", nm:"Responsabilité de l’employeur", ds:"Première loi : en cas d’accident, l’employeur est responsable « de plein droit » sauf à prouver la faute de la victime."},
+     {big:"1892", nm:"Inspection du Travail", ds:"Création par la loi de l’inspection du travail et obligation de déclarer les accidents du travail."}
+   ],
+   notes:"<b>Faire raconter.</b> Demander aux stagiaires s’ils connaissent des luttes passées dans leur secteur. <span class=’cgt’>Ces droits n’ont pas été donnés — ils ont été arrachés, souvent au prix fort.</span>"},
+
+  /* ── HISTOIRE 2 : la loi de 1898 ── */
+  {type:"def", title:"9 avril 1898 — Le tournant fondateur",
+   kicker:"Histoire · Séquence 2",
+   term:"La loi sur les risques professionnels",
+   text:"L’employeur est responsable de plein droit des accidents survenus à ses salariés dans l’exercice de leur travail. La victime n’a plus à prouver la faute : c’est la naissance de la <b>présomption d’imputabilité</b> — principe toujours en vigueur aujourd’hui.",
+   extra:"En contrepartie, l’employeur obtient une <b>immunité civile</b> : la réparation est forfaitaire. La <b>faute inexcusable</b> reste la seule voie pour dépasser ce forfait — nous y reviendrons en jour 2.",
+   notes:"<span class=’cgt’>C’est ce texte de 1898 qui fonde tout le droit AT/MP actuel. 125 ans plus tard, la présomption d’imputabilité reste le bouclier du salarié accidenté — rappeler systématiquement cela quand un employeur conteste.</span>"},
+
+  /* ── HISTOIRE 3 : 1919→1945 ── */
+  {type:"content", title:"1919 – 1945 — Vers la Sécurité sociale",
+   kicker:"Histoire · Séquence 3",
+   bullets:[
+     "<b>1919</b> — Extension aux maladies professionnelles : les MP entrent dans le régime de réparation.",
+     "<b>1920</b> — Création de la <b>FNATH</b> (Fédération des Mutilés du Travail) par des accidentés eux-mêmes : premières batailles syndicales pour la revalorisation des rentes.",
+     "<b>1936</b> — Front Populaire : congés payés, semaine de 40 h, conventions collectives — la santé au travail devient un enjeu politique national.",
+     "<b>1941–1942</b> — Médecine du travail obligatoire : naissance du suivi médical en entreprise.",
+     "<b>4 octobre 1945</b> — Ordonnance créant la Sécurité sociale : conquête syndicale portée notamment par la CGT et Ambroise Croizat."
+   ],
+   strip:"« La Sécurité sociale, c’est la garantie donnée à chacun qu’en toutes circonstances il disposera des moyens nécessaires. » — Ordonnance du 4 octobre 1945",
+   notes:"<span class=’cgt’>Ambroise Croizat, secrétaire général de la CGT Métaux, fut le ministre du Travail qui fit voter la Sécurité sociale. Cette histoire doit être racontée dans chaque formation CGT.</span> Demander : qui a entendu parler de Croizat ? Pourquoi cela a-t-il disparu des manuels scolaires ?"},
+
+  /* ── HISTOIRE 4 : structure Sécu ── */
+  {type:"two", title:"La Sécurité sociale — structure et financement",
+   kicker:"Histoire · Séquence 4",
+   a:{h:"5 branches depuis 1967",
+      t:"Maladie (CPAM) · AT/MP (CARSAT) · Retraite (CNAV) · Famille (CAF) · Recouvrement (URSSAF). Chaque branche a son financement propre, fixé chaque année.",
+      style:"plain"},
+   b:{h:"La branche AT/MP : un financement original",
+      t:"Cotisation à la charge exclusive de l’employeur, proportionnelle à sa sinistralité. Principe : celui qui crée le risque finance la réparation. Plus les AT/MP sont nombreux, plus la cotisation augmente.",
+      style:"black"},
+   notes:"<span class=’cgt’>Insister : la branche AT/MP est financée UNIQUEMENT par les employeurs. C’est la traduction financière du principe pollueur-payeur appliqué au risque professionnel. Faire reconnaître les AT/MP, c’est aussi peser sur la cotisation de l’employeur."}
+
+]);
+
+insertAfter("Les trois notions à distinguer",[{type:"svg",title:"Qui fait quoi ? Les acteurs",svg:SVG_ACTEURS,caption:"Distinguer médecin traitant (CMI), médecin du travail (aptitude), médecin-conseil (taux).",notes:"<b>Clarifier les rôles.</b> Le médecin du travail ne soigne pas et ne fixe pas le taux ; le médecin-conseil de la CPAM fixe l’IPP ; le médecin traitant établit les certificats. <span class=’cgt’>Le syndicat et le CSE défendent ; l’inspection du travail contrôle.</span>"}]);
 insertAfter("Si l’employeur refuse de déclarer",[{type:"content",title:"Réserves de l’employeur & registre des bénins",bullets:["L’employeur peut émettre des « réserves motivées » (heure, lieu, circonstances) → la CPAM ouvre une enquête.","Le registre des accidents bénins (sous conditions, autorisé par la CARSAT) remplace la DAT pour les lésions légères sans arrêt.","Vigilance : ce registre ne doit pas servir à dissimuler de vrais AT."],strip:"En cas de réserves, soigner les preuves et répondre au questionnaire de la CPAM : c’est décisif.",notes:"<b>Deux pièges fréquents.</b> Les réserves visent à renverser la présomption : y répondre vite et précisément. <span class='cgt'>Surveiller l’usage du registre des bénins par l’employeur.</span>"}]);
 insertAfter("L’instruction par la CPAM",[{type:"svg",title:"De l’accident à la reconnaissance",svg:SVG_FRISE,caption:"La frise des délais : 24 h, 48 h, 30 j, 90 j.",notes:"<b>Vue d’ensemble des délais.</b> Repère visuel pour le groupe : du fait accidentel jusqu’à la reconnaissance (silence = acceptation)."}]);
 insertAfter("Deux voies de reconnaissance",[{type:"svg",title:"MP : les deux voies (schéma)",svg:SVG_VOIES,caption:"Tableau → présomption ; sinon CRRMP → lien direct.",notes:"<b>Logigramme.</b> Faire suivre le chemin par les stagiaires sur un cas concret (ex. TMS, lombalgie, affection psychique)."}]);
