@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calendrier Formations AT/MP — CGT Occitanie</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --rouge: #FE0000; --or: #F5A800; --noir: #1A1A1A;
+  --sidebar: 320px;
+}
+body { font-family: Arial, sans-serif; background: #F0F0F0; color: var(--noir); display: flex; min-height: 100vh; }
+
+/* ── SIDEBAR ── */
+#sidebar {
+  width: var(--sidebar); min-width: var(--sidebar); background: #1A1A1A; color: #fff;
+  padding: 1rem; display: flex; flex-direction: column; gap: 1.25rem;
+  position: sticky; top: 0; height: 100vh; overflow-y: auto;
+}
+#sidebar h1 { font-size: .85rem; letter-spacing: .08em; text-transform: uppercase; color: var(--or); border-bottom: 1px solid #333; padding-bottom: .5rem; }
+#sidebar h2 { font-size: .75rem; letter-spacing: .06em; text-transform: uppercase; color: #aaa; margin-bottom: .5rem; }
+#sidebar label { font-size: .72rem; color: #bbb; display: block; margin-bottom: .25rem; }
+#sidebar input[type=text], #sidebar input[type=date] {
+  width: 100%; background: #2A2A2A; border: 1px solid #444; color: #fff;
+  padding: .45rem .6rem; font-size: .82rem; border-radius: 3px; outline: none;
+}
+#sidebar input:focus { border-color: var(--rouge); }
+.field { margin-bottom: .6rem; }
+.btn-add {
+  background: var(--rouge); color: #fff; border: none; width: 100%;
+  padding: .6rem; font-size: .82rem; font-weight: 700; letter-spacing: .06em;
+  text-transform: uppercase; cursor: pointer; border-radius: 3px;
+}
+.btn-add:hover { background: #cc0000; }
+
+/* sessions list */
+#sessions-list { display: flex; flex-direction: column; gap: .5rem; }
+.sess-item {
+  background: #2A2A2A; border-radius: 4px; padding: .5rem .65rem;
+  display: flex; align-items: center; gap: .5rem; font-size: .75rem;
+}
+.sess-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
+.sess-info { flex: 1; }
+.sess-info strong { display: block; font-size: .8rem; color: #fff; }
+.sess-info span { color: #999; }
+.btn-del { background: none; border: none; color: #666; cursor: pointer; font-size: 1rem; padding: 0 .2rem; }
+.btn-del:hover { color: #fe0000; }
+
+/* actions */
+.action-btns { display: flex; flex-direction: column; gap: .5rem; }
+.btn-pdf, .btn-print {
+  border: none; padding: .65rem; font-size: .82rem; font-weight: 700;
+  letter-spacing: .06em; text-transform: uppercase; cursor: pointer; border-radius: 3px; width: 100%;
+}
+.btn-pdf { background: var(--or); color: #1A1A1A; }
+.btn-pdf:hover { background: #d48e00; }
+.btn-print { background: #333; color: #fff; }
+.btn-print:hover { background: #555; }
+
+/* period selector */
+.period-row { display: flex; gap: .5rem; }
+.period-row select {
+  flex: 1; background: #2A2A2A; border: 1px solid #444; color: #fff;
+  padding: .4rem .5rem; font-size: .78rem; border-radius: 3px;
+}
+
+/* ── MAIN ── */
+#main { flex: 1; padding: 1.5rem; overflow-x: auto; }
+
+/* ── CALENDAR PREVIEW ── */
+#cal-wrap {
+  background: #fff; width: 1100px; min-width: 1100px;
+  padding: 12px; box-shadow: 0 2px 12px rgba(0,0,0,.18);
+}
+.cal-header { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 3px solid var(--rouge); }
+.cal-logo { height: 52px; width: auto; }
+.cal-titles { flex: 1; }
+.cal-title { font-size: 1.05rem; font-weight: 700; color: var(--noir); letter-spacing: .03em; }
+.cal-sub { font-size: .72rem; color: #666; margin-top: 2px; }
+.cal-legend { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.legend-item { display: flex; align-items: center; gap: 5px; font-size: .68rem; color: #444; }
+.legend-dot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+
+.months-row { display: flex; gap: 8px; }
+.month-block { flex: 1; }
+.month-title {
+  background: var(--rouge); color: #fff; font-weight: 700;
+  font-size: .78rem; text-align: center; padding: 4px 2px;
+  letter-spacing: .04em; text-transform: uppercase;
+}
+.day-headers { display: grid; grid-template-columns: repeat(7, 1fr); }
+.day-hdr { text-align: center; font-size: .6rem; font-weight: 700; color: #888; padding: 2px 0; background: #f5f5f5; border: 1px solid #ddd; }
+.cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); }
+.cal-day {
+  min-height: 38px; border: 1px solid #ddd; padding: 2px 3px;
+  font-size: .62rem; display: flex; flex-direction: column;
+  position: relative; background: #fff;
+}
+.cal-day.weekend { background: #EBEBEB; }
+.cal-day.other-month { background: #fafafa; color: #ccc; }
+.cal-day.session-day { color: #fff; }
+.day-num { font-size: .65rem; font-weight: 700; line-height: 1; margin-bottom: 1px; }
+.day-label { font-size: .58rem; line-height: 1.2; font-weight: 600; }
+.day-city { font-size: .54rem; line-height: 1.1; opacity: .85; }
+
+@media print {
+  @page { size: A3 landscape; margin: 8mm; }
+  body { display: block; }
+  #sidebar { display: none !important; }
+  #main { padding: 0; }
+  #cal-wrap { width: 100% !important; min-width: unset !important; box-shadow: none; padding: 0; }
+  .action-btns, .btn-pdf, .btn-print { display: none !important; }
+}
+</style>
+</head>
+<body>
+
+<!-- ── SIDEBAR ── -->
+<div id="sidebar">
+  <h1>Calendrier AT/MP · CGT Occitanie</h1>
+
+  <div>
+    <h2>Période affichée</h2>
+    <div class="period-row">
+      <select id="sel-start-month">
+        <option value="0">Jan</option><option value="1">Fév</option><option value="2">Mar</option>
+        <option value="3">Avr</option><option value="4">Mai</option><option value="5">Jun</option>
+        <option value="6">Jul</option><option value="7">Aoû</option><option value="8" selected>Sep</option>
+        <option value="9">Oct</option><option value="10">Nov</option><option value="11">Déc</option>
+      </select>
+      <select id="sel-start-year">
+        <option value="2025">2025</option><option value="2026" selected>2026</option><option value="2027">2027</option>
+      </select>
+      <select id="sel-nb-months">
+        <option value="3">3 mois</option><option value="4" selected>4 mois</option>
+        <option value="5">5 mois</option><option value="6">6 mois</option>
+      </select>
+    </div>
+  </div>
+
+  <div>
+    <h2>Ajouter une session</h2>
+    <div class="field"><label>UD / UL</label><input type="text" id="f-ud" placeholder="ex: UD 09 – Ariège"></div>
+    <div class="field"><label>Ville (optionnel)</label><input type="text" id="f-ville" placeholder="ex: Foix"></div>
+    <div class="field"><label>Jour 1</label><input type="date" id="f-j1"></div>
+    <div class="field"><label>Jour 2</label><input type="date" id="f-j2"></div>
+    <button class="btn-add" onclick="addSession()">+ Ajouter</button>
+  </div>
+
+  <div>
+    <h2>Sessions enregistrées</h2>
+    <div id="sessions-list"></div>
+  </div>
+
+  <div class="action-btns">
+    <button class="btn-pdf" onclick="generatePDF()">⬇ Télécharger PDF</button>
+    <button class="btn-print" onclick="window.print()">🖨 Imprimer</button>
+  </div>
+</div>
+
+<!-- ── MAIN PREVIEW ── -->
+<div id="main">
+  <div id="cal-wrap">
+    <div class="cal-header">
+      <!-- REMPLACER PAR L'URL DU LOGO -->
+      <img class="cal-logo" id="cal-logo-img" src="/assets/logo-cgt-occitanie.jpg" alt="CGT Occitanie" onerror="this.style.display='none'">
+      <div class="cal-titles">
+        <div class="cal-title" id="cal-title">Planning formations AT/MP – CGT Occitanie – 2e semestre 2026</div>
+        <div class="cal-sub">AT/MP · Secteur privé · Document transmis à la CARSAT</div>
+        <div class="cal-legend" id="cal-legend"></div>
+      </div>
+    </div>
+    <div class="months-row" id="months-row"></div>
+  </div>
+</div>
+
+<script>
+const COLORS = ['#FE0000','#E07000','#0057A8','#2E7D32','#6A1B9A','#00838F'];
+const MONTH_FR = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
+const DAY_HDRS = ['Lu','Ma','Me','Je','Ve','Sa','Di'];
+
+let sessions = [];
+let colorIdx = 0;
+
+const DEFAULT = [
+  {ud:'UD 09 – Ariège', ville:'Foix', j1:'2026-09-08', j2:'2026-09-09'},
+  {ud:'UL 31 – Toulouse', ville:'Toulouse', j1:'2026-09-15', j2:'2026-09-16'},
+  {ud:'UL Nord 66', ville:'Perpignan', j1:'2026-09-22', j2:'2026-09-23'},
+  {ud:'UD 81 – Albi', ville:'Albi', j1:'2026-11-03', j2:'2026-11-04'},
+];
+
+function addSession(ud, ville, j1, j2) {
+  ud = ud || document.getElementById('f-ud').value.trim();
+  ville = ville || document.getElementById('f-ville').value.trim();
+  j1 = j1 || document.getElementById('f-j1').value;
+  j2 = j2 || document.getElementById('f-j2').value;
+  if (!ud || !j1) return;
+  const color = COLORS[colorIdx % COLORS.length];
+  colorIdx++;
+  sessions.push({id: Date.now() + Math.random(), ud, ville, j1, j2, color});
+  document.getElementById('f-ud').value = '';
+  document.getElementById('f-ville').value = '';
+  document.getElementById('f-j1').value = '';
+  document.getElementById('f-j2').value = '';
+  render();
+}
+
+function deleteSession(id) {
+  sessions = sessions.filter(s => s.id !== id);
+  render();
+}
+
+function renderSidebar() {
+  const el = document.getElementById('sessions-list');
+  if (!sessions.length) { el.innerHTML = '<div style="color:#555;font-size:.75rem">Aucune session.</div>'; return; }
+  el.innerHTML = sessions.map(s => `
+    <div class="sess-item">
+      <div class="sess-dot" style="background:${s.color}"></div>
+      <div class="sess-info">
+        <strong>${s.ud}${s.ville ? ' – ' + s.ville : ''}</strong>
+        <span>${fmtDate(s.j1)}${s.j2 ? ' → ' + fmtDate(s.j2) : ''}</span>
+      </div>
+      <button class="btn-del" onclick="deleteSession(${s.id})">✕</button>
+    </div>
+  `).join('');
+}
+
+function fmtDate(d) {
+  if (!d) return '';
+  const [y,m,day] = d.split('-');
+  return `${day}/${m}/${y}`;
+}
+
+// Build a map: "YYYY-MM-DD" -> session
+function buildDayMap() {
+  const map = {};
+  sessions.forEach(s => {
+    [s.j1, s.j2].forEach(d => {
+      if (d) map[d] = s;
+    });
+  });
+  return map;
+}
+
+// Monday-first day of week (0=Mon … 6=Sun)
+function dowMon(date) { return (date.getDay() + 6) % 7; }
+
+function renderCalendar() {
+  const startMonth = parseInt(document.getElementById('sel-start-month').value);
+  const startYear = parseInt(document.getElementById('sel-start-year').value);
+  const nbMonths = parseInt(document.getElementById('sel-nb-months').value);
+  const dayMap = buildDayMap();
+
+  // legend
+  const legend = document.getElementById('cal-legend');
+  legend.innerHTML = sessions.map(s =>
+    `<div class="legend-item"><div class="legend-dot" style="background:${s.color}"></div>${s.ud}${s.ville?' – '+s.ville:''}</div>`
+  ).join('');
+
+  // title
+  const endM = (startMonth + nbMonths - 1) % 12;
+  const endY = startYear + Math.floor((startMonth + nbMonths - 1) / 12);
+  document.getElementById('cal-title').textContent =
+    `Planning formations AT/MP – CGT Occitanie – ${MONTH_FR[startMonth].slice(0,4)} ${startYear} → ${MONTH_FR[endM].slice(0,4)} ${endY}`;
+
+  const row = document.getElementById('months-row');
+  row.innerHTML = '';
+
+  for (let mi = 0; mi < nbMonths; mi++) {
+    const m = (startMonth + mi) % 12;
+    const y = startYear + Math.floor((startMonth + mi) / 12);
+    row.appendChild(buildMonthBlock(y, m, dayMap));
+  }
+}
+
+function buildMonthBlock(year, month, dayMap) {
+  const block = document.createElement('div');
+  block.className = 'month-block';
+
+  const title = document.createElement('div');
+  title.className = 'month-title';
+  title.textContent = `${MONTH_FR[month]} ${year}`;
+  block.appendChild(title);
+
+  const hdrs = document.createElement('div');
+  hdrs.className = 'day-headers';
+  DAY_HDRS.forEach(h => { const d = document.createElement('div'); d.className='day-hdr'; d.textContent=h; hdrs.appendChild(d); });
+  block.appendChild(hdrs);
+
+  const grid = document.createElement('div');
+  grid.className = 'cal-grid';
+
+  const firstDay = new Date(year, month, 1);
+  const startOffset = dowMon(firstDay); // blanks before 1st
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+  // blank cells before
+  for (let i = 0; i < startOffset; i++) {
+    const cell = document.createElement('div');
+    cell.className = 'cal-day other-month';
+    grid.appendChild(cell);
+  }
+
+  for (let d = 1; d <= daysInMonth; d++) {
+    const date = new Date(year, month, d);
+    const dow = dowMon(date);
+    const key = `${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const sess = dayMap[key];
+
+    const cell = document.createElement('div');
+    cell.className = 'cal-day';
+    if (dow >= 5) cell.classList.add('weekend');
+    if (sess) {
+      cell.classList.add('session-day');
+      cell.style.background = sess.color;
+    }
+
+    const num = document.createElement('div');
+    num.className = 'day-num';
+    num.textContent = d;
+    cell.appendChild(num);
+
+    if (sess) {
+      const lbl = document.createElement('div');
+      lbl.className = 'day-label';
+      lbl.textContent = sess.ud;
+      cell.appendChild(lbl);
+      if (sess.ville) {
+        const city = document.createElement('div');
+        city.className = 'day-city';
+        city.textContent = sess.ville;
+        cell.appendChild(city);
+      }
+    }
+    grid.appendChild(cell);
+  }
+
+  // fill remaining row
+  const total = startOffset + daysInMonth;
+  const remainder = (7 - (total % 7)) % 7;
+  for (let i = 0; i < remainder; i++) {
+    const cell = document.createElement('div');
+    cell.className = 'cal-day other-month';
+    grid.appendChild(cell);
+  }
+
+  block.appendChild(grid);
+  return block;
+}
+
+function render() {
+  renderSidebar();
+  renderCalendar();
+}
+
+// ── PDF GENERATION ──
+function generatePDF() {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a3' });
+
+  const PW = 420, PH = 297;
+  const ML = 8, MT = 8, MR = 8, MB = 8;
+  const W = PW - ML - MR, H = PH - MT - MB;
+
+  const startMonth = parseInt(document.getElementById('sel-start-month').value);
+  const startYear = parseInt(document.getElementById('sel-start-year').value);
+  const nbMonths = parseInt(document.getElementById('sel-nb-months').value);
+  const dayMap = buildDayMap();
+
+  const ROUGE = [254, 0, 0];
+  const OR = [245, 168, 0];
+  const NOIR = [26, 26, 26];
+  const GRIS = [235, 235, 235];
+  const WHITE = [255, 255, 255];
+
+  // ── header ──
+  let hy = MT;
+  doc.setFillColor(...ROUGE);
+  doc.rect(ML, hy, W, 14, 'F');
+  doc.setTextColor(...WHITE);
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(11);
+  const endM = (startMonth + nbMonths - 1) % 12;
+  const endY = startYear + Math.floor((startMonth + nbMonths - 1) / 12);
+  doc.text(`Planning formations AT/MP – CGT Occitanie – ${MONTH_FR[startMonth]} ${startYear} → ${MONTH_FR[endM]} ${endY}`, ML + 4, hy + 6);
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(7);
+  doc.text('AT/MP · Secteur privé · Document transmis à la CARSAT', ML + 4, hy + 11);
+  hy += 14;
+
+  // ── legend ──
+  let lx = ML;
+  const ly = hy + 4;
+  doc.setFontSize(6.5);
+  sessions.forEach(s => {
+    const rgb = hexToRgb(s.color);
+    doc.setFillColor(...rgb);
+    doc.rect(lx, ly - 2.5, 4, 4, 'F');
+    doc.setTextColor(...NOIR);
+    const label = s.ud + (s.ville ? ' – ' + s.ville : '');
+    doc.text(label, lx + 5, ly);
+    lx += doc.getTextWidth(label) + 10;
+  });
+  hy += 8;
+
+  // ── months ──
+  const calTop = hy + 2;
+  const calH = PH - MB - calTop;
+  const monthW = W / nbMonths;
+
+  for (let mi = 0; mi < nbMonths; mi++) {
+    const m = (startMonth + mi) % 12;
+    const y = startYear + Math.floor((startMonth + mi) / 12);
+    const mx = ML + mi * monthW;
+
+    // month title bar
+    doc.setFillColor(...ROUGE);
+    doc.rect(mx, calTop, monthW - 1, 6, 'F');
+    doc.setTextColor(...WHITE);
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(7);
+    doc.text(`${MONTH_FR[m].toUpperCase()} ${y}`, mx + monthW / 2, calTop + 4.2, { align: 'center' });
+
+    // day headers
+    const dayW = (monthW - 1) / 7;
+    const hdrTop = calTop + 6;
+    DAY_HDRS.forEach((h, hi) => {
+      doc.setFillColor(240, 240, 240);
+      doc.rect(mx + hi * dayW, hdrTop, dayW, 4, 'F');
+      doc.setDrawColor(200, 200, 200);
+      doc.rect(mx + hi * dayW, hdrTop, dayW, 4);
+      doc.setTextColor(120, 120, 120);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(5.5);
+      doc.text(h, mx + hi * dayW + dayW / 2, hdrTop + 2.8, { align: 'center' });
+    });
+
+    // day cells
+    const gridTop = hdrTop + 4;
+    const gridH = calH - 10;
+    const firstDay = new Date(y, m, 1);
+    const offset = dowMon(firstDay);
+    const daysInMonth = new Date(y, m + 1, 0).getDate();
+    const weeks = Math.ceil((offset + daysInMonth) / 7);
+    const cellH = gridH / weeks;
+
+    let col = offset, row = 0;
+    for (let d = 1; d <= daysInMonth; d++) {
+      const date = new Date(y, m, d);
+      const dow = dowMon(date);
+      const key = `${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+      const sess = dayMap[key];
+      const cx = mx + col * dayW;
+      const cy = gridTop + row * cellH;
+
+      // background
+      if (sess) {
+        const rgb = hexToRgb(sess.color);
+        doc.setFillColor(...rgb);
+      } else if (dow >= 5) {
+        doc.setFillColor(...GRIS);
+      } else {
+        doc.setFillColor(...WHITE);
+      }
+      doc.rect(cx, cy, dayW, cellH, 'F');
+      doc.setDrawColor(200, 200, 200);
+      doc.rect(cx, cy, dayW, cellH);
+
+      // day number
+      doc.setTextColor(sess ? 255 : (dow >= 5 ? 150 : 26), sess ? 255 : (dow >= 5 ? 150 : 26), sess ? 255 : (dow >= 5 ? 150 : 26));
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(5.5);
+      doc.text(String(d), cx + 1.5, cy + 4);
+
+      // session label
+      if (sess) {
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(4.5);
+        doc.setTextColor(255, 255, 255);
+        const maxW = dayW - 2;
+        const udLines = doc.splitTextToSize(sess.ud, maxW);
+        doc.text(udLines[0], cx + 1, cy + 7.5);
+        if (sess.ville) {
+          doc.setFont('helvetica', 'normal');
+          doc.setFontSize(4);
+          doc.text(sess.ville, cx + 1, cy + 11);
+        }
+      }
+
+      col++;
+      if (col === 7) { col = 0; row++; }
+    }
+  }
+
+  doc.save('Calendrier_ATMP_CGT_Occitanie.pdf');
+}
+
+function hexToRgb(hex) {
+  const r = parseInt(hex.slice(1,3),16);
+  const g = parseInt(hex.slice(3,5),16);
+  const b = parseInt(hex.slice(5,7),16);
+  return [r, g, b];
+}
+
+// Period selectors → re-render
+['sel-start-month','sel-start-year','sel-nb-months'].forEach(id => {
+  document.getElementById(id).addEventListener('change', render);
+});
+
+// Init
+DEFAULT.forEach(d => addSession(d.ud, d.ville, d.j1, d.j2));
+</script>
+</body>
+</html>
