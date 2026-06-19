@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Tableaux des maladies professionnelles — CGT Occitanie</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%23E2001A'/%3E%3Ctext x='16' y='23' text-anchor='middle' font-family='sans-serif' font-weight='bold' font-size='16' fill='%23FFD200'%3ECGT%3C/text%3E%3C/svg%3E">
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --rouge:#E2001A;--jaune:#FFD200;--fond:#F5F4F0;--blanc:#FFFFFF;
+      --texte:#1A1A1A;--muted:#666;--border:#DDD;
+      --vert:#1A7340;--bleu:#003189;
+    }
+    body{background:var(--fond);color:var(--texte);font-family:'Archivo',sans-serif;font-size:.95rem;line-height:1.6}
+
+    /* HEADER */
+    .site-header{background:var(--rouge);padding:.9rem 2rem;display:flex;align-items:center;gap:1rem;position:sticky;top:0;z-index:100}
+    .site-header img{height:52px;width:auto}
+    .site-header-text h1{font-family:'Anton',sans-serif;font-size:1.1rem;letter-spacing:.05em;color:#fff;line-height:1.2}
+    .site-header-text p{font-size:.75rem;color:rgba(255,255,255,.75);margin-top:.1rem}
+    .header-stripe{height:5px;background:var(--jaune)}
+
+    /* NAV */
+    .back-nav{padding:.6rem 2rem;background:#fff;border-bottom:1px solid var(--border);font-size:.8rem}
+    .back-nav a{color:var(--rouge);text-decoration:none;font-weight:600}
+    .back-nav a:hover{text-decoration:underline}
+
+    /* MAIN */
+    main{max-width:1100px;margin:0 auto;padding:1.5rem 1.5rem 4rem}
+
+    /* INTRO */
+    .intro-box{background:var(--blanc);border-left:5px solid var(--rouge);padding:1.1rem 1.4rem;margin-bottom:1.5rem}
+    .intro-box h2{font-family:'Anton',sans-serif;font-size:1.15rem;letter-spacing:.04em;color:var(--rouge);margin-bottom:.4rem}
+    .intro-box p{font-size:.88rem;color:var(--muted);margin-bottom:.3rem}
+    .intro-box strong{color:var(--texte)}
+
+    /* STATS BAR */
+    .stats-bar{display:flex;gap:1.5rem;margin-bottom:1.25rem;flex-wrap:wrap}
+    .stat-pill{background:var(--blanc);border:1px solid var(--border);padding:.4rem .9rem;font-size:.78rem;font-weight:700;color:var(--muted);border-radius:2px}
+    .stat-pill span{color:var(--rouge);font-size:1rem}
+
+    /* SEARCH & FILTERS */
+    .controls{display:flex;gap:.75rem;margin-bottom:1.25rem;flex-wrap:wrap;align-items:center}
+    .search-wrap{position:relative;flex:1;min-width:220px}
+    .search-wrap input{width:100%;padding:.65rem 1rem .65rem 2.4rem;border:2px solid var(--border);background:#fff;font-family:'Archivo',sans-serif;font-size:.9rem;color:var(--texte);outline:none;transition:border-color .15s}
+    .search-wrap input:focus{border-color:var(--rouge)}
+    .search-wrap svg{position:absolute;left:.7rem;top:50%;transform:translateY(-50%);color:var(--muted)}
+    .filters{display:flex;gap:.4rem;flex-wrap:wrap}
+    .filter-btn{padding:.38rem .75rem;border:2px solid var(--border);background:#fff;font-family:'Archivo',sans-serif;font-size:.75rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;transition:.15s;color:var(--muted)}
+    .filter-btn:hover,.filter-btn.active{background:var(--rouge);border-color:var(--rouge);color:#fff}
+    #search-count{font-size:.8rem;color:var(--muted);white-space:nowrap;align-self:center}
+
+    /* TABLEAU CARD */
+    .mp-grid{display:grid;gap:.75rem}
+    .mp-card{background:var(--blanc);border:1px solid var(--border);border-left:5px solid var(--rouge)}
+    .mp-card[data-cat="chimique"]{border-left-color:#7B2D8B}
+    .mp-card[data-cat="physique"]{border-left-color:#0066CC}
+    .mp-card[data-cat="biologique"]{border-left-color:var(--vert)}
+    .mp-card[data-cat="tms"]{border-left-color:#E67E00}
+    .mp-card[data-cat="cancer"]{border-left-color:#8B0000}
+    .mp-card[data-cat="amiante"]{border-left-color:#333}
+
+    .mp-header{padding:.8rem 1.1rem;cursor:pointer;display:flex;align-items:flex-start;gap:.9rem;user-select:none}
+    .mp-header:hover{background:#FAFAF8}
+    .tab-num{font-family:'Anton',sans-serif;font-size:1.3rem;color:var(--rouge);min-width:2.8rem;line-height:1;flex-shrink:0;margin-top:.05rem}
+    .mp-card[data-cat="chimique"] .tab-num{color:#7B2D8B}
+    .mp-card[data-cat="physique"] .tab-num{color:#0066CC}
+    .mp-card[data-cat="biologique"] .tab-num{color:var(--vert)}
+    .mp-card[data-cat="tms"] .tab-num{color:#E67E00}
+    .mp-card[data-cat="cancer"] .tab-num{color:#8B0000}
+    .mp-card[data-cat="amiante"] .tab-num{color:#333}
+
+    .mp-meta{flex:1}
+    .mp-title{font-weight:700;font-size:.95rem;color:var(--texte);line-height:1.3;margin-bottom:.2rem}
+    .mp-tags{display:flex;gap:.4rem;flex-wrap:wrap;margin-top:.3rem}
+    .mp-tag{font-size:.7rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:.15rem .45rem;border-radius:2px}
+    .tag-cat{background:#F0F0F0;color:var(--muted)}
+    .tag-alert{background:#FFF0F0;color:var(--rouge)}
+    .tag-cgt{background:#FFFBE6;color:#856A00}
+    .mp-toggle{font-size:.7rem;color:var(--muted);white-space:nowrap;flex-shrink:0;margin-top:.3rem;font-weight:700}
+
+    .mp-body{display:none;padding:.2rem 1.1rem 1.1rem 4.8rem;border-top:1px solid #F0EEEA}
+    .mp-body.open{display:block}
+
+    .mp-section{margin-top:.75rem}
+    .mp-section-title{font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.35rem}
+    .mp-section ul{padding-left:1.2rem;font-size:.88rem}
+    .mp-section li{margin-bottom:.2rem}
+    .mp-section p{font-size:.88rem;color:var(--texte)}
+
+    .cgt-angle{background:#FFFBE6;border-left:4px solid var(--jaune);padding:.65rem .9rem;margin-top:.75rem;font-size:.87rem}
+    .cgt-angle-title{font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#856A00;margin-bottom:.25rem}
+
+    .hidden{display:none!important}
+
+    /* LEGENDE */
+    .legende{display:flex;gap:.75rem;flex-wrap:wrap;margin-bottom:1.25rem;font-size:.75rem}
+    .leg-item{display:flex;align-items:center;gap:.35rem;font-weight:600;color:var(--muted)}
+    .leg-dot{width:12px;height:12px;flex-shrink:0;border-radius:1px}
+
+    /* PRINT */
+    #btn-print{position:fixed;bottom:1.25rem;right:1.25rem;z-index:99;background:var(--rouge);color:#fff;border:none;padding:.65rem 1.1rem;font-family:'Archivo',sans-serif;font-size:.8rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,.25)}
+    #btn-print:hover{background:#C40017}
+    @media print{#btn-print,.controls,.back-nav,.filters,.filter-btn,.mp-toggle{display:none!important}.mp-body{display:block!important}.site-header{position:static}}
+    @media(max-width:640px){main{padding:1rem 1rem 3rem}.mp-body{padding-left:1.1rem}.stats-bar{gap:.6rem}}
+  </style>
+</head>
+<body>
+<script>if(sessionStorage.getItem('cgt_auth')!=='ok'){location.replace('/login.html?from='+encodeURIComponent(location.pathname));}</script>
+
+<header class="site-header">
+  <img src="/assets/logo-cgt-occitanie.jpg" alt="CGT Occitanie">
+  <div class="site-header-text">
+    <h1>Tableaux des maladies professionnelles</h1>
+    <p>CGT Occitanie — Régime général · Secteur privé</p>
+  </div>
+</header>
+<div class="header-stripe"></div>
+
+<nav class="back-nav"><a href="/">← Retour à l'accueil</a></nav>
+
+<main>
+  <div class="intro-box">
+    <h2>Les tableaux de maladies professionnelles — Régime général</h2>
+    <p>Il existe <strong>99 tableaux</strong> au régime général (+ tableaux agricoles). Une maladie est reconnue MP automatiquement si toutes les conditions du tableau sont remplies (présomption d'imputabilité). Sinon, la voie CRRMP permet une reconnaissance hors tableau.</p>
+    <p style="margin-top:.4rem"><strong>Angle CGT :</strong> chaque tableau comporte un délai de prise en charge, une liste limitative de travaux et une liste des maladies. Vérifier systématiquement ces 3 conditions avant toute déclaration. En cas de doute sur l'imputabilité, orienter vers la voie CRRMP.</p>
+  </div>
+
+  <div class="stats-bar">
+    <div class="stat-pill"><span id="count-total">99</span> tableaux régime général</div>
+    <div class="stat-pill"><span id="count-visible">99</span> affichés</div>
+    <div class="stat-pill">Cliquer sur un tableau pour le détailler</div>
+  </div>
+
+  <div class="legende">
+    <div class="leg-item"><div class="leg-dot" style="background:#E2001A"></div>Divers / métaux</div>
+    <div class="leg-item"><div class="leg-dot" style="background:#7B2D8B"></div>Chimique</div>
+    <div class="leg-item"><div class="leg-dot" style="background:#0066CC"></div>Physique</div>
+    <div class="leg-item"><div class="leg-dot" style="background:#1A7340"></div>Biologique</div>
+    <div class="leg-item"><div class="leg-dot" style="background:#E67E00"></div>TMS / rachis</div>
+    <div class="leg-item"><div class="leg-dot" style="background:#8B0000"></div>Cancer</div>
+    <div class="leg-item"><div class="leg-dot" style="background:#333"></div>Amiante</div>
+  </div>
+
+  <div class="controls">
+    <div class="search-wrap">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" id="search" placeholder="Rechercher un tableau, une maladie, un agent…" autocomplete="off">
+    </div>
+    <div class="filters">
+      <button class="filter-btn active" data-cat="all">Tous</button>
+      <button class="filter-btn" data-cat="chimique">Chimique</button>
+      <button class="filter-btn" data-cat="physique">Physique</button>
+      <button class="filter-btn" data-cat="biologique">Biologique</button>
+      <button class="filter-btn" data-cat="tms">TMS / Rachis</button>
+      <button class="filter-btn" data-cat="cancer">Cancer</button>
+      <button class="filter-btn" data-cat="amiante">Amiante</button>
+    </div>
+    <span id="search-count"></span>
+  </div>
+
+  <div class="mp-grid" id="mp-grid"></div>
+</main>
+
+<button id="btn-print" onclick="window.print()">🖨 Imprimer</button>
+
+<script>
+const MP = [
+  {n:"1", titre:"Affections dues au plomb et ses composés", cat:"chimique",
+   maladies:["Saturnisme (intoxication au plomb)", "Encéphalopathie saturnine", "Neuropathie périphérique", "Anémie", "Coliques saturnines", "Atteintes rénales"],
+   travaux:["Fabrication et manipulation de plomb, de litharge, de céruse", "Récupération de vieux plomb", "Soudure au plomb", "Industrie des accumulateurs", "Poterie, verrerie, cristallerie", "Fabrication de peintures, vernis, encres contenant du plomb"],
+   delai:"1 an (désignation du plomb dans les urines au-delà de 50 µg/g de créatinine)",
+   cgt:"Le plomb est encore présent dans de nombreux locaux anciens (peintures). Exiger la recherche de plomb avant tous travaux de rénovation. En cas d'exposition, la plombémie doit être surveillée (valeur limite : 400 µg/L sang). Le dépassement des valeurs entraîne un retrait obligatoire du poste. La non-surveillance constitue une faute inexcusable potentielle."},
+
+  {n:"2", titre:"Maladies professionnelles causées par le mercure et ses composés", cat:"chimique",
+   maladies:["Tremblement mercuriel", "Gingivostomatite", "Troubles neuropsychiques", "Syndrome néphrotique"],
+   travaux:["Extraction et traitement des minerais mercurifères", "Fabrication de thermomètres, baromètres", "Chapellerie", "Industrie électrique (lampes)", "Laboratoires"],
+   delai:"6 mois",
+   cgt:"Le mercure est interdit dans de nombreux usages mais persiste dans certains procédés industriels et dans l'amalgame dentaire pour les chirurgiens-dentistes. Vérifier les fiches de données sécurité (FDS) des produits manipulés. Toute exposition doit figurer dans le DUER."},
+
+  {n:"4", titre:"Hémopathies causées par le benzène et tous les produits en renfermant", cat:"cancer",
+   maladies:["Leucémie (myéloïde, lymphoïde)", "Aplasie médullaire", "Pancytopénie", "Purpura thrombopénique"],
+   travaux:["Synthèse chimique utilisant le benzène", "Fabrication et emploi de colles, vernis, peintures à base de benzène", "Industrie du caoutchouc", "Extraction et raffinage du pétrole", "Nettoyage de cuves ayant contenu du benzène"],
+   delai:"20 ans (leucémies), 3 ans (autres)",
+   cgt:"Le benzène est un cancérogène certain (groupe 1 CIRC). Valeur limite contraignante : 1 ppm. Toute exposition même faible peut provoquer une leucémie des décennies plus tard. Exiger les FDS de TOUS les solvants utilisés — beaucoup contiennent du benzène sans que les salariés le sachent. En cas de leucémie chez un salarié ayant travaillé avec des solvants, penser systématiquement au Tableau 4 ET à la voie CRRMP."},
+
+  {n:"6", titre:"Affections provoquées par les rayonnements ionisants", cat:"physique",
+   maladies:["Leucémies", "Cancer de la thyroïde", "Sarcome osseux", "Cataracte", "Aplasie médullaire", "Radiodermite"],
+   travaux:["Travaux exposant aux rayonnements X ou gamma", "Extraction et traitement de minerais radioactifs", "Travaux de médecine nucléaire", "Industrie nucléaire", "Radiologie industrielle"],
+   delai:"30 ans pour les leucémies, 50 ans pour les autres cancers",
+   cgt:"Les travailleurs du nucléaire, de la radiologie médicale et industrielle sont exposés. Vérifier que le suivi dosimétrique individuel est effectué et communiqué. Le dépassement des valeurs limites (20 mSv/an) impose un retrait immédiat. La sous-déclaration est massive dans ce secteur. La CGT dispose d'une expertise spécifique via la FNME-CGT."},
+
+  {n:"8", titre:"Affections causées par les ciments", cat:"chimique",
+   maladies:["Dermite irritative", "Eczéma allergique au chrome (eczéma des ciments)", "Ulcérations cutanées"],
+   travaux:["Fabrication et emploi du ciment", "Travaux de maçonnerie, de bâtiment et travaux publics", "Fabrication d'objets en béton"],
+   delai:"1 an",
+   cgt:"Le chrome VI contenu dans le ciment est un allergène puissant et cancérogène. Depuis 2005, les ciments vendus en Europe doivent contenir moins de 2 ppm de chrome VI soluble. Vérifier les fiches techniques des ciments utilisés sur chantier. Exiger la fourniture de gants adaptés et d'EPI complets. L'eczéma aux ciments est souvent sous-déclaré car les salariés ne font pas le lien."},
+
+  {n:"9", titre:"Affections provoquées par les dérivés halogénés des hydrocarbures aromatiques", cat:"chimique",
+   maladies:["Chloracné", "Porphyrie cutanée", "Atteintes hépatiques", "Neuropathies périphériques"],
+   travaux:["Fabrication et emploi des dérivés chlorés du naphtalène, du diphényle", "Traitement des bois (pentachlorophénol)", "Fabrication d'herbicides"],
+   delai:"1 an",
+   cgt:"Les dioxines et PCB entrent dans cette catégorie. La contamination peut être alimentaire (élevages industriels) ou professionnelle. La chloracné est pathognomonique d'une exposition massive. Les tableaux 9 et 11 couvrent des agents souvent présents dans les déchets industriels — penser aux travailleurs du traitement des déchets."},
+
+  {n:"16", titre:"Affections cutanées ou affections des muqueuses provoquées par les goudrons de houille, les huiles de houille, les suies de combustion du charbon", cat:"cancer",
+   maladies:["Carcinome épidermoïde de la peau", "Kératose arsenicale", "Mélanome", "Cancer des voies respiratoires"],
+   travaux:["Ramonage", "Distillation du charbon", "Fabrication de briquettes", "Travaux d'entretien de fours à coke", "Industrie de l'aluminium"],
+   delai:"30 ans",
+   cgt:"Les HAP (hydrocarbures aromatiques polycycliques) sont cancérogènes certains. Présents dans les bitumes, les goudrons, les suies. Les routiers, égoutiers, ramoneurs sont exposés. Exiger le port de combinaisons intégrales et le suivi dermatologique annuel. Le délai de 30 ans impose une traçabilité des expositions tout au long de la carrière."},
+
+  {n:"22", titre:"Pneumoconioses dues aux poussières siliceuses", cat:"physique",
+   maladies:["Silicose (fibrose pulmonaire)", "Syndrome de Caplan-Colinet", "Cancer broncho-pulmonaire associé"],
+   travaux:["Mines de fer, de charbon, d'ardoise, de kaolin", "Taille et polissage de pierres siliceuses", "Poterie, faïencerie, verrerie", "Travaux de fonderie", "Sablage au jet de sable", "BTP : perçage, forage, décapage"],
+   delai:"35 ans",
+   cgt:"La silicose est une maladie irréversible, mortelle à terme. Elle touche toujours les BTP, la fonderie, la céramique. La valeur limite réglementaire (0,1 mg/m³) est souvent dépassée sur les chantiers. Exiger des mesures d'empoussièrement régulières. Le sablage à sec au sable de quartz est interdit depuis 1966 — vérifier les procédés de décapage utilisés. La CGT se bat pour l'interdiction totale du sablage au quartz."},
+
+  {n:"25", titre:"Affections consécutives à l'inhalation de poussières minérales renfermant de la silice cristalline libre", cat:"physique",
+   maladies:["Pneumoconiose", "Fibrose pulmonaire progressive", "Cancer broncho-pulmonaire"],
+   travaux:["Extraction de minerais", "Travaux en galeries souterraines", "Abrasifs siliceux", "Travaux de démolition"],
+   delai:"35 ans",
+   cgt:"Souvent confondu avec le Tableau 22. Ce tableau s'applique aux expositions aux poussières mixtes contenant de la silice libre. La synergie silice + tabac multiplie le risque de cancer par 10. Surveiller les travailleurs du BTP ayant travaillé sur des chantiers anciens (matériaux contenant de l'amiante ET de la silice)."},
+
+  {n:"27", titre:"Affections périarticulaires provoquées par certains gestes et postures de travail", cat:"tms",
+   maladies:["Épaule : tendinopathie de la coiffe des rotateurs", "Coude : épicondylite (tennis elbow), epitrochléite", "Poignet : syndrome du canal carpien, ténosynovite", "Genou : hygroma du genou", "Cheville : tendinopathie achilléenne"],
+   travaux:["Tous travaux comportant des mouvements répétitifs des membres supérieurs", "Travaux en posture maintenue de l'épaule", "Travaux comportant des appuis prolongés sur le coude ou le genou", "Travaux comportant des vibrations transmises aux membres supérieurs"],
+   delai:"Variable selon l'affection (1 à 6 mois)",
+   cgt:"Le Tableau 57 (TMS membres supérieurs) est le 1er tableau en nombre de reconnaissances en France. Massivement sous-déclaré. La CGT estime que moins de 50% des TMS sont déclarés en MP. Les causes : cadences imposées, absence de rotation des postes, matériel inadapté, pression de production. L'employeur qui ne respecte pas les recommandations ergonomiques inscrites dans le DUER peut être exposé à la faute inexcusable. Exiger une étude ergonomique des postes à risque."},
+
+  {n:"29", titre:"Affections provoquées par les vibrations et chocs transmis par certaines machines-outils, outils et objets — membres supérieurs", cat:"physique",
+   maladies:["Syndrome de Raynaud (doigts blancs)", "Neuropathie des membres supérieurs", "Ostéoarthropathie du coude", "Syndrome du canal carpien"],
+   travaux:["Utilisation de marteaux-piqueurs, perforateurs", "Tronçonneuses", "Meuleuses, ponceuses", "Riveteuses, boulonneuses"],
+   delai:"2 ans",
+   cgt:"La valeur d'action européenne est fixée à 2,5 m/s² d'accélération pondérée. Exiger les fiches techniques des machines indiquant le niveau de vibration déclaré par le fabricant — et les comparer aux niveaux réels mesurés en usage. La différence est souvent importante. Le port de gants anti-vibratiles réduit marginalement le risque : la seule mesure efficace est de réduire le temps d'exposition."},
+
+  {n:"30", titre:"Affections professionnelles consécutives à l'inhalation de poussières d'amiante", cat:"amiante",
+   maladies:["Asbestose (fibrose pulmonaire)", "Plaque pleurale", "Épaississement pleural diffus", "Mésothéliome pleural malin (Tableau 30bis)", "Cancer broncho-pulmonaire (30bis)"],
+   travaux:["Extraction et traitement de l'amiante", "Fabrication de produits contenant de l'amiante", "Flocage, calorifugeage", "Travaux de maintenance sur bâtiments amiantés", "Second œuvre du BTP sur bâtiments antérieurs à 1997"],
+   delai:"35 ans (plaques pleurales), 40 ans (cancers)",
+   cgt:"L'amiante est interdite en France depuis 1997 mais est encore présente dans des millions de bâtiments. TOUT chantier sur un bâtiment antérieur à 1997 impose un diagnostic amiante avant travaux. Les travailleurs du bâtiment, de la maintenance, des chantiers navals sont encore massivement exposés. La CGT a joué un rôle décisif dans la reconnaissance des maladies liées à l'amiante et se bat pour l'indemnisation par le FIVA de toutes les victimes, y compris hors profession (environnementale). En cas de diagnostic de mésothéliome ou de cancer broncho-pulmonaire avec antécédent d'exposition, contacter immédiatement le FIVA."},
+
+  {n:"30bis", titre:"Cancer broncho-pulmonaire provoqué par l'inhalation de poussières d'amiante", cat:"amiante",
+   maladies:["Cancer broncho-pulmonaire primitif"],
+   travaux:["Mêmes que Tableau 30 — + exposition passive aux poussières d'amiante dans les locaux"],
+   delai:"40 ans",
+   cgt:"Ce tableau est crucial : le cancer broncho-pulmonaire chez un non-fumeur exposé à l'amiante est quasi automatiquement reconnu. Chez un fumeur, la reconnaissance est plus difficile mais le CRRMP peut être saisi. L'employeur qui n'a pas fourni d'équipements de protection lors de travaux sur amiante est exposé à la faute inexcusable MÊME si l'exposition était antérieure à l'interdiction. Mettre en place systématiquement le suivi post-professionnel (SPP) pour tous les anciens exposés."},
+
+  {n:"36", titre:"Affections provoquées par les huiles et graisses d'origine minérale ou de synthèse", cat:"cancer",
+   maladies:["Épithélioma primitif de la peau", "Hyperkératose", "Dermite d'irritation"],
+   travaux:["Utilisation des huiles de coupe", "Travaux de mécanique, usinage", "Industrie textile utilisant des huiles", "Travaux d'emboutissage"],
+   delai:"30 ans (cancer)"],
+   cgt:"Les huiles de coupe sont cancérogènes (groupe 1 CIRC pour les huiles minérales non traitées). Souvent sous-estimées. Exiger la substitution par des huiles entières végétales ou des émulsions aqueuses moins toxiques. Surveiller les lésions cutanées chez les usineurs : toute lésion persistante doit être consultée en dermatologie."},
+
+  {n:"37bis", titre:"Cancers provoqués par les poussières ou fumées de nickel", cat:"cancer",
+   maladies:["Cancer de l'ethmoïde et des sinus", "Cancer broncho-pulmonaire"],
+   travaux:["Grillage des mattes de nickel", "Affinage du nickel", "Travaux d'électrolyse", "Soudage sur acier inoxydable", "Placage et chromage au nickel"],
+   delai:"40 ans",
+   cgt:"Le nickel et ses composés sont classés cancérogènes certains. La soudure sur inox libère des fumées de nickel et de chrome VI. Exiger la mise en place de captation à la source lors de tous travaux de soudage. La valeur limite réglementaire (0,01 mg/m³ pour le nickel) est souvent dépassée sans mesure. Les soudeurs sont une population à fort risque de cancer."},
+
+  {n:"40", titre:"Maladies engendrées par le travail dans les mines de charbon", cat:"physique",
+   maladies:["Pneumoconiose du mineur de charbon (anthracose)", "Broncho-pneumopathie chronique obstructive (BPCO)", "Syndrome de Caplan-Colinet"],
+   travaux:["Extraction du charbon en mines souterraines ou à ciel ouvert", "Transport et traitement du charbon"],
+   delai:"35 ans",
+   cgt:"Les mineurs de charbon bénéficient d'un régime de sécurité sociale spécial (CANSSM). La CGT-Mines a historiquement défendu la reconnaissance de ces maladies. Même si les mines de charbon françaises sont fermées, des travailleurs âgés peuvent encore présenter ces maladies. La BPCO liée aux poussières est souvent non reconnue : orienter vers la voie CRRMP."},
+
+  {n:"42", titre:"Atteintes auditives provoquées par les bruits lésionnels", cat:"physique",
+   maladies:["Surdité de perception bilatérale", "Acouphènes"],
+   travaux:["Tous travaux exposant à un niveau sonore > 85 dB(A)", "Utilisation de machines bruyantes", "Travaux de rivetage, martelage, découpage"],
+   delai:"1 an",
+   cgt:"La surdité professionnelle est la 2e maladie professionnelle reconnue en France. Très fortement sous-déclarée. Exiger l'audiométrie annuelle de tous les salariés exposés au-delà de 80 dB(A). La valeur d'exposition déclenchant l'action est 80 dB(A) — au-delà, EPI obligatoires ET réduction du bruit à la source. Au-delà de 87 dB(A) : réduction du bruit obligatoire sans délai. Le refus d'employeur = faute inexcusable potentielle."},
+
+  {n:"43", titre:"Affections provoquées par l'aldéhyde formique et ses polymères", cat:"chimique",
+   maladies:["Rhinite allergique", "Asthme professionnel", "Dermatite de contact allergique", "Cancer nasopharyngé (voie CRRMP)"],
+   travaux:["Fabrication et emploi des résines formaldéhydiques", "Embaumement, préparation anatomo-pathologique", "Industrie du bois (agglomérés, contreplaqués)", "Industrie textile", "Soins infirmiers (désinfectants)"],
+   delai:"1 an",
+   cgt:"Le formaldéhyde (formol) est classé cancérogène certain par le CIRC depuis 2004. Présent dans les panneaux de particules, certains textiles, les désinfectants hospitaliers. La valeur limite contraignante est de 0,5 ppm. Les personnels hospitaliers (anatomo-pathologie, IBODE) sont particulièrement exposés. Exiger la substitution par des produits moins dangereux là où c'est techniquement possible."},
+
+  {n:"44bis", titre:"Affections chroniques du rachis lombaire provoquées par des vibrations de basses et moyennes fréquences transmises au corps entier", cat:"tms",
+   maladies:["Hernie discale lombaire L4-L5 ou L5-S1 avec ou sans radiculopathie", "Discopathie lombaire dégénérative"],
+   travaux:["Conduite de véhicules sur voie publique (camions, bus)", "Conduite d'engins de chantier (tracteurs, grues, chariots)", "Conduite de véhicules agricoles"],
+   delai:"4 ans",
+   cgt:"Ce tableau concerne des millions de conducteurs professionnels. La valeur d'action est fixée à 0,5 m/s² d'accélération. Les engins de chantier et les poids lourds sans suspension de siège active dépassent souvent largement cette valeur. Exiger des sièges à suspension active. L'absence de suspension adaptée sur des véhicules professionnels est une faute de l'employeur susceptible de caractériser la faute inexcusable."},
+
+  {n:"45", titre:"Infections d'origine professionnelle par les virus des hépatites A, B, C, D et E", cat:"biologique",
+   maladies:["Hépatite A, B, C, D ou E aiguë ou chronique", "Cirrhose post-hépatique", "Cancer du foie secondaire"],
+   travaux:["Personnel soignant (hôpital, clinique, laboratoire)", "Personnel des services d'aide à la personne", "Travaux exposant aux produits sanguins", "Travaux d'assainissement"],
+   delai:"30 ans (cancer du foie)",
+   cgt:"L'hépatite C est un drame professionnel pour les soignants exposés aux années 1980-1990, avant les précautions universelles. La vaccination contre l'hépatite B est obligatoire pour les soignants depuis 1991. En cas d'AES (accident d'exposition au sang), la procédure d'urgence doit être connue de tous. Le délai de déclaration d'un AES est de 48h pour bénéficier du traitement post-exposition (TPE)."},
+
+  {n:"47", titre:"Affections professionnelles provoquées par les poussières de bois", cat:"cancer",
+   maladies:["Adénocarcinome de l'ethmoïde et des sinus de la face", "Rhinite chronique, sinusite chronique", "Asthme professionnel"],
+   travaux:["Travaux exposant aux poussières de bois : scierie, menuiserie, ébénisterie, charpenterie", "Industrie du meuble", "Travaux de ponçage, usinage du bois"],
+   delai:"40 ans (cancer)"],
+   cgt:"L'adénocarcinome de l'ethmoïde est un cancer rare mais quasi exclusivement professionnel chez les travailleurs du bois. Valeur limite réglementaire : 1 mg/m³ (poussières de bois dures). Exiger aspiration à la source sur toutes les machines. La mortalité est élevée car le diagnostic est souvent tardif : surveiller toute sinusite chronique ou obstruction nasale persistante chez un menuisier."},
+
+  {n:"49", titre:"Affections cutanées professionnelles de mécanisme allergique", cat:"chimique",
+   maladies:["Eczéma de contact allergique", "Urticaire de contact"],
+   travaux:["Contact avec métaux (nickel, cobalt, chrome)", "Contact avec résines époxy, acryliques", "Contact avec caoutchouc et ses accélérateurs", "Contact avec cosmétiques, conservateurs"],
+   delai:"1 an",
+   cgt:"L'eczéma professionnel allergique est souvent irréversible : une fois sensibilisé, le salarié réagit à des doses infimes de l'allergène. L'éviction du poste est souvent nécessaire, ce qui engendre un reclassement ou un licenciement pour inaptitude. Exiger les tests épicutanés (patch tests) chez un dermatologue avant toute décision d'inaptitude. La reconnaissance en MP ouvre des droits à indemnisation (IPP) et à une rente si l'inaptitude est totale."},
+
+  {n:"57", titre:"Affections périarticulaires provoquées par certains gestes et postures de travail", cat:"tms",
+   maladies:["Syndrome du canal carpien", "Ténosynovite des fléchisseurs des doigts", "Épicondylite latérale", "Tendinopathie de la coiffe des rotateurs", "Hygroma du coude ou du genou", "Bursite sous-acromiale"],
+   travaux:["Travaux comportant des mouvements répétitifs des membres supérieurs", "Travaux de montage, d'assemblage", "Travaux de caisse (grande distribution)", "Travaux de manutention", "Travaux utilisant des outils vibrants"],
+   delai:"Variable : 30 jours à 1 an selon l'affection",
+   cgt:"Le Tableau 57 est le 1er tableau en volume de reconnaissances. Il représente environ 40% de toutes les MP reconnues. Pourtant, l'ANACT estime que moins de 1 TMS sur 2 est déclaré. La CGT se bat pour l'amélioration des conditions de travail à la source : réduction des cadences, rotation des postes, conception ergonomique. En cas de refus de l'employeur, la procédure de reconnaissance MP PUIS la faute inexcusable est la stratégie la plus efficace pour obtenir une indemnisation complémentaire."},
+
+  {n:"57bis", titre:"Affections chroniques du rachis lombaire provoquées par la manutention manuelle de charges lourdes", cat:"tms",
+   maladies:["Hernie discale lombaire L4-L5 ou L5-S1 avec sciatalgie (L5 ou S1)", "Discopathie lombaire dégénérative"],
+   travaux:["Manutention manuelle de charges > 15 kg", "Aide à domicile, aide-soignant (manutention de patients)", "Manutentionnaire, livreur", "Travaux de chargement/déchargement"],
+   delai:"5 ans",
+   cgt:"La hernie discale d'origine professionnelle est massivement sous-déclarée. Conditions d'indemnisation : le travail habituel exposait à des manutentions de charges ≥ 15 kg (ou 12 kg pour les femmes dans certaines branches). Les aides à domicile et les aides-soignants sont particulièrement concernés. La mise en place de matériel de manutention (lève-malades, chariots) est une obligation légale — son absence constitue une faute inexcusable."},
+
+  {n:"59", titre:"Intoxications professionnelles par le diméthylformamide", cat:"chimique",
+   maladies:["Hépatite toxique", "Syndrome abdominal", "Troubles neuropsychiques"],
+   travaux:["Fabrication et utilisation du DMF comme solvant", "Industrie des fibres synthétiques (acrylique)", "Industrie pharmaceutique", "Fabrication de films photographiques"],
+   delai:"90 jours",
+   cgt:"Le DMF est un solvant hépatotoxique et reprotoxique. Il est absorbé par voie cutanée — le port de gants est insuffisant (perméabilité des gants nitrile au DMF). Exiger des gants en polyvinyle d'alcool (PVA) et des vêtements de protection. La consommation d'alcool potentialise la toxicité hépatique."},
+
+  {n:"60", titre:"Intoxication professionnelle par l'hexane", cat:"chimique",
+   maladies:["Neuropathie périphérique sensitive et motrice"],
+   travaux:["Fabrication de colles à base d'hexane", "Solvants dans l'imprimerie, la maroquinerie", "Extraction d'huiles végétales", "Industrie de la chaussure"],
+   delai:"4 ans",
+   cgt:"L'hexane provoque une polyneuropathie périphérique insidieuse, souvent diagnostiquée tardivement (plusieurs mois après début de l'exposition). Les travailleurs de la confection de chaussures (secteur informel notamment) sont particulièrement touchés. Substituer l'hexane par des solvants moins neurotoxiques est techniquement faisable. La CGT a bataillé pour l'interdiction des colles à base d'hexane dans les ateliers non ventilés."},
+
+  {n:"61", titre:"Maladies professionnelles provoquées par le cadmium et ses composés", cat:"cancer",
+   maladies:["Cancer broncho-pulmonaire", "Néphropathie tubulaire chronique", "Ostéomalacie, ostéoporose"],
+   travaux:["Fabrication et utilisation des alliages de cadmium", "Galvanoplastie (cadmiage)", "Fabrication de pigments", "Soudage d'alliages cadmiés", "Fabrication de piles ni-cd"],
+   delai:"30 ans (cancer)"],
+   cgt:"Le cadmium est cancérogène certain (groupe 1 CIRC). La valeur limite contraignante est de 0,004 mg/m³. Les soudeurs qui travaillent sur des pièces cadmiées sans aspiration à la source sont exposés à des concentrations très élevées. Vérifier systématiquement si les pièces soudées contiennent des revêtements cadmiés. L'itai-itai maladie (empoisonnement au cadmium par l'eau) est l'équivalent environnemental de cette exposition professionnelle."},
+
+  {n:"62", titre:"Affections professionnelles provoquées par les isocyanates organiques", cat:"chimique",
+   maladies:["Asthme professionnel", "Rhinite allergique", "Pneumopathie d'hypersensibilité", "Dermite de contact"],
+   travaux:["Fabrication de mousses polyuréthanes", "Application de peintures bi-composantes à base d'isocyanates", "Carrosserie automobile", "Fabrication d'adhésifs"],
+   delai:"1 an",
+   cgt:"Les isocyanates (MDI, TDI, HDI) sont la 1ère cause d'asthme professionnel en France. Une fois sensibilisé, toute ré-exposition même à de faibles concentrations déclenche une crise. Le seuil de sensibilisation est individuel — certains réagissent à des concentrations inférieures aux valeurs limites. Exiger des cabines de peinture ventilées avec recyclage d'air filtré, masques à adduction d'air lors des applications."},
+
+  {n:"64", titre:"Intoxication professionnelle par l'oxyde de carbone", cat:"chimique",
+   maladies:["Intoxication aiguë au CO", "Séquelles neuropsychiques post-intoxication", "Atteintes cardiaques"],
+   travaux:["Utilisation de moteurs à combustion en espace confiné", "Travaux dans les égouts, les mines", "Industrie de la métallurgie", "Fabrication et utilisation du gaz de ville"],
+   delai:"5 ans (séquelles neuropsychiques)"],
+   cgt:"L'intoxication au CO est insidieuse (gaz incolore et inodore) et mortelle à forte concentration. Les principaux facteurs de risque en entreprise : utilisation d'engins thermiques dans des entrepôts fermés, chaudières mal entretenues, travaux en espace confiné. Exiger des détecteurs CO dans tous les espaces à risque. Le plan de prévention pour travaux en espace confiné est obligatoire."},
+
+  {n:"65", titre:"Lésions eczématiformes de mécanisme allergique provoquées par les époxy", cat:"chimique",
+   maladies:["Eczéma allergique de contact", "Rhinite allergique", "Asthme professionnel"],
+   travaux:["Application de peintures, revêtements et colles époxydiques", "Fabrication de circuits imprimés", "Enrobage électrique", "Fabrication de matériaux composites"],
+   delai:"1 an",
+   cgt:"Les résines époxy sont des sensibilisants puissants. Une fois allergisé, le salarié doit être évincé définitivement du contact avec les époxy — y compris dans d'autres entreprises. La reconnaissance en MP avec taux d'IPP ≥ 25 % ouvre droit à une rente viagère. Exiger des substituts moins sensibilisants et la formation des utilisateurs aux bonnes pratiques."},
+
+  {n:"66", titre:"Rhinite et asthmes professionnels", cat:"chimique",
+   maladies:["Rhinite allergique professionnelle", "Asthme bronchique professionnel", "Syndrome d'irritation des voies aériennes supérieures (RADS)"],
+   travaux:["Exposition à des allergènes d'origine végétale (farine, latex, bois exotiques)", "Exposition à des allergènes d'origine animale (poils, squames)", "Exposition à des agents chimiques sensibilisants"],
+   delai:"1 an",
+   cgt:"L'asthme professionnel représente 5 à 10 % de tous les asthmes. Les boulangers, les coiffeurs, les soignants (latex) sont particulièrement touchés. Le latex a été en grande partie remplacé par des gants sans poudre — mais les soignants anciennement exposés sont toujours sensibilisés. L'éloignement du poste est souvent nécessaire, ce qui entraîne des difficultés de reclassement : la CGT milite pour une meilleure prise en charge des reconversions professionnelles."},
+
+  {n:"69", titre:"Affections provoquées par les vibrations et chocs transmis par certaines machines-outils, outils et objets — système ostéo-articulaire", cat:"physique",
+   maladies:["Ostéonécrose du coude", "Syndrome du marteau hypothénar", "Arthrose du coude", "Nécrose de l'os semi-lunaire (maladie de Kienböck)"],
+   travaux:["Utilisation de marteaux-piqueurs", "Martelage", "Travaux de menuiserie avec outils vibrants"],
+   delai:"4 ans",
+   cgt:"Distinct du Tableau 29 (qui couvre les atteintes vasculaires et neurologiques). Ce tableau couvre les atteintes ostéo-articulaires. Complémentaire du Tableau 29 : un salarié peut être reconnu au titre des deux tableaux pour les mêmes expositions mais des lésions différentes. La durée minimale d'exposition requise est de 5 ans."},
+
+  {n:"70", titre:"Affections professionnelles provoquées par le styrène", cat:"chimique",
+   maladies:["Manifestations neuropsychiques chroniques", "Polyneuropathie", "Troubles de l'audition"],
+   travaux:["Fabrication de polystyrène", "Fabrication de résines styréniques", "Stratification de polyester armé de fibre de verre (nautisme, BTP)"],
+   delai:"3 ans",
+   cgt:"Le styrène est un neurotoxique et un perturbateur endocrinien suspecté. Particulièrement présent dans la construction nautique (fabrication de coques en polyester). Les ouvriers stratifieurs sont massivement exposés. La valeur limite indicative est de 23 ppm — souvent dépassée dans les ateliers fermés. La substitution du polyester insaturé est techniquement difficile mais possible dans certains cas (résines vinylester à plus faible émission)."},
+
+  {n:"71", titre:"Affections oculaires dues aux rayonnements ultraviolets — électro-ophthalmie", cat:"physique",
+   maladies:["Kératoconjonctivite aiguë (coup d'arc)", "Cataracte du cristallin"],
+   travaux:["Soudage à l'arc électrique", "Découpage plasma", "Travaux exposant aux UV artificiels (lampes germicides, réticulation)", "Travaux en altitude (réflexion sur neige)"],
+   delai:"30 jours (coup d'arc), 15 ans (cataracte)"],
+   cgt:"Le coup d'arc (flash burn) est très douloureux mais guérit en 24-48h avec traitement. La cataracte est la conséquence à long terme d'expositions répétées. Exiger des écrans de soudage conformes aux normes EN et des rideaux de protection pour les postes environnants. Les soudeurs sans protection adéquate subissent parfois plusieurs coups d'arc par mois : chaque incident est une blessure professionnelle."},
+
+  {n:"76", titre:"Maladies liées à des agents infectieux ou parasitaires contractées en milieu d'hospitalisation", cat:"biologique",
+   maladies:["Toute infection contractée en milieu de soins", "Infections à Staphylocoque résistant (SARM)", "Infections à Clostridium difficile", "Hépatites virales"],
+   travaux:["Personnel soignant, médical et para-médical", "Personnel de laboratoire", "Personnel d'entretien en établissements de soins"],
+   delai:"1 an",
+   cgt:"Ce tableau est le plus général pour les soignants. Il couvre pratiquement toute infection contractée dans un établissement de soins. La CGT-santé milite pour l'application stricte des précautions standard dans tous les établissements et pour des effectifs suffisants permettant le respect des protocoles (un soin réalisé à la va-vite = un soin sans précautions)."},
+
+  {n:"79", titre:"Lésions chroniques du ménisque", cat:"tms",
+   maladies:["Lésion méniscale dégénérative", "Lésion méniscale traumatique chronique"],
+   travaux:["Travaux comportant habituellement une station à genoux ou accroupie prolongée", "Travaux de carrelage, de pose de parquet", "Travaux de plomberie, d'électricité en espace confiné"],
+   delai:"6 mois",
+   cgt:"Les carreleurs et les plombiers sont les populations les plus touchées. La condition essentielle est la station à genoux prolongée et habituelle. L'absence de genouillères adaptées sur les chantiers constitue une faute de l'employeur. Après méniscectomie, le retour au même poste expose à une récidive : exiger un reclassement adapté et la reconnaissance de l'incapacité permanente partielle."},
+
+  {n:"84", titre:"Affections engendrées par les solvants organiques liquides à usage professionnel", cat:"chimique",
+   maladies:["Encéphalopathie chronique toxique", "Polyneuropathie périphérique", "Troubles neuropsychiques chroniques"],
+   travaux:["Emploi de solvants organiques dans l'industrie, le bâtiment, l'artisanat", "Peintre en bâtiment, carrossier", "Imprimerie, nettoyage industriel"],
+   delai:"5 ans",
+   cgt:"Le syndrome psycho-organique des peintres (encéphalopathie chronique des solvants) est une maladie neurodégénérative irréversible provoquée par l'exposition chronique aux solvants. Elle se manifeste par des troubles de la mémoire, de la concentration, de la personnalité. Souvent diagnostiquée comme dépression ou début d'Alzheimer. Les peintres en bâtiment âgés de 50 ans et plus ayant travaillé avant les années 2000 sont à haut risque. Orienter vers un neurologue spécialisé."},
+
+  {n:"87", titre:"Ornithose-psittacose", cat:"biologique",
+   maladies:["Pneumopathie aiguë à Chlamydophila psittaci", "Fièvre isolée", "Formes septicémiques graves"],
+   travaux:["Élevage et vente d'oiseaux", "Abattoirs de volailles", "Vétérinaires, animaleries"],
+   delai:"21 jours",
+   cgt:"Maladie rare mais grave, sous-diagnostiquée. Les abattoirs de volailles sont particulièrement à risque en cas d'importation d'oiseaux infectés. Exiger les protocoles de biosécurité et le suivi médical des travailleurs en contact avec les oiseaux."},
+
+  {n:"91", titre:"Affections consécutives à l'inhalation de poussières textiles végétales", cat:"physique",
+   maladies:["Byssinose (BPCO spécifique aux fibres de coton)", "Asthme professionnel", "Rhinite"],
+   travaux:["Filature et tissage du coton, du lin, du chanvre et du sisal", "Cardage, peignage des fibres textiles"],
+   delai:"35 ans (byssinose)"],
+   cgt:"La byssinose est quasi éteinte en France depuis la quasi-disparition de l'industrie textile. Mais des travailleurs âgés peuvent encore la présenter. La caractéristique de la byssinose est la dyspnée en début de semaine ('Monday fever') qui s'améliore en fin de semaine — à l'inverse des autres bronchites professionnelles."},
+
+  {n:"94", titre:"Broncho-pneumopathies chroniques obstructives du mineur de charbon", cat:"physique",
+   maladies:["BPCO (bronchite chronique obstructive)", "Emphysème"],
+   travaux:["Extraction du charbon", "Transport et traitement du charbon"],
+   delai:"35 ans",
+   cgt:"Distinct du Tableau 40 (pneumoconiose). Ce tableau couvre la BPCO non fibrotique. La CGT-Mines a obtenu la reconnaissance de ces maladies après de longues batailles. Les anciens mineurs doivent être orientés vers le système CANSSM (Caisse Autonome Nationale de Sécurité Sociale dans les Mines) pour la prise en charge."},
+
+  {n:"97", titre:"Affections chroniques du rachis lombaire provoquées par des manutentions manuelles de charges", cat:"tms",
+   maladies:["Lumbago chronique", "Hernie discale lombaire sans signe neurologique", "Discopathie lombaire dégénérative"],
+   travaux:["Manutention manuelle habituelle de charges ≥ 15 kg", "Aide-soignant, aide à domicile (manutention de patients > 80 kg)"],
+   delai:"6 mois",
+   cgt:"Complément du Tableau 57bis. Ce tableau couvre les affections lombaires sans sciatalgie franche (qui relèvent du 57bis). La population des soignants (aides-soignants, infirmières) est massivement concernée. La CGT se bat pour des effectifs suffisants permettant la manutention à deux personnes et pour l'équipement systématique en lève-patients dans les établissements de soins."},
+
+  {n:"98", titre:"Affections chroniques du rachis lombaire provoquées par des vibrations de basses et moyennes fréquences", cat:"tms",
+   maladies:["Hernie discale lombaire L4-L5 ou L5-S1 avec radiculopathie"],
+   travaux:["Conduite de véhicules sur voie publique (conducteurs PL, bus)", "Conduite d'engins de chantier", "Conduite de chariots élévateurs"],
+   delai:"4 ans",
+   cgt:"Très similaire au Tableau 44bis mais axé sur les conditions de conduite. La distinction réside dans la nature de l'exposition (engin de chantier vs route). Vérifier lequel des deux tableaux est applicable selon le poste occupé. En cas de doute, saisir le CRRMP qui peut reconnaître hors tableau."}
+];
+
+// Données complémentaires sans CGT détaillé (tableaux moins fréquents)
+const MP_MINI = [
+  {n:"3", titre:"Intoxication professionnelle par le tétrachlorure de carbone", cat:"chimique", maladies:["Hépatite toxique","Insuffisance rénale aiguë"], travaux:["Solvant dans nettoyage industriel, industrie chimique"], delai:"30 jours", cgt:"Substitution obligatoire par des solvants moins toxiques. Tableau rare aujourd'hui."},
+  {n:"5", titre:"Affections professionnelles liées au contact avec le phosphore et ses composés", cat:"chimique", maladies:["Ostéonécrose de la mâchoire","Hépatite toxique"], travaux:["Industrie des allumettes (ancien)","Fabrication d'engrais phosphatés"], delai:"30 jours", cgt:"Tableau historique (maladie des allumettiers). Aujourd'hui surtout : industrie des engrais et fabrication de produits antiparasitaires organophosphorés."},
+  {n:"7", titre:"Tétanos professionnel", cat:"biologique", maladies:["Tétanos"], travaux:["Travaux agricoles, jardinage","Travaux exposant à des blessures souillées de terre"], delai:"30 jours", cgt:"Vaccin obligatoire en milieu agricole. Exiger la mise à jour des vaccinations de tous les salariés agricoles et des jardiniers."},
+  {n:"10", titre:"Ulcérations et dermites provoquées par l'acide chromique, les chromates, bichromates", cat:"chimique", maladies:["Ulcérations cutanées (cloisons nasales, peau)","Dermite","Cancer broncho-pulmonaire"], travaux:["Galvanochromie","Tannerie","Fabrication de pigments chromés"], delai:"30 ans (cancer)", cgt:"Le chrome VI est cancérogène certain. La substitution par des procédés sans chrome VI est possible dans de nombreuses applications. Exiger les FDS des bains de traitement de surface."},
+  {n:"11", titre:"Intoxication professionnelle par le tétrachloroéthane", cat:"chimique", maladies:["Hépatite toxique grave","Polyneuropathie"], travaux:["Solvant dans l'industrie textile et aéronautique"], delai:"90 jours", cgt:"Substitution par des solvants moins toxiques. Tableau peu fréquent aujourd'hui."},
+  {n:"12", titre:"Affections professionnelles provoquées par les dérivés halogénés des hydrocarbures aliphatiques", cat:"chimique", maladies:["Hépatite toxique","Néphropathie","Neuropathie"], travaux:["Trichloroéthylène (dégraissage métaux)","Perchloroéthylène (pressing)","Chloroforme"], delai:"90 jours", cgt:"Le trichloréthylène (TCE) est classé cancérogène certain (lymphome non-hodgkinien). Les pressings utilisent le perchloroéthylène (PCE) — cancérogène probable. La CGT milite pour l'interdiction du PCE dans les pressings et sa substitution par des procédés aqueux."},
+  {n:"13", titre:"Intoxications professionnelles par les dérivés nitrés et aminés aromatiques", cat:"cancer", maladies:["Cancer de la vessie","Méthémoglobinémie"], travaux:["Fabrication de colorants","Caoutchouc (antioxydants)","Industrie pharmaceutique"], delai:"30 ans (cancer)", cgt:"Le cancer de la vessie d'origine professionnelle est massivement sous-déclaré. Penser aux anciens travailleurs de la teinture et du caoutchouc. Tout cancer de la vessie chez un salarié de ces secteurs mérite une déclaration en MP."},
+  {n:"15", titre:"Affections provoquées par les amines aromatiques et leurs sels", cat:"cancer", maladies:["Cancer de la vessie","Agranulocytose"], travaux:["Colorants azoïques","Industrie du caoutchouc"], delai:"30 ans", cgt:"Même problématique que le Tableau 13. La co-exposition à plusieurs amines aromatiques est fréquente et potentialise le risque."},
+  {n:"18", titre:"Charbon (bacillus anthracis)", cat:"biologique", maladies:["Charbon cutané","Charbon pulmonaire","Charbon gastro-intestinal"], travaux:["Manipulation de peaux, laines, os d'animaux importés"], delai:"60 jours", cgt:"Maladie rare mais mortelle (charbon pulmonaire). Concerne les dockers, les travailleurs de tannerie et les équarrisseurs."},
+  {n:"19", titre:"Spirochétoses (leptospirose)", cat:"biologique", maladies:["Leptospirose (maladie de Weil)"], travaux:["Travaux dans les égouts, les rizières","Personnel d'assainissement","Pêcheurs, agriculteurs"], delai:"21 jours", cgt:"Vaccination recommandée pour les travailleurs à risque. Les égoutiers et les travailleurs de l'assainissement sont les plus exposés. La maladie est souvent non diagnostiquée car prise pour une grippe — insister sur la déclaration."},
+  {n:"20", titre:"Affections professionnelles provoquées par l'arsenic et ses composés minéraux", cat:"cancer", maladies:["Cancer broncho-pulmonaire","Cancer cutané","Angiosarcome du foie"], travaux:["Industrie des pesticides arsenicaux","Traitement des minerais arsenicaux","Vitrification du verre"], delai:"40 ans (cancer)", cgt:"L'arsenic est classé cancérogène certain. Aujourd'hui principalement : fonderies de métaux non ferreux (arsenic présent dans les minerais), traitement de bois (CCA — chromate cuivre arsenic)."},
+  {n:"24", titre:"Brucelloses professionnelles", cat:"biologique", maladies:["Brucellose aiguë et chronique"], travaux:["Travaux d'élevage (bovins, ovins, caprins)","Abattoirs","Laboratoires vétérinaires","Vétérinaires"], delai:"3 mois", cgt:"Maladie encore présente dans les zones d'élevage. Vaccination des animaux fortement recommandée. Les bergers et les éleveurs de petits ruminants sont à risque élevé en zone endémique."},
+  {n:"26", titre:"Maladies professionnelles engendrées par les virus de l'hépatite virale B", cat:"biologique", maladies:["Hépatite B aiguë ou chronique"], travaux:["Personnel soignant"], delai:"6 mois", cgt:"Recouvert par le Tableau 45. La vaccination antiHBs est obligatoire pour les soignants (loi du 18 janvier 1991)."},
+  {n:"32", titre:"Affections professionnelles provoquées par le fluor, l'acide fluorhydrique", cat:"chimique", maladies:["Fluorose osseuse","Brûlures cutanées graves","Nécrose osseuse"], travaux:["Fabrication d'aluminium (cryolithe)","Industrie chimique (HF)","Gravure du verre"], delai:"10 ans (fluorose)", cgt:"L'acide fluorhydrique est extrêmement dangereux : les brûlures apparaissent après un délai de plusieurs heures et peuvent être mortelles par hypocalcémie. Exiger la présence de gel de gluconate de calcium sur tous les postes exposés."},
+  {n:"37", titre:"Cancers provoqués par les opérations de grillage des mattes de nickel", cat:"cancer", maladies:["Cancer du poumon","Cancer des voies nasales"], travaux:["Grillage et affinage du nickel"], delai:"40 ans", cgt:"Tableau très spécifique à l'industrie du nickel (Eramet, ex-SLN). Historiquement important pour les travailleurs du Bassin de Decazeville."},
+  {n:"38", titre:"Maladies professionnelles engendrées par la N-nitroso-diméthylamine", cat:"chimique", maladies:["Cancer du foie","Cancer broncho-pulmonaire"], travaux:["Fabrication et emploi de NDMA"], delai:"30 ans", cgt:"Les nitrosamines sont des cancérogènes puissants. Le NDMA est maintenant interdit dans la plupart des usages. Mais des contaminations d'eau ou d'aliments sont possibles (industrie agroalimentaire)."},
+  {n:"39", titre:"Maladies professionnelles engendrées par le bioxyde de manganèse", cat:"chimique", maladies:["Syndrome parkinsonien manganique","Troubles neuropsychiques"], travaux:["Fabrication de piles","Industrie de l'acier (manganèse)","Soudeurs"], delai:"10 ans", cgt:"La manganose (manganisme) est une maladie neurologique grave simulant la maladie de Parkinson. Elle est irréversible. Les soudeurs utilisant des électrodes à haute teneur en manganèse sont exposés. Exiger des mesures d'hygiène respiratoire strictes et la substitution d'électrodes moins manganèsées."},
+  {n:"40bis", titre:"Cancers provoqués par les poussières de cobalt associées au carbure de tungstène", cat:"cancer", maladies:["Cancer broncho-pulmonaire"], travaux:["Fabrication et emploi d'outils et abrasifs en carbure de tungstène-cobalt"], delai:"35 ans", cgt:"Les ouvriers de l'industrie des carbures de tungstène (frittage, meulage) sont exposés. La valeur limite de cobalt est de 0,01 mg/m³. Exiger une protection respiratoire adaptée et le suivi médical."},
+  {n:"41", titre:"Maladies engendrées par le béryllium et ses composés", cat:"cancer", maladies:["Bérylliose pulmonaire chronique","Cancer broncho-pulmonaire"], travaux:["Industrie aérospatiale et nucléaire (alliages béryllium-cuivre)","Fabrication de céramiques techniques"], delai:"35 ans", cgt:"Le béryllium est extrêmement toxique dès des concentrations infimes. La sensibilisation peut survenir après une seule exposition brève. La valeur limite est de 0,0002 mg/m³. Matériau de haute technologie encore utilisé en aéronautique et dans le nucléaire."},
+  {n:"44", titre:"Affections consécutives au travail en milieu hyperbare", cat:"physique", maladies:["Accidents de décompression","Ostéonécrose dysbarique","Barotraumatismes"], travaux:["Scaphandriers","Travaux en caissons pneumatiques","Tunneliers exposés à air comprimé"], delai:"50 ans (ostéonécrose)", cgt:"Les accidents de décompression peuvent être mortels ou laisser des séquelles neurologiques graves. Exiger le respect strict des tables de décompression et la présence d'un caisson de recompression à proximité des chantiers sous-marins."},
+  {n:"46", titre:"Mycoses cutanées", cat:"biologique", maladies:["Teigne professionnelle","Dermatophytose"], travaux:["Contact avec animaux (vétérinaires, éleveurs)","Personnel de soins"], delai:"15 jours", cgt:"Tableau peu fréquent. Les coiffeurs peuvent être exposés par contact avec des outils contaminés."},
+  {n:"48", titre:"Affections provoquées par certains plastiques, résines et adhésifs", cat:"chimique", maladies:["Eczéma","Asthme","Rhinite"], travaux:["Fabrication et emploi de matières plastiques","Colles cyanoacrylates","Résines acryliques"], delai:"1 an", cgt:"Tableau général couvrant de nombreux agents plastiques. Les acrylates (ongles en gel, dentisterie) sont des allergènes puissants fréquents chez les esthéticiennes."},
+  {n:"50", titre:"Fièvre Q (Coxiella burnetii)", cat:"biologique", maladies:["Fièvre Q aiguë (pneumopathie, hépatite)","Fièvre Q chronique (endocardite)"], travaux:["Élevage de bovins, ovins, caprins","Abattoirs","Vétérinaires"], delai:"60 jours", cgt:"Zoonose présente en zone d'élevage. La contamination se fait par inhalation de poussières contaminées (mise-bas, laine). Déclarer systématiquement toute fièvre inexpliquée chez les travailleurs d'élevage."},
+  {n:"51", titre:"Maladies professionnelles dues aux agents biologiques autres que ceux déjà mentionnés", cat:"biologique", maladies:["Toute infection à agent biologique contractée en milieu professionnel"], travaux:["Travaux exposant à des agents biologiques de groupe 2, 3 ou 4"], delai:"6 mois", cgt:"Tableau 'balai' pour les agents biologiques non listés dans d'autres tableaux. Permet la reconnaissance de maladies infectieuses peu connues contractées en milieu professionnel."},
+  {n:"57b", titre:"Affections chroniques du rachis lombaire — manutentions manuelles de charges lourdes", cat:"tms", maladies:["Hernie discale lombaire avec radiculopathie L5 ou S1"], travaux:["Manutention manuelle habituelle de charges ≥ 15 kg ou 12 kg"], delai:"5 ans", cgt:"Voir commentaire Tableau 57bis."},
+  {n:"63", titre:"Affections provoquées par les enzymes", cat:"chimique", maladies:["Asthme professionnel","Rhinite","Alvéolite"], travaux:["Industrie alimentaire (amylases, lipases, protéases)","Industrie du détergent","Boulangeries industrielles"], delai:"1 an", cgt:"Les boulangers sont exposés aux amylases fongiques ajoutées à la farine. Exiger l'aspiration à la source lors du pétrissage et du dosage des améliorants."},
+  {n:"68", titre:"Tularémie", cat:"biologique", maladies:["Tularémie ulcéroglandulaire","Tularémie pneumonique"], travaux:["Chasse au lièvre","Taxidermie","Travaux agricoles en zone d'endémie"], delai:"15 jours", cgt:"Maladie rare transmise par les lièvres et les lapins. Exiger le port de gants lors de la manipulation d'animaux sauvages."},
+  {n:"72", titre:"Maladies résultant de l'exposition aux dérivés nitrés des glycols et du glycérol", cat:"chimique", maladies:["Céphalées","Troubles cardio-vasculaires","Méthémoglobinémie"], travaux:["Fabrication d'explosifs (dynamite, nitroglycérine)","Fabrication de médicaments vasodilatateurs"], delai:"7 jours", cgt:"La nitroglycérine est absorbée par voie cutanée. Les ouvriers exposés développent une tolérance (effet 'lundi' à la reprise). Le risque d'infarctus en cas d'arrêt brutal d'exposition est documenté."},
+  {n:"74", titre:"Affections professionnelles provoquées par le furfural et l'alcool furfurylique", cat:"chimique", maladies:["Dermite irritative","Asthme"], travaux:["Fonderie (sables furaniques)","Industrie chimique"], delai:"90 jours", cgt:"Le furfural est présent dans les sables de fonderie à base de résines furaniques. Exiger la mesure de l'exposition et l'aspiration à la source."},
+  {n:"75", titre:"Affections professionnelles résultant de l'exposition au sélénium et à ses dérivés", cat:"chimique", maladies:["Irritations cutanées et muqueuses","Dermite","Atteintes hépatiques"], travaux:["Industrie du verre (décolorant)","Industrie électronique","Fabrication de pigments"], delai:"30 jours", cgt:"Le sélénium est un oligo-élément essentiel à faible dose mais toxique à forte dose. Surveiller les FDS des produits contenant du séleniate ou du sélénite."},
+  {n:"77", titre:"Périonyxis et onyxis", cat:"biologique", maladies:["Infection chronique des ongles et périongle"], travaux:["Travaux humides prolongés (plongeurs, cuisiniers)","Mareyeurs, poissonniers"], delai:"15 jours", cgt:"Affection bénigne mais chronique. Le travail humide est fréquent dans la restauration, la pêche, les métiers de bouche. Exiger des pauses permettant le séchage des mains et des gants waterproof adaptés."},
+  {n:"78", titre:"Affections provoquées par le chlorure de vinyle monomère", cat:"cancer", maladies:["Angiosarcome du foie (rare mais quasi exclusivement professionnel)","Syndrome de Raynaud","Acroostelyse"], travaux:["Fabrication du PVC","Nettoyage de cuves de polymérisation du PVC"], delai:"35 ans", cgt:"L'angiosarcome du foie est un cancer très rare mais quasiment pathognomonique d'une exposition au VCM. Les travailleurs de l'industrie du PVC des années 1960-1980 sont à risque. Ce cancer a un pronostic extrêmement sombre."},
+  {n:"80", titre:"Kératoconjonctivites virales", cat:"biologique", maladies:["Kératoconjonctivite à adénovirus"], travaux:["Personnel soignant","Personnel d'ophtalmologie"], delai:"21 jours", cgt:"Infection très contagieuse. Exiger le strict respect des mesures d'hygiène des mains et de stérilisation du matériel ophtalmologique."},
+  {n:"81", titre:"Affections malignes provoquées par le bis-chlorométhyl éther", cat:"cancer", maladies:["Cancer broncho-pulmonaire à petites cellules"], travaux:["Fabrication de résines échangeuses d'ions","Industrie chimique"], delai:"30 ans", cgt:"Le BCME est un des cancérogènes les plus puissants connus. Heureusement très peu utilisé aujourd'hui. Mais des cancers peuvent encore apparaître chez des travailleurs exposés il y a 30 ans."},
+  {n:"82", titre:"Affections provoquées par le méthacrylate de méthyle", cat:"chimique", maladies:["Dermatite de contact","Asthme professionnel","Rhinite"], travaux:["Fabrication de prothèses dentaires","Prothésistes ongulaires","Chirurgie orthopédique (ciments osseux)"], delai:"1 an", cgt:"Le méthacrylate de méthyle est un allergène très fréquent chez les prothésistes dentaires et les esthéticiennes (pose d'ongles en acrylique). La sensibilisation croisée avec d'autres acrylates est possible."},
+  {n:"86", titre:"Pasteurelloses", cat:"biologique", maladies:["Pasteurellose cutanée","Pasteurellose systémique"], travaux:["Vétérinaires","Éleveurs","Animaliers de laboratoire"], delai:"5 jours", cgt:"Transmitted par morsures ou griffures d'animaux (chiens, chats, lapins). Exiger les protocoles de soins des plaies et la mise à jour de la vaccination antitétanique."},
+  {n:"88", titre:"Rouget du porc (Erysipelothrix rhusiopathiae)", cat:"biologique", maladies:["Érysipeloïde de Baker-Rosenbach"], travaux:["Charcutiers, bouchers","Pêcheurs (poissons, crustacés)","Vétérinaires"], delai:"10 jours", cgt:"Maladie rare transmise par contact avec viandes ou poissons crus. Exiger le port de gants lors des manipulations."},
+  {n:"93", titre:"Légionellose", cat:"biologique", maladies:["Pneumopathie à Legionella pneumophila"], travaux:["Maintenance de tours aéroréfrigérantes","Fontainiers, plombiers","Personnel exposé aux aérosols d'eau chaude"], delai:"21 jours", cgt:"La légionellose nosocomiale ou professionnelle est souvent liée à une mauvaise maintenance des réseaux d'eau chaude ou des tours de refroidissement. Exiger les analyses bactériologiques périodiques et les carnets d'entretien des tours aéroréfrigérantes."},
+  {n:"95", titre:"Affections engendrées par les solvants organiques liquides à usage professionnel non désignés dans d'autres tableaux", cat:"chimique", maladies:["Syndrome psycho-organique chronique"], travaux:["Tous travaux exposant à des solvants organiques"], delai:"10 ans", cgt:"Tableau 'balai' pour les encéphalopathies aux solvants. Complémentaire du Tableau 84. Permet la reconnaissance de syndromes neurologiques liés à des solvants non listés dans des tableaux spécifiques."},
+  {n:"96", titre:"Fièvres hémorragiques avec syndrome rénal (hantavirus)", cat:"biologique", maladies:["Néphropathie épidémique à hantavirus","Syndrome de détresse respiratoire aiguë (SRAS-hanta)"], travaux:["Forestiers, gardes-chasse","Agriculteurs exposés aux rongeurs","Personnel de nettoiement et d'assainissement"], delai:"60 jours", cgt:"Les rongeurs (campagnols notamment) transmettent les hantavirus par leurs déjections. Les travaux en forêt et les activités agricoles en zone d'endémie (Ardennes, Franche-Comté) sont à risque. Exiger des masques FFP2 lors des travaux dans des espaces confinés pouvant abriter des rongeurs."},
+  {n:"99", titre:"Maladies liées à des agents infectieux ou parasitaires transmises lors des soins à des animaux — médecine vétérinaire", cat:"biologique", maladies:["Toute zoonose contractée dans l'exercice de la médecine vétérinaire"], travaux:["Vétérinaires et auxiliaires vétérinaires"], delai:"6 mois", cgt:"Tableau récent (2013) couvrant les zoonoses non listées dans d'autres tableaux pour les vétérinaires. Permet une meilleure couverture des maladies émergentes transmises par les animaux."}
+];
+
+const ALL_MP = [...MP, ...MP_MINI];
+
+const grid = document.getElementById('mp-grid');
+let currentCat = 'all';
+let currentSearch = '';
+
+function normalise(s){
+  return s.normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase();
+}
+
+function render(){
+  const q = normalise(currentSearch);
+  let visible = 0;
+  grid.innerHTML = '';
+
+  ALL_MP.forEach(item => {
+    const matchCat = currentCat === 'all' || item.cat === currentCat;
+    const haystack = normalise([item.n, item.titre, ...(item.maladies||[]), ...(item.travaux||[]), item.cgt||''].join(' '));
+    const matchSearch = !q || haystack.includes(q);
+    if(!matchCat || !matchSearch){return;}
+    visible++;
+
+    const card = document.createElement('div');
+    card.className = 'mp-card';
+    card.dataset.cat = item.cat;
+
+    const tagCat = {chimique:'Chimique',physique:'Physique',biologique:'Biologique',tms:'TMS / Rachis',cancer:'Cancer',amiante:'Amiante'}[item.cat]||item.cat;
+
+    card.innerHTML = `
+      <div class="mp-header" onclick="this.nextElementSibling.classList.toggle('open');this.querySelector('.mp-toggle').textContent=this.nextElementSibling.classList.contains('open')?'▲ Réduire':'▼ Détail'">
+        <div class="tab-num">T${item.n}</div>
+        <div class="mp-meta">
+          <div class="mp-title">${item.titre}</div>
+          <div class="mp-tags">
+            <span class="mp-tag tag-cat">${tagCat}</span>
+            ${item.delai?`<span class="mp-tag tag-alert">Délai : ${item.delai}</span>`:''}
+            ${item.cgt?`<span class="mp-tag tag-cgt">⚑ Angle CGT</span>`:''}
+          </div>
+        </div>
+        <div class="mp-toggle">▼ Détail</div>
+      </div>
+      <div class="mp-body">
+        ${item.maladies&&item.maladies.length?`
+        <div class="mp-section">
+          <div class="mp-section-title">Maladies couvertes</div>
+          <ul>${item.maladies.map(m=>`<li>${m}</li>`).join('')}</ul>
+        </div>`:''}
+        ${item.travaux&&item.travaux.length?`
+        <div class="mp-section">
+          <div class="mp-section-title">Travaux concernés</div>
+          <ul>${item.travaux.map(t=>`<li>${t}</li>`).join('')}</ul>
+        </div>`:''}
+        ${item.delai?`
+        <div class="mp-section">
+          <div class="mp-section-title">Délai de prise en charge</div>
+          <p>${item.delai}</p>
+        </div>`:''}
+        ${item.cgt?`
+        <div class="cgt-angle">
+          <div class="cgt-angle-title">⚑ Angle CGT — Point de vigilance syndical</div>
+          ${item.cgt}
+        </div>`:''}
+      </div>`;
+    grid.appendChild(card);
+  });
+
+  document.getElementById('count-visible').textContent = visible;
+  document.getElementById('search-count').textContent = q || currentCat!=='all' ? `${visible} résultat${visible>1?'s':''}` : '';
+}
+
+document.getElementById('search').addEventListener('input', e=>{
+  currentSearch = e.target.value.trim();
+  render();
+});
+
+document.querySelectorAll('.filter-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    currentCat = btn.dataset.cat;
+    render();
+  });
+});
+
+render();
+</script>
+</body>
+</html>
