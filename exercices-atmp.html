@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Exercices &amp; Ateliers AT/MP — CGT Occitanie</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%23E2001A'/%3E%3Ctext x='16' y='23' text-anchor='middle' font-family='sans-serif' font-weight='bold' font-size='16' fill='%23FFD200'%3ECGT%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --rouge: #E2001A; --rouge-dark: #C40017;
+      --jaune: #FFD200;
+      --fond: #F5F4F0; --fond-card: #FFFFFF;
+      --texte: #1A1A1A; --texte-muted: #6B6B6B;
+      --border: #E0DED8; --border-card: #E8E6E0;
+      --vert: #2E7D32; --vert-light: #E8F5E9;
+      --bleu: #1565C0; --bleu-light: #E3F0FF;
+      --orange: #E65100; --orange-light: #FFF3E0;
+      --violet: #6A1B9A; --violet-light: #F3E5F5;
+    }
+    body { background: var(--fond); color: var(--texte); font-family: 'Archivo', sans-serif; min-height: 100vh; display: flex; flex-direction: column; }
+
+    header { background: var(--rouge); padding: 1rem 2rem; display: flex; align-items: center; gap: 1.25rem; box-shadow: 0 2px 8px rgba(0,0,0,.18); }
+    .logo-wrap { flex-shrink: 0; height: 56px; display: flex; align-items: center; }
+    .logo-wrap img { height: 56px; width: auto; background: white; padding: 3px 5px; }
+    .header-divider { width: 2px; height: 42px; background: rgba(255,255,255,.3); flex-shrink: 0; }
+    .header-title { flex: 1; }
+    .header-title h1 { font-family: 'Anton', sans-serif; font-size: 1.1rem; letter-spacing: .04em; color: #fff; line-height: 1.2; }
+    .header-title span { font-size: .75rem; color: rgba(255,255,255,.75); }
+    .header-back { margin-left: auto; }
+    .header-back a { font-size: .75rem; color: rgba(255,255,255,.8); text-decoration: none; border: 1px solid rgba(255,255,255,.3); padding: .3rem .7rem; transition: background .15s; }
+    .header-back a:hover { background: rgba(255,255,255,.1); color: #fff; }
+    .stripe { height: 5px; background: var(--jaune); }
+
+    main { flex: 1; max-width: 900px; width: 100%; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+
+    .page-intro { background: var(--fond-card); border: 1px solid var(--border-card); border-left: 4px solid var(--rouge); padding: 1rem 1.25rem; margin-bottom: 2rem; font-size: .875rem; color: var(--texte-muted); line-height: 1.6; }
+    .page-intro strong { color: var(--texte); }
+
+    .print-bar { display: flex; justify-content: flex-end; margin-bottom: 1.5rem; }
+    .btn-print { background: var(--rouge); color: #fff; border: none; padding: .55rem 1rem; font-family: 'Archivo', sans-serif; font-size: .78rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; cursor: pointer; display: flex; align-items: center; gap: .4rem; transition: background .15s; }
+    .btn-print:hover { background: var(--rouge-dark); }
+
+    /* NAV FILTRES */
+    .nav-filtres { display: flex; gap: .5rem; margin-bottom: 2rem; flex-wrap: wrap; }
+    .filtre { font-size: .75rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; padding: .4rem .9rem; background: var(--fond-card); border: 2px solid var(--border); color: var(--texte-muted); cursor: pointer; transition: all .15s; user-select: none; }
+    .filtre:hover { border-color: var(--rouge); color: var(--rouge); }
+    .filtre.on { background: var(--rouge); border-color: var(--rouge); color: #fff; }
+
+    /* SECTION */
+    .section { margin-bottom: 3rem; }
+    .section-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.25rem; padding-bottom: .6rem; border-bottom: 4px solid var(--jaune); }
+    .section-badge { font-family: 'Anton', sans-serif; font-size: .72rem; letter-spacing: .08em; padding: .3rem .75rem; text-transform: uppercase; white-space: nowrap; color: #fff; }
+    .section-title { font-family: 'Anton', sans-serif; font-size: 1.15rem; color: var(--texte); }
+
+    /* EXERCICE */
+    .ex { background: var(--fond-card); border: 1px solid var(--border-card); margin-bottom: 1.1rem; overflow: hidden; }
+    .ex-header { padding: 1rem 1.25rem .6rem; display: flex; align-items: flex-start; gap: 1rem; flex-wrap: wrap; cursor: pointer; }
+    .ex-num { font-family: 'Anton', sans-serif; font-size: .78rem; color: var(--rouge); letter-spacing: .06em; white-space: nowrap; flex-shrink: 0; padding-top: .1rem; }
+    .ex-info { flex: 1; }
+    .ex-title { font-family: 'Anton', sans-serif; font-size: 1rem; color: var(--texte); letter-spacing: .02em; }
+    .ex-meta { display: flex; gap: .6rem; margin-top: .35rem; flex-wrap: wrap; }
+    .tag { font-size: .65rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; padding: .15rem .5rem; }
+    .tag-duree { background: #F0EDE8; color: var(--texte-muted); }
+    .tag-niveau { background: #E8F0FF; color: #1565C0; }
+    .tag-public { background: #E8F5E9; color: #2E7D32; }
+    .ex-chevron { flex-shrink: 0; color: var(--texte-muted); transition: transform .2s; }
+    .ex.open .ex-chevron { transform: rotate(180deg); }
+
+    .ex-body { display: none; padding: 0 1.25rem 1.25rem; border-top: 1px solid var(--border-card); }
+    .ex.open .ex-body { display: block; }
+
+    .bloc-label { font-size: .68rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--rouge); margin: 1rem 0 .4rem; }
+    .scenario-box { background: #F7F6F2; border-left: 4px solid var(--texte-muted); padding: .75rem 1rem; font-size: .9rem; line-height: 1.65; color: var(--texte); }
+    .scenario-box strong { font-weight: 700; }
+    .questions-list { margin-left: 1.2rem; }
+    .questions-list li { font-size: .9rem; line-height: 1.7; color: var(--texte); margin-bottom: .2rem; }
+    .questions-list li::marker { color: var(--rouge); font-weight: 700; }
+
+    .corrige { background: var(--vert-light); border: 1px solid #A5D6A7; margin-top: .75rem; overflow: hidden; }
+    .corrige-toggle { width: 100%; background: none; border: none; padding: .6rem 1rem; display: flex; align-items: center; gap: .5rem; font-family: 'Archivo', sans-serif; font-size: .8rem; font-weight: 700; color: var(--vert); cursor: pointer; text-align: left; letter-spacing: .04em; text-transform: uppercase; }
+    .corrige-toggle svg { flex-shrink: 0; transition: transform .2s; }
+    .corrige.open .corrige-toggle svg { transform: rotate(180deg); }
+    .corrige-body { display: none; padding: .75rem 1rem; border-top: 1px solid #C8E6C9; }
+    .corrige.open .corrige-body { display: block; }
+    .corrige-body ul { margin-left: 1.1rem; }
+    .corrige-body li { font-size: .875rem; color: #1B5E20; line-height: 1.65; margin-bottom: .2rem; }
+    .corrige-body li strong { font-weight: 700; }
+    .corrige-body .note { font-size: .8rem; color: var(--vert); font-style: italic; margin-top: .5rem; }
+
+    .calcul-box { background: var(--orange-light); border-left: 4px solid var(--orange); padding: .75rem 1rem; font-size: .9rem; line-height: 1.65; font-family: 'Courier New', monospace; color: var(--texte); margin-top: .5rem; }
+    .calcul-box .ligne { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; border-bottom: 1px dotted #FFCC80; padding: .25rem 0; }
+    .calcul-box .ligne:last-child { border-bottom: none; font-weight: 700; color: var(--orange); }
+    .calcul-box .ligne .label { font-family: 'Archivo', sans-serif; font-size: .82rem; }
+    .calcul-box .ligne .val { font-weight: 700; white-space: nowrap; }
+
+    .roles-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: .75rem; margin-top: .5rem; }
+    .role-card { border: 2px solid; padding: .75rem; }
+    .role-card.salarie { border-color: #1565C0; background: var(--bleu-light); }
+    .role-card.employeur { border-color: #B71C1C; background: #FFEBEE; }
+    .role-card.delegue { border-color: var(--vert); background: var(--vert-light); }
+    .role-card.medecin { border-color: var(--violet); background: var(--violet-light); }
+    .role-name { font-family: 'Anton', sans-serif; font-size: .8rem; letter-spacing: .05em; text-transform: uppercase; margin-bottom: .4rem; }
+    .role-card.salarie .role-name { color: #1565C0; }
+    .role-card.employeur .role-name { color: #B71C1C; }
+    .role-card.delegue .role-name { color: var(--vert); }
+    .role-card.medecin .role-name { color: var(--violet); }
+    .role-card ul { margin-left: 1rem; }
+    .role-card li { font-size: .8rem; line-height: 1.55; color: var(--texte); }
+
+    .arbre-box { background: #F0F4FF; border: 1px solid #BBDEFB; padding: .75rem 1rem; margin-top: .5rem; }
+    .arbre-box .cause-groupe { margin-bottom: .75rem; }
+    .arbre-box .cause-type { font-size: .72rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: #1565C0; margin-bottom: .3rem; }
+    .arbre-box ul { margin-left: 1rem; }
+    .arbre-box li { font-size: .85rem; line-height: 1.6; color: var(--texte-muted); }
+    .arbre-box li.a-trouver { color: var(--texte); font-style: italic; }
+    .arbre-box li.a-trouver::before { content: '? '; color: var(--rouge); font-style: normal; font-weight: 700; }
+
+    .cgt-note { background: #FFF3D0; border-left: 3px solid var(--jaune); padding: .5rem .75rem; margin-top: .75rem; font-size: .82rem; color: #6A5500; line-height: 1.55; }
+    .cgt-note::before { content: '⚑ CGT — '; font-weight: 700; }
+
+    footer { border-top: 1px solid var(--border); background: #EEECEA; padding: 1.1rem 1.5rem; text-align: center; font-size: .73rem; color: var(--texte-muted); }
+    footer strong { color: var(--rouge); }
+
+    @media print {
+      header, .print-bar, .nav-filtres { display: none !important; }
+      .stripe { display: none; }
+      body { background: white; font-size: 10pt; }
+      .ex { break-inside: avoid; }
+      .ex-body { display: block !important; }
+      .corrige-body { display: block !important; }
+      .ex-chevron { display: none; }
+      .corrige-toggle svg { display: none; }
+    }
+
+    @media (max-width: 520px) {
+      header { padding: .85rem 1rem; gap: .75rem; }
+      .logo-wrap img { height: 44px; }
+      main { padding: 1.25rem 1rem 3rem; }
+      .roles-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+<script>if(localStorage.getItem('cgt_auth')!=='ok'){location.replace('/login.html?from='+encodeURIComponent(location.pathname));}</script>
+
+<header>
+  <div class="logo-wrap"><img src="/assets/logo-cgt-occitanie.jpg" alt="CGT Comité Régional Occitanie"></div>
+  <div class="header-divider"></div>
+  <div class="header-title">
+    <h1>Exercices &amp; Ateliers AT/MP</h1>
+    <span>Cas pratiques · Jeux de rôle · Calculs · Arbre des causes</span>
+  </div>
+  <div class="header-back"><a href="/">← Accueil</a></div>
+</header>
+<div class="stripe"></div>
+
+<main>
+
+  <div class="page-intro">
+    <strong>À destination des formateurs.</strong> Chaque exercice précise la durée, le niveau et le format (sous-groupes, individuel, plénière).
+    Tous les corrigés sont masqués par défaut — cliquer sur « Voir le corrigé » au moment opportun.
+    Les exercices peuvent être imprimés fiche par fiche.
+  </div>
+
+  <div class="print-bar">
+    <button class="btn-print" onclick="window.print()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+      Imprimer tout
+    </button>
+  </div>
+
+  <div class="nav-filtres">
+    <span class="filtre on" data-type="all">Tous</span>
+    <span class="filtre" data-type="cas">Cas pratiques</span>
+    <span class="filtre" data-type="role">Jeux de rôle</span>
+    <span class="filtre" data-type="calcul">Calculs</span>
+    <span class="filtre" data-type="arbre">Arbre des causes</span>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       CAS PRATIQUES
+  ════════════════════════════════════════════ -->
+  <div class="section" data-type="cas">
+    <div class="section-header">
+      <span class="section-badge" style="background:#C40017">Cas pratiques</span>
+      <div class="section-title">Études de cas — déclaration &amp; reconnaissance</div>
+    </div>
+
+    <!-- CAS 1 -->
+    <div class="ex" data-type="cas">
+      <div class="ex-header" onclick="toggleEx(this)">
+        <span class="ex-num">Cas 1</span>
+        <div class="ex-info">
+          <div class="ex-title">Karim : chute en entrepôt</div>
+          <div class="ex-meta">
+            <span class="tag tag-duree">⏱ 15 min</span>
+            <span class="tag tag-niveau">Niveau 1 — Débutant</span>
+            <span class="tag tag-public">Binômes</span>
+          </div>
+        </div>
+        <svg class="ex-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="ex-body">
+        <div class="bloc-label">Scénario</div>
+        <div class="scenario-box">
+          <strong>Karim, cariste, 35 ans,</strong> glisse sur une palette mal rangée dans l'entrepôt et se tord la cheville. Il continue sa journée sans signaler l'incident. Le lendemain, la douleur est importante : son médecin diagnostique une fracture et lui prescrit 3 semaines d'arrêt. Il informe son chef d'équipe par SMS le 2ème jour. L'employeur refuse de remplir la DAT, estimant que Karim aurait dû signaler immédiatement.
+        </div>
+        <div class="bloc-label">Questions</div>
+        <ol class="questions-list">
+          <li>L'accident de Karim peut-il être qualifié d'AT ? Sur quels critères ?</li>
+          <li>Le délai de déclaration de Karim est-il problématique ?</li>
+          <li>Que peut faire Karim si l'employeur refuse de déclarer ?</li>
+          <li>Quel rôle peut jouer le délégué CGT dans cette situation ?</li>
+        </ol>
+        <div class="corrige">
+          <button class="corrige-toggle" onclick="toggleCorrige(this)">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+            Voir le corrigé
+          </button>
+          <div class="corrige-body">
+            <ul>
+              <li><strong>Q1 :</strong> Oui — fait soudain (chute), lésion (fracture), au temps et lieu de travail → présomption d'imputabilité (L.411-1). La continuation du travail ne supprime pas le droit à la reconnaissance.</li>
+              <li><strong>Q2 :</strong> Le délai de 24 h est dépassé mais cela ne fait pas perdre les droits. L'information de l'employeur reste valide. Le salarié conserve 2 ans pour déclarer.</li>
+              <li><strong>Q3 :</strong> Karim peut déclarer lui-même l'AT à la CPAM (délai 2 ans). Conserver les preuves : certificat médical initial, SMS envoyé à l'employeur, témoignages de collègues.</li>
+              <li><strong>Q4 :</strong> Alerter le CSE, accompagner Karim à la CPAM, faire constater le refus de déclaration, éventuellement saisir l'inspection du travail.</li>
+            </ul>
+            <p class="note">Rappel formateur : insister sur le fait que la continuation du travail et le délai tardif sont des arguments fréquents de l'employeur — ils ne suffisent pas à renverser la présomption.</p>
+          </div>
+        </div>
+        <div class="cgt-note">Ne jamais laisser un salarié seul face à un refus de DAT. La déclaration directe à la CPAM est un droit méconnu mais efficace.</div>
+      </div>
+    </div>
+
+    <!-- CAS 2 -->
+    <div class="ex" data-type="cas">
+      <div class="ex-header" onclick="toggleEx(this)">
+        <span class="ex-num">Cas 2</span>
+        <div class="ex-info">
+          <div class="ex-title">Fatima : TMS ou maladie professionnelle ?</div>
+          <div class="ex-meta">
+            <span class="tag tag-duree">⏱ 20 min</span>
+            <span class="tag tag-niveau">Niveau 2 — Intermédiaire</span>
+            <span class="tag tag-public">Sous-groupes de 3</span>
+          </div>
+        </div>
+        <svg class="ex-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="ex-body">
+        <div class="bloc-label">Scénario</div>
+        <div class="scenario-box">
+          <strong>Fatima, ouvrière de conditionnement depuis 12 ans,</strong> souffre depuis 18 mois de douleurs à l'épaule droite. Son médecin diagnostique une tendinopathie de la coiffe des rotateurs. Elle travaille à la chaîne avec des mouvements répétitifs au-dessus du niveau des épaules, plusieurs heures par jour. Son employeur lui dit : « Ce n'est pas un accident du travail, vous ne pouvez rien faire. »
+        </div>
+        <div class="bloc-label">Questions</div>
+        <ol class="questions-list">
+          <li>De quelle voie de reconnaissance Fatima peut-elle bénéficier ? Pourquoi ?</li>
+          <li>Quels tableaux de MP sont susceptibles de s'appliquer ? (Tableau n° 57 RG)</li>
+          <li>Que doit vérifier Fatima pour remplir les conditions du tableau ?</li>
+          <li>Si une condition n'est pas remplie, quelle autre voie existe ?</li>
+        </ol>
+        <div class="corrige">
+          <button class="corrige-toggle" onclick="toggleCorrige(this)">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+            Voir le corrigé
+          </button>
+          <div class="corrige-body">
+            <ul>
+              <li><strong>Q1 :</strong> Voie MP (pas AT — pas de fait soudain). Exposition prolongée à un risque professionnel.</li>
+              <li><strong>Q2 :</strong> Tableau 57 RG — Affections périarticulaires provoquées par certains gestes et postures. Coiffe des rotateurs : lésions de l'épaule figurent au tableau.</li>
+              <li><strong>Q3 :</strong> Trois conditions : désignation de la maladie ✓, délai de prise en charge (souvent 1 an après arrêt d'exposition), liste des travaux (mouvements répétitifs des bras — vérifier si la liste est limitative ou indicative).</li>
+              <li><strong>Q4 :</strong> Si une condition n'est pas remplie : saisine du CRRMP (Comité régional de reconnaissance des maladies professionnelles) → prouver le lien direct et essentiel entre la maladie et le travail habituel.</li>
+            </ul>
+            <p class="note">Orienter vers le module tableaux de MP de la plateforme pour consulter le tableau 57 en détail.</p>
+          </div>
+        </div>
+        <div class="cgt-note">L'employeur est souvent le premier obstacle : « vous ne pouvez rien faire » est faux. Rappeler que 90 % des MP reconnues sont des TMS — Fatima est dans le cas typique.</div>
+      </div>
+    </div>
+
+    <!-- CAS 3 -->
+    <div class="ex" data-type="cas">
+      <div class="ex-header" onclick="toggleEx(this)">
+        <span class="ex-num">Cas 3</span>
+        <div class="ex-info">
+          <div class="ex-title">Marc : accident sur le trajet — le détour</div>
+          <div class="ex-meta">
+            <span class="tag tag-duree">⏱ 15 min</span>
+            <span class="tag tag-niveau">Niveau 1 — Débutant</span>
+            <span class="tag tag-public">Individuel puis mise en commun</span>
+          </div>
+        </div>
+        <svg class="ex-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="ex-body">
+        <div class="bloc-label">Scénario</div>
+        <div class="scenario-box">
+          <strong>Marc quitte son travail à 18 h.</strong> Il fait un détour de 3 km pour déposer sa fille chez sa grand-mère avant de rentrer chez lui. Sur ce trajet détourné, il est percuté par une voiture qui brûle un feu rouge et se fracture le poignet. La CPAM refuse la prise en charge en AT/trajet au motif que Marc avait fait un « détour injustifié ».
+        </div>
+        <div class="bloc-label">Questions</div>
+        <ol class="questions-list">
+          <li>Quelle catégorie d'accident couvre ce type de trajet ?</li>
+          <li>Le détour pour déposer un enfant est-il protégé ? Sur quelle base légale ?</li>
+          <li>Comment Marc peut-il contester la décision de la CPAM ?</li>
+        </ol>
+        <div class="corrige">
+          <button class="corrige-toggle" onclick="toggleCorrige(this)">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+            Voir le corrigé
+          </button>
+          <div class="corrige-body">
+            <ul>
+              <li><strong>Q1 :</strong> Accident de trajet (L.411-2 CSS) — entre le lieu de travail et le domicile.</li>
+              <li><strong>Q2 :</strong> Oui, le détour est protégé. L.411-2 admet les détours pour nécessité essentielle de la vie courante, dont le dépôt d'un enfant chez une garde ou un établissement scolaire. C'est une protection jurisprudentielle bien établie.</li>
+              <li><strong>Q3 :</strong> Saisir la commission de recours amiable (CRA) de la CPAM dans les 2 mois de la notification de refus, en joignant tout justificatif (attestation de la grand-mère, trajet habituel). Puis en cas d'échec : pôle social du tribunal judiciaire.</li>
+            </ul>
+            <p class="note">Ce cas est très fréquent : beaucoup de salariés ignorent que le détour pour enfant est protégé. C'est un point à souligner en formation.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       JEUX DE ROLE
+  ════════════════════════════════════════════ -->
+  <div class="section" data-type="role">
+    <div class="section-header">
+      <span class="section-badge" style="background:#1565C0">Jeux de rôle</span>
+      <div class="section-title">Mises en situation — négociation et accompagnement</div>
+    </div>
+
+    <!-- ROLE 1 -->
+    <div class="ex" data-type="role">
+      <div class="ex-header" onclick="toggleEx(this)">
+        <span class="ex-num">Rôle 1</span>
+        <div class="ex-info">
+          <div class="ex-title">L'entretien avec l'employeur qui refuse de déclarer</div>
+          <div class="ex-meta">
+            <span class="tag tag-duree">⏱ 20 min</span>
+            <span class="tag tag-niveau">Niveau 2 — Intermédiaire</span>
+            <span class="tag tag-public">Groupes de 3 (+ observateur)</span>
+          </div>
+        </div>
+        <svg class="ex-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="ex-body">
+        <div class="bloc-label">Contexte</div>
+        <div class="scenario-box">
+          Sophie, aide-soignante, se blesse en mobilisant un patient. L'employeur refuse de remplir la DAT en arguant qu'elle n'a pas respecté les protocoles de manutention. Le délégué CGT demande un entretien avec le directeur des ressources humaines pour faire valoir les droits de Sophie.
+        </div>
+        <div class="bloc-label">Fiches de rôles</div>
+        <div class="roles-grid">
+          <div class="role-card salarie">
+            <div class="role-name">Sophie — Salariée</div>
+            <ul>
+              <li>Vous êtes fatiguée et inquiète pour votre dossier.</li>
+              <li>Vous avez bien signalé verbalement le lendemain.</li>
+              <li>Vous avez un certificat médical daté.</li>
+              <li>Vous ignorez vos droits en cas de refus.</li>
+            </ul>
+          </div>
+          <div class="role-card delegue">
+            <div class="role-name">Délégué·e CGT</div>
+            <ul>
+              <li>Vous connaissez la présomption d'imputabilité.</li>
+              <li>Vous savez que la déclaration directe est possible.</li>
+              <li>Objectif : obtenir la DAT ou informer Sophie de ses recours.</li>
+              <li>Rester ferme mais constructif.</li>
+            </ul>
+          </div>
+          <div class="role-card employeur">
+            <div class="role-name">DRH — Employeur</div>
+            <ul>
+              <li>Vous contestez les circonstances (protocole non respecté).</li>
+              <li>Vous craignez l'impact sur la cotisation AT/MP.</li>
+              <li>Vous êtes prêt à émettre des « réserves motivées ».</li>
+              <li>Vous pouvez céder si on vous cite les textes.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="bloc-label">Débriefing (observateur)</div>
+        <ol class="questions-list">
+          <li>Le délégué a-t-il cité les textes clés (L.411-1, L.441-3) ?</li>
+          <li>A-t-il mentionné la déclaration directe comme alternative ?</li>
+          <li>Quel ton a été adopté ? Était-il efficace ?</li>
+        </ol>
+        <div class="cgt-note">L'employeur peut émettre des réserves mais ne peut pas s'opposer à la déclaration. C'est le message clé à faire passer en formation.</div>
+      </div>
+    </div>
+
+    <!-- ROLE 2 -->
+    <div class="ex" data-type="role">
+      <div class="ex-header" onclick="toggleEx(this)">
+        <span class="ex-num">Rôle 2</span>
+        <div class="ex-info">
+          <div class="ex-title">Accompagner un salarié chez le médecin-conseil</div>
+          <div class="ex-meta">
+            <span class="tag tag-duree">⏱ 15 min</span>
+            <span class="tag tag-niveau">Niveau 2 — Intermédiaire</span>
+            <span class="tag tag-public">Binômes</span>
+          </div>
+        </div>
+        <svg class="ex-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="ex-body">
+        <div class="bloc-label">Contexte</div>
+        <div class="scenario-box">
+          Ahmed a été consolidé avec un taux d'IPP de 7 % (capital, ~3 400 €). Son médecin traitant estime que les séquelles méritent au moins 12 %. Ahmed veut contester mais ne sait pas comment. Le délégué CGT le prépare à la commission médicale de recours amiable.
+        </div>
+        <div class="bloc-label">Fiches de rôles</div>
+        <div class="roles-grid">
+          <div class="role-card salarie">
+            <div class="role-name">Ahmed — Salarié</div>
+            <ul>
+              <li>Vous avez des douleurs persistantes, un déficit fonctionnel réel.</li>
+              <li>Vous n'osez pas contester « la CPAM ».</li>
+              <li>Vous voulez comprendre ce que « commission de recours amiable » veut dire.</li>
+            </ul>
+          </div>
+          <div class="role-card delegue">
+            <div class="role-name">Délégué·e CGT</div>
+            <ul>
+              <li>Expliquez la différence capital/rente et le seuil de 10 %.</li>
+              <li>Expliquez la procédure : CRA → pôle social si refus.</li>
+              <li>Insistez sur le délai de 2 mois pour contester.</li>
+              <li>Proposez l'appui juridique de l'UD.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="corrige">
+          <button class="corrige-toggle" onclick="toggleCorrige(this)">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+            Points clés à transmettre
+          </button>
+          <div class="corrige-body">
+            <ul>
+              <li>À 12 % : Ahmed passerait du capital (~3 400 €) à une <strong>rente viagère</strong> — différence considérable sur la durée de vie.</li>
+              <li>Délai de recours : <strong>2 mois</strong> à compter de la notification de la décision.</li>
+              <li>Demander un médecin consultant (contre-expertise) via le médecin traitant.</li>
+              <li>Le barème est indicatif : le médecin-conseil peut se tromper.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       CALCULS
+  ════════════════════════════════════════════ -->
+  <div class="section" data-type="calcul">
+    <div class="section-header">
+      <span class="section-badge" style="background:#E65100">Exercices de calcul</span>
+      <div class="section-title">IJ, capital, rente — se repérer dans les chiffres</div>
+    </div>
+
+    <!-- CALCUL 1 -->
+    <div class="ex" data-type="calcul">
+      <div class="ex-header" onclick="toggleEx(this)">
+        <span class="ex-num">Calcul 1</span>
+        <div class="ex-info">
+          <div class="ex-title">Indemnités journalières AT — combien touche Lucie ?</div>
+          <div class="ex-meta">
+            <span class="tag tag-duree">⏱ 10 min</span>
+            <span class="tag tag-niveau">Niveau 1 — Débutant</span>
+            <span class="tag tag-public">Individuel</span>
+          </div>
+        </div>
+        <svg class="ex-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="ex-body">
+        <div class="bloc-label">Données</div>
+        <div class="scenario-box">
+          <strong>Lucie, salariée, salaire brut mensuel : 2 100 €.</strong> Elle est en arrêt AT du 3 au 62 mars (soit 60 jours d'arrêt). Le jour de l'accident est payé par l'employeur. Calculer ses IJ pour les 28 premiers jours, puis pour les 32 jours suivants.
+          <br><br>
+          <em>Rappel : salaire journalier de base (SJB) = salaire du mois précédent / 30,42. IJ = 60 % du SJB les 28 premiers jours ; 80 % à partir du 29e jour.</em>
+        </div>
+        <div class="corrige">
+          <button class="corrige-toggle" onclick="toggleCorrige(this)">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+            Voir le corrigé chiffré
+          </button>
+          <div class="corrige-body">
+            <div class="calcul-box">
+              <div class="ligne"><span class="label">Salaire brut mensuel</span><span class="val">2 100,00 €</span></div>
+              <div class="ligne"><span class="label">Salaire journalier de base (2 100 / 30,42)</span><span class="val">69,03 €</span></div>
+              <div class="ligne"><span class="label">IJ jours 1–28 (× 60 %)</span><span class="val">41,42 € / jour</span></div>
+              <div class="ligne"><span class="label">Total jours 1–28 (28 jours)</span><span class="val">1 159,76 €</span></div>
+              <div class="ligne"><span class="label">IJ jours 29–60 (× 80 %)</span><span class="val">55,22 € / jour</span></div>
+              <div class="ligne"><span class="label">Total jours 29–60 (32 jours)</span><span class="val">1 767,04 €</span></div>
+              <div class="ligne"><span class="label">Total IJ perçues (60 jours)</span><span class="val">2 926,80 €</span></div>
+            </div>
+            <p class="note">Comparaison : en maladie ordinaire, les IJ sont de 50 % du SJB. Lucie gagne donc ~690 € de plus grâce à la qualification AT.</p>
+          </div>
+        </div>
+        <div class="cgt-note">La qualification AT/MP vaut toujours mieux qu'un arrêt maladie ordinaire : +10 % de taux dès le 1er jour, +30 % à partir du 29e jour.</div>
+      </div>
+    </div>
+
+    <!-- CALCUL 2 -->
+    <div class="ex" data-type="calcul">
+      <div class="ex-header" onclick="toggleEx(this)">
+        <span class="ex-num">Calcul 2</span>
+        <div class="ex-info">
+          <div class="ex-title">Capital ou rente ? L'impact du taux d'IPP</div>
+          <div class="ex-meta">
+            <span class="tag tag-duree">⏱ 15 min</span>
+            <span class="tag tag-niveau">Niveau 2 — Intermédiaire</span>
+            <span class="tag tag-public">Individuel puis discussion</span>
+          </div>
+        </div>
+        <svg class="ex-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="ex-body">
+        <div class="bloc-label">Données</div>
+        <div class="scenario-box">
+          <strong>Marco, 45 ans, salaire annuel de référence : 28 000 €.</strong> La CPAM lui notifie un taux d'IPP de <strong>8 %</strong> (capital). Son médecin traitant conteste et pense que le taux réel est de <strong>12 %</strong>.
+          <br><br>
+          <em>Rappel — Capital (taux &lt; 10 %) : salaire annuel × taux × coefficient (barème). Rente (taux ≥ 10 %) : salaire annuel × taux réduit (½ pour fraction ≤ 50 %). Utiliser les valeurs indicatives ci-dessous.</em>
+          <br><br>
+          <em>Capital à 8 % ≈ 4 550 € (barème indicatif 2024). Rente à 12 % ≈ 12 % × 28 000 × (taux utile) ≈ 28 000 × 6 % = 1 680 €/an.</em>
+        </div>
+        <div class="corrige">
+          <button class="corrige-toggle" onclick="toggleCorrige(this)">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+            Voir le corrigé
+          </button>
+          <div class="corrige-body">
+            <div class="calcul-box">
+              <div class="ligne"><span class="label">Capital à 8 % (versement unique)</span><span class="val">≈ 4 550 €</span></div>
+              <div class="ligne"><span class="label">Rente à 12 % / an</span><span class="val">1 680 €/an</span></div>
+              <div class="ligne"><span class="label">Rente sur 10 ans</span><span class="val">16 800 €</span></div>
+              <div class="ligne"><span class="label">Rente sur 20 ans (jusqu'à 65 ans)</span><span class="val">33 600 €</span></div>
+              <div class="ligne"><span class="label">Différence capital / rente 20 ans</span><span class="val">+ 29 050 €</span></div>
+            </div>
+            <p class="note">Conclusion : passer de 8 % à 12 % transforme un capital unique de ~4 500 € en une rente viagère de 1 680 €/an. Sur 20 ans, l'enjeu dépasse 29 000 €. Contester vaut toujours la démarche.</p>
+          </div>
+        </div>
+        <div class="cgt-note">Le taux d'IPP n'est pas intangible. Un médecin consultant désigné par le salarié peut contre-expertiser. C'est souvent l'intervention de la CGT qui déclenche la démarche.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       ARBRE DES CAUSES
+  ════════════════════════════════════════════ -->
+  <div class="section" data-type="arbre">
+    <div class="section-header">
+      <span class="section-badge" style="background:#2E7D32">Arbre des causes</span>
+      <div class="section-title">Analyser un accident, identifier les causes, proposer des mesures</div>
+    </div>
+
+    <!-- ARBRE 1 -->
+    <div class="ex" data-type="arbre">
+      <div class="ex-header" onclick="toggleEx(this)">
+        <span class="ex-num">Arbre 1</span>
+        <div class="ex-info">
+          <div class="ex-title">Chute de Pablo sur un quai de livraison</div>
+          <div class="ex-meta">
+            <span class="tag tag-duree">⏱ 25 min</span>
+            <span class="tag tag-niveau">Niveau 2 — Intermédiaire</span>
+            <span class="tag tag-public">Sous-groupes de 4</span>
+          </div>
+        </div>
+        <svg class="ex-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="ex-body">
+        <div class="bloc-label">Faits de l'accident (ce qui s'est passé)</div>
+        <div class="scenario-box">
+          <strong>Pablo, 28 ans, manutentionnaire depuis 8 mois,</strong> glisse sur le quai mouillé lors du déchargement d'un camion un mardi matin. Il se fracture le poignet. Il était seul, son collègue habituel étant absent. L'éclairage du quai était partiellement en panne depuis 3 jours. Les EPI antidérapants n'étaient pas disponibles dans sa taille.
+        </div>
+        <div class="bloc-label">Construire l'arbre — identifier les causes</div>
+        <div class="arbre-box">
+          <div class="cause-groupe">
+            <div class="cause-type">Causes techniques / matérielles</div>
+            <ul>
+              <li>Sol mouillé (pluie / absence de protection)</li>
+              <li>Éclairage défectueux depuis 3 jours — non signalé</li>
+              <li class="a-trouver">Absence d'EPI adaptés (antidérapants à trouver par les stagiaires)</li>
+            </ul>
+          </div>
+          <div class="cause-groupe">
+            <div class="cause-type">Causes humaines / individuelles</div>
+            <ul>
+              <li>Pablo seul (collègue absent) → travail isolé non protocolé</li>
+              <li class="a-trouver">Formation à la manutention insuffisante (8 mois d'ancienneté — à questionner)</li>
+            </ul>
+          </div>
+          <div class="cause-groupe">
+            <div class="cause-type">Causes organisationnelles</div>
+            <ul>
+              <li>Absence de procédure de remplacement en cas d'absence</li>
+              <li>Panne non signalée / non traitée → défaut de maintenance préventive</li>
+              <li class="a-trouver">Pression sur le rythme de livraison → à explorer avec les stagiaires</li>
+            </ul>
+          </div>
+        </div>
+        <div class="corrige">
+          <button class="corrige-toggle" onclick="toggleCorrige(this)">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+            Mesures de prévention — corrigé
+          </button>
+          <div class="corrige-body">
+            <ul>
+              <li><strong>Court terme :</strong> fournir les EPI adaptés à toutes les tailles ; réparer l'éclairage immédiatement ; interdire le travail isolé en zone humide.</li>
+              <li><strong>Moyen terme :</strong> instaurer une procédure de signalement des pannes ; prévoir un protocole d'absence pour les postes à risque.</li>
+              <li><strong>Prévention primaire :</strong> mettre en place un plan d'entretien préventif du quai ; revoir les cadences de livraison (pression organisationnelle).</li>
+              <li><strong>Rôle CGT :</strong> inscrire ces mesures au DUERP et au programme annuel de prévention ; demander une expertise CSSCT si besoin.</li>
+            </ul>
+            <p class="note">Rappeler que l'« erreur humaine » (Pablo n'aurait pas fait attention) n'est jamais une cause suffisante dans l'analyse multicausale. On cherche les conditions qui ont rendu l'accident possible.</p>
+          </div>
+        </div>
+        <div class="cgt-note">Inscrire les mesures au DUERP n'est pas optionnel. Si l'employeur refuse de les intégrer, le CSE peut le noter dans le procès-verbal et l'inspection du travail peut être saisie.</div>
+      </div>
+    </div>
+
+    <!-- ARBRE 2 -->
+    <div class="ex" data-type="arbre">
+      <div class="ex-header" onclick="toggleEx(this)">
+        <span class="ex-num">Arbre 2</span>
+        <div class="ex-info">
+          <div class="ex-title">Malaise cardiaque de Jean — AT ou pas ?</div>
+          <div class="ex-meta">
+            <span class="tag tag-duree">⏱ 20 min</span>
+            <span class="tag tag-niveau">Niveau 3 — Avancé</span>
+            <span class="tag tag-public">Plénière guidée</span>
+          </div>
+        </div>
+        <svg class="ex-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="ex-body">
+        <div class="bloc-label">Faits</div>
+        <div class="scenario-box">
+          <strong>Jean, responsable logistique, 52 ans,</strong> fait un malaise cardiaque à son bureau un jeudi matin. Il est hospitalisé. L'employeur affirme que c'est un problème de santé personnel. Jean travaillait depuis 6 semaines sur un projet en retard, avec des heures supplémentaires quotidiennes, des tensions avec sa hiérarchie et aucun congé depuis 4 mois.
+        </div>
+        <div class="bloc-label">Questions pour la plénière</div>
+        <ol class="questions-list">
+          <li>Le malaise cardiaque peut-il être qualifié d'AT ? Sur quel fondement ?</li>
+          <li>Quels éléments de contexte organisationnel sont des facteurs de risque ?</li>
+          <li>Si Jean décède, comment ses proches peuvent-ils agir ?</li>
+          <li>Quel rôle pour le CSE et la CGT dans la prévention de ce type d'événement ?</li>
+        </ol>
+        <div class="corrige">
+          <button class="corrige-toggle" onclick="toggleCorrige(this)">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+            Éléments de réponse
+          </button>
+          <div class="corrige-body">
+            <ul>
+              <li><strong>Q1 :</strong> Oui — un malaise survenu sur le lieu et au temps de travail bénéficie de la présomption d'imputabilité (L.411-1), même pour une maladie cardiovasculaire. L'employeur doit prouver une cause totalement étrangère au travail.</li>
+              <li><strong>Q2 :</strong> Facteurs organisationnels : surcharge de travail chronique, heures supplémentaires non compensées, tensions avec la hiérarchie, absence de congé → risques psychosociaux documentés.</li>
+              <li><strong>Q3 :</strong> En cas de décès : rentes pour les ayants droit + possible action en faute inexcusable (conscience du danger de surmenage, absence de mesures). Les éléments de preuve = emails, fiches de paie avec HS, témoignages collègues.</li>
+              <li><strong>Q4 :</strong> Le CSE aurait dû être alerté sur la surcharge (droit d'alerte). Inscrire les RPS au DUERP. Demander un bilan RPS. La CGT peut déclencher un droit d'alerte si le CSE est inactif.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="cgt-note">Les risques psychosociaux (RPS) sont une cause croissante d'AT et de MP (affections psychiques). Les outils sont les mêmes : présomption, déclaration, enquête CSE, DUERP.</div>
+      </div>
+    </div>
+
+  </div>
+
+</main>
+
+<footer>
+  <strong>CGT</strong> Comité Régional Occitanie — Formation syndicale secteur privé
+</footer>
+
+<script>
+function toggleEx(header) {
+  const ex = header.closest('.ex');
+  ex.classList.toggle('open');
+}
+function toggleCorrige(btn) {
+  const corrige = btn.closest('.corrige');
+  corrige.classList.toggle('open');
+}
+
+/* Filtres */
+const filtres = document.querySelectorAll('.filtre');
+const sections = document.querySelectorAll('.section[data-type]');
+const exercices = document.querySelectorAll('.ex[data-type]');
+
+filtres.forEach(f => {
+  f.addEventListener('click', () => {
+    filtres.forEach(x => x.classList.remove('on'));
+    f.classList.add('on');
+    const type = f.dataset.type;
+    if (type === 'all') {
+      sections.forEach(s => s.style.display = '');
+      exercices.forEach(e => e.style.display = '');
+    } else {
+      sections.forEach(s => s.style.display = s.dataset.type === type ? '' : 'none');
+      exercices.forEach(e => e.style.display = e.dataset.type === type ? '' : 'none');
+    }
+  });
+});
+</script>
+
+</body>
+</html>
