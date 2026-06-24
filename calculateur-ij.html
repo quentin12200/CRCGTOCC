@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>CGT · Calculateur IJ & Maintien de Salaire</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;600;700;800&family=Spectral:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --red:#E2001A;--yellow:#FFD200;--ink:#141414;--paper:#FBFAF6;
+  --card:#F1EFE8;--line:#E4E0D4;--muted:#6C6A63;--white:#fff;
+  --green:#1a7a3c;--green-l:#e8f5ee;
+  --disp:'Anton','Arial Narrow',Impact,sans-serif;
+  --ui:'Archivo','Helvetica Neue',Arial,sans-serif;
+  --body:'Spectral',Georgia,'Times New Roman',serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--paper);color:var(--ink);font-family:var(--body);-webkit-font-smoothing:antialiased;min-height:100vh}
+
+/* ── NAV ── */
+nav{background:var(--ink);display:flex;align-items:center;justify-content:space-between;padding:0 6vw;height:56px;position:sticky;top:0;z-index:99}
+.nav-logo{font-family:var(--disp);font-size:22px;background:var(--yellow);color:var(--red);padding:2px 10px 0;line-height:1.3;text-decoration:none}
+.nav-back{font-family:var(--ui);font-weight:700;color:#ccc;text-decoration:none;font-size:14px;letter-spacing:.06em;text-transform:uppercase;display:flex;align-items:center;gap:.5em;transition:.2s}
+.nav-back:hover{color:var(--yellow)}
+
+/* ── HERO ── */
+.hero{background:var(--ink);background-image:radial-gradient(rgba(255,255,255,.04) 1px,transparent 1px);background-size:22px 22px;padding:5vh 6vw 4vh;border-bottom:5px solid var(--red)}
+.hero-kicker{font-family:var(--ui);font-weight:800;letter-spacing:.2em;text-transform:uppercase;font-size:13px;color:var(--yellow);margin-bottom:1.4vh;display:flex;align-items:center;gap:.7em}
+.hero-kicker::before{content:"";width:.55em;height:.55em;background:var(--yellow);transform:rotate(45deg);display:inline-block}
+.hero h1{font-family:var(--disp);font-size:clamp(34px,6vw,96px);color:var(--white);line-height:.96;text-transform:uppercase}
+.hero h1 span{color:var(--yellow)}
+.hero-sub{color:#bbb;font-family:var(--ui);font-size:clamp(14px,1.6vw,20px);margin-top:1.6vh;max-width:64ch;line-height:1.5}
+.hero-sub b{color:var(--yellow)}
+
+/* ── MAIN LAYOUT ── */
+main{max-width:1180px;margin:0 auto;padding:4vh 6vw 8vh}
+
+/* ── FORM CARD ── */
+.form-card{background:var(--white);border:1px solid var(--line);border-top:6px solid var(--red);padding:3.5vh 3vw;margin-bottom:4vh}
+.form-card h2{font-family:var(--disp);font-size:clamp(22px,3vw,40px);text-transform:uppercase;margin-bottom:2.5vh}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:2.2vh 2.5vw}
+@media(max-width:640px){.form-grid{grid-template-columns:1fr}}
+.field{display:flex;flex-direction:column;gap:.7vh}
+.field.full{grid-column:1/-1}
+label{font-family:var(--ui);font-weight:700;font-size:14px;text-transform:uppercase;letter-spacing:.07em;color:var(--ink)}
+label span{font-weight:400;text-transform:none;letter-spacing:0;color:var(--muted);font-size:13px}
+input[type=number],select{border:2px solid var(--line);padding:1.1vh 1.2vw;font-family:var(--ui);font-size:16px;color:var(--ink);background:var(--paper);outline:none;transition:.2s;width:100%}
+input[type=number]:focus,select:focus{border-color:var(--red)}
+.type-toggle{display:grid;grid-template-columns:1fr 1fr;gap:0}
+.type-btn{font-family:var(--ui);font-weight:700;text-transform:uppercase;letter-spacing:.06em;font-size:15px;padding:1.3vh 0;text-align:center;cursor:pointer;border:2px solid var(--line);background:var(--paper);color:var(--muted);transition:.2s;user-select:none}
+.type-btn:first-child{border-right:none}
+.type-btn.act{background:var(--ink);color:var(--yellow);border-color:var(--ink)}
+.btn-calc{display:flex;align-items:center;justify-content:center;gap:.8em;font-family:var(--ui);font-weight:800;text-transform:uppercase;letter-spacing:.1em;font-size:16px;padding:1.6vh 3vw;background:var(--red);color:#fff;border:none;cursor:pointer;transition:.2s;width:100%;margin-top:1.2vh}
+.btn-calc:hover{background:#b5000f}
+.btn-calc svg{width:20px;height:20px;flex-shrink:0}
+
+/* ── RESULTS ── */
+#results{display:none}
+#results.show{display:block}
+.res-header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1.5vh;margin-bottom:3vh}
+.res-header h2{font-family:var(--disp);font-size:clamp(20px,2.8vw,38px);text-transform:uppercase}
+.tag-type{font-family:var(--ui);font-weight:800;font-size:12px;letter-spacing:.12em;text-transform:uppercase;padding:4px 12px;background:var(--red);color:#fff}
+
+/* ── COLUMNS COMPARISON ── */
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:2.5vw;margin-bottom:3.5vh}
+@media(max-width:680px){.cols{grid-template-columns:1fr}}
+.col-card{border:1px solid var(--line);overflow:hidden}
+.col-head{padding:1.6vh 1.8vw;background:var(--ink);color:var(--white);display:flex;align-items:center;justify-content:space-between}
+.col-head.atmp{background:var(--red)}
+.col-head h3{font-family:var(--disp);font-size:clamp(16px,2vw,26px);text-transform:uppercase}
+.col-head .badge{font-family:var(--ui);font-weight:800;font-size:11px;letter-spacing:.1em;text-transform:uppercase;padding:3px 8px;background:var(--yellow);color:var(--ink)}
+.col-body{padding:2vh 1.8vw;display:flex;flex-direction:column;gap:1.6vh}
+
+/* ── METRIC ── */
+.metric{display:flex;justify-content:space-between;align-items:baseline;gap:1em;border-bottom:1px dashed var(--line);padding-bottom:1.2vh}
+.metric:last-child{border-bottom:none;padding-bottom:0}
+.metric-label{font-family:var(--ui);font-weight:600;font-size:clamp(13px,1.2vw,16px);color:var(--muted);flex:1}
+.metric-val{font-family:var(--disp);font-size:clamp(20px,2.2vw,32px);color:var(--ink);white-space:nowrap}
+.metric-val.red{color:var(--red)}
+.metric-val.green{color:var(--green)}
+.metric-sub{font-family:var(--ui);font-size:12px;color:var(--muted);margin-top:.3vh}
+
+/* ── PERIOD TABLE ── */
+.period-table{width:100%;border-collapse:collapse;font-size:clamp(12px,1.1vw,15px);font-family:var(--ui)}
+.period-table th{background:var(--ink);color:var(--yellow);text-transform:uppercase;letter-spacing:.07em;font-size:11px;padding:.9vh 1vw;text-align:left;font-weight:800}
+.period-table td{padding:.8vh 1vw;border-bottom:1px solid var(--line)}
+.period-table tr:last-child td{border-bottom:none}
+.period-table tr.carence td{color:var(--muted);font-style:italic}
+.period-table tr.beyond td{color:var(--muted)}
+.period-table .num{text-align:right;font-weight:700;white-space:nowrap}
+.period-table .total-row td{background:var(--card);font-weight:800;border-top:2px solid var(--ink)}
+
+/* ── TOTAL STRIP ── */
+.total-strip{background:var(--ink);color:var(--white);padding:2.5vh 2.5vw;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:2vh;margin-bottom:3.5vh}
+.total-strip .lbl{font-family:var(--ui);font-size:clamp(13px,1.3vw,17px);color:#aaa;text-transform:uppercase;letter-spacing:.08em}
+.total-strip .big{font-family:var(--disp);font-size:clamp(28px,4vw,60px);color:var(--yellow)}
+.total-strip .desc{font-family:var(--ui);font-size:clamp(12px,1.1vw,15px);color:#999;margin-top:.4vh}
+.diff-box{text-align:right}
+.diff-pos{color:#6dffaa}
+.diff-neg{color:#ff8080}
+
+/* ── CCN NOTICE ── */
+.ccn-notice{border:2px solid var(--yellow);background:#fffbea;padding:2.5vh 2.5vw;margin-bottom:3.5vh}
+.ccn-notice h3{font-family:var(--ui);font-weight:800;text-transform:uppercase;letter-spacing:.06em;font-size:clamp(14px,1.4vw,19px);color:var(--ink);display:flex;align-items:center;gap:.6em;margin-bottom:1.4vh}
+.ccn-notice h3::before{content:"⚠";font-style:normal}
+.ccn-notice p{font-size:clamp(13px,1.3vw,17px);line-height:1.55;color:#333;margin-bottom:1.2vh}
+.ccn-notice p:last-child{margin-bottom:0}
+.ccn-links{display:flex;flex-wrap:wrap;gap:1.2vh 1.5vw;margin-top:1.6vh}
+.ccn-link{display:inline-flex;align-items:center;gap:.5em;font-family:var(--ui);font-weight:700;font-size:14px;letter-spacing:.04em;text-transform:uppercase;padding:.8vh 1.4vw;border:2px solid var(--ink);color:var(--ink);text-decoration:none;transition:.2s}
+.ccn-link:hover{background:var(--ink);color:var(--yellow)}
+.ccn-link svg{width:16px;height:16px;flex-shrink:0}
+
+/* ── HYPOTHESES ── */
+.hyp-box{background:var(--card);border-left:6px solid var(--muted);padding:1.8vh 2vw;font-size:clamp(12px,1.1vw,15px);color:var(--muted);line-height:1.6;font-family:var(--ui)}
+.hyp-box h4{font-weight:800;text-transform:uppercase;letter-spacing:.07em;font-size:12px;margin-bottom:.8vh;color:var(--ink)}
+.hyp-box ul{padding-left:1.2em}
+.hyp-box ul li{margin-bottom:.35vh}
+</style>
+</head>
+<body>
+<script>if(localStorage.getItem('cgt_auth')!=='ok'&&localStorage.getItem('cgt_stagiaire_auth')!=='ok'){location.replace('/login.html?from='+encodeURIComponent(location.pathname));}</script>
+
+<nav>
+  <a class="nav-logo" href="/">CGT</a>
+  <a class="nav-back" href="/">&#8592; Accueil</a>
+</nav>
+
+<div class="hero">
+  <div class="hero-kicker">Outil CGT Occitanie</div>
+  <h1>Calculateur <span>IJ &amp; Maintien</span><br>de Salaire</h1>
+  <p class="hero-sub">Estimez la part <b>CPAM</b> et la part <b>employeur (minimum légal)</b> en arrêt maladie ou AT/MP.<br>Les résultats indiquent le plancher légal — votre CCN peut prévoir mieux.</p>
+</div>
+
+<main>
+
+<!-- FORM -->
+<div class="form-card">
+  <h2>Votre situation</h2>
+  <div class="form-grid">
+
+    <div class="field">
+      <label for="brut">Salaire brut mensuel <span>(€)</span></label>
+      <input type="number" id="brut" min="0" step="10" placeholder="ex : 2 200" value="">
+    </div>
+
+    <div class="field">
+      <label for="anciennete">Ancienneté <span>(années complètes)</span></label>
+      <input type="number" id="anciennete" min="0" step="1" placeholder="ex : 4" value="">
+    </div>
+
+    <div class="field">
+      <label for="duree">Durée de l'arrêt <span>(jours calendaires)</span></label>
+      <input type="number" id="duree" min="1" step="1" placeholder="ex : 45" value="">
+    </div>
+
+    <div class="field">
+      <label>Type d'arrêt</label>
+      <div class="type-toggle">
+        <div class="type-btn act" id="btnMal" onclick="setType('maladie')">Maladie</div>
+        <div class="type-btn" id="btnAt" onclick="setType('atmp')">AT / MP</div>
+      </div>
+    </div>
+
+    <div class="field full">
+      <button class="btn-calc" onclick="calculate()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 7H6a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3"/><rect x="9" y="3" width="6" height="6" rx="1"/><path d="M9 14h.01M12 14h.01M15 14h.01M9 17h.01M12 17h.01M15 17h.01"/></svg>
+        Calculer
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<!-- RESULTS -->
+<div id="results">
+
+  <div class="res-header">
+    <h2>Résultats — <span id="res-label"></span></h2>
+    <div class="tag-type" id="res-tag"></div>
+  </div>
+
+  <!-- TOTAL STRIP -->
+  <div class="total-strip">
+    <div>
+      <div class="lbl">Total perçu (légal)</div>
+      <div class="big" id="res-total">—</div>
+      <div class="desc" id="res-total-desc"></div>
+    </div>
+    <div>
+      <div class="lbl">dont CPAM</div>
+      <div class="big" style="color:#fff" id="res-cpam-tot">—</div>
+    </div>
+    <div>
+      <div class="lbl">dont Employeur légal</div>
+      <div class="big" style="color:#fff" id="res-emp-tot">—</div>
+    </div>
+    <div class="diff-box">
+      <div class="lbl">Net estimé vs net habituel</div>
+      <div class="big" id="res-diff-val">—</div>
+      <div class="desc" id="res-diff-label"></div>
+    </div>
+  </div>
+
+  <!-- DETAIL COLUMNS -->
+  <div class="cols">
+
+    <!-- CPAM -->
+    <div class="col-card">
+      <div class="col-head">
+        <h3>Part CPAM</h3>
+        <span class="badge">Sécurité Sociale</span>
+      </div>
+      <div class="col-body">
+        <div class="metric">
+          <div>
+            <div class="metric-label">Salaire journalier de base (SDJB)</div>
+            <div class="metric-sub" id="sdjb-formula"></div>
+          </div>
+          <div>
+            <div class="metric-val red" id="res-sdjb">—</div>
+            <div class="metric-sub" style="text-align:right">€/jour</div>
+          </div>
+        </div>
+        <div class="metric" id="carence-row">
+          <div class="metric-label">Délai de carence</div>
+          <div>
+            <div class="metric-val" id="res-carence">—</div>
+          </div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">IJ versées par la CPAM</div>
+          <div>
+            <div class="metric-val red" id="res-ij-day">—</div>
+            <div class="metric-sub" style="text-align:right">€/jour</div>
+          </div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Total CPAM sur la période</div>
+          <div>
+            <div class="metric-val red" id="res-ij-total">—</div>
+            <div class="metric-sub" style="text-align:right">€</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- EMPLOYEUR -->
+    <div class="col-card">
+      <div class="col-head atmp">
+        <h3>Part Employeur</h3>
+        <span class="badge">Minimum légal</span>
+      </div>
+      <div class="col-body">
+        <div class="metric">
+          <div>
+            <div class="metric-label">Durée maintien légal (90 %)</div>
+            <div class="metric-sub" id="maintien-label-p1"></div>
+          </div>
+          <div>
+            <div class="metric-val" id="res-p1-days">—</div>
+            <div class="metric-sub" style="text-align:right">jours</div>
+          </div>
+        </div>
+        <div class="metric">
+          <div>
+            <div class="metric-label">Durée maintien légal (2/3)</div>
+            <div class="metric-sub" id="maintien-label-p2"></div>
+          </div>
+          <div>
+            <div class="metric-val" id="res-p2-days">—</div>
+            <div class="metric-sub" style="text-align:right">jours</div>
+          </div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Complément versé par l'employeur</div>
+          <div>
+            <div class="metric-val red" id="res-emp-day">—</div>
+            <div class="metric-sub" style="text-align:right">€/jour moy.</div>
+          </div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Total employeur sur la période</div>
+          <div>
+            <div class="metric-val red" id="res-emp-total-col">—</div>
+            <div class="metric-sub" style="text-align:right">€</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- PERIOD TABLE -->
+  <div class="form-card" style="margin-bottom:3.5vh">
+    <h2 style="font-size:clamp(18px,2.2vw,28px);margin-bottom:2vh">Détail jour par jour</h2>
+    <div style="overflow-x:auto">
+      <table class="period-table" id="period-table">
+        <thead>
+          <tr>
+            <th>Période</th>
+            <th>Jours</th>
+            <th class="num">Total reçu/j</th>
+            <th class="num">dont CPAM/j</th>
+            <th class="num">dont Employeur/j</th>
+            <th class="num">Total période</th>
+          </tr>
+        </thead>
+        <tbody id="period-tbody"></tbody>
+      </table>
+    </div>
+    <div style="margin-top:1.6vh;font-family:var(--ui);font-size:13px;color:var(--muted)">
+      * Le salaire net habituel est estimé en appliquant ~22 % de cotisations salariales au brut. Les IJ SS sont soumises à CSG/CRDS (6,7 %) uniquement — elles valent donc plus en net par euro brut.
+    </div>
+  </div>
+
+  <!-- CCN NOTICE -->
+  <div class="ccn-notice">
+    <h3>Ces montants sont le minimum légal — vérifiez votre CCN</h3>
+    <p>Le calcul ci-dessus applique uniquement les règles de la <strong>loi de mensualisation (L.1226-1 CT)</strong> et les taux de la <strong>Sécurité Sociale</strong>. La quasi-totalité des conventions collectives prévoient des conditions plus favorables : maintien à 100 % sur une durée plus longue, carence supprimée, taux supérieurs à 90 % ou 2/3, garanties sans condition d'ancienneté...</p>
+    <p>Cherchez votre CCN sur les sites officiels, puis comparez avec les résultats ci-dessus pour calculer le montant réel perçu par le salarié.</p>
+    <div class="ccn-links">
+      <a class="ccn-link" href="https://www.legifrance.gouv.fr/search/conventions-collectives" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        Rechercher ma CCN — Légifrance
+      </a>
+      <a class="ccn-link" href="https://www.service-public.fr/particuliers/vosdroits/F2726" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        Maintien de salaire — Service-Public
+      </a>
+      <a class="ccn-link" href="https://www.ameli.fr/assure/remboursements/indemnites-journalieres/arret-maladie" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        IJ maladie — Ameli.fr
+      </a>
+    </div>
+  </div>
+
+  <!-- HYPOTHESES -->
+  <div class="hyp-box">
+    <h4>Hypothèses et limites du calcul</h4>
+    <ul>
+      <li>SDJB maladie = salaire brut × 3 ÷ 91,25 (hypothèse salaire constant sur 3 mois). SDJB AT/MP = brut ÷ 30,42 (dernier mois).</li>
+      <li>Plafonds 2024 : IJ maladie max 52,28 €/j · IJ AT/MP j1–j28 max 76,21 €/j · IJ AT/MP j29+ max 101,62 €/j (basés sur PMSS 2024 = 3 864 €/mois).</li>
+      <li>Maintien légal calculé en jours calendaires. Le salaire journalier de référence employeur = brut ÷ 30.</li>
+      <li>Net estimé = montant brut × 0,78 pour la part employeur (cotisations salariales ~22 %) · montant IJ × 0,933 (CSG/CRDS 6,7 % uniquement).</li>
+      <li>Ce calculateur n'intègre pas : temps partiel thérapeutique, longue maladie ALD, complément prévoyance, accord d'entreprise, dispositions spécifiques fonctionnaires ou régimes spéciaux.</li>
+    </ul>
+  </div>
+
+</div><!-- /#results -->
+
+</main>
+
+<script>
+const PMSS = 3864;
+const MAX_IJ_MAL = 52.28;
+const MAX_IJ_AT1 = 76.21;  // 60% × PMSS/30.42
+const MAX_IJ_AT2 = 101.62; // 80% × PMSS/30.42
+
+let currentType = 'maladie';
+
+function setType(t){
+  currentType = t;
+  document.getElementById('btnMal').classList.toggle('act', t==='maladie');
+  document.getElementById('btnAt').classList.toggle('act', t==='atmp');
+}
+
+function fmt(n, dec=2){ return n.toLocaleString('fr-FR',{minimumFractionDigits:dec,maximumFractionDigits:dec}); }
+function fmtE(n){ return fmt(n,2)+' €'; }
+
+function getMaintien(anc){
+  if(anc<1) return {p1:0,p2:0,label:'Moins de 1 an d\'ancienneté — aucun maintien légal'};
+  if(anc<6)  return {p1:30,p2:30,label:'1 à 5 ans d\'ancienneté'};
+  if(anc<11) return {p1:40,p2:40,label:'6 à 10 ans d\'ancienneté'};
+  if(anc<16) return {p1:50,p2:50,label:'11 à 15 ans d\'ancienneté'};
+  if(anc<21) return {p1:60,p2:60,label:'16 à 20 ans d\'ancienneté'};
+  if(anc<26) return {p1:70,p2:70,label:'21 à 25 ans d\'ancienneté'};
+  if(anc<31) return {p1:80,p2:80,label:'26 à 30 ans d\'ancienneté'};
+  return {p1:90,p2:90,label:'31 ans et plus d\'ancienneté'};
+}
+
+function calculate(){
+  const brut = parseFloat(document.getElementById('brut').value)||0;
+  const anc  = parseInt(document.getElementById('anciennete').value)||0;
+  const dur  = parseInt(document.getElementById('duree').value)||0;
+  const type = currentType;
+
+  if(brut<=0||dur<=0){alert('Veuillez saisir un salaire et une durée.');return;}
+
+  const maintien = getMaintien(anc);
+  const dailyGross = brut/30; // référence journalière employeur
+  const netFactor = 0.78;     // ~22% cotisations salariales
+
+  let periods = [];
+  let totalCPAM = 0, totalEmp = 0;
+  let sdjb, ijPerDay, ijLabel, carenceLabel;
+
+  if(type==='maladie'){
+    sdjb = (brut*3)/91.25; // = brut/30.42 si salaire constant
+    ijPerDay = Math.min(0.5*sdjb, MAX_IJ_MAL);
+    ijLabel  = `50 % × ${fmt(sdjb)} (max 52,28 €/j)`;
+    carenceLabel = '3 jours (délai de carence légal)';
+
+    const carence = Math.min(3, dur);
+    const effectiveDays = Math.max(0, dur - carence);
+
+    // Période carence
+    if(carence>0) periods.push({label:'Carence',days:carence,total:0,cpam:0,emp:0,cls:'carence'});
+
+    // Période 1 : 90% brut
+    const p1d = Math.min(maintien.p1, effectiveDays);
+    if(p1d>0){
+      const targetDay = 0.9*dailyGross;
+      const empDay = Math.max(0, targetDay - ijPerDay);
+      const receivedDay = ijPerDay + empDay;
+      const cpamTot = ijPerDay*p1d;
+      const empTot  = empDay*p1d;
+      totalCPAM += cpamTot; totalEmp += empTot;
+      periods.push({label:`90 % du brut (j${carence+1}–j${carence+p1d})`,days:p1d,total:receivedDay,cpam:ijPerDay,emp:empDay,cls:'p1'});
+    }
+
+    // Période 2 : 2/3 brut
+    const p2d = Math.min(maintien.p2, Math.max(0, effectiveDays - maintien.p1));
+    if(p2d>0){
+      const targetDay = (2/3)*dailyGross;
+      const empDay = Math.max(0, targetDay - ijPerDay);
+      const cpamTot = ijPerDay*p2d;
+      const empTot  = empDay*p2d;
+      totalCPAM += cpamTot; totalEmp += empTot;
+      const start = carence+maintien.p1+1;
+      periods.push({label:`2/3 du brut (j${start}–j${start+p2d-1})`,days:p2d,total:(2/3)*dailyGross,cpam:ijPerDay,emp:empDay,cls:'p2'});
+    }
+
+    // Période 3 : IJ seules
+    const p3d = Math.max(0, effectiveDays - maintien.p1 - maintien.p2);
+    if(p3d>0){
+      const cpamTot = ijPerDay*p3d;
+      totalCPAM += cpamTot;
+      const start = carence+maintien.p1+maintien.p2+1;
+      periods.push({label:`IJ seules — plus de maintien légal (j${start}+)`,days:p3d,total:ijPerDay,cpam:ijPerDay,emp:0,cls:'beyond'});
+    }
+
+  } else { // AT/MP
+    sdjb = brut/30.42;
+    const ijP1 = Math.min(0.6*sdjb, MAX_IJ_AT1);
+    const ijP2 = Math.min(0.8*sdjb, MAX_IJ_AT2);
+    ijLabel = `60 % j1–j28 / 80 % j29+ (pas de carence)`;
+    carenceLabel = 'Aucune';
+    ijPerDay = ijP2; // valeur de référence affichée (phase stable)
+
+    // Les phases CPAM (28j) et les phases maintien légal s'entrecroisent
+    // On les découpe par tranches de jours en prenant le minimum de chaque frontière
+    const boundaries = new Set([0, dur]);
+    if(dur>28) boundaries.add(28);
+    if(maintien.p1>0) boundaries.add(maintien.p1);
+    if(maintien.p1+maintien.p2>0) boundaries.add(maintien.p1+maintien.p2);
+    const bArr = [...boundaries].sort((a,b)=>a-b);
+
+    for(let k=0;k<bArr.length-1;k++){
+      const from = bArr[k], to = bArr[k+1];
+      const days = to - from;
+      const midDay = from + 0.5;
+      // IJ CPAM taux
+      const cpamDay = midDay <= 28 ? ijP1 : ijP2;
+      // Maintien légal cible
+      let targetDay = 0;
+      if(anc>=1){
+        if(midDay <= maintien.p1) targetDay = 0.9*dailyGross;
+        else if(midDay <= maintien.p1+maintien.p2) targetDay = (2/3)*dailyGross;
+      }
+      const empDay = Math.max(0, targetDay - cpamDay);
+      const receivedDay = cpamDay + empDay;
+      totalCPAM += cpamDay*days; totalEmp += empDay*days;
+
+      const phase = midDay<=28 ? '60 %' : '80 %';
+      const maint = targetDay>0 ? (midDay<=maintien.p1?'90 % brut':'2/3 brut') : 'IJ seules';
+      periods.push({
+        label:`j${from+1}–j${to} · CPAM ${phase} · Maintien ${maint}`,
+        days, total:receivedDay, cpam:cpamDay, emp:empDay,
+        cls: targetDay>0 ? 'p1' : 'beyond'
+      });
+    }
+  }
+
+  // Totaux
+  const totalReceived = totalCPAM + totalEmp;
+  // Net estimé
+  const netHabituel = brut * netFactor;
+  // Les IJ sont chargées à 6.7% CSG/CRDS, la part employeur à ~22%
+  // Approx: net = cpam * 0.933 + emp * 0.78
+  const netEstime  = totalCPAM * 0.933 + totalEmp * 0.78;
+  const netHab     = netHabituel * (dur/30); // net habituel sur même durée
+  const diffNet    = netEstime - netHab;
+
+  // Affichage
+  document.getElementById('res-label').textContent = `${dur} jours · ${fmt(brut,0)} € brut/mois · ${anc} an${anc>1?'s':''} ancienneté`;
+  document.getElementById('res-tag').textContent = type==='maladie' ? 'Maladie ordinaire' : 'AT / MP';
+  document.getElementById('res-sdjb').textContent = fmt(sdjb)+' €';
+  document.getElementById('sdjb-formula').textContent = type==='maladie' ? `${fmt(brut,0)} × 3 ÷ 91,25` : `${fmt(brut,0)} ÷ 30,42`;
+  document.getElementById('res-carence').textContent = type==='maladie' ? '3 jours' : 'Aucune ✓';
+  document.getElementById('res-ij-day').textContent = type==='maladie' ? fmt(Math.min(0.5*sdjb,MAX_IJ_MAL)) : `${fmt(Math.min(0.6*sdjb,MAX_IJ_AT1))} (j1–28) / ${fmt(Math.min(0.8*sdjb,MAX_IJ_AT2))} (j29+)`;
+  document.getElementById('res-ij-total').textContent = fmt(totalCPAM);
+  document.getElementById('res-p1-days').textContent = maintien.p1 > 0 ? maintien.p1 : '—';
+  document.getElementById('res-p2-days').textContent = maintien.p2 > 0 ? maintien.p2 : '—';
+  document.getElementById('maintien-label-p1').textContent = maintien.label;
+  document.getElementById('maintien-label-p2').textContent = maintien.label;
+  document.getElementById('res-emp-day').textContent = totalEmp>0 ? fmt(totalEmp/dur) : '0,00';
+  document.getElementById('res-emp-total-col').textContent = fmt(totalEmp);
+
+  document.getElementById('res-total').textContent = fmt(totalReceived) + ' €';
+  document.getElementById('res-total-desc').textContent = `soit ${fmt(totalReceived/(dur/30))} €/mois estimé`;
+  document.getElementById('res-cpam-tot').textContent = fmt(totalCPAM) + ' €';
+  document.getElementById('res-emp-tot').textContent = fmt(totalEmp) + ' €';
+  document.getElementById('res-diff-val').textContent = (diffNet>=0?'+':'')+fmt(diffNet)+' €';
+  document.getElementById('res-diff-val').className = 'big '+(diffNet>=0?'diff-pos':'diff-neg');
+  document.getElementById('res-diff-label').textContent = `vs net habituel estimé (${fmt(netHab)} €)`;
+
+  // Table
+  const tbody = document.getElementById('period-tbody');
+  tbody.innerHTML = '';
+  let grandTotal = 0;
+  periods.forEach(p=>{
+    const rowTotal = p.total * p.days;
+    grandTotal += rowTotal;
+    const tr = document.createElement('tr');
+    if(p.cls) tr.className = p.cls;
+    tr.innerHTML = `
+      <td>${p.label}</td>
+      <td class="num">${p.days}</td>
+      <td class="num">${p.total>0?fmtE(p.total):'—'}</td>
+      <td class="num" style="color:var(--red)">${p.cpam>0?fmtE(p.cpam):'—'}</td>
+      <td class="num">${p.emp>0?fmtE(p.emp):'0,00 €'}</td>
+      <td class="num" style="font-weight:700">${p.total>0?fmtE(rowTotal):'0,00 €'}</td>`;
+    tbody.appendChild(tr);
+  });
+  // Total row
+  const tfoot = document.createElement('tr');
+  tfoot.className = 'total-row';
+  tfoot.innerHTML = `
+    <td>TOTAL</td>
+    <td class="num">${dur}</td>
+    <td class="num">—</td>
+    <td class="num" style="color:var(--red)">${fmtE(totalCPAM)}</td>
+    <td class="num">${fmtE(totalEmp)}</td>
+    <td class="num">${fmtE(grandTotal)}</td>`;
+  tbody.appendChild(tfoot);
+
+  const el = document.getElementById('results');
+  el.classList.add('show');
+  el.scrollIntoView({behavior:'smooth',block:'start'});
+}
+</script>
+</body>
+</html>
