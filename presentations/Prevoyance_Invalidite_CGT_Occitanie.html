@@ -105,10 +105,22 @@ h1,h2{font-family:var(--disp);font-weight:400;line-height:.98;letter-spacing:.01
 .quiz-a{margin-top:2.4vh;font-family:var(--ui);font-weight:700;color:var(--red);
   font-size:clamp(14px,1.7vw,24px);opacity:0;transition:.3s}
 .quiz-a.show{opacity:1}
-.case-sc{background:var(--card);border-left:10px solid var(--yellow);padding:2.6vh 2vw;
-  font-size:clamp(16px,1.9vw,27px);margin-top:2vh;max-width:80ch;line-height:1.35}
-.case-q{margin-top:2.2vh}
-.timer{display:flex;align-items:center;gap:1.2vw;margin-top:auto;padding-top:2.4vh}
+.case-sc{background:var(--card);border-left:10px solid var(--yellow);padding:2vh 1.8vw;
+  font-size:clamp(14px,1.65vw,24px);margin-top:1.6vh;max-width:88ch;line-height:1.4}
+.case-q{margin-top:1.6vh}
+.timer{display:flex;align-items:center;gap:1.2vw;margin-top:auto;padding-top:1.6vh}
+.btn-corrige{margin-top:1.4vh;font-family:var(--ui);font-weight:700;text-transform:uppercase;
+  letter-spacing:.06em;border:2px solid var(--red);background:transparent;color:var(--red);
+  padding:.65vh 1.4vw;cursor:pointer;font-size:clamp(11px,1.15vw,16px);transition:.2s}
+.btn-corrige:hover{background:var(--red);color:#fff}
+.case-corrige{margin-top:1.2vh;background:#f9f6ef;border-left:8px solid var(--red);
+  padding:1.4vh 1.6vw;display:none;max-width:92ch}
+.case-corrige.show{display:block}
+.case-corrige .cr-title{font-family:var(--ui);font-weight:800;color:var(--red);
+  text-transform:uppercase;letter-spacing:.06em;font-size:clamp(11px,1.2vw,17px);margin-bottom:.8vh}
+.case-corrige ol{padding-left:1.3em;display:flex;flex-direction:column;gap:.45vh}
+.case-corrige ol li{font-size:clamp(11px,1.2vw,17px);line-height:1.42}
+.case-corrige .cr-key{color:var(--red);font-weight:700}
 .tmr-display{font-family:var(--disp);font-size:clamp(34px,5vw,80px);color:var(--ink);line-height:.9;min-width:3.4ch}
 .tmr-display.run{color:var(--red)} .tmr-display.done{color:var(--red);animation:flash 1s steps(2) infinite}
 @keyframes flash{50%{opacity:.25}}
@@ -284,17 +296,23 @@ const SLIDES = [
   sub:"Pourquoi ? Les IJ ne sont pas soumises aux cotisations sociales salariales (pas de cotisations retraite, chômage, maladie). Seuls CSG/CRDS s'appliquent (6,7 % au lieu de ~22 % de cotisations habituelles). Un salarié à 2 000 € brut reçoit en AT/MP environ 1 580 € net — contre 1 560 € en temps normal.",
   notes:"C'est l'argument clé : en AT/MP le salarié ne perd pas d'argent. Les IJ SS ne sont pas imposées aux mêmes cotisations que le salaire, donc 80 % du brut en IJ vaut autant ou plus que le salaire net habituel. C'est une des raisons majeures pour lesquelles il faut faire reconnaître l'AT/MP."},
 
- {type:"case", title:"Exemple concret — Lucas, 2 200 € brut/mois",
-  scenario:"Lucas est victime d'un accident du travail le 15 mars. Son salaire brut est de 2 200 €/mois, ancienneté 3 ans. Sa CCN prévoit maintien à 100 % pendant 90 jours.",
+ {type:"case", title:"Exercice 1 — Lucas, magasinier victime d'un AT",
+  scenario:"Lucas, 38 ans, magasinier, gagne <b>2 200 € brut/mois</b>. Ancienneté : 4 ans. Le 15 mars, il glisse sur un quai mouillé et se fracture le poignet. L'accident est déclaré en AT. Son arrêt dure 45 jours. Sa CCN (logistique) prévoit un maintien à 100 % du salaire brut pendant les 90 premiers jours. L'employeur pratique la subrogation.",
   questions:[
-   "SDJB AT/MP = 2 200 ÷ 30,42 = 72,32 €/j",
-   "IJ CPAM j1–j28 = 60 % × 72,32 = 43,39 €/j (soit ~1 320 €/mois)",
-   "IJ CPAM j29+ = 80 % × 72,32 = 57,86 €/j (soit ~1 761 €/mois)",
-   "Complément employeur (CCN 100 %) : porte le total à 2 200 € brut",
-   "Net perçu ≈ 1 650–1 700 € (IJ peu chargées) ≈ salaire net habituel"
+   "<b>Question 1 :</b> Calculez le Salaire Journalier de Base (SDJB) retenu par la CPAM pour un AT.",
+   "<b>Question 2 :</b> Quel montant verse la CPAM les 28 premiers jours ? Et à partir du 29ᵉ jour ?",
+   "<b>Question 3 :</b> Combien Lucas reçoit-il au total (CPAM + complément employeur) grâce à la CCN ?",
+   "<b>Question 4 :</b> Comparez son salaire net habituel (~1 640 €) avec ce qu'il touche en AT. Que constatez-vous ?"
   ],
-  minutes:0,
-  notes:"Ce cas illustre que le salarié en AT/MP ne perd pas de revenu grâce à l'empilement CPAM + employeur + CCN. C'est pour ça que la reconnaissance AT/MP est un enjeu financier direct. À comparer avec la maladie ordinaire où les 3 jours de carence + les 50 % CPAM laissent un vrai trou si l'employeur ne maintient pas."},
+  minutes:15,
+  corrige:[
+   "<span class='cr-key'>SDJB AT/MP</span> = dernier mois brut ÷ 30,42 = 2 200 ÷ 30,42 = <b>72,32 €/j</b>. Attention : en AT/MP on divise par 30,42 (dernier mois seulement), pas par 91,25 comme en maladie ordinaire.",
+   "<span class='cr-key'>IJ CPAM phase 1 (j1–j28)</span> : 60 % × 72,32 = <b>43,39 €/j</b>. Pas de jour de carence en AT/MP. Sur 28 jours = 1 215 € versés par la CPAM.",
+   "<span class='cr-key'>IJ CPAM phase 2 (j29–j45)</span> : 80 % × 72,32 = <b>57,86 €/j</b>. Sur 17 jours = 983 € versés par la CPAM.",
+   "<span class='cr-key'>Complément employeur (CCN 100 %)</span> : La CCN garantit 100 % du brut pendant 90 jours. L'employeur verse la différence entre 2 200 €/mois et les IJ SS. Grâce à la subrogation, Lucas reçoit directement <b>2 200 € brut</b> chaque mois sur son bulletin — la CPAM rembourse ensuite l'employeur.",
+   "<span class='cr-key'>Net perçu en AT vs net habituel</span> : Les IJ SS ne supportent pas les cotisations salariales retraite, chômage, maladie (seulement CSG/CRDS à 6,7 %). La part IJ est donc moins prélevée. Résultat : Lucas perçoit <b>≈ 1 690–1 720 € net</b> contre <b>~1 640 € net habituel</b>. Il ne perd pas d'argent — il en gagne même légèrement. C'est l'argument central pour faire reconnaître l'AT."
+  ],
+  notes:"Message clé : en AT/MP bien couvert (CCN + subrogation), le salarié touche son salaire habituel voire plus. La reconnaissance AT/MP est d'abord un enjeu de revenu, pas seulement de droits administratifs."},
 
  {type:"steps", title:"Les trois étages du maintien de salaire",
   items:[{big:"Loi",nm:"Mensualisation (L.1226-1 CT)",ds:"90 % les 30 premiers jours, 2/3 les 30 jours suivants (après 1 an d'ancienneté). Subrogation souvent obligatoire."},
@@ -315,13 +333,22 @@ const SLIDES = [
   strip:"Vérifier chaque situation au cas par cas : la règle générale masque souvent une exception favorable.",
   notes:"<b>Cas classique de litiges :</b> salarié en arrêt prolongé qui bascule hors maintien légal mais garde une garantie CCN. Savoir lire la fiche de paie et l'état des absences."},
 
- {type:"case", title:"Mise en situation — « L'arrêt de Fatima »",
-  scenario:"Fatima, ouvrière de confection, est en arrêt maladie depuis 4 mois suite à des TMS. Son salaire de base est 1 600 €/mois, ancienneté 3 ans. Elle ne comprend pas pourquoi elle touche maintenant 1 100 € au lieu de 1 400 € le premier mois.",
-  questions:["Reconstituez la mécanique de son maintien (légal + IJ).",
-   "La CCN TH (habillement) prévoit 100 % pendant 60 jours : où en est-elle ?",
-   "Comment le délégué CGT peut-il l'aider ?"],
-  minutes:12,
-  notes:"<b>Corrigé :</b> IJ maladie = 50 % du SDJB ≈ 26 €/j. Maintien légal = 90 % pendant 30 j puis 2/3 les 30 j suivants. Au-delà de 60 j, retour aux seules IJ SS. Vérifier la CCN applicable et si un régime de prévoyance prend le relais."},
+ {type:"case", title:"Exercice 2 — Fatima, ouvrière en arrêt maladie longue durée",
+  scenario:"Fatima, 41 ans, ouvrière de confection, souffre de TMS (tendinite bilatérale). Elle est en <b>arrêt maladie ordinaire</b> depuis 4 mois. Salaire : <b>1 600 € brut/mois</b>. Ancienneté : 3 ans. CCN habillement (TH) : maintien à 100 % pendant 60 jours. Elle vous appelle, inquiète : le 1ᵉʳ mois elle touchait ~1 400 €, et maintenant au 4ᵉ mois elle ne reçoit plus que ~1 100 €. Elle ne comprend pas pourquoi ça a baissé.",
+  questions:[
+   "<b>Question 1 :</b> Calculez le SDJB en maladie ordinaire et le montant des IJ CPAM. Pourquoi y a-t-il 3 jours de carence ?",
+   "<b>Question 2 :</b> Quel est le maintien légal (L.1226-1 CT) pour les 2 premiers mois ? Comment la CCN s'articule-t-elle ?",
+   "<b>Question 3 :</b> Reconstituez ce que Fatima perçoit mois par mois (mois 1, 2, 3, 4). Expliquez pourquoi ça a baissé.",
+   "<b>Question 4 :</b> Les TMS étant probablement d'origine professionnelle — quel conseil donnez-vous pour améliorer sa situation financière ?"
+  ],
+  minutes:15,
+  corrige:[
+   "<span class='cr-key'>SDJB maladie</span> = (salaire des 3 derniers mois) ÷ 91,25 = (1 600 × 3) ÷ 91,25 = <b>52,60 €/j</b>. IJ CPAM = 50 % × 52,60 = <b>26,30 €/j</b>. Le délai de carence de 3 jours s'applique en maladie ordinaire : la SS ne paie qu'à partir du 4ᵉ jour d'arrêt (sauf si accord d'entreprise supprime ce délai).",
+   "<span class='cr-key'>Maintien légal L.1226-1</span> (ancienneté ≥ 1 an) : 90 % du brut les 30 premiers jours = 1 440 €/mois, puis 2/3 les 30 jours suivants = 1 066 €/mois. La CCN habillement prévoit 100 % pendant 60 jours : elle améliore le légal. Résultat : <b>mois 1 et 2 = 1 600 € brut ≈ 1 400 € net</b> (cohérent avec ce qu'elle décrit).",
+   "<span class='cr-key'>Mécanique mois par mois</span> — Mois 1 (j1–j30) : CCN 100 % → 1 600 € brut ≈ 1 400 € net ✓. Mois 2 (j31–j60) : CCN 100 % maintenu → 1 600 € brut ≈ 1 400 € net. Mois 3 (j61–j90) : CCN épuisée, maintien légal 2/3 → 1 066 € brut ≈ 940 € net. Mois 4 (j91–j120) : plus de maintien légal ni CCN → <b>IJ SS seules = 26,30 × 30 = 789 €/mois</b>. Si elle perçoit ~1 100 €, c'est peut-être qu'un régime de prévoyance complémente — à vérifier.",
+   "<span class='cr-key'>Conseil CGT : faire reconnaître les TMS comme MP</span>. Les TMS sont au tableau 57 des MP (membres supérieurs). Si reconnus, les IJ passent en AT/MP : SDJB = dernier mois ÷ 30,42 (même base), mais taux 60 % puis 80 % <b>sans carence</b>, et le maintien employeur s'applique sur une base AT (L.1226-7 CT). Résultat = plusieurs centaines d'euros de plus par mois. Aussi : vérifier l'existence d'un régime de prévoyance couvrant l'incapacité longue durée."
+  ],
+  notes:"Cas typique de glissement de revenus sur longue maladie. L'enjeu CGT : repérer les MP non déclarées (TMS) et accompagner la reconnaissance pour basculer en AT/MP, bien plus protecteur financièrement."},
 
  {type:"divider", kicker:"Séquence 2", title:["L'invalidité","de la Sécurité","sociale"],
   notes:"Changer de registre : on quitte l'arrêt de travail temporaire pour entrer dans la stabilisation et la vie avec des séquelles."},
@@ -433,14 +460,22 @@ const SLIDES = [
   explain:"Bonne réponse C : à partir du 29ᵉ jour d'arrêt AT, les IJ passent à 80 % du salaire journalier de base, sans jour de carence. C'est nettement plus favorable qu'une maladie ordinaire.",
   notes:"Ce quiz ancre concrètement l'intérêt de la reconnaissance AT/MP sur le revenu de remplacement."},
 
- {type:"case", title:"Mise en situation — « Le dossier de Robert »",
-  scenario:"Robert, 54 ans, monteur-câbleur, est victime d'un AT grave (chute de 3 m). IPP fixée à 25 %. Il reprend à mi-temps thérapeutique, mais son contrat est menacé. Il vous demande ce qu'il peut toucher si il est licencié pour inaptitude.",
-  questions:["Quelles sont les garanties AT/MP (rente IPP) et leur montant approximatif ?",
-   "Une pension d'invalidité est-elle envisageable ? Quelle catégorie ?",
-   "Quel régime de prévoyance d'entreprise peut intervenir ? Que vérifier ?",
-   "En cas de licenciement pour inaptitude d'origine professionnelle, quelles protections ?"],
-  minutes:18,
-  notes:"Cas synthèse multi-régimes. <b>Corrigé indicatif :</b> rente IPP 25 % → formule taux utile (12,5 % × SAA). Invalidité SS possible (cat. 1 ou 2 selon avis médecin-conseil). Prévoyance : vérifier délai de carence, définition invalidité, portabilité si licenciement. Inaptitude pro : indemnité spéciale double + obligation reclassement."},
+ {type:"case", title:"Exercice 3 — Robert, AT grave, IPP 25 %, contrat menacé",
+  scenario:"Robert, 54 ans, monteur-câbleur, <b>salaire brut 2 800 €/mois</b>, ancienneté 18 ans. Il a chuté de 3 m sur un chantier : AT grave reconnu, consolidation après 8 mois d'arrêt. Le médecin de la CPAM fixe son IPP à <b>25 %</b>. Il reprend en mi-temps thérapeutique mais le médecin du travail le déclare inapte à son poste. Son employeur envisage un licenciement pour inaptitude. Robert vous demande ce qu'il peut espérer financièrement et quelles sont ses protections.",
+  questions:[
+   "<b>Question 1 :</b> Calculez le montant approximatif de la rente IPP que Robert va percevoir (formule du taux utile).",
+   "<b>Question 2 :</b> Une pension d'invalidité SS peut-elle s'y ajouter ? Quelle catégorie probable et à quel montant ?",
+   "<b>Question 3 :</b> Que devez-vous vérifier dans le régime de prévoyance de son entreprise ?",
+   "<b>Question 4 :</b> S'il est licencié pour inaptitude d'origine professionnelle, quelles sont ses protections spécifiques par rapport à un licenciement ordinaire ?"
+  ],
+  minutes:20,
+  corrige:[
+   "<span class='cr-key'>Rente IPP 25 % — formule du taux utile :</span> Pour les taux ≤ 10 % on divise par 2 ; pour la tranche au-delà de 10 % on multiplie par 1,5. Calcul : tranche 0–10 % → 10 ÷ 2 = 5 % utile ; tranche 11–25 % (soit 15 %) → 15 × 1,5 = 22,5 % utile. Taux utile total = 5 + 22,5 = <b>27,5 %</b>. Salaire annuel de référence (SAR) = 2 800 × 12 = 33 600 €. <b>Rente annuelle = 27,5 % × 33 600 = 9 240 €/an = 770 €/mois.</b>",
+   "<span class='cr-key'>Pension d'invalidité SS :</span> L'IPP AT/MP de 25 % ne signifie pas automatiquement invalide SS (critères différents). Mais après 8 mois d'arrêt et séquelles, le médecin-conseil peut reconnaître une invalidité. Avec une IPP de 25 %, Robert garde des capacités mais doit adapter son activité → probable <b>catégorie 1</b> (peut exercer une activité à temps réduit). Pension cat. 1 = 30 % du SAM (10 meilleures années). Environ 30 % × 2 800 × 12 = <b>1 008 €/an = 84 €/mois</b> (minimum 310 €/mois garanti). <b>Cumul rente IPP + pension invalidité possible</b>, dans la limite du salaire antérieur.",
+   "<span class='cr-key'>Prévoyance à vérifier :</span> (1) Le délai de carence : prend-il effet avant ou après la consolidation ? (2) La définition de l'invalidité dans le contrat : inapte à <em>son poste</em> ou inapte à <em>toute activité</em> ? La première est plus favorable. (3) Le taux de rente complémentaire prévu (objectif 75–80 % du brut cumulé SS + prévoyance). (4) La <b>portabilité art. L.911-8 CSS</b> : si Robert est licencié, ses garanties prévoyance sont maintenues gratuitement pendant la durée de son chômage, <b>maximum 12 mois</b>. L'employeur doit l'informer dans le certificat de travail.",
+   "<span class='cr-key'>Licenciement pour inaptitude d'origine professionnelle (L.1226-14 CT) :</span> (1) <b>Obligation préalable de reclassement</b> : l'employeur doit rechercher un poste adapté avant de licencier. (2) <b>Indemnité spéciale de licenciement = 2 × l'indemnité légale</b> : pour 18 ans d'ancienneté, indemnité légale ≈ 18 × (2 800/4) × seuil = environ 12 600 €, donc indemnité spéciale ≈ <b>25 200 €</b>. (3) <b>Pas de préavis effectué</b> mais indemnité compensatrice versée. (4) Si l'employeur ne respecte pas l'obligation de reclassement, le licenciement est sans cause réelle et sérieuse → dommages-intérêts supplémentaires."
+  ],
+  notes:"Cas synthèse multi-régimes : rente IPP + invalidité SS + prévoyance + protection inaptitude pro. L'articulation est complexe mais chaque brique peut être vérifiée par le délégué CGT. C'est souvent dans ces situations que l'accompagnement syndical fait la différence financière."},
 
  {type:"content", title:"Synthèse — les réflexes militants",
   bullets:["Tout arrêt > 30 jours : vérifier maintien (légal, CCN, accord) et subrogation.",
@@ -573,17 +608,22 @@ function buildSlide(s,i){
     },100);
   } else if(s.type==='case'){
     const qs=Array.isArray(s.questions)?s.questions.map(q=>`<li>${q}</li>`).join(''):'';
-    div.innerHTML=`
-      <div class="kicker reveal"><span class="dot"></span>Cas pratique</div>
-      <h2 class="title reveal" style="font-size:clamp(26px,3.8vw,64px)">${s.title}</h2>
-      <div class="case-sc reveal">${s.scenario}</div>
-      <ul class="case-q bullets reveal" style="margin-top:1.6vh">${qs}</ul>
-      <div class="timer">
+    const crItems=Array.isArray(s.corrige)?s.corrige.map(c=>`<li>${c}</li>`).join(''):s.corrige||'';
+    const corrigeBlock=crItems?`
+      <button class="btn-corrige" onclick="const c=this.nextElementSibling;c.classList.toggle('show');this.textContent=c.classList.contains('show')?'▲ Masquer le corrigé':'▼ Voir le corrigé'">▼ Voir le corrigé</button>
+      <div class="case-corrige"><div class="cr-title">Corrigé détaillé</div><ol>${crItems}</ol></div>`:'';
+    const timerBlock=s.minutes>0?`<div class="timer">
         <div class="tmr-display" id="tmr${i}">0:00</div>
         <button class="tbtn" id="ts${i}">Démarrer</button>
         <button class="tbtn ghost" id="tr${i}">Reset</button>
-      </div>`;
-    setTimeout(()=>{
+      </div>`:'';
+    div.innerHTML=`
+      <div class="kicker reveal"><span class="dot"></span>Cas pratique</div>
+      <h2 class="title reveal" style="font-size:clamp(22px,3.2vw,52px)">${s.title}</h2>
+      <div class="case-sc reveal">${s.scenario}</div>
+      <ul class="case-q bullets reveal" style="margin-top:1.2vh">${qs}</ul>
+      ${corrigeBlock}${timerBlock}`;
+    if(s.minutes>0) setTimeout(()=>{
       const disp=div.querySelector(`#tmr${i}`);
       const startBtn=div.querySelector(`#ts${i}`);
       const resetBtn=div.querySelector(`#tr${i}`);
