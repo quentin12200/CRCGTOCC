@@ -265,10 +265,36 @@ const SLIDES = [
  {type:"divider", kicker:"Séquence 1", title:["Indemnités","journalières","& maintien de salaire"],
   notes:"Commencer par le quotidien des salariés en arrêt : qu'est-ce qui rentre dans le compte le mois prochain ?"},
 
- {type:"two", title:"IJ maladie vs IJ AT/MP",
+ {type:"two", title:"IJ maladie vs IJ AT/MP — part CPAM",
   a:{h:"Maladie ordinaire",t:"50 % du SDJB (moy. 3 derniers mois ÷ 91,25). 3 jours de carence. Maximum 2024 : 52,28 €/j.",style:"plain"},
-  b:{h:"AT/MP",t:"SDJB = dernier mois ÷ 30,42 (pas de carence). 60 % j1–j28, 80 % à partir du 29ᵉ. Maximum 2024 : 76,21 €/j (60 %) puis 101,62 €/j (80 %). Bien supérieur au régime maladie.",style:"red"},
-  notes:"<b>L'AT/MP est nettement plus favorable.</b> Pas de carence, base de calcul différente (dernier mois ÷ 30,42 vs moyenne 3 mois ÷ 91,25), taux plus élevés. <span class='cgt'>C'est pourquoi faire reconnaître un AT/MP n'est pas qu'une question de droit : c'est une question de revenus.</span> Plafond = PMSS 2024 : 3 864 €/mois → SDJB max = 127,02 €/j. <span class='ref'>Réf. L.433-1 et L.433-2 CSS.</span>"},
+  b:{h:"AT/MP (part Sécu uniquement)",t:"SDJB = dernier mois ÷ 30,42. Pas de carence. 60 % j1–j28 → max 76,21 €/j. 80 % à partir du 29ᵉ → max 101,62 €/j. Mais ce n'est qu'une partie du paiement total.",style:"red"},
+  notes:"<b>Attention :</b> ces taux sont ceux versés par la CPAM seule. L'employeur complète en plus via la mensualisation. La diapo suivante explique comment le salarié en AT/MP perçoit en réalité quasiment 100 % de son salaire net. <span class='ref'>Réf. L.433-1 et L.433-2 CSS.</span>"},
+
+ {type:"steps", title:"En AT/MP : trois sources de paiement s'empilent",
+  kicker:"CPAM + Employeur + Prévoyance",
+  items:[
+   {big:"①",nm:"CPAM (IJ AT/MP)",ds:"60 % du SDJB les 28 premiers jours, 80 % à partir du 29ᵉ. Versé directement ou via subrogation."},
+   {big:"②",nm:"Employeur (L.1226-2 CT)",ds:"Complète les IJ pour atteindre 90 % du brut les 30 premiers jours, puis 2/3 du brut les 30 jours suivants (après 1 an d'ancienneté)."},
+   {big:"③",nm:"CCN / Prévoyance",ds:"Selon la branche ou l'accord d'entreprise, peut compléter jusqu'à 100 % du salaire brut pendant toute la durée de l'arrêt."}
+  ],
+  notes:"<b>La règle d'or :</b> en AT/MP, l'employeur a l'obligation légale de maintenir le salaire au-delà des seules IJ SS. La CPAM paie sa part, l'employeur complète. La prévoyance collective intervient en troisième couche. <span class='ref'>Réf. L.1226-2 CT.</span>"},
+
+ {type:"callout", mode:"red", title:"En AT/MP : quasiment 100 % du salaire net",
+  big:"80 % du brut CPAM + complément employeur ≈ salaire net habituel",
+  sub:"Pourquoi ? Les IJ ne sont pas soumises aux cotisations sociales salariales (pas de cotisations retraite, chômage, maladie). Seuls CSG/CRDS s'appliquent (6,7 % au lieu de ~22 % de cotisations habituelles). Un salarié à 2 000 € brut reçoit en AT/MP environ 1 580 € net — contre 1 560 € en temps normal.",
+  notes:"C'est l'argument clé : en AT/MP le salarié ne perd pas d'argent. Les IJ SS ne sont pas imposées aux mêmes cotisations que le salaire, donc 80 % du brut en IJ vaut autant ou plus que le salaire net habituel. C'est une des raisons majeures pour lesquelles il faut faire reconnaître l'AT/MP."},
+
+ {type:"case", title:"Exemple concret — Lucas, 2 200 € brut/mois",
+  scenario:"Lucas est victime d'un accident du travail le 15 mars. Son salaire brut est de 2 200 €/mois, ancienneté 3 ans. Sa CCN prévoit maintien à 100 % pendant 90 jours.",
+  questions:[
+   "SDJB AT/MP = 2 200 ÷ 30,42 = 72,32 €/j",
+   "IJ CPAM j1–j28 = 60 % × 72,32 = 43,39 €/j (soit ~1 320 €/mois)",
+   "IJ CPAM j29+ = 80 % × 72,32 = 57,86 €/j (soit ~1 761 €/mois)",
+   "Complément employeur (CCN 100 %) : porte le total à 2 200 € brut",
+   "Net perçu ≈ 1 650–1 700 € (IJ peu chargées) ≈ salaire net habituel"
+  ],
+  minutes:0,
+  notes:"Ce cas illustre que le salarié en AT/MP ne perd pas de revenu grâce à l'empilement CPAM + employeur + CCN. C'est pour ça que la reconnaissance AT/MP est un enjeu financier direct. À comparer avec la maladie ordinaire où les 3 jours de carence + les 50 % CPAM laissent un vrai trou si l'employeur ne maintient pas."},
 
  {type:"steps", title:"Les trois étages du maintien de salaire",
   items:[{big:"Loi",nm:"Mensualisation (L.1226-1 CT)",ds:"90 % les 30 premiers jours, 2/3 les 30 jours suivants (après 1 an d'ancienneté). Subrogation souvent obligatoire."},
