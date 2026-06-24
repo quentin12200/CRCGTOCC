@@ -266,9 +266,9 @@ const SLIDES = [
   notes:"Commencer par le quotidien des salariés en arrêt : qu'est-ce qui rentre dans le compte le mois prochain ?"},
 
  {type:"two", title:"IJ maladie vs IJ AT/MP",
-  a:{h:"Maladie ordinaire",t:"50 % du salaire journalier de base. 3 jours de carence. Maximum journalier 2024 : 52,28 €/j. Plafond SS.",style:"plain"},
-  b:{h:"AT/MP",t:"60 % les 28 premiers jours (sans carence), 80 % à partir du 29ᵉ. Maximum : 232,72 €/j. Bien supérieur au régime maladie.",style:"red"},
-  notes:"<b>L'AT/MP est nettement plus favorable.</b> Pas de carence, taux plus élevés, maintien plus long. <span class='cgt'>C'est pourquoi faire reconnaître un AT/MP n'est pas qu'une question de droit : c'est une question de revenus.</span> <span class='ref'>Réf. L.433-1 et L.433-2 CSS.</span>"},
+  a:{h:"Maladie ordinaire",t:"50 % du SDJB (moy. 3 derniers mois ÷ 91,25). 3 jours de carence. Maximum 2024 : 52,28 €/j.",style:"plain"},
+  b:{h:"AT/MP",t:"SDJB = dernier mois ÷ 30,42 (pas de carence). 60 % j1–j28, 80 % à partir du 29ᵉ. Maximum 2024 : 76,21 €/j (60 %) puis 101,62 €/j (80 %). Bien supérieur au régime maladie.",style:"red"},
+  notes:"<b>L'AT/MP est nettement plus favorable.</b> Pas de carence, base de calcul différente (dernier mois ÷ 30,42 vs moyenne 3 mois ÷ 91,25), taux plus élevés. <span class='cgt'>C'est pourquoi faire reconnaître un AT/MP n'est pas qu'une question de droit : c'est une question de revenus.</span> Plafond = PMSS 2024 : 3 864 €/mois → SDJB max = 127,02 €/j. <span class='ref'>Réf. L.433-1 et L.433-2 CSS.</span>"},
 
  {type:"steps", title:"Les trois étages du maintien de salaire",
   items:[{big:"Loi",nm:"Mensualisation (L.1226-1 CT)",ds:"90 % les 30 premiers jours, 2/3 les 30 jours suivants (après 1 an d'ancienneté). Subrogation souvent obligatoire."},
@@ -308,7 +308,7 @@ const SLIDES = [
 
  {type:"steps", title:"Les trois catégories d'invalidité",
   items:[{big:"1",nm:"Capable de travailler",ds:"Peut exercer une activité rémunérée. Pension = 30 % du salaire annuel moyen (SAM)."},
-   {big:"2",nm:"Incapable de toute activité",ds:"Inapte à tout travail. Pension = 50 % du SAM."},
+   {big:"2",nm:"Incapacité d'exercer une profession",ds:"Ne peut plus travailler dans des conditions normales. Pension = 50 % du SAM. Le maintien dans l'emploi reste possible avec adaptation significative du poste. Cumul pension + revenus d'activité autorisé dans certaines limites."},
    {big:"3",nm:"Nécessite l'aide d'une tierce personne",ds:"Majoration tierce personne (40 % de la pension, minimum légal)."}],
   notes:"<b>SAM = salaire annuel moyen des 10 meilleures années.</b> Pensions plafonnées et soumises à CSG/CRDS. <span class='cgt'>Très souvent, la pension seule ne permet pas de vivre : c'est là qu'intervient la prévoyance collective.</span> <span class='ref'>Réf. L.341-3 et L.341-4.</span>"},
 
@@ -397,7 +397,7 @@ const SLIDES = [
   q:"Un salarié en invalidité catégorie 2 peut reprendre une activité professionnelle.",
   opts:[{k:"A",t:"Vrai — sous conditions"},{k:"B",t:"Faux — l'invalidité cat. 2 interdit toute activité"},{k:"C",t:"Ça dépend du médecin-conseil"},{k:"D",t:"Ça dépend de la convention collective"}],
   ans:0,
-  explain:"VRAI : la catégorie 2 signifie incapacité de travailler dans son emploi habituel, mais des activités légères restent possibles. La catégorie 1, elle, suppose explicitement que le salarié peut exercer une activité.",
+  explain:"VRAI sous conditions : la catégorie 1 désigne quelqu'un capable d'exercer une activité à temps réduit. La catégorie 2 désigne quelqu'un qui ne peut plus travailler dans des conditions normales — mais le maintien dans l'emploi avec adaptation significative du poste reste possible. La pension peut être cumulée avec des revenus d'activité dans certaines limites fixées par la CPAM.",
   notes:"Ce quiz vise à déstabiliser les idées reçues. <span class='cgt'>Beaucoup de salariés pensent que la pension d'invalidité est incompatible avec toute reprise : c'est faux, et ça peut servir leur intérêt.</span>"},
 
  {type:"quiz", title:"Quiz — Lequel est plus favorable ?",
