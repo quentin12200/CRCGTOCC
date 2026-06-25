@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Évaluation de la Formation · CGT Occitanie</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%23E2001A'/%3E%3Ctext x='16' y='23' text-anchor='middle' font-family='sans-serif' font-weight='bold' font-size='16' fill='%23FFD200'%3ECGT%3C/text%3E%3C/svg%3E">
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600&display=swap" rel="stylesheet">
+  <!-- Firebase SDK -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getDatabase, ref, push, set } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+    const FIREBASE_CONFIG = {
+      apiKey: "AIzaSyBtu2Vmipa2CU8Pro0kXvnesqpUxf-7Z8c",
+      authDomain: "cgt-occitanie-quiz.firebaseapp.com",
+      databaseURL: "https://cgt-occitanie-quiz-default-rtdb.europe-west1.firebasedatabase.app",
+      projectId: "cgt-occitanie-quiz",
+      storageBucket: "cgt-occitanie-quiz.firebasestorage.app",
+      messagingSenderId: "420650097260",
+      appId: "1:420650097260:web:50bdd6dfcc4930a9139649"
+    };
+
+    const app = initializeApp(FIREBASE_CONFIG);
+    const db = getDatabase(app);
+
+    const THEMES = [
+      { id: 'atmp',        label: 'AT/MP — Accidents du travail & maladies professionnelles' },
+      { id: 'prevoyance',  label: 'Prévoyance & Invalidité' },
+      { id: 'prevention',  label: 'Prévention & Santé-Sécurité au travail (SST)' },
+      { id: 'supports',    label: 'Qualité des supports pédagogiques' },
+      { id: 'formateur',   label: 'Animation & pédagogie du formateur' },
+    ];
+
+    let ratings = {};
+
+    function setRating(themeId, value) {
+      ratings[themeId] = value;
+      const row = document.querySelector(`[data-theme="${themeId}"]`);
+      row.querySelectorAll('.star-btn').forEach((btn, i) => {
+        btn.classList.toggle('active', i < value);
+      });
+      row.querySelector('.rating-value').textContent = value + ' / 10';
+      checkReady();
+    }
+
+    function checkReady() {
+      const ready = THEMES.every(t => ratings[t.id] !== undefined);
+      document.getElementById('btn-submit').disabled = !ready;
+    }
+
+    async function soumettre() {
+      const btn = document.getElementById('btn-submit');
+      btn.disabled = true;
+      btn.textContent = 'Envoi…';
+
+      const commentaire = document.getElementById('commentaire').value.trim();
+      const data = {
+        date: new Date().toISOString(),
+        ratings,
+        commentaire,
+      };
+
+      try {
+        const newRef = push(ref(db, 'evaluations'));
+        await set(newRef, data);
+        document.getElementById('form-section').classList.add('hidden');
+        document.getElementById('merci-section').classList.remove('hidden');
+      } catch (e) {
+        btn.disabled = false;
+        btn.textContent = 'Envoyer mon évaluation';
+        document.getElementById('send-error').textContent = 'Erreur lors de l\'envoi. Vérifiez votre connexion.';
+      }
+    }
+
+    window.setRating = setRating;
+    window.soumettre = soumettre;
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const container = document.getElementById('themes-list');
+      THEMES.forEach(t => {
+        const stars = Array.from({ length: 10 }, (_, i) =>
+          `<button class="star-btn" data-val="${i + 1}" onclick="setRating('${t.id}', ${i + 1})" title="${i + 1}/10" aria-label="Note ${i + 1}">★</button>`
+        ).join('');
+
+        container.insertAdjacentHTML('beforeend', `
+          <div class="theme-row" data-theme="${t.id}">
+            <div class="theme-label">${t.label}</div>
+            <div class="stars-wrap">
+              ${stars}
+              <span class="rating-value">—</span>
+            </div>
+            <div class="rating-hint">
+              <span>1 = Très insuffisant</span>
+              <span>10 = Excellent</span>
+            </div>
+          </div>
+        `);
+      });
+    });
+  </script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --rouge: #E2001A; --jaune: #FFD200;
+      --fond: #141414; --card: #1E1E1E;
+      --texte: #FBFAF6; --muted: #9A9A9A;
+      --border: #2E2E2E;
+    }
+    body {
+      background: var(--fond); color: var(--texte);
+      font-family: 'Archivo', sans-serif;
+      min-height: 100vh;
+    }
+    .topbar { background: var(--rouge); padding: .75rem 1.5rem; display: flex; align-items: center; gap: 1rem; }
+    .cgt-badge { font-family: 'Anton', sans-serif; font-size: 1.2rem; letter-spacing: .1em; color: var(--jaune); }
+    .topbar h1 { font-family: 'Anton', sans-serif; font-size: .95rem; letter-spacing: .04em; color: #fff; }
+    .stripe { height: 5px; background: var(--jaune); }
+
+    .scene { max-width: 680px; margin: 0 auto; padding: 2rem 1.25rem; }
+
+    .intro { margin-bottom: 2rem; }
+    .intro p { color: var(--muted); font-size: .9rem; line-height: 1.6; margin-top: .5rem; }
+
+    .theme-row { background: var(--card); border: 1px solid var(--border); padding: 1.25rem; margin-bottom: .75rem; }
+    .theme-label { font-size: .9rem; font-weight: 600; margin-bottom: .85rem; line-height: 1.4; }
+    .stars-wrap { display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }
+    .star-btn {
+      background: none; border: none; cursor: pointer;
+      font-size: 1.5rem; color: #3A3A3A;
+      line-height: 1; padding: 2px;
+      transition: color .1s, transform .1s;
+    }
+    .star-btn:hover, .star-btn.active { color: var(--jaune); }
+    .star-btn:hover { transform: scale(1.2); }
+    .rating-value { font-family: 'Anton', sans-serif; font-size: .9rem; color: var(--muted); margin-left: .5rem; white-space: nowrap; }
+    .rating-hint { display: flex; justify-content: space-between; margin-top: .4rem; font-size: .68rem; color: var(--muted); }
+
+    .comment-section { margin-top: 1.5rem; }
+    .comment-section label { font-size: .7rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); display: block; margin-bottom: .5rem; }
+    textarea {
+      width: 100%; background: var(--card); border: 2px solid var(--border);
+      color: var(--texte); font-family: 'Archivo', sans-serif; font-size: .9rem;
+      padding: .75rem 1rem; outline: none; resize: vertical; min-height: 90px;
+      transition: border-color .15s;
+    }
+    textarea:focus { border-color: var(--rouge); }
+
+    .btn-submit {
+      margin-top: 1.5rem; width: 100%;
+      background: var(--rouge); color: #fff; border: none;
+      padding: .95rem; font-family: 'Archivo', sans-serif;
+      font-size: .9rem; font-weight: 700; letter-spacing: .08em;
+      text-transform: uppercase; cursor: pointer; transition: background .15s;
+    }
+    .btn-submit:hover:not(:disabled) { background: #C40017; }
+    .btn-submit:disabled { background: #333; color: var(--muted); cursor: default; }
+
+    .send-error { color: #FF6B7A; font-size: .8rem; margin-top: .5rem; min-height: 1.2em; }
+
+    .hidden { display: none !important; }
+
+    /* MERCI */
+    .merci-box { text-align: center; padding: 3rem 1.5rem; }
+    .merci-icon { font-size: 3rem; margin-bottom: 1rem; }
+    .merci-title { font-family: 'Anton', sans-serif; font-size: 1.6rem; margin-bottom: .75rem; }
+    .merci-msg { color: var(--muted); font-size: .9rem; line-height: 1.6; }
+
+    @media (max-width: 480px) {
+      .star-btn { font-size: 1.25rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="topbar">
+  <span class="cgt-badge">CGT</span>
+  <h1>Évaluation de la formation</h1>
+</div>
+<div class="stripe"></div>
+
+<div class="scene">
+
+  <div id="form-section">
+    <div class="intro">
+      <p>Notez chaque thème de <strong>1</strong> (très insuffisant) à <strong>10</strong> (excellent). Votre avis est anonyme et nous aide à améliorer nos formations.</p>
+    </div>
+
+    <div id="themes-list"></div>
+
+    <div class="comment-section">
+      <label for="commentaire">Commentaire libre (facultatif)</label>
+      <textarea id="commentaire" placeholder="Points positifs, axes d'amélioration, suggestions…"></textarea>
+    </div>
+
+    <button class="btn-submit" id="btn-submit" onclick="soumettre()" disabled>Envoyer mon évaluation</button>
+    <div class="send-error" id="send-error"></div>
+  </div>
+
+  <div id="merci-section" class="hidden">
+    <div class="merci-box">
+      <div class="merci-icon">✅</div>
+      <div class="merci-title">Merci pour votre retour !</div>
+      <div class="merci-msg">Votre évaluation a bien été enregistrée.<br>Vos retours nous permettent d'améliorer continuellement nos formations.</div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

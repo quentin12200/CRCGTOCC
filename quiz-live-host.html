@@ -165,9 +165,9 @@
 
       // Calculer les scores
       const resps = responses || {};
-      Object.entries(resps).forEach(([uid, r]) => {
+      Object.entries(resps).forEach(([key, r]) => {
         if (r.q === currentQ && r.choice === q.correct) {
-          scores[uid] = (scores[uid] || 0) + 1;
+          scores[r.uid] = (scores[r.uid] || 0) + 1;
         }
       });
 
