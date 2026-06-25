@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Résultats Évaluation · CGT Occitanie</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%23E2001A'/%3E%3Ctext x='16' y='23' text-anchor='middle' font-family='sans-serif' font-weight='bold' font-size='16' fill='%23FFD200'%3ECGT%3C/text%3E%3C/svg%3E">
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getDatabase, ref, onValue, remove } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+    const FIREBASE_CONFIG = {
+      apiKey: "AIzaSyBtu2Vmipa2CU8Pro0kXvnesqpUxf-7Z8c",
+      authDomain: "cgt-occitanie-quiz.firebaseapp.com",
+      databaseURL: "https://cgt-occitanie-quiz-default-rtdb.europe-west1.firebasedatabase.app",
+      projectId: "cgt-occitanie-quiz",
+      storageBucket: "cgt-occitanie-quiz.firebasestorage.app",
+      messagingSenderId: "420650097260",
+      appId: "1:420650097260:web:50bdd6dfcc4930a9139649"
+    };
+
+    const THEMES = [
+      { id: 'atmp',        label: 'AT/MP' },
+      { id: 'prevoyance',  label: 'Prévoyance & Invalidité' },
+      { id: 'prevention',  label: 'Prévention SST' },
+      { id: 'supports',    label: 'Supports pédagogiques' },
+      { id: 'formateur',   label: 'Animation formateur' },
+    ];
+
+    const app = initializeApp(FIREBASE_CONFIG);
+    const db = getDatabase(app);
+
+    let allEvals = [];
+
+    // Generate QR code
+    document.addEventListener('DOMContentLoaded', () => {
+      const evalUrl = `${location.origin}/evaluation-formation.html`;
+      document.getElementById('eval-url').textContent = evalUrl;
+      document.getElementById('qr-container').innerHTML = '';
+      new window.QRCode(document.getElementById('qr-container'), {
+        text: evalUrl,
+        width: 200, height: 200,
+        colorDark: '#1A1A1A', colorLight: '#FFFFFF',
+        correctLevel: window.QRCode.CorrectLevel.M
+      });
+
+      // Listen for evaluations
+      onValue(ref(db, 'evaluations'), snap => {
+        const val = snap.val();
+        allEvals = val ? Object.entries(val).map(([k, v]) => ({ id: k, ...v })) : [];
+        renderResults();
+      });
+    });
+
+    function renderResults() {
+      document.getElementById('count').textContent = allEvals.length;
+      if (allEvals.length === 0) {
+        document.getElementById('stats-grid').innerHTML = '<p style="color:var(--muted);text-align:center;grid-column:1/-1">Aucune évaluation reçue pour le moment.</p>';
+        document.getElementById('comments-list').innerHTML = '';
+        return;
+      }
+
+      // Averages per theme
+      const grid = document.getElementById('stats-grid');
+      grid.innerHTML = THEMES.map(t => {
+        const vals = allEvals.map(e => e.ratings && e.ratings[t.id]).filter(v => v !== undefined && v !== null);
+        const avg = vals.length ? (vals.reduce((a, b) => a + b, 0) / vals.length) : null;
+        const pct = avg ? (avg / 10 * 100) : 0;
+        const color = avg >= 7 ? '#2ECC71' : avg >= 5 ? '#FFD200' : '#E2001A';
+        return `
+          <div class="stat-card">
+            <div class="stat-label">${t.label}</div>
+            <div class="stat-score" style="color:${color}">${avg !== null ? avg.toFixed(1) : '—'}<span class="stat-max"> / 10</span></div>
+            <div class="stat-bar-track"><div class="stat-bar-fill" style="width:${pct}%;background:${color}"></div></div>
+            <div class="stat-count">${vals.length} réponse${vals.length > 1 ? 's' : ''}</div>
+          </div>
+        `;
+      }).join('');
+
+      // Comments
+      const comments = allEvals.filter(e => e.commentaire).map(e =>
+        `<div class="comment-item">
+          <div class="comment-date">${new Date(e.date).toLocaleDateString('fr-FR', {day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'})}</div>
+          <div class="comment-text">${e.commentaire.replace(/</g, '&lt;')}</div>
+        </div>`
+      ).join('');
+      document.getElementById('comments-list').innerHTML = comments || '<p style="color:var(--muted)">Aucun commentaire reçu.</p>';
+    }
+
+    async function clearAll() {
+      if (!confirm(`Supprimer les ${allEvals.length} évaluation(s) ? Cette action est irréversible.`)) return;
+      await remove(ref(db, 'evaluations'));
+    }
+
+    window.clearAll = clearAll;
+  </script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --rouge: #E2001A; --jaune: #FFD200;
+      --fond: #141414; --card: #1E1E1E;
+      --texte: #FBFAF6; --muted: #9A9A9A;
+      --border: #2E2E2E;
+    }
+    body { background: var(--fond); color: var(--texte); font-family: 'Archivo', sans-serif; min-height: 100vh; }
+    .topbar { background: var(--rouge); padding: .75rem 1.5rem; display: flex; align-items: center; justify-content: space-between; }
+    .topbar-left { display: flex; align-items: center; gap: 1rem; }
+    .cgt-badge { font-family: 'Anton', sans-serif; font-size: 1.2rem; letter-spacing: .1em; color: var(--jaune); }
+    .topbar h1 { font-family: 'Anton', sans-serif; font-size: .95rem; color: #fff; }
+    .topbar a { font-size: .72rem; color: rgba(255,255,255,.8); text-decoration: none; border: 1px solid rgba(255,255,255,.3); padding: .25rem .6rem; }
+    .stripe { height: 5px; background: var(--jaune); }
+    .scene { max-width: 900px; margin: 0 auto; padding: 2rem 1.25rem; display: flex; flex-direction: column; gap: 2rem; }
+
+    /* QR SECTION */
+    .qr-section { display: flex; gap: 2rem; align-items: flex-start; background: var(--card); border: 1px solid var(--border); padding: 1.5rem; }
+    .qr-block { background: #fff; padding: .75rem; flex-shrink: 0; }
+    .qr-right h2 { font-family: 'Anton', sans-serif; font-size: 1rem; margin-bottom: .5rem; }
+    .qr-right p { font-size: .85rem; color: var(--muted); line-height: 1.6; margin-bottom: .75rem; }
+    .qr-url { font-size: .72rem; color: var(--muted); word-break: break-all; background: var(--fond); border: 1px solid var(--border); padding: .5rem .75rem; }
+    .count-badge { display: inline-block; background: var(--rouge); color: #fff; font-family: 'Anton', sans-serif; font-size: 1.1rem; padding: .3rem .8rem; margin-bottom: .75rem; }
+
+    /* STATS */
+    .section-title { font-family: 'Anton', sans-serif; font-size: 1.1rem; margin-bottom: 1rem; }
+    .stats-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: .75rem; }
+    .stat-card { background: var(--card); border: 1px solid var(--border); padding: 1.25rem 1rem; text-align: center; }
+    .stat-label { font-size: .75rem; color: var(--muted); margin-bottom: .5rem; line-height: 1.3; }
+    .stat-score { font-family: 'Anton', sans-serif; font-size: 2rem; }
+    .stat-max { font-size: .8rem; color: var(--muted); }
+    .stat-bar-track { height: 4px; background: #2E2E2E; margin: .5rem 0; }
+    .stat-bar-fill { height: 100%; transition: width .4s; }
+    .stat-count { font-size: .7rem; color: var(--muted); }
+
+    /* COMMENTS */
+    .comment-item { background: var(--card); border: 1px solid var(--border); border-left: 3px solid var(--rouge); padding: .85rem 1rem; margin-bottom: .5rem; }
+    .comment-date { font-size: .68rem; color: var(--muted); margin-bottom: .3rem; }
+    .comment-text { font-size: .88rem; line-height: 1.5; }
+
+    .btn-danger { background: transparent; color: #FF6B7A; border: 1px solid #FF6B7A; padding: .6rem 1.25rem; font-family: 'Archivo', sans-serif; font-size: .82rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; cursor: pointer; transition: all .15s; }
+    .btn-danger:hover { background: #FF6B7A; color: #fff; }
+
+    @media (max-width: 600px) {
+      .qr-section { flex-direction: column; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+<script>if(localStorage.getItem('cgt_auth')!=='ok'){location.replace('/login.html?from='+encodeURIComponent(location.pathname));}</script>
+
+<div class="topbar">
+  <div class="topbar-left">
+    <span class="cgt-badge">CGT</span>
+    <h1>Résultats évaluations</h1>
+  </div>
+  <a href="/">← Accueil</a>
+</div>
+<div class="stripe"></div>
+
+<div class="scene">
+
+  <!-- QR CODE -->
+  <div class="qr-section">
+    <div class="qr-block"><div id="qr-container"></div></div>
+    <div class="qr-right">
+      <h2>QR code d'accès au questionnaire</h2>
+      <p>Affichez ce QR code en fin de formation. Les stagiaires le scannent avec leur téléphone pour évaluer la session.</p>
+      <div class="count-badge"><span id="count">0</span> réponse(s) reçue(s)</div>
+      <div class="qr-url" id="eval-url"></div>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div>
+    <div class="section-title">Moyennes par thème</div>
+    <div class="stats-grid" id="stats-grid">
+      <p style="color:var(--muted)">Chargement…</p>
+    </div>
+  </div>
+
+  <!-- COMMENTS -->
+  <div>
+    <div class="section-title">Commentaires libres</div>
+    <div id="comments-list"></div>
+  </div>
+
+  <!-- RESET -->
+  <div>
+    <button class="btn-danger" onclick="clearAll()">Réinitialiser toutes les évaluations</button>
+  </div>
+
+</div>
+</body>
+</html>
