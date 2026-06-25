@@ -25,11 +25,31 @@
     const db = getDatabase(app);
 
     const THEMES = [
-      { id: 'atmp',        label: 'AT/MP — Accidents du travail & maladies professionnelles' },
-      { id: 'prevoyance',  label: 'Prévoyance & Invalidité' },
-      { id: 'prevention',  label: 'Prévention & Santé-Sécurité au travail (SST)' },
-      { id: 'supports',    label: 'Qualité des supports pédagogiques' },
-      { id: 'formateur',   label: 'Animation & pédagogie du formateur' },
+      {
+        id: 'atmp',
+        label: 'Module AT/MP — Accidents du travail & maladies professionnelles',
+        question: 'Avez-vous bien compris les droits et démarches en cas d\'AT ou de maladie professionnelle ?'
+      },
+      {
+        id: 'prevoyance',
+        label: 'Module Prévoyance & Invalidité',
+        question: 'Les mécanismes de prévoyance et les catégories d\'invalidité vous semblent-ils clairs ?'
+      },
+      {
+        id: 'prevention',
+        label: 'Module Prévention & Santé-Sécurité au travail (SST)',
+        question: 'Avez-vous acquis les repères essentiels pour agir en matière de prévention des risques ?'
+      },
+      {
+        id: 'supports',
+        label: 'Qualité des supports pédagogiques (diaporamas, exercices, outils)',
+        question: 'Les supports utilisés étaient-ils clairs, bien structurés et utiles pour la compréhension ?'
+      },
+      {
+        id: 'formateur',
+        label: 'Animation & pédagogie du formateur',
+        question: 'L\'animation de la formation a-t-elle favorisé votre compréhension et votre implication ?'
+      },
     ];
 
     let ratings = {};
@@ -62,7 +82,7 @@
       };
 
       try {
-        const newRef = push(ref(db, 'evaluations'));
+        const newRef = push(ref(db, 'sessions/evaluations'));
         await set(newRef, data);
         document.getElementById('form-section').classList.add('hidden');
         document.getElementById('merci-section').classList.remove('hidden');
@@ -86,13 +106,14 @@
         container.insertAdjacentHTML('beforeend', `
           <div class="theme-row" data-theme="${t.id}">
             <div class="theme-label">${t.label}</div>
+            <div class="theme-question">${t.question}</div>
             <div class="stars-wrap">
               ${stars}
               <span class="rating-value">—</span>
             </div>
             <div class="rating-hint">
-              <span>1 = Très insuffisant</span>
-              <span>10 = Excellent</span>
+              <span>1 = Pas du tout</span>
+              <span>10 = Parfaitement</span>
             </div>
           </div>
         `);
@@ -123,7 +144,8 @@
     .intro p { color: var(--muted); font-size: .9rem; line-height: 1.6; margin-top: .5rem; }
 
     .theme-row { background: var(--card); border: 1px solid var(--border); padding: 1.25rem; margin-bottom: .75rem; }
-    .theme-label { font-size: .9rem; font-weight: 600; margin-bottom: .85rem; line-height: 1.4; }
+    .theme-label { font-size: .88rem; font-weight: 700; margin-bottom: .3rem; line-height: 1.4; color: var(--texte); }
+    .theme-question { font-size: .85rem; color: var(--muted); margin-bottom: .85rem; line-height: 1.5; font-style: italic; }
     .stars-wrap { display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }
     .star-btn {
       background: none; border: none; cursor: pointer;

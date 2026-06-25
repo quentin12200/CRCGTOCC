@@ -22,11 +22,11 @@
     };
 
     const THEMES = [
-      { id: 'atmp',        label: 'AT/MP' },
+      { id: 'atmp',        label: 'AT/MP — Compréhension des droits' },
       { id: 'prevoyance',  label: 'Prévoyance & Invalidité' },
-      { id: 'prevention',  label: 'Prévention SST' },
+      { id: 'prevention',  label: 'Prévention SST — Repères acquis' },
       { id: 'supports',    label: 'Supports pédagogiques' },
-      { id: 'formateur',   label: 'Animation formateur' },
+      { id: 'formateur',   label: 'Animation & pédagogie' },
     ];
 
     const app = initializeApp(FIREBASE_CONFIG);
@@ -47,7 +47,7 @@
       });
 
       // Listen for evaluations
-      onValue(ref(db, 'evaluations'), snap => {
+      onValue(ref(db, 'sessions/evaluations'), snap => {
         const val = snap.val();
         allEvals = val ? Object.entries(val).map(([k, v]) => ({ id: k, ...v })) : [];
         renderResults();
@@ -91,7 +91,7 @@
 
     async function clearAll() {
       if (!confirm(`Supprimer les ${allEvals.length} évaluation(s) ? Cette action est irréversible.`)) return;
-      await remove(ref(db, 'evaluations'));
+      await remove(ref(db, 'sessions/evaluations'));
     }
 
     window.clearAll = clearAll;
