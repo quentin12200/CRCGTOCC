@@ -325,9 +325,9 @@ const SLIDES = [
   notes:"<b>Donner le cap et recueillir les attentes.</b> Demander à chacun ce qu’il vient chercher (paperboard). À la fin, chacun doit pouvoir <b>accompagner un·e collègue</b>, pas seulement « comprendre »."},
 
  {type:"two", title:"Programme — 2 jours",
-  a:{h:"Jour 1",t:"Comprendre, déclarer et faire reconnaître : enjeux, définitions, déclaration de l’AT, instruction CPAM, maladies professionnelles."},
-  b:{h:"Jour 2",t:"Indemnisation et séquelles, inaptitude, faute inexcusable, recours, et rôle du CSE et du syndicat.",style:"red"},
-  notes:"<b>Logique :</b> J1 = faire reconnaître ; J2 = faire réparer et agir. Le fil rouge : du fait accidentel à la prévention collective."},
+  a:{h:"Jour 1 — Reconnaître",t:"Contexte historique · définitions AT/trajet/MP · acteurs · déclaration · CMI · télétravail · instruction CPAM · maladies professionnelles (tableaux, RPS, C2P) · cas pratique."},
+  b:{h:"Jour 2 — Réparer et agir",t:"Indemnisation et calcul des IJ · consolidation · IPP et rente · inaptitude · faute inexcusable (exemples, cas pratique) · recours · CSE/DUERP/arbre des causes · check-list.",style:"red"},
+  notes:"<b>Logique :</b> J1 = faire reconnaître ; J2 = faire réparer et agir. Le fil rouge : du fait accidentel à la prévention collective. Chaque journée se clôt par une mise en situation et un bilan."},
 
  {type:"divider", kicker:"Jour 1", title:["Comprendre,","déclarer,","faire reconnaître"],
   notes:"Annoncer le fil de la journée. <b>Tout commence par un bon réflexe de déclaration</b> : un dossier mal engagé se rattrape difficilement."},
@@ -677,7 +677,7 @@ insertAfter("Les documents clés",[
 ]);
 
 /* ---- IJ AT/MP : calcul détaillé ---- */
-insertAfter("Protection de l'emploi pendant l'arrêt",[
+insertAfter("Le parcours d'indemnisation",[
   {type:"content", title:"IJ AT/MP — comment ça se calcule ?",
    kicker:"Indemnisation — AT/MP",
    bullets:[
@@ -732,7 +732,7 @@ insertAfter("L'échelle du taux d'IPP",[
 ]);
 
 /* ---- Faute inexcusable — exemples concrets ---- */
-insertAfter("La faute inexcusable — c'est quoi ?",[
+insertAfter("Les effets de la faute inexcusable",[
   {type:"content", title:"Faute inexcusable — exemples reconnus par les tribunaux",
    kicker:"Jurisprudence",
    bullets:[
@@ -758,33 +758,36 @@ insertAfter("La faute inexcusable — c'est quoi ?",[
    notes:"Corrigé : FI = oui (employeur avait connaissance du danger, signalement écrit = preuve). Documents : signalement, PV CSE, fiches de poste, éventuels témoignages. Rente de base : taux utile 8 % × 22 000 = 1 760 €/an. Avec majoration = jusqu'au doublement soit 3 520 €/an maxi. Prescription : 2 ans à partir de la consolidation ou de la reconnaissance du caractère professionnel."}
 ]);
 
-/* ---- Accompagnement d'un collègue : check-list ---- */
-insertAfter("Évaluation et bilan des 2 jours",[
-  {type:"content", title:"Accompagner un·e collègue — la check-list",
-   kicker:"Outil pratique",
-   bullets:[
-     "✔ Informer l'employeur par écrit dans les 24 h (garder une copie).",
-     "✔ Aller voir le médecin le jour même ou le lendemain — demander un CMI détaillé.",
-     "✔ Récupérer la feuille d'accident AT : soins 100 % sans avance.",
-     "✔ Vérifier que la DAT a bien été envoyée à la CPAM sous 48 h.",
-     "✔ Conserver : témoignages, photos, plannings, échanges écrits.",
-     "✔ Contacter le délégué CGT et, si besoin, l'UD pour l'appui juridique.",
-     "✔ Surveiller les délais CPAM (30 j / 90 j) et la phase contradictoire.",
-     "✔ À la consolidation : vérifier le taux d'IPP et agir si contestable."
-   ],
-   notes:"<b>Distribuer cette check-list imprimée.</b> C'est le livrable pratique de la formation. <span class='cgt'>Rappeler : un dossier bien engagé dès le premier jour se gagne souvent. Un dossier mal parti se perd souvent.</span>"},
-
+/* ---- DUERP → dans la section CSE ---- */
+insertAfter("La tarification AT/MP : un levier",[
   {type:"content", title:"Le DUERP — outil de prévention collective",
    kicker:"Prévention — DUERP",
    bullets:[
-     "Document unique d'évaluation des risques professionnels (DUERP) : obligatoire dans toute entreprise.",
+     "Document Unique d'Évaluation des Risques Professionnels : obligatoire dans toute entreprise.",
      "Mis à jour au minimum chaque année et après tout AT grave ou changement important.",
      "Il doit recenser TOUS les risques : physiques, chimiques, psychosociaux, organisationnels.",
      "Le CSE a accès au DUERP et peut exiger des mises à jour et un programme annuel de prévention.",
-     "Un DUERP incomplet ou non tenu à jour peut être un élément dans une action en faute inexcusable."
+     "Un DUERP incomplet ou non tenu à jour peut servir d'argument dans une action en faute inexcusable."
    ],
    strip:"Le DUERP n'est pas un document administratif — c'est une carte des dangers à défendre collectivement.",
    notes:"<span class='ref'>Réf. R.4121-1 et s. CT.</span> <span class='cgt'>Demander systématiquement à consulter le DUERP en CSE. Un DUERP qui ne mentionne pas les RPS ou la pénibilité est un DUERP incomplet.</span>"}
+]);
+
+/* ---- Check-list accompagnement en clôture de J2 ---- */
+insertAfter("Évaluation et bilan des 2 jours",[
+  {type:"content", title:"Accompagner un·e collègue — la check-list",
+   kicker:"Outil pratique — livrable",
+   bullets:[
+     "✔ Informer l'employeur par écrit dans les 24 h (garder une copie).",
+     "✔ Aller voir le médecin le jour même — demander un CMI exhaustif.",
+     "✔ Récupérer la feuille d'accident AT : soins 100 % sans avance de frais.",
+     "✔ Vérifier que la DAT a bien été envoyée à la CPAM sous 48 h.",
+     "✔ Conserver tout : témoignages, photos, plannings, échanges écrits.",
+     "✔ Contacter le délégué CGT et, si besoin, l'UD pour l'appui juridique.",
+     "✔ Surveiller les délais CPAM (30 j / 90 j) et participer à la phase contradictoire.",
+     "✔ À la consolidation : vérifier le taux d'IPP et contester si sous-évalué."
+   ],
+   notes:"<b>Distribuer cette check-list imprimée.</b> C'est le livrable pratique de la formation. <span class='cgt'>Rappeler : un dossier bien engagé dès le premier jour se gagne souvent. Un dossier mal parti se perd souvent.</span>"}
 ]);
 
 /* ====== FIN ENRICHISSEMENT ====== */
