@@ -648,6 +648,147 @@ insertAfter("Indemnisation des séquelles",[{type:"svg",title:"L’échelle du t
 insertAfter("Les leviers du CSE / CSSCT",[{type:"content",title:"La tarification AT/MP : un levier",bullets:["La cotisation AT/MP de l’employeur dépend de sa sinistralité (gérée par la CARSAT).","Plus il y a d’AT/MP reconnus, plus la cotisation augmente ; des cotisations supplémentaires sont possibles.","Faire reconnaître les AT/MP pèse donc sur le coût pour l’employeur."],strip:"Argument CGT : prévenir coûte moins cher que réparer — la reconnaissance est aussi un levier économique.",notes:"<b>Un levier méconnu.</b> La CARSAT peut imposer des mesures et moduler la cotisation. <span class='cgt'>Transformer la sinistralité en argument de négociation pour la prévention.</span>"}]);
 insertAfter("L’enquête : l’arbre des causes",[{type:"svg",title:"L’arbre des causes (schéma)",svg:SVG_ARBRE,caption:"Plusieurs familles de causes mènent à l’accident.",notes:"<b>Méthode multicausale.</b> Faire produire l’arbre par le groupe sur un cas : on cherche les causes (technique, humaine, organisationnelle), pas un coupable."}]);
 
+/* ====== ENRICHISSEMENT — contenu supplémentaire ====== */
+
+/* ---- CMI : ce qu'il faut y mettre ---- */
+insertAfter("Les documents clés",[
+  {type:"content", title:"Le certificat médical initial (CMI) — bien le rédiger",
+   bullets:[
+     "Décrire TOUTES les lésions constatées, même mineures (hématome, choc psychologique…).",
+     "Préciser le siège exact, la localisation et le mécanisme si connu.",
+     "Mentionner les douleurs psychiques ou le choc émotionnel : ils ouvrent les mêmes droits.",
+     "Le CMI de prolongation et le certificat final de guérison/consolidation complètent le dossier.",
+     "Ce qui n'est pas dans le CMI initial sera très difficile à rattacher à l'AT ensuite."
+   ],
+   strip:"Conseil pratique : demander au médecin d'être exhaustif — mieux vaut trop que trop peu.",
+   notes:"<b>Atelier paperboard.</b> Faire lister les lésions que l'on pourrait oublier de mentionner (psychologique, acouphène après choc…). <span class='cgt'>Le CMI est la pièce fondatrice du dossier : le soigner au départ évite des batailles lors de la consolidation.</span>"},
+
+  {type:"content", title:"Télétravail et accidents du travail",
+   kicker:"Focus — Télétravail",
+   bullets:[
+     "Un accident survenu pendant le télétravail est présumé être un AT au même titre qu'en présentiel.",
+     "Lieu et heure de travail : la domicile devient le « lieu de travail » déclaré dans le contrat ou l'accord.",
+     "Charge de la preuve allégée : la présomption d'imputabilité s'applique, sauf preuve contraire.",
+     "Chute dans l'escalier, malaise devant l'écran… : si c'est pendant les horaires de travail, c'est présumé AT.",
+     "Astuce : noter l'heure exacte et conserver toute trace (email, Teams, téléphone)."
+   ],
+   strip:"L'essor du télétravail ouvre de nouvelles situations — la CGT doit former ses militants à ce cas.",
+   notes:"<span class='ref'>Réf. C. trav. L.1222-9 alinéa 2 ; Cass. soc. 7 mai 2015 n°14-10.295.</span> <span class='cgt'>Piège fréquent : l'employeur tend à contester le lien professionnel pour les AT à domicile. Rappeler la présomption.</span>"}
+]);
+
+/* ---- IJ AT/MP : calcul détaillé ---- */
+insertAfter("Protection de l'emploi pendant l'arrêt",[
+  {type:"content", title:"IJ AT/MP — comment ça se calcule ?",
+   kicker:"Indemnisation — AT/MP",
+   bullets:[
+     "<b>Salaire journalier de base (SDJB)</b> = salaire brut du mois précédent ÷ 30,42.",
+     "<b>Jours 1 à 28</b> : IJ = 60 % du SDJB — versées dès le 1ᵉʳ jour (pas de délai de carence en AT/MP).",
+     "<b>À partir du 29ᵉ jour</b> : IJ = 80 % du SDJB.",
+     "<b>Plafond quotidien 2024</b> : 101,62 €/jour (80 % de PMSS/30,42).",
+     "La prévoyance ou la CCN peut compléter pour atteindre 100 % du salaire net."
+   ],
+   strip:"Différence avec la maladie : pas de carence, taux plus élevé, plafond plus haut.",
+   notes:"<b>Calcul concret avec un exemple.</b> Salarié à 2 400 € bruts/mois : SDJB = 2400 ÷ 30,42 = 78,90 €. IJ J1-J28 = 47,34 €/j. IJ à partir J29 = 63,12 €/j. <span class='cgt'>Faire faire le calcul aux stagiaires avec leur propre salaire si consentement — cela ancre l'enjeu personnel.</span>"},
+
+  {type:"two", title:"AT/MP vs Maladie ordinaire — la comparaison",
+   kicker:"Indemnisation comparée",
+   a:{h:"Maladie ordinaire",
+      t:"3 jours de carence. IJ = 50 % du SDJB (SDJB = brut × 3 ÷ 91,25). Plafond à ~52 €/j. Délai de 6 mois d'ancienneté.",
+      style:"plain"},
+   b:{h:"AT/MP",
+      t:"Aucune carence. IJ = 60 % puis 80 % du SDJB. Plafond à ~102 €/j. Soins à 100 % sans avance. Applicable dès le 1ᵉʳ jour de travail.",
+      style:"red"},
+   notes:"<b>Tableau de comparaison à faire annoter par les stagiaires.</b> <span class='cgt'>L'enjeu de la reconnaissance est concret : pour un salaire de 2 000 € bruts, la différence peut dépasser 500 € sur un arrêt de 2 mois.</span>"}
+]);
+
+/* ---- RPS / Burn-out ---- */
+insertAfter("Les enjeux actuels",[
+  {type:"content", title:"Le burn-out et les RPS — maladie professionnelle ?",
+   kicker:"Risques psychosociaux",
+   bullets:[
+     "Le burn-out n'est pas inscrit dans un tableau de MP → voie CRRMP obligatoire.",
+     "Conditions : lien direct et essentiel avec le travail, et taux d'IPP ≥ 25 %.",
+     "Éléments à réunir : attestations de collègues, mails, plannings, relevés d'heures, arrêts maladie successifs.",
+     "Le harcèlement moral reconnu peut fonder une MP ou une faute inexcusable.",
+     "Suicide ou tentative : peut être reconnu AT si survenu au temps et lieu de travail, ou MP."
+   ],
+   strip:"Les RPS sont sous-déclarés — aider les collègues à constituer leur dossier tôt.",
+   notes:"<b>Sujet tabou mais fréquent.</b> <span class='cgt'>La CGT a produit des fiches pratiques sur la reconnaissance du burn-out. Rappeler que le délai de prescription court : agir vite.</span> Insister sur la constitution du dossier en amont : les témoins, les preuves, les écrits."}
+]);
+
+/* ---- IPP taux utile calcul ---- */
+insertAfter("L'échelle du taux d'IPP",[
+  {type:"content", title:"Le « taux utile » — comment la rente est calculée",
+   kicker:"Calcul de la rente IPP",
+   bullets:[
+     "<b>Fraction ≤ 10 %</b> : divisée par 2 (ex. 8 % → taux utile = 4 %).",
+     "<b>Fraction > 10 %</b> : multipliée par 1,5 (ex. 12 % → 10 % ÷ 2 + 2 % × 1,5 = 5 + 3 = 8 %).",
+     "<b>Rente annuelle</b> = salaire annuel × taux utile.",
+     "Exemple : salaire 28 000 €/an, IPP 12 % → taux utile 8 % → rente 2 240 €/an.",
+     "Le taux est fixé par le médecin-conseil : il peut être contesté devant la commission médicale de recours amiable."
+   ],
+   strip:"Un taux sous-évalué = une rente minorée pour des années. Toujours vérifier et contester si besoin.",
+   notes:"<b>Faire faire le calcul en groupe.</b> Donner 2 ou 3 taux d'IPP différents et demander de calculer le taux utile et la rente correspondante. <span class='cgt'>La contestation du taux d'IPP est un des actes syndicaux les plus rentables pour le salarié : le rappeler systématiquement.</span>"}
+]);
+
+/* ---- Faute inexcusable — exemples concrets ---- */
+insertAfter("La faute inexcusable — c'est quoi ?",[
+  {type:"content", title:"Faute inexcusable — exemples reconnus par les tribunaux",
+   kicker:"Jurisprudence",
+   bullets:[
+     "Absence de formation à un équipement dangereux ou à une procédure à risques.",
+     "Persistance de conditions de travail dangereuses malgré des alertes (CHSCT/CSE, salarié, médecin du travail).",
+     "Travail sous pression conduisant à un burn-out ou une dépression sévère (RPS).",
+     "Exposition connue à l'amiante sans protection adaptée.",
+     "Absence d'EPI appropriés, de balisage ou de procédure pour une tâche à risque identifié."
+   ],
+   strip:"Clé : l'employeur SAVAIT (ou aurait dû savoir) et N'A PAS AGI. Les alertes préalables font toute la différence.",
+   notes:"<b>Faire travailler sur des cas concrets.</b> Présenter un cas vague et demander : y a-t-il faute inexcusable ? Sur quels éléments ? <span class='cgt'>Insister sur l'importance de garder une trace de TOUTES les alertes : courriels, PV de CSE, signalements.</span>"},
+
+  {type:"case", title:"Cas pratique — Faute inexcusable : à vous de plaider",
+   kicker:"Mise en situation",
+   scenario:"Sylvie, agent d'entretien, glisse sur un sol mouillé et se blesse au genou. Séquelles : IPP 12 %. Trois mois avant l'accident, elle avait signalé par écrit l'absence de panneau de signalisation et les chaussures de sécurité inadaptées. L'employeur n'a rien fait.",
+   questions:[
+     "Les éléments constitutifs de la faute inexcusable sont-ils réunis ? Justifiez.",
+     "Quels documents faut-il réunir pour monter le dossier ?",
+     "Calculez la majoration approximative de rente si la FI est reconnue (salaire annuel : 22 000 €).",
+     "Quel est le délai de prescription et comment le sécuriser ?"
+   ],
+   minutes:20,
+   notes:"Corrigé : FI = oui (employeur avait connaissance du danger, signalement écrit = preuve). Documents : signalement, PV CSE, fiches de poste, éventuels témoignages. Rente de base : taux utile 8 % × 22 000 = 1 760 €/an. Avec majoration = jusqu'au doublement soit 3 520 €/an maxi. Prescription : 2 ans à partir de la consolidation ou de la reconnaissance du caractère professionnel."}
+]);
+
+/* ---- Accompagnement d'un collègue : check-list ---- */
+insertAfter("Évaluation et bilan des 2 jours",[
+  {type:"content", title:"Accompagner un·e collègue — la check-list",
+   kicker:"Outil pratique",
+   bullets:[
+     "✔ Informer l'employeur par écrit dans les 24 h (garder une copie).",
+     "✔ Aller voir le médecin le jour même ou le lendemain — demander un CMI détaillé.",
+     "✔ Récupérer la feuille d'accident AT : soins 100 % sans avance.",
+     "✔ Vérifier que la DAT a bien été envoyée à la CPAM sous 48 h.",
+     "✔ Conserver : témoignages, photos, plannings, échanges écrits.",
+     "✔ Contacter le délégué CGT et, si besoin, l'UD pour l'appui juridique.",
+     "✔ Surveiller les délais CPAM (30 j / 90 j) et la phase contradictoire.",
+     "✔ À la consolidation : vérifier le taux d'IPP et agir si contestable."
+   ],
+   notes:"<b>Distribuer cette check-list imprimée.</b> C'est le livrable pratique de la formation. <span class='cgt'>Rappeler : un dossier bien engagé dès le premier jour se gagne souvent. Un dossier mal parti se perd souvent.</span>"},
+
+  {type:"content", title:"Le DUERP — outil de prévention collective",
+   kicker:"Prévention — DUERP",
+   bullets:[
+     "Document unique d'évaluation des risques professionnels (DUERP) : obligatoire dans toute entreprise.",
+     "Mis à jour au minimum chaque année et après tout AT grave ou changement important.",
+     "Il doit recenser TOUS les risques : physiques, chimiques, psychosociaux, organisationnels.",
+     "Le CSE a accès au DUERP et peut exiger des mises à jour et un programme annuel de prévention.",
+     "Un DUERP incomplet ou non tenu à jour peut être un élément dans une action en faute inexcusable."
+   ],
+   strip:"Le DUERP n'est pas un document administratif — c'est une carte des dangers à défendre collectivement.",
+   notes:"<span class='ref'>Réf. R.4121-1 et s. CT.</span> <span class='cgt'>Demander systématiquement à consulter le DUERP en CSE. Un DUERP qui ne mentionne pas les RPS ou la pénibilité est un DUERP incomplet.</span>"}
+]);
+
+/* ====== FIN ENRICHISSEMENT ====== */
+
 const esc = s => s;
 function kicker(k){return k?`<div class="kicker reveal"><span class="dot"></span>${k}</div>`:""}
 function renderSlide(s,i){
