@@ -19,9 +19,9 @@
       --border: #E0DED8; --border-card: #E8E6E0;
       --cgt-accent: #FFF3D0;
       --hist-accent: #E8F0FF;
+      --fp-accent: #E8F5E9;
     }
     body { background: var(--fond); color: var(--texte); font-family: 'Archivo', sans-serif; min-height: 100vh; display: flex; flex-direction: column; }
-
     header { background: var(--rouge); padding: 1rem 2rem; display: flex; align-items: center; gap: 1.25rem; box-shadow: 0 2px 8px rgba(0,0,0,.18); }
     .logo-wrap { flex-shrink: 0; height: 56px; display: flex; align-items: center; }
     .logo-wrap img { height: 56px; width: auto; background: white; padding: 3px 5px; }
@@ -33,35 +33,32 @@
     .header-back a { font-size: .75rem; color: rgba(255,255,255,.8); text-decoration: none; border: 1px solid rgba(255,255,255,.3); padding: .3rem .7rem; transition: background .15s; }
     .header-back a:hover { background: rgba(255,255,255,.1); color: #fff; }
     .stripe { height: 5px; background: var(--jaune); }
-
     main { flex: 1; max-width: 860px; width: 100%; margin: 0 auto; padding: 2rem 1.5rem 3rem; }
-
     .page-intro { background: var(--fond-card); border: 1px solid var(--border-card); border-left: 4px solid var(--rouge); padding: 1rem 1.25rem; margin-bottom: 2rem; font-size: .875rem; color: var(--texte-muted); line-height: 1.6; }
-
     .print-bar { display: flex; justify-content: flex-end; margin-bottom: 1.75rem; }
     .btn-print { background: var(--rouge); color: #fff; border: none; padding: .55rem 1rem; font-family: 'Archivo', sans-serif; font-size: .78rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; cursor: pointer; display: flex; align-items: center; gap: .4rem; transition: background .15s; }
     .btn-print:hover { background: var(--rouge-dark); }
-
     .nav-jours { display: flex; gap: .5rem; margin-bottom: 2rem; flex-wrap: wrap; }
     .nav-jour { font-size: .75rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; padding: .4rem .9rem; background: var(--fond-card); border: 2px solid var(--border); color: var(--texte-muted); text-decoration: none; transition: all .15s; cursor: pointer; }
     .nav-jour:hover, .nav-jour.active { background: var(--rouge); border-color: var(--rouge); color: #fff; }
-
     .chapitre { margin-bottom: 3rem; }
     .chapitre-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; padding-bottom: .6rem; border-bottom: 4px solid var(--jaune); }
     .chapitre-badge { background: var(--rouge); color: #fff; font-family: 'Anton', sans-serif; font-size: .75rem; letter-spacing: .08em; padding: .3rem .75rem; text-transform: uppercase; white-space: nowrap; }
     .chapitre-title { font-family: 'Anton', sans-serif; font-size: 1.2rem; color: var(--texte); }
-
     .section-label { font-size: .68rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--rouge); margin: 1.5rem 0 .75rem; display: flex; align-items: center; gap: .6rem; }
     .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
-
     .diapo { background: var(--fond-card); border: 1px solid var(--border-card); margin-bottom: .85rem; overflow: hidden; }
     .diapo.histoire { border-left: 4px solid #1565C0; }
     .diapo.schema { border-left: 4px solid #888; opacity: .92; }
+    .diapo.fp { border-left: 4px solid #2E7D32; }
+    .diapo.ressource { border-left: 4px solid #F57C00; opacity: .95; }
     .diapo-header { display: flex; align-items: baseline; gap: .75rem; padding: .85rem 1.1rem .5rem; flex-wrap: wrap; }
     .diapo-num { font-family: 'Anton', sans-serif; font-size: .8rem; color: var(--rouge); letter-spacing: .06em; white-space: nowrap; }
     .diapo-title { font-family: 'Anton', sans-serif; font-size: 1rem; color: var(--texte); letter-spacing: .02em; }
     .badge-new { font-size: .65rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; background: #1565C0; color: #fff; padding: .15rem .45rem; margin-left: .3rem; vertical-align: middle; }
+    .badge-fp { font-size: .65rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; background: #2E7D32; color: #fff; padding: .15rem .45rem; margin-left: .3rem; vertical-align: middle; }
     .badge-schema { font-size: .65rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; background: #888; color: #fff; padding: .15rem .45rem; margin-left: .3rem; vertical-align: middle; }
+    .badge-res { font-size: .65rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; background: #F57C00; color: #fff; padding: .15rem .45rem; margin-left: .3rem; vertical-align: middle; }
     .diapo-body { padding: 0 1.1rem 1rem; }
     .message-cle { font-size: .78rem; font-weight: 700; color: var(--texte-muted); text-transform: uppercase; letter-spacing: .06em; margin-bottom: .4rem; }
     .message-cle span { font-weight: 400; text-transform: none; letter-spacing: 0; color: var(--texte); font-size: .875rem; }
@@ -75,10 +72,10 @@
     .angle-cgt::before { content: '⚑ CGT — '; font-weight: 700; }
     .angle-hist { background: var(--hist-accent); border-left: 3px solid #1565C0; padding: .5rem .75rem; margin-top: .6rem; font-size: .82rem; color: #0D3B8A; line-height: 1.55; }
     .angle-hist::before { content: '📖 Histoire — '; font-weight: 700; }
-
+    .angle-fp { background: var(--fp-accent); border-left: 3px solid #2E7D32; padding: .5rem .75rem; margin-top: .6rem; font-size: .82rem; color: #1B5E20; line-height: 1.55; }
+    .angle-fp::before { content: '🏛 FP — '; font-weight: 700; }
     footer { border-top: 1px solid var(--border); background: #EEECEA; padding: 1.1rem 1.5rem; text-align: center; font-size: .73rem; color: var(--texte-muted); }
     footer strong { color: var(--rouge); }
-
     @media print {
       header, .print-bar, .nav-jours { display: none !important; }
       .stripe { display: none; }
@@ -91,7 +88,6 @@
     .print-header { display: none; }
     .print-header h2 { font-family: 'Anton', sans-serif; font-size: 1.3rem; }
     .print-header p { font-size: .8rem; color: #666; margin-top: .2rem; }
-
     @media (max-width: 520px) {
       header { padding: .85rem 1rem; gap: .75rem; }
       .logo-wrap img { height: 44px; }
@@ -107,7 +103,7 @@
   <div class="header-divider"></div>
   <div class="header-title">
     <h1>Livret formateur — Argumentaire diapo par diapo</h1>
-    <span>AT/MP 2 jours · CGT Occitanie · 56 diapositives</span>
+    <span>AT/MP 2 jours · CGT Occitanie · 65 diapositives · Secteur privé + adaptations Fonction Publique</span>
   </div>
   <div class="header-back"><a href="/">← Accueil</a></div>
 </header>
@@ -117,13 +113,15 @@
 
   <div class="print-header">
     <h2>Livret du formateur — Argumentaire AT/MP · CGT Occitanie</h2>
-    <p>Pour chaque diapositive : message clé, points à développer, angle syndical CGT.</p>
+    <p>Pour chaque diapositive : message clé, points à développer, angle syndical CGT. 65 diapositives — mis à jour 2025.</p>
   </div>
 
   <div class="page-intro">
-    Pour chaque diapositive : message clé, points à développer à l'oral, références juridiques et angle CGT.
-    Support : diaporama « Accident du travail &amp; maladie professionnelle » (CGT Occitanie, 2 jours) — 56 diapositives.
-    Les slides <span style="background:#1565C0;color:#fff;font-size:.7rem;padding:.1rem .35rem;font-weight:700">NOUVEAU</span> correspondent à la séquence histoire de la Sécurité sociale.
+    Pour chaque diapositive : message clé, points à développer à l'oral, références juridiques et angle CGT/FP.
+    Support : diaporama « Accident du travail &amp; maladie professionnelle » (CGT Occitanie, 2 jours) — <strong>65 diapositives</strong>.<br>
+    <span style="background:#1565C0;color:#fff;font-size:.7rem;padding:.1rem .35rem;font-weight:700">NOUVEAU</span> = séquence histoire Sécurité sociale.
+    <span style="background:#2E7D32;color:#fff;font-size:.7rem;padding:.1rem .35rem;font-weight:700">FP</span> = contenu spécifique Fonction Publique.
+    <span style="background:#F57C00;color:#fff;font-size:.7rem;padding:.1rem .35rem;font-weight:700">RESSOURCE</span> = diapo ressource/calcul à commenter brièvement.
   </div>
 
   <div class="print-bar">
@@ -157,10 +155,12 @@
         <div class="message-cle">Message clé — <span>Poser le cadre et la méthode CGT.</span></div>
         <div class="dev-label">À développer</div>
         <ul>
-          <li>Présenter les animateur·rices, le déroulé sur 2 jours et les objectifs.</li>
-          <li>Annoncer la méthode : on part du vécu des stagiaires, pas d'un cours magistral.</li>
-          <li>Rappeler que la santé au travail est un champ d'action syndicale, pas un sujet « technique » réservé aux experts.</li>
+          <li>Présenter les animateur·rices, le déroulé sur 2 jours et le règlement intérieur (pauses, téléphones, confidentialité).</li>
+          <li>Méthode : on part du vécu des stagiaires — dès le départ, inviter chacun à partager une situation vécue ou observée dans son entreprise.</li>
+          <li>Tour de table rapide : prénom, entreprise, mandat, attentes (noter au paperboard).</li>
+          <li>Rappeler la valeur ajoutée syndicale : la CGT défend les salariés AT/MP depuis 1898 — cette formation transmet ce savoir collectif.</li>
         </ul>
+        <div class="angle-cgt">La santé au travail n'est pas un sujet technique réservé aux experts : c'est un champ d'action syndicale. Chaque participant repart avec des outils concrets, utilisables dès le lendemain.</div>
       </div>
     </div>
 
@@ -171,7 +171,9 @@
         <div class="dev-label">À développer</div>
         <ul>
           <li>Lire les objectifs ; demander à chacun ce qu'il vient chercher et noter au paperboard.</li>
-          <li>Préciser qu'à la fin, chacun doit pouvoir accompagner un·e collègue, pas seulement « comprendre ».</li>
+          <li>À la fin, chacun doit pouvoir <strong>accompagner un·e collègue concrètement</strong> : remplir la déclaration, contester un taux d'IPP, saisir le CSE.</li>
+          <li>Ce ne sont pas des « droits en théorie » — ce sont des actes militants quotidiens.</li>
+          <li>Revenir à ce paperboard en clôture : a-t-on répondu à toutes les attentes ? Les points non couverts → orienter vers l'UD.</li>
         </ul>
       </div>
     </div>
@@ -182,8 +184,10 @@
         <div class="message-cle">Message clé — <span>Montrer la logique : J1 = faire reconnaître, J2 = faire réparer et agir.</span></div>
         <div class="dev-label">À développer</div>
         <ul>
-          <li>Jour 1 : histoire, définitions, déclaration AT, maladies professionnelles.</li>
-          <li>Jour 2 : indemnisation, séquelles, faute inexcusable, recours, rôle du CSE et du syndicat.</li>
+          <li><strong>Jour 1 :</strong> histoire, définitions, déclaration AT, maladies professionnelles, mise en situation.</li>
+          <li><strong>Jour 2 :</strong> indemnisation, séquelles, visite de reprise, faute inexcusable, recours, rôle du CSE et du syndicat.</li>
+          <li>Le fil rouge : du fait accidentel à la prévention collective. Chaque journée se clôt par une mise en situation.</li>
+          <li>Remettre le programme papier. Durée totale : 2 × 7 h (9h–17h), pauses incluses.</li>
         </ul>
       </div>
     </div>
@@ -193,15 +197,19 @@
   <div class="chapitre" id="histoire">
     <div class="chapitre-header">
       <span class="chapitre-badge">Jour 1 — Ouverture</span>
-      <div class="chapitre-title">Histoire &amp; conquêtes sociales — Diapos 4 – 10</div>
+      <div class="chapitre-title">Histoire &amp; conquêtes sociales — Diapos 4 – 11</div>
     </div>
 
     <div class="diapo">
       <div class="diapo-header"><span class="diapo-num">Diapo 4</span><span class="diapo-title">Intercalaire Jour 1</span></div>
       <div class="diapo-body">
-        <div class="message-cle">Message clé — <span>Annoncer le fil de la journée.</span></div>
-        <ul><li>Insister : tout commence par un bon réflexe de déclaration ; un dossier mal engagé se rattrape difficilement.</li>
-        <li>Annoncer qu'on va commencer par l'histoire pour comprendre pourquoi ces droits existent.</li></ul>
+        <div class="message-cle">Message clé — <span>Annoncer le fil de la journée — tout commence par un bon réflexe de déclaration.</span></div>
+        <ul>
+          <li>Accroche : demander si quelqu'un a déjà vu un accident mal déclaré ou pas déclaré dans son entreprise.</li>
+          <li>Recueillir 1–2 témoignages pour lancer la journée — cela ancre immédiatement dans le réel.</li>
+          <li>Plan : histoire → définitions → déclaration AT → maladies professionnelles → mise en situation.</li>
+        </ul>
+        <div class="angle-cgt">Un dossier mal engagé se rattrape très difficilement. Le premier réflexe change tout — c'est le message central du Jour 1.</div>
       </div>
     </div>
 
@@ -211,28 +219,29 @@
         <div class="message-cle">Message clé — <span>Ces droits n'ont pas été donnés : ils ont été arrachés.</span></div>
         <div class="dev-label">À développer</div>
         <ul>
-          <li><strong>1802 :</strong> premier conseil de salubrité — la santé ouvrière entre dans la loi pour la première fois.</li>
+          <li><strong>1802 :</strong> premier conseil de salubrité — la santé ouvrière entre dans la loi.</li>
           <li><strong>1841 :</strong> loi Villermé — limite le travail des enfants en usine ; premier texte protégeant le corps du travailleur.</li>
           <li><strong>1880 :</strong> première loi sur la responsabilité de l'employeur en cas d'accident.</li>
           <li><strong>1892 :</strong> création de l'Inspection du travail et obligation de déclarer les accidents.</li>
-          <li>Demander aux stagiaires s'ils connaissent des luttes passées dans leur secteur.</li>
+          <li>Demander aux stagiaires s'ils connaissent des luttes passées dans leur secteur — 5 minutes de partage valent un cours.</li>
         </ul>
-        <div class="angle-hist">Ancrer la formation dans l'histoire syndicale : chaque droit AT/MP est le résultat d'une conquête sociale. Cela donne du sens à l'action syndicale d'aujourd'hui.</div>
+        <div class="angle-hist">Ancrer la formation dans l'histoire syndicale : chaque droit AT/MP est le résultat d'une conquête sociale, souvent arrachée au prix fort. L'action syndicale d'aujourd'hui s'inscrit dans cette continuité.</div>
       </div>
     </div>
 
     <div class="diapo histoire">
       <div class="diapo-header"><span class="diapo-num">Diapo 6</span><span class="diapo-title">9 avril 1898 — Le tournant fondateur <span class="badge-new">NOUVEAU</span></span></div>
       <div class="diapo-body">
-        <div class="message-cle">Message clé — <span>La loi de 1898 fonde tout le droit AT/MP actuel — 125 ans plus tard, la présomption est toujours en vigueur.</span></div>
+        <div class="message-cle">Message clé — <span>La loi de 1898 fonde tout le droit AT/MP actuel — 128 ans plus tard, la présomption est toujours en vigueur.</span></div>
         <div class="dev-label">À développer</div>
         <ul>
-          <li>Avant 1898 : le salarié devait prouver la faute de l'employeur — quasi impossible.</li>
-          <li>La loi de 1898 inverse la charge : <strong>présomption d'imputabilité</strong> — la victime n'a plus à prouver.</li>
-          <li>Contrepartie : l'employeur obtient une immunité civile ; la réparation est forfaitaire.</li>
-          <li>La <strong>faute inexcusable</strong> (abordée en Jour 2) est la seule voie pour dépasser ce forfait.</li>
+          <li>Avant 1898 : le salarié devait prouver la faute de l'employeur devant un tribunal civil — quasi impossible.</li>
+          <li>La loi de 1898 inverse la charge : <strong>présomption d'imputabilité</strong> — la victime n'a plus à prouver le lien causal.</li>
+          <li>Contrepartie : l'employeur obtient une immunité civile ; la réparation est forfaitaire (principe de réparation légale).</li>
+          <li>La <strong>faute inexcusable</strong> (Jour 2) est la seule voie pour dépasser ce forfait.</li>
         </ul>
-        <div class="angle-cgt">Ce texte de 1898 est le bouclier du salarié accidenté. Le rappeler systématiquement quand un employeur conteste la reconnaissance d'un AT.</div>
+        <div class="angle-cgt">Ce texte de 1898 est le bouclier du salarié accidenté. Le rappeler systématiquement quand un employeur conteste la reconnaissance. Et rappeler que c'est la CGT naissante qui a pesé pour cette loi.</div>
+        <p class="ref">Loi du 9 avril 1898 sur la responsabilité des accidents dont les ouvriers sont victimes.</p>
       </div>
     </div>
 
@@ -243,11 +252,11 @@
         <div class="dev-label">À développer</div>
         <ul>
           <li><strong>1919 :</strong> les maladies professionnelles entrent dans le régime de réparation.</li>
-          <li><strong>1920 :</strong> naissance de la FNATH par des accidentés eux-mêmes — premières batailles pour les rentes.</li>
+          <li><strong>1920 :</strong> naissance de la FNATH par des accidentés eux-mêmes.</li>
           <li><strong>1936 :</strong> Front Populaire — congés payés, 40 h, conventions collectives.</li>
-          <li><strong>1945 :</strong> ordonnance créant la Sécurité sociale, portée par la CGT et <strong>Ambroise Croizat</strong>.</li>
+          <li><strong>1945 :</strong> ordonnances Sécurité sociale portées par la CGT et <strong>Ambroise Croizat</strong>, ministre du Travail.</li>
         </ul>
-        <div class="angle-hist">Ambroise Croizat, secrétaire général de la CGT Métaux et ministre du Travail, fut l'architecte de la Sécurité sociale. Demander : qui a entendu parler de lui ? Cette histoire appartient à la CGT et mérite d'être racontée.</div>
+        <div class="angle-hist">Ambroise Croizat, secrétaire général de la CGT Métaux, fut l'architecte de la Sécurité sociale. Citation : « Nous avons décidé que la misère ne serait plus. » Demander : qui a entendu parler de lui ? Cette histoire appartient à la CGT.</div>
       </div>
     </div>
 
@@ -257,40 +266,54 @@
         <div class="message-cle">Message clé — <span>La branche AT/MP est financée uniquement par les employeurs — principe pollueur-payeur.</span></div>
         <div class="dev-label">À développer</div>
         <ul>
-          <li>5 branches depuis 1967 : Maladie (CPAM), AT/MP (CARSAT), Retraite (CNAV), Famille (CAF), Recouvrement (URSSAF).</li>
-          <li>La branche AT/MP est financée <strong>exclusivement par les employeurs</strong>, proportionnellement à leur sinistralité.</li>
-          <li>Plus une entreprise a d'AT/MP reconnus, plus sa cotisation augmente.</li>
+          <li>5 branches depuis 1967 : Maladie (CPAM/CNAM), AT/MP (CARSAT), Retraite (CNAV), Famille (CAF), Recouvrement (URSSAF).</li>
+          <li>La branche AT/MP est financée <strong>exclusivement par les cotisations patronales</strong>, proportionnellement à la sinistralité.</li>
+          <li>Plus une entreprise a d'AT/MP reconnus, plus sa cotisation augmente — incitation économique à prévenir.</li>
         </ul>
-        <div class="angle-cgt">Faire reconnaître les AT/MP, c'est défendre la victime ET peser sur la cotisation de l'employeur. Argument économique à réutiliser en négociation prévention.</div>
+        <div class="angle-cgt">Faire reconnaître les AT/MP, c'est défendre la victime ET peser sur la cotisation de l'employeur. Argument économique puissant en négociation prévention : prévenir coûte moins cher que réparer.</div>
+        <p class="ref">L.242-7 CSS ; décret 2010-753 tarification.</p>
       </div>
     </div>
 
     <div class="diapo">
       <div class="diapo-header"><span class="diapo-num">Diapo 9</span><span class="diapo-title">Les AT/MP en France (chiffres)</span></div>
       <div class="diapo-body">
-        <div class="message-cle">Message clé — <span>Mesurer l'ampleur — et l'ampleur de ce qu'on ne voit pas.</span></div>
+        <div class="message-cle">Message clé — <span>Mesurer l'ampleur — et l'ampleur de ce qu'on ne voit pas (sous-déclaration).</span></div>
         <div class="dev-label">À développer</div>
         <ul>
-          <li>Près de la moitié des AT sont liés à des manutentions manuelles ; les chutes suivent.</li>
-          <li>Les décès au travail ne reculent pas ; les MP augmentent (TMS ~90 %, amiante, affections psychiques).</li>
-          <li>Sous-déclaration massive : beaucoup d'AT bénins « passés en maladie », de MP jamais déclarées.</li>
+          <li>Près de la moitié des AT sont liés à des manutentions manuelles ; les chutes de plain-pied et de hauteur suivent.</li>
+          <li>Les décès au travail ne reculent pas ; les MP augmentent (TMS ~90 % des MP reconnues, amiante, RPS).</li>
+          <li>Sous-déclaration massive : AT bénins « passés en maladie » par pression hiérarchique, MP jamais déclarées faute d'information.</li>
+          <li>Rapport Diricq-Ledoux : 10 000 à 20 000 décès/an liés au travail non reconnus en MP.</li>
         </ul>
-        <p class="ref">Source : Assurance Maladie – Risques professionnels, données 2023 (à actualiser chaque année).</p>
-        <div class="angle-cgt">Derrière chaque chiffre, des conditions de travail. La sous-déclaration est un transfert de coûts vers la Sécu et les victimes.</div>
+        <p class="ref">Source : Assurance Maladie – Risques professionnels, données annuelles (actualiser chaque session).</p>
+        <div class="angle-cgt">Derrière chaque chiffre, des conditions de travail dégradées. La sous-déclaration est un transfert de coûts de l'employeur vers la Sécu et les victimes — et c'est une injustice documentée.</div>
       </div>
     </div>
 
     <div class="diapo">
       <div class="diapo-header"><span class="diapo-num">Diapo 10</span><span class="diapo-title">Un enjeu syndical majeur</span></div>
       <div class="diapo-body">
-        <div class="message-cle">Message clé — <span>Dire pourquoi la CGT s'en empare.</span></div>
+        <div class="message-cle">Message clé — <span>Dire pourquoi la CGT s'en empare — protection individuelle et levier collectif.</span></div>
         <div class="dev-label">À développer</div>
         <ul>
-          <li>La sous-déclaration prive les victimes de leurs droits (soins 100 %, IJ majorées, rente).</li>
-          <li>L'invisibilisation masque la réalité du travail et freine la prévention.</li>
-          <li>L'employeur a une obligation de sécurité : la faire respecter est un levier syndical.</li>
+          <li>La sous-déclaration prive les victimes de leurs droits (soins 100 %, IJ majorées, rente, protection emploi).</li>
+          <li>L'invisibilisation masque la réalité du travail et freine la prévention collective.</li>
+          <li>L'employeur a une obligation de sécurité de résultat depuis 2002 : la faire respecter est un levier syndical.</li>
+          <li>Chaque AT/MP reconnu renforce le dossier pour les recours futurs (faute inexcusable, DUERP).</li>
         </ul>
-        <div class="angle-cgt">« La santé ne se négocie pas. » Faire reconnaître un AT/MP, c'est défendre une personne et rendre visible une réalité collective.</div>
+        <div class="angle-cgt">« La santé ne se négocie pas. » Faire reconnaître un AT/MP, c'est défendre une personne et rendre visible une réalité collective qui nourrit l'action syndicale.</div>
+      </div>
+    </div>
+
+    <div class="diapo">
+      <div class="diapo-header"><span class="diapo-num">Diapo 11</span><span class="diapo-title">Les AT/MP en France — Enjeu syndical (synthèse)</span></div>
+      <div class="diapo-body">
+        <div class="message-cle">Message clé — <span>Transition vers les définitions — poser les bases pratiques.</span></div>
+        <ul>
+          <li>Résumé des chiffres clés (rappel rapide, 2 minutes).</li>
+          <li>Annoncer la suite : définitions précises des 3 régimes (AT, trajet, mission) pour ne plus jamais se tromper.</li>
+        </ul>
       </div>
     </div>
   </div>
@@ -299,63 +322,131 @@
   <div class="chapitre" id="definitions">
     <div class="chapitre-header">
       <span class="chapitre-badge">Jour 1</span>
-      <div class="chapitre-title">Définitions &amp; présomption — Diapos 11 – 14</div>
+      <div class="chapitre-title">Définitions &amp; présomption — Diapos 12 – 19</div>
     </div>
 
     <div class="diapo">
-      <div class="diapo-header"><span class="diapo-num">Diapo 11</span><span class="diapo-title">L'accident du travail (AT)</span></div>
+      <div class="diapo-header"><span class="diapo-num">Diapo 12</span><span class="diapo-title">L'accident du travail (AT)</span></div>
       <div class="diapo-body">
-        <div class="message-cle">Message clé — <span>Trois critères : un fait soudain, une lésion, un lien avec le travail.</span></div>
+        <div class="message-cle">Message clé — <span>Trois critères cumulatifs : un fait soudain, une lésion, un lien avec le travail.</span></div>
         <div class="dev-label">À développer</div>
         <ul>
-          <li>Soudaineté : c'est ce qui distingue l'AT de la MP (exposition progressive).</li>
-          <li>La lésion peut être physique mais aussi psychique (choc, malaise, agression).</li>
-          <li>« Par le fait ou à l'occasion du travail » : notion large (pause, déplacement interne, mission).</li>
+          <li><strong>Soudaineté :</strong> c'est ce qui distingue l'AT de la MP (exposition progressive). Même un micro-traumatisme sur la journée peut être « soudain ».</li>
+          <li><strong>Lésion :</strong> physique ou <strong>psychique</strong> (choc émotionnel, agression verbale, malaise).</li>
+          <li><strong>Lien avec le travail :</strong> notion large — au temps et lieu de travail, pendant une pause réglementaire, en déplacement interne, en mission.</li>
+          <li>Pièges : « tu étais en pause » (FAUX si pause réglementaire dans l'entreprise) ; « tu étais seul, on ne peut pas prouver » (FAUX — la présomption joue même sans témoin).</li>
         </ul>
-        <p class="ref">Art. L.411-1 du Code de la sécurité sociale (CSS).</p>
+        <p class="ref">Art. L.411-1 CSS.</p>
+        <div class="angle-cgt">Ne pas laisser l'employeur définir ce qu'est un AT : c'est L.411-1 qui s'applique, pas l'appréciation de l'encadrement.</div>
+      </div>
+    </div>
+
+    <div class="diapo fp">
+      <div class="diapo-header"><span class="diapo-num">Diapo 13</span><span class="diapo-title">Dans la fonction publique — l'accident de service <span class="badge-fp">FP</span></span></div>
+      <div class="diapo-body">
+        <div class="message-cle">Message clé — <span>Pas d'AT au sens du Code du travail — régime spécifique avec maintien intégral du traitement.</span></div>
+        <div class="dev-label">À développer (pour les stagiaires agents publics)</div>
+        <ul>
+          <li><strong>Accident de service</strong> (et non « AT ») régi par : loi 84-16 art.34 (FPE), loi 84-53 art.57 (FPT), loi 86-33 art.41 (FPH).</li>
+          <li><strong>Maintien intégral du traitement</strong> pendant l'arrêt — pas d'IJ CPAM, c'est l'administration employeur qui maintient le salaire (avantage majeur).</li>
+          <li>Régime de retraite : CNRACL (territorial/hospitalier) ou RAFP — pas de rente AT/MP SS.</li>
+          <li><strong>FSSCT</strong> (Formationspécialisée Santé/Sécurité/Conditions de Travail) remplace le CHSCT depuis 2022 — rôle équivalent au CSE/CSSCT du privé.</li>
+          <li>Présomption d'imputabilité reconnue en FP depuis la réforme 2017 (loi déontologie).</li>
+          <li><strong>CLM/CLD</strong> (congé longue maladie/longue durée) : équivalent FP de l'invalidité SS — durée et taux de maintien différents.</li>
+        </ul>
+        <p class="ref">Loi 84-16 art.34 ; loi 84-53 art.57 ; loi 86-33 art.41 ; décret 2022-1432 FSSCT.</p>
+        <div class="angle-fp">Les agents publics sous-déclarent souvent par peur hiérarchique. La CGT FP accompagne les déclarations d'accident de service — orienter vers l'UD ou section syndicale FP. Rappeler : la pression hiérarchique pour ne pas déclarer est illégale.</div>
       </div>
     </div>
 
     <div class="diapo">
-      <div class="diapo-header"><span class="diapo-num">Diapo 12</span><span class="diapo-title">Les trois notions à distinguer</span></div>
+      <div class="diapo-header"><span class="diapo-num">Diapo 14</span><span class="diapo-title">Les trois notions à distinguer</span></div>
       <div class="diapo-body">
-        <div class="message-cle">Message clé — <span>AT, trajet et MP n'ouvrent pas les mêmes règles.</span></div>
+        <div class="message-cle">Message clé — <span>AT, trajet et MP n'ouvrent pas les mêmes règles — et l'accident de mission est un AT.</span></div>
         <div class="dev-label">À développer</div>
         <ul>
-          <li><strong>AT :</strong> fait soudain au temps et lieu de travail.</li>
-          <li><strong>Accident de trajet :</strong> entre domicile et travail (ou lieu de restauration) ; détours admis (covoiturage, nécessité familiale).</li>
-          <li><strong>MP :</strong> exposition durable à un risque.</li>
-          <li>Piège classique : l'accident de mission relève de l'AT, pas du trajet.</li>
+          <li><strong>AT (L.411-1) :</strong> fait soudain au temps et lieu de travail.</li>
+          <li><strong>Accident de trajet (L.411-2) :</strong> entre domicile et lieu de travail (ou restauration) — détours admis (covoiturage, nécessités familiales, vie courante).</li>
+          <li><strong>MP :</strong> exposition progressive et durable à un risque lié au travail.</li>
+          <li><strong>Piège classique :</strong> l'employeur tente de requalifier un AT en trajet pour réduire l'impact tarifaire. Identifier précisément le contexte (était-il en mission ? en déplacement interne ?) est décisif.</li>
         </ul>
-        <p class="ref">AT : L.411-1 ; trajet : L.411-2.</p>
+        <p class="ref">AT : L.411-1 ; trajet : L.411-2 CSS.</p>
+      </div>
+    </div>
+
+    <div class="diapo">
+      <div class="diapo-header"><span class="diapo-num">Diapo 15</span><span class="diapo-title">L'accident de mission — régime et pièges <span class="badge-new">NOUVEAU</span></span></div>
+      <div class="diapo-body">
+        <div class="message-cle">Message clé — <span>Couverture AT 24h/24 pendant toute la durée de la mission — même le soir à l'hôtel.</span></div>
+        <div class="dev-label">À développer</div>
+        <ul>
+          <li>Salarié en déplacement professionnel (client, formation, salon, chantier) : couvert en AT tout au long de la mission, même hors horaires habituels.</li>
+          <li>Jurisprudence constante : Cass. soc. 19 oct. 2011 — accident à l'hôtel pendant la mission = AT, sauf interruption de mission pour motif strictement personnel.</li>
+          <li>Repas d'affaires, pause pendant la mission : couvert. Sortie nocturne sans lien avec la mission : à apprécier au cas par cas.</li>
+          <li><strong>Pratique :</strong> conserver l'ordre de mission, les justificatifs, les échanges professionnels du moment (mail, agenda) pour établir le contexte.</li>
+        </ul>
+        <p class="ref">Cass. soc. 19 oct. 2011 n°10-19.640 ; L.411-1 CT.</p>
+        <div class="angle-cgt">Secteurs à fort enjeu : commerciaux itinérants, techniciens de maintenance, formateurs, chauffeurs. Ces salariés souvent isolés ne savent pas que leur protection est totale pendant la mission. Le syndicat doit diffuser cette information.</div>
       </div>
     </div>
 
     <div class="diapo schema">
-      <div class="diapo-header"><span class="diapo-num">Diapo 13</span><span class="diapo-title">Schéma — Qui fait quoi ? Les acteurs <span class="badge-schema">SCHÉMA</span></span></div>
+      <div class="diapo-header"><span class="diapo-num">Diapo 16</span><span class="diapo-title">Qui fait quoi ? Les acteurs <span class="badge-schema">SCHÉMA</span></span></div>
       <div class="diapo-body">
-        <div class="message-cle">Message clé — <span>Clarifier les rôles pour éviter les confusions.</span></div>
+        <div class="message-cle">Message clé — <span>Clarifier les rôles pour éviter les confusions — chacun a un périmètre précis.</span></div>
         <ul>
-          <li>Médecin traitant : établit les certificats médicaux (CMI, prolongation, final).</li>
-          <li>Médecin du travail : aptitude/inaptitude, ne soigne pas et ne fixe pas le taux.</li>
-          <li>Médecin-conseil CPAM : fixe le taux d'IPP à la consolidation.</li>
-          <li>CSE/CSSCT + CGT : défense du salarié, enquête, alerte.</li>
+          <li><strong>Médecin traitant :</strong> établit le CMI (certificat médical initial), les prolongations, le certificat de consolidation — pièce fondatrice du dossier.</li>
+          <li><strong>Médecin du travail :</strong> ne soigne pas, ne fixe pas le taux d'IPP — rôle clé à la visite de reprise (aptitude, reclassement).</li>
+          <li><strong>Médecin-conseil CPAM :</strong> instruit la reconnaissance, fixe le taux d'IPP et la date de consolidation — décisions contestables.</li>
+          <li><strong>Inspection du travail :</strong> reçoit les déclarations d'accidents graves, contrôle les obligations de l'employeur.</li>
+          <li><strong>CSE / CSSCT / syndicat :</strong> défend, accompagne, enquête, documente, alerte.</li>
         </ul>
+        <div class="angle-cgt">Erreur fréquente : croire que le médecin du travail « est du côté de l'employeur ». Il est indépendant. Son rapport de visite de reprise est une pièce que le CSE peut et doit exploiter.</div>
       </div>
     </div>
 
     <div class="diapo">
-      <div class="diapo-header"><span class="diapo-num">Diapo 14</span><span class="diapo-title">La présomption d'imputabilité</span></div>
+      <div class="diapo-header"><span class="diapo-num">Diapo 17</span><span class="diapo-title">La présomption d'imputabilité</span></div>
       <div class="diapo-body">
-        <div class="message-cle">Message clé — <span>L'atout maître : la charge de la preuve pèse sur l'employeur.</span></div>
+        <div class="message-cle">Message clé — <span>L'atout maître : la charge de la preuve pèse sur l'employeur, pas sur le salarié.</span></div>
         <div class="dev-label">À développer</div>
         <ul>
-          <li>Un accident survenu au temps et au lieu de travail est <strong>présumé professionnel</strong>.</li>
-          <li>C'est à l'employeur de prouver une cause totalement étrangère au travail.</li>
-          <li>Rappeler le lien avec la loi de 1898 (diapo 6) : ce principe a 125 ans d'existence.</li>
-          <li>D'où l'importance de bien situer l'accident (heure, lieu, témoins) dès le départ.</li>
+          <li>Un accident survenu au temps et au lieu de travail est <strong>présumé professionnel</strong> — sans avoir à prouver quoi que ce soit.</li>
+          <li>C'est à l'employeur de prouver une cause totalement étrangère au travail pour renverser cette présomption.</li>
+          <li>Rappeler le lien avec la loi de 1898 (diapo 6) : ce principe a 128 ans et résiste à tous les assauts.</li>
+          <li>D'où l'importance de bien situer l'accident (heure, lieu, témoins, contexte de travail) dès les premières heures.</li>
         </ul>
-        <div class="angle-cgt">Ne pas se laisser intimider par les « réserves » de l'employeur : la présomption protège le ou la salarié·e. C'est une conquête de 1898.</div>
+        <div class="angle-cgt">Ne pas se laisser intimider par les « réserves » de l'employeur : elles ne renversent pas la présomption, elles déclenchent seulement une enquête CPAM. Le salarié reste protégé pendant toute l'instruction.</div>
+      </div>
+    </div>
+
+    <div class="diapo ressource">
+      <div class="diapo-header"><span class="diapo-num">Diapo 18</span><span class="diapo-title">Le certificat médical initial (CMI) — bien le rédiger <span class="badge-res">RESSOURCE</span></span></div>
+      <div class="diapo-body">
+        <div class="message-cle">Message clé — <span>Le CMI est la pièce fondatrice du dossier — ce qui n'y figure pas est très difficile à prouver ensuite.</span></div>
+        <div class="dev-label">Atelier paperboard</div>
+        <ul>
+          <li>Faire lister les lésions qu'on pourrait oublier : douleur psychologique post-traumatique, acouphènes après explosion sonore, douleurs cervicales apparues 48 h après, troubles du sommeil.</li>
+          <li>Le médecin traitant doit décrire <strong>toutes les lésions</strong>, même mineures — y compris celles qui peuvent évoluer.</li>
+          <li>Mentionner explicitement le contexte : « suite à un accident du travail survenu le... ».</li>
+          <li>Depuis le 1er septembre 2025 : nouveaux Cerfa sécurisés obligatoires.</li>
+        </ul>
+        <p class="ref">Formulaire S6909 CPAM.</p>
+        <div class="angle-cgt">Conseil pratique : accompagner le salarié chez le médecin si possible, ou lui donner une liste écrite de ce à mentionner. Un CMI incomplet se paie à la consolidation.</div>
+      </div>
+    </div>
+
+    <div class="diapo ressource">
+      <div class="diapo-header"><span class="diapo-num">Diapo 19</span><span class="diapo-title">Télétravail et accidents du travail <span class="badge-res">RESSOURCE</span></span></div>
+      <div class="diapo-body">
+        <div class="message-cle">Message clé — <span>La présomption s'applique au domicile — c'est à l'employeur de prouver le contraire.</span></div>
+        <ul>
+          <li>Pendant les horaires de travail au domicile, l'accident bénéficie de la présomption d'imputabilité (loi 22 mars 2012 et jurisprudence).</li>
+          <li>Preuves utiles : connexion VPN active, messagerie en cours, calendrier de réunion au moment de l'accident.</li>
+          <li>Pièges : l'employeur prétend qu'il n'est pas possible de savoir si le salarié travaillait — FAUX, la présomption joue.</li>
+        </ul>
+        <p class="ref">L.1222-9 al.2 CT ; Cass. soc. 7 mai 2015 n°14-10.295.</p>
+        <div class="angle-cgt">Sujet en forte croissance depuis 2020. Former les élus CSE à documenter systématiquement les conditions du télétravail (plages horaires, matériel) dans les accords collectifs — cela facilite la reconnaissance.</div>
       </div>
     </div>
   </div>
@@ -364,110 +455,148 @@
   <div class="chapitre" id="declarer">
     <div class="chapitre-header">
       <span class="chapitre-badge">Jour 1</span>
-      <div class="chapitre-title">Déclarer un AT — Diapos 15 – 22</div>
+      <div class="chapitre-title">Déclarer un AT — Diapos 20 – 29</div>
     </div>
 
     <div class="diapo">
-      <div class="diapo-header"><span class="diapo-num">Diapo 15</span><span class="diapo-title">Intercalaire — Déclarer un AT</span></div>
+      <div class="diapo-header"><span class="diapo-num">Diapo 20</span><span class="diapo-title">Intercalaire — Déclarer un AT</span></div>
       <div class="diapo-body">
         <div class="message-cle">Message clé — <span>Passer à la procédure : vite et dans les formes.</span></div>
-        <ul><li>Le bon réflexe dans les premières heures conditionne tout le dossier.</li></ul>
-      </div>
-    </div>
-
-    <div class="diapo">
-      <div class="diapo-header"><span class="diapo-num">Diapo 16</span><span class="diapo-title">Les délais à respecter</span></div>
-      <div class="diapo-body">
-        <div class="message-cle">Message clé — <span>24 h côté salarié, 48 h côté employeur.</span></div>
-        <div class="dev-label">À développer</div>
         <ul>
-          <li>Le salarié informe l'employeur dans les 24 h (idéalement par écrit, en gardant une preuve).</li>
-          <li>L'employeur déclare à la CPAM dans les 48 h (hors dimanches et jours fériés) : la DAT.</li>
-          <li>L'employeur peut joindre des « réserves motivées » : expliquer ce que c'est et comment y répondre.</li>
-          <li>La feuille d'accident est remise au salarié : soins pris en charge à 100 %, sans avance de frais.</li>
+          <li>Le bon réflexe dans les premières heures conditionne tout le dossier.</li>
+          <li>Même si l'accident paraît bénin — déclarer toujours. Une entorse peut dégénérer ; une douleur psychique peut s'installer. Un dossier non ouvert ne peut pas être rouvert.</li>
         </ul>
-        <p class="ref">Art. R.441-2 (salarié), R.441-3 (employeur), L.441-5 (feuille d'accident).</p>
       </div>
     </div>
 
     <div class="diapo">
-      <div class="diapo-header"><span class="diapo-num">Diapo 17</span><span class="diapo-title">Les documents clés</span></div>
+      <div class="diapo-header"><span class="diapo-num">Diapo 21</span><span class="diapo-title">Les délais à respecter</span></div>
       <div class="diapo-body">
-        <div class="message-cle">Message clé — <span>Le dossier se gagne sur les pièces.</span></div>
+        <div class="message-cle">Message clé — <span>24 h côté salarié, 48 h côté employeur — des délais à graver dans la mémoire.</span></div>
         <div class="dev-label">À développer</div>
         <ul>
-          <li>La DAT (employeur) ; le certificat médical initial (CMI) établi par le médecin.</li>
-          <li>Sur le CMI : faire décrire <strong>toutes les lésions</strong>, même mineures.</li>
-          <li>La feuille d'accident (tiers payant) ; les certificats de prolongation puis le certificat final.</li>
+          <li>Le salarié informe l'employeur dans les <strong>24 h</strong> (idéalement par écrit, en gardant une preuve — SMS, mail, témoin).</li>
+          <li>L'employeur déclare à la CPAM dans les <strong>48 h</strong> (hors dimanches et jours fériés) via la DAT.</li>
+          <li>L'employeur peut joindre des « réserves motivées » — expliquer ce que c'est et comment les contrer (preuves, témoins).</li>
+          <li>La <strong>feuille d'accident</strong> est remise au salarié : soins pris en charge à 100 %, sans avance de frais, dès le premier soin.</li>
+        </ul>
+        <p class="ref">R.441-2 (salarié), R.441-3 (employeur), L.441-5 (feuille d'accident).</p>
+      </div>
+    </div>
+
+    <div class="diapo">
+      <div class="diapo-header"><span class="diapo-num">Diapo 22</span><span class="diapo-title">Les documents clés</span></div>
+      <div class="diapo-body">
+        <div class="message-cle">Message clé — <span>Le dossier se gagne sur les pièces — tout dater, tout conserver.</span></div>
+        <div class="dev-label">À développer</div>
+        <ul>
+          <li>La <strong>DAT</strong> (déclaration d'accident du travail) établie par l'employeur.</li>
+          <li>Le <strong>CMI</strong> (certificat médical initial) établi par le médecin traitant — décrire toutes les lésions.</li>
+          <li>La <strong>feuille d'accident</strong> (tiers payant AT) ; les certificats de prolongation puis le certificat de consolidation.</li>
           <li>Depuis le 1er septembre 2025 : nouveaux Cerfa sécurisés obligatoires.</li>
         </ul>
-        <div class="angle-cgt">Conseil : tout dater, tout conserver (copies). Un dossier, ça se constitue dès le premier jour.</div>
+        <div class="angle-cgt">Conseil systématique : tout photocopier avant de remettre les originaux. Un dossier bien documenté se gagne souvent ; un dossier mal parti se perd.</div>
       </div>
     </div>
 
     <div class="diapo">
-      <div class="diapo-header"><span class="diapo-num">Diapo 18</span><span class="diapo-title">Si l'employeur refuse de déclarer</span></div>
+      <div class="diapo-header"><span class="diapo-num">Diapo 23</span><span class="diapo-title">Si l'employeur refuse de déclarer</span></div>
       <div class="diapo-body">
         <div class="message-cle">Message clé — <span>La défaillance de l'employeur ne fait pas perdre les droits.</span></div>
         <div class="dev-label">À développer</div>
         <ul>
-          <li>Le salarié peut déclarer lui-même l'AT à la CPAM dans un délai de 2 ans.</li>
-          <li>Réunir témoignages, écrits, éventuelle main courante.</li>
-          <li>Informer le CSE et, si besoin, l'inspection du travail.</li>
+          <li>Le salarié peut déclarer lui-même l'AT à la CPAM dans un délai de <strong>2 ans</strong> (prescription biennale).</li>
+          <li>Réunir les preuves : témoignages écrits, échanges de messagerie, main courante, photos de la scène si possible.</li>
+          <li>Informer immédiatement le CSE — le PV de réunion CSE mentionnant le refus de déclarer est une pièce utile.</li>
+          <li>Si le refus persiste : saisir l'inspection du travail.</li>
         </ul>
-        <div class="angle-cgt">Rôle de l'UD : ne jamais laisser un·e salarié·e seul·e face à un refus de déclaration.</div>
+        <div class="angle-cgt">Rôle de l'UD : ne jamais laisser un·e salarié·e seul·e face à un refus de déclaration. La pression patronale pour éviter la déclaration est illégale et constitue un élément de preuve supplémentaire.</div>
       </div>
     </div>
 
     <div class="diapo">
-      <div class="diapo-header"><span class="diapo-num">Diapo 19</span><span class="diapo-title">Réserves de l'employeur &amp; registre des bénins</span></div>
+      <div class="diapo-header"><span class="diapo-num">Diapo 24</span><span class="diapo-title">Réserves de l'employeur &amp; registre des bénins</span></div>
       <div class="diapo-body">
-        <div class="message-cle">Message clé — <span>Les réserves visent à renverser la présomption — y répondre vite et précisément.</span></div>
+        <div class="message-cle">Message clé — <span>Les réserves visent à renverser la présomption — y répondre vite et avec des preuves.</span></div>
         <div class="dev-label">À développer</div>
         <ul>
-          <li>L'employeur peut émettre des « réserves motivées » (heure, lieu, circonstances) → la CPAM ouvre une enquête.</li>
-          <li>Le registre des accidents bénins (sous conditions CARSAT) remplace la DAT pour les lésions légères sans arrêt.</li>
-          <li>Vigilance : ce registre ne doit pas servir à dissimuler de vrais AT.</li>
+          <li>L'employeur peut formuler des « réserves motivées » portant sur l'heure, le lieu, les circonstances → la CPAM ouvre une enquête contradictoire.</li>
+          <li>Des réserves vagues et non motivées doivent être contestées — exiger que l'employeur précise.</li>
+          <li>Le <strong>registre des accidents bénins</strong> (sous conditions CARSAT) remplace la DAT pour les lésions sans arrêt ni soins extérieurs. Vigilance : ce registre ne doit pas servir à masquer de vrais AT.</li>
         </ul>
-        <div class="angle-cgt">Surveiller l'usage du registre des bénins par l'employeur. En cas de réserves, soigner les preuves et répondre au questionnaire CPAM : c'est décisif.</div>
-      </div>
-    </div>
-
-    <div class="diapo">
-      <div class="diapo-header"><span class="diapo-num">Diapo 20</span><span class="diapo-title">L'instruction par la CPAM</span></div>
-      <div class="diapo-body">
-        <div class="message-cle">Message clé — <span>Des délais encadrés — à surveiller de près.</span></div>
-        <div class="dev-label">À développer</div>
-        <ul>
-          <li>30 jours francs pour statuer dans le cas simple.</li>
-          <li>En cas de réserves ou d'investigation : délai porté jusqu'à 90 jours.</li>
-          <li>Phase contradictoire : 10 jours pour consulter le dossier et faire des observations — à utiliser systématiquement.</li>
-        </ul>
-        <p class="ref">Art. R.441-7 et suivants.</p>
+        <div class="angle-cgt">Surveiller l'usage du registre des bénins. En CSE : demander régulièrement la consultation du registre pour vérifier qu'il n'est pas utilisé pour écraser la sinistralité officielle.</div>
       </div>
     </div>
 
     <div class="diapo schema">
-      <div class="diapo-header"><span class="diapo-num">Diapo 21</span><span class="diapo-title">Schéma — De l'accident à la reconnaissance <span class="badge-schema">SCHÉMA</span></span></div>
+      <div class="diapo-header"><span class="diapo-num">Diapo 25</span><span class="diapo-title">Schéma — De l'accident à la reconnaissance <span class="badge-schema">SCHÉMA</span></span></div>
       <div class="diapo-body">
-        <div class="message-cle">Message clé — <span>La frise des délais : 24 h, 48 h, 30 j, 90 j.</span></div>
+        <div class="message-cle">Message clé — <span>La frise des délais : 24 h, 48 h, 30 j, 90 j maximum.</span></div>
         <ul>
           <li>Faire tracer mentalement le chemin par les stagiaires à partir d'un cas concret.</li>
-          <li>Rappeler : silence de la CPAM passé le délai = acceptation.</li>
+          <li>Rappeler : silence de la CPAM passé le délai = acceptation implicite.</li>
         </ul>
       </div>
     </div>
 
     <div class="diapo">
-      <div class="diapo-header"><span class="diapo-num">Diapo 22</span><span class="diapo-title">Silence vaut acceptation</span></div>
+      <div class="diapo-header"><span class="diapo-num">Diapo 26</span><span class="diapo-title">L'instruction par la CPAM</span></div>
       <div class="diapo-body">
-        <div class="message-cle">Message clé — <span>Le silence de la CPAM joue en faveur de la victime.</span></div>
+        <div class="message-cle">Message clé — <span>Des délais encadrés à surveiller — la phase contradictoire est un levier à ne pas rater.</span></div>
         <div class="dev-label">À développer</div>
         <ul>
-          <li>Sans décision dans le délai, le caractère professionnel est reconnu.</li>
-          <li>Noter précisément les dates ; ne pas « relancer » au point de provoquer une décision de rejet hâtive.</li>
+          <li><strong>30 jours francs</strong> pour statuer dans le cas simple (sans réserves).</li>
+          <li>En cas de réserves ou d'investigation : prolongation jusqu'à <strong>90 jours</strong> au total.</li>
+          <li><strong>Phase contradictoire :</strong> 10 jours pour consulter le dossier d'instruction et présenter des observations — à utiliser <em>systématiquement</em>.</li>
+          <li>Demander la copie de l'ensemble du dossier (questionnaire employeur, rapport enquêteur).</li>
         </ul>
-        <p class="ref">Art. R.441-10.</p>
+        <p class="ref">R.441-7 à R.441-14 CSS.</p>
+        <div class="angle-cgt">La phase contradictoire est la fenêtre de tir pour rééquilibrer le dossier. L'employeur y formule souvent des observations défavorables au salarié — il faut y répondre point par point.</div>
+      </div>
+    </div>
+
+    <div class="diapo">
+      <div class="diapo-header"><span class="diapo-num">Diapo 27</span><span class="diapo-title">Silence vaut acceptation</span></div>
+      <div class="diapo-body">
+        <div class="message-cle">Message clé — <span>Le silence de la CPAM passé le délai joue en faveur de la victime.</span></div>
+        <div class="dev-label">À développer</div>
+        <ul>
+          <li>Sans décision explicite de la CPAM dans le délai légal : le caractère professionnel de l'accident est <strong>reconnu de plein droit</strong>.</li>
+          <li>Conserver les preuves de dépôt (accusé de réception, date de la déclaration) et noter précisément les dates.</li>
+          <li>Ne pas « relancer » inutilement la CPAM au point de provoquer une décision de rejet hâtive.</li>
+        </ul>
+        <p class="ref">R.441-10 CSS.</p>
+      </div>
+    </div>
+
+    <div class="diapo ressource">
+      <div class="diapo-header"><span class="diapo-num">Diapo 28</span><span class="diapo-title">IJ AT/MP — comment ça se calcule ? <span class="badge-res">RESSOURCE</span></span></div>
+      <div class="diapo-body">
+        <div class="message-cle">Message clé — <span>Pas de délai de carence, taux plus favorable qu'en maladie — faire faire le calcul en salle.</span></div>
+        <div class="dev-label">Atelier calcul (10 min)</div>
+        <ul>
+          <li>Formule : SDJB = salaire brut du mois précédent ÷ 30,42.</li>
+          <li><strong>J1–J28 :</strong> 60 % × SDJB (plafond 101,62 €/j en 2024). <strong>À partir de J29 :</strong> 80 % × SDJB (même plafond).</li>
+          <li>Exemple à 2 400 € bruts : SDJB = 78,90 € → IJ J1-J28 = 47,34 €/j → IJ J29+ = 63,12 €/j.</li>
+          <li>Faire faire le calcul aux stagiaires avec leur propre salaire (si consentement) — cela ancre l'enjeu personnel.</li>
+        </ul>
+        <p class="ref">L.433-2, L.433-3 CSS ; plafonds AMELI 2024.</p>
+        <div class="angle-cgt">Pour un salaire de 2 000 €, la différence entre IJ maladie (50 % avec 3 jours de carence) et IJ AT/MP (60→80 % sans carence) peut dépasser 400 € sur un mois. C'est le montant concret de la reconnaissance.</div>
+      </div>
+    </div>
+
+    <div class="diapo ressource">
+      <div class="diapo-header"><span class="diapo-num">Diapo 29</span><span class="diapo-title">AT/MP vs Maladie ordinaire — la comparaison <span class="badge-res">RESSOURCE</span></span></div>
+      <div class="diapo-body">
+        <div class="message-cle">Message clé — <span>Cinq avantages concrets de la reconnaissance AT/MP vs maladie simple.</span></div>
+        <ul>
+          <li>Pas de délai de carence AT/MP (3 jours en maladie ordinaire).</li>
+          <li>Taux IJ : 60→80 % SDJB en AT/MP vs 50 % (→ 66 % après 30 jours avec 3 enfants) en maladie.</li>
+          <li>Soins à 100 % du tarif Sécu en AT/MP vs remboursements partiels.</li>
+          <li>Protection de l'emploi renforcée (L.1226-9 vs droit commun).</li>
+          <li>Rente/capital en cas de séquelles — inexistant en maladie ordinaire.</li>
+        </ul>
+        <div class="angle-cgt">Ce tableau est l'argument économique le plus percutant pour convaincre un salarié hésitant à déclarer. Le distribuer en version papier.</div>
       </div>
     </div>
   </div>
@@ -476,101 +605,123 @@
   <div class="chapitre" id="maladies">
     <div class="chapitre-header">
       <span class="chapitre-badge">Jour 1</span>
-      <div class="chapitre-title">Maladies professionnelles &amp; clôture — Diapos 23 – 30</div>
+      <div class="chapitre-title">Maladies professionnelles &amp; clôture J1 — Diapos 30 – 38</div>
     </div>
 
     <div class="diapo">
-      <div class="diapo-header"><span class="diapo-num">Diapo 23</span><span class="diapo-title">Intercalaire — Les maladies professionnelles</span></div>
+      <div class="diapo-header"><span class="diapo-num">Diapo 30</span><span class="diapo-title">Intercalaire — Les maladies professionnelles</span></div>
       <div class="diapo-body">
-        <div class="message-cle">Message clé — <span>Changer de logique : la MP est progressive.</span></div>
-        <ul><li>Annoncer les deux voies de reconnaissance et leur enjeu de preuve.</li></ul>
+        <div class="message-cle">Message clé — <span>Changer de logique : la MP est progressive, pas soudaine.</span></div>
+        <ul>
+          <li>Accroche : combien de salariés en salle ont des collègues souffrant de TMS, de troubles auditifs ou de pathologies respiratoires sans avoir jamais fait de démarche MP ? C'est la sous-déclaration massive.</li>
+          <li>Annoncer les deux voies de reconnaissance et leur enjeu de preuve.</li>
+        </ul>
       </div>
     </div>
 
     <div class="diapo">
-      <div class="diapo-header"><span class="diapo-num">Diapo 24</span><span class="diapo-title">Deux voies de reconnaissance</span></div>
+      <div class="diapo-header"><span class="diapo-num">Diapo 31</span><span class="diapo-title">Deux voies de reconnaissance</span></div>
       <div class="diapo-body">
-        <div class="message-cle">Message clé — <span>Tableau (présomption) ou CRRMP (preuve du lien direct).</span></div>
+        <div class="message-cle">Message clé — <span>Tableau (présomption) ou CRRMP (preuve du lien direct) — deux logiques très différentes.</span></div>
         <div class="dev-label">À développer</div>
         <ul>
-          <li><strong>Voie tableau :</strong> si toutes les conditions sont réunies → présomption d'origine, pas besoin de prouver le lien.</li>
-          <li><strong>Voie CRRMP :</strong> maladie en tableau mais conditions non toutes remplies, OU maladie hors tableau (lien direct et essentiel à démontrer).</li>
+          <li><strong>Voie 1 — Tableau (L.461-1 al.1) :</strong> maladie figurant au tableau + toutes conditions remplies (liste travaux, délai prise en charge, durée exposition) → présomption automatique, pas besoin de prouver le lien.</li>
+          <li><strong>Voie 2 — CRRMP :</strong> soit conditions du tableau non toutes remplies (lien direct démontré), soit maladie hors tableau (lien direct et essentiel + IPP ≥ 25 % ou décès).</li>
+          <li>La voie CRRMP est la porte d'entrée pour les maladies émergentes : burn-out, cancers multi-factoriels, TMS atypiques.</li>
         </ul>
-        <p class="ref">Art. L.461-1 CSS.</p>
+        <p class="ref">L.461-1 à L.461-8 CSS.</p>
+        <div class="angle-cgt">La CGT accompagne les dossiers CRRMP difficiles — orienter vers l'UD pour les cas complexes (burn-out, affections psychiques, cancers professionnels).</div>
       </div>
     </div>
 
     <div class="diapo schema">
-      <div class="diapo-header"><span class="diapo-num">Diapo 25</span><span class="diapo-title">Schéma — MP : les deux voies <span class="badge-schema">SCHÉMA</span></span></div>
+      <div class="diapo-header"><span class="diapo-num">Diapo 32</span><span class="diapo-title">Schéma — MP : les deux voies <span class="badge-schema">SCHÉMA</span></span></div>
       <div class="diapo-body">
         <div class="message-cle">Message clé — <span>Logigramme : tableau → présomption ; sinon CRRMP → lien direct.</span></div>
         <ul>
-          <li>Faire suivre le chemin par les stagiaires sur un cas concret (ex. TMS, lombalgie, affection psychique).</li>
+          <li>Faire suivre le logigramme par les stagiaires sur un cas concret (TMS, lombalgie, affection psychique).</li>
         </ul>
       </div>
     </div>
 
     <div class="diapo">
-      <div class="diapo-header"><span class="diapo-num">Diapo 26</span><span class="diapo-title">Le système des tableaux</span></div>
+      <div class="diapo-header"><span class="diapo-num">Diapo 33</span><span class="diapo-title">Le système des tableaux</span></div>
       <div class="diapo-body">
-        <div class="message-cle">Message clé — <span>Savoir lire un tableau de MP.</span></div>
+        <div class="message-cle">Message clé — <span>Savoir lire un tableau de MP — trois éléments à vérifier systématiquement.</span></div>
         <div class="dev-label">À développer</div>
         <ul>
-          <li>Trois éléments : désignation de la maladie ; délai de prise en charge après exposition ; liste de travaux.</li>
-          <li>La liste des travaux peut être <strong>limitative</strong> (stricte) ou <strong>indicative</strong> selon le tableau.</li>
-          <li>Bien repérer les dates d'exposition et l'employeur concerné.</li>
-          <li>Où les trouver : INRS et Légifrance (mis à jour régulièrement).</li>
+          <li><strong>Désignation de la maladie</strong> — libellé exact à comparer avec le diagnostic.</li>
+          <li><strong>Délai de prise en charge</strong> après la fin de l'exposition — souvent plus court qu'on ne le croit.</li>
+          <li><strong>Liste des travaux</strong> : peut être <em>limitative</em> (stricte) ou <em>indicative</em> selon le tableau.</li>
+          <li>Où les trouver : INRS (inrs.fr) et Légifrance, mis à jour régulièrement. Télécharger les tableaux 30 (affections à l'amiante), 57 (TMS), 98 (rhinites).</li>
         </ul>
       </div>
     </div>
 
     <div class="diapo">
-      <div class="diapo-header"><span class="diapo-num">Diapo 27</span><span class="diapo-title">Les enjeux actuels</span></div>
+      <div class="diapo-header"><span class="diapo-num">Diapo 34</span><span class="diapo-title">Les enjeux actuels</span></div>
       <div class="diapo-body">
-        <div class="message-cle">Message clé — <span>Les MP d'aujourd'hui sont surtout des TMS et des atteintes invisibles.</span></div>
+        <div class="message-cle">Message clé — <span>Les MP d'aujourd'hui sont surtout des TMS et des atteintes invisibles — mais reconnues si on les déclare.</span></div>
         <div class="dev-label">À développer</div>
         <ul>
-          <li>TMS : près de 90 % des MP reconnues ; amiante toujours présente.</li>
-          <li>Affections psychiques (burn-out) : souvent hors tableau → passage par le CRRMP.</li>
-          <li>Usure professionnelle, expositions chimiques : forte sous-déclaration.</li>
+          <li>TMS : près de <strong>90 % des MP reconnues</strong> (tableau 57 principalement) ; amiante toujours présente (tableaux 30, 30 bis).</li>
+          <li>Affections psychiques (burn-out) : souvent hors tableau → CRRMP avec IPP ≥ 25 %.</li>
+          <li>Agents chimiques cancérogènes (CMR) : tableaux 16, 43, 44 — souvent sous-déclarés en TPE/PME.</li>
+          <li>Usure professionnelle : lien fort avec le C2P (compte professionnel de prévention).</li>
         </ul>
-        <div class="angle-cgt">Faire reconnaître, c'est rendre visible pour pouvoir prévenir et revendiquer.</div>
+        <div class="angle-cgt">Faire reconnaître, c'est rendre visible pour pouvoir prévenir et revendiquer. Un secteur avec un taux de MP élevé est un secteur où la pression syndicale pour la prévention est légitime.</div>
+      </div>
+    </div>
+
+    <div class="diapo ressource">
+      <div class="diapo-header"><span class="diapo-num">Diapo 35</span><span class="diapo-title">Le burn-out et les RPS — maladie professionnelle ? <span class="badge-res">RESSOURCE</span></span></div>
+      <div class="diapo-body">
+        <div class="message-cle">Message clé — <span>Possible via le CRRMP — mais le dossier se constitue en amont, pas après.</span></div>
+        <ul>
+          <li>Voie CRRMP : lien direct et essentiel avec le travail + IPP ≥ 25 % ou décès.</li>
+          <li>Constitution du dossier : e-mails documentant la surcharge, PV CSE, signalements RH, arrêts maladie successifs, témoignages.</li>
+          <li>Délai de prescription : 2 ans après la première constatation médicale — agir vite.</li>
+          <li>La CGT a produit des fiches pratiques sur la reconnaissance du burn-out (disponibles à l'UD).</li>
+        </ul>
+        <div class="angle-cgt">L'employeur a l'obligation de prévenir les RPS (L.4121-1 CT) — un manquement documenté fonde aussi la faute inexcusable. Ne pas dissocier la reconnaissance MP de l'action préventive en CSE.</div>
       </div>
     </div>
 
     <div class="diapo">
-      <div class="diapo-header"><span class="diapo-num">Diapo 28</span><span class="diapo-title">Pénibilité &amp; compte professionnel de prévention (C2P)</span></div>
+      <div class="diapo-header"><span class="diapo-num">Diapo 36</span><span class="diapo-title">Pénibilité &amp; compte professionnel de prévention (C2P)</span></div>
       <div class="diapo-body">
         <div class="message-cle">Message clé — <span>Relier MP, usure et pénibilité : agir sur l'organisation, pas seulement réparer.</span></div>
         <div class="dev-label">À développer</div>
         <ul>
-          <li>Facteurs de risque (travail de nuit, postures, bruit, agents chimiques…) → ouverture du C2P.</li>
-          <li>Le C2P permet d'acquérir des points : formation, temps partiel, départ anticipé.</li>
-          <li>Levier pour relier prévention, usure et maladies professionnelles en revendication.</li>
+          <li>6 facteurs de risque actuels (depuis ordonnances 2017) : travail de nuit, en équipes alternantes, expositions aux températures extrêmes, bruit, vibrations mécaniques, agents chimiques dangereux.</li>
+          <li>Points acquis → formation, temps partiel sans perte de salaire, départ anticipé.</li>
+          <li>Levier pour relier prévention, usure professionnelle et maladies professionnelles en revendication CSE.</li>
         </ul>
-        <div class="angle-cgt">Porter la prévention primaire : l'objectif n'est pas seulement de réparer les dommages, mais d'éliminer les risques à la source.</div>
+        <div class="angle-cgt">Porter la prévention primaire : l'objectif n'est pas seulement de réparer les dommages, mais d'éliminer les risques à la source (principe n°1 des 9 PGP — L.4121-2 CT).</div>
       </div>
     </div>
 
     <div class="diapo">
-      <div class="diapo-header"><span class="diapo-num">Diapo 29</span><span class="diapo-title">Mise en situation — « Le premier réflexe »</span></div>
+      <div class="diapo-header"><span class="diapo-num">Diapo 37</span><span class="diapo-title">Mise en situation — « Le premier réflexe »</span></div>
       <div class="diapo-body">
-        <div class="message-cle">Message clé — <span>Faire appliquer les acquis de la matinée.</span></div>
+        <div class="message-cle">Message clé — <span>Appliquer les acquis de la matinée sur un cas concret.</span></div>
         <div class="dev-label">À développer</div>
         <ul>
-          <li>Animation en binômes (15 min) puis restitution.</li>
-          <li>Corrigé attendu : information employeur 24 h, CMI détaillé, feuille d'accident, déclaration directe si refus, alerte du CSE.</li>
+          <li>Animation en binômes ou trinômes (15 min) puis restitution plénière.</li>
+          <li>Corrigé attendu : information employeur dans les 24 h (écrit), CMI détaillé avec toutes les lésions, feuille d'accident, déclaration directe à la CPAM si refus, alerte du CSE.</li>
+          <li>Corriger les erreurs fréquentes : attendre que l'employeur déclare, ne pas mentionner la lésion psychologique, oublier la feuille d'accident.</li>
         </ul>
       </div>
     </div>
 
     <div class="diapo">
-      <div class="diapo-header"><span class="diapo-num">Diapo 30</span><span class="diapo-title">Bilan du jour 1</span></div>
+      <div class="diapo-header"><span class="diapo-num">Diapo 38</span><span class="diapo-title">Bilan du jour 1</span></div>
       <div class="diapo-body">
         <div class="message-cle">Message clé — <span>Consolider et préparer le jour 2.</span></div>
         <ul>
-          <li>Tour de table : ce que je retiens, ce que je réutiliserai dès demain.</li>
+          <li>Tour de table : une chose que je retiens, une chose que je réutiliserai dès demain.</li>
           <li>Recueillir les questions en suspens pour les traiter en début de Jour 2.</li>
+          <li>Annoncer J2 : de la reconnaissance à la réparation — indemnisation, séquelles, faute inexcusable, action collective.</li>
         </ul>
       </div>
     </div>
@@ -580,136 +731,205 @@
   <div class="chapitre" id="jour2">
     <div class="chapitre-header">
       <span class="chapitre-badge">Jour 2</span>
-      <div class="chapitre-title">Indemnisation &amp; séquelles — Diapos 31 – 40</div>
+      <div class="chapitre-title">Indemnisation &amp; séquelles — Diapos 39 – 52</div>
     </div>
 
     <div class="diapo">
-      <div class="diapo-header"><span class="diapo-num">Diapo 31</span><span class="diapo-title">Intercalaire Jour 2</span></div>
+      <div class="diapo-header"><span class="diapo-num">Diapo 39</span><span class="diapo-title">Intercalaire Jour 2</span></div>
       <div class="diapo-body">
-        <div class="message-cle">Message clé — <span>Annoncer : après la reconnaissance, la réparation et l'action.</span></div>
-        <ul><li>Rappeler le fil : indemnisation → séquelles → faute inexcusable → recours → rôle collectif.</li></ul>
-      </div>
-    </div>
-
-    <div class="diapo">
-      <div class="diapo-header"><span class="diapo-num">Diapo 32</span><span class="diapo-title">Le parcours d'indemnisation</span></div>
-      <div class="diapo-body">
-        <div class="message-cle">Message clé — <span>Les droits AT/MP sont plus favorables qu'en maladie « simple ».</span></div>
-        <div class="dev-label">À développer</div>
+        <div class="message-cle">Message clé — <span>Annoncer : après la reconnaissance, la réparation et l'action collective.</span></div>
         <ul>
-          <li>IJ majorées : 60 % du salaire journalier de base, puis 80 % à partir du 29e jour d'arrêt.</li>
-          <li>Soins pris en charge à 100 % du tarif Sécu ; le jour de l'accident est payé par l'employeur.</li>
-          <li>La situation évolue vers la guérison ou la consolidation.</li>
-        </ul>
-        <p class="ref">Taux IJ à vérifier au moment de la session — ils peuvent évoluer.</p>
-      </div>
-    </div>
-
-    <div class="diapo">
-      <div class="diapo-header"><span class="diapo-num">Diapo 33</span><span class="diapo-title">Protection de l'emploi pendant l'arrêt</span></div>
-      <div class="diapo-body">
-        <div class="message-cle">Message clé — <span>Le contrat est suspendu ; aucun licenciement n'est possible.</span></div>
-        <div class="dev-label">À développer</div>
-        <ul>
-          <li>Pendant l'arrêt AT/MP : contrat suspendu, licenciement interdit (sauf faute grave non liée ou impossibilité de maintien étrangère à l'AT).</li>
-          <li>À défaut, le licenciement est nul : réintégration ou indemnités.</li>
-          <li>Protection souvent méconnue des salarié·es — à rappeler systématiquement.</li>
-        </ul>
-        <p class="ref">Art. L.1226-9 et L.1226-13.</p>
-        <div class="angle-cgt">Vérifier systématiquement la régularité d'un licenciement intervenu pendant un arrêt AT/MP.</div>
-      </div>
-    </div>
-
-    <div class="diapo">
-      <div class="diapo-header"><span class="diapo-num">Diapo 34</span><span class="diapo-title">Guérison ou consolidation ?</span></div>
-      <div class="diapo-body">
-        <div class="message-cle">Message clé — <span>Notion charnière qui ouvre l'indemnisation des séquelles.</span></div>
-        <div class="dev-label">À développer</div>
-        <ul>
-          <li><strong>Guérison :</strong> retour à l'état antérieur, sans séquelle.</li>
-          <li><strong>Consolidation :</strong> état stabilisé avec séquelles → c'est là qu'on évalue le taux d'IPP.</li>
-          <li>Après consolidation, une rechute ou une aggravation reste possible (nouveau certificat).</li>
+          <li>Accroche : demander si quelqu'un a eu une déception après la reconnaissance — taux d'IPP trop faible, licenciement malgré l'arrêt, indemnisation décevante. Ces cas concrets nourrissent toute la journée.</li>
+          <li>Fil du jour : indemnisation → séquelles → visite de reprise → faute inexcusable → recours → rôle CSE.</li>
         </ul>
       </div>
     </div>
 
     <div class="diapo">
-      <div class="diapo-header"><span class="diapo-num">Diapo 35</span><span class="diapo-title">Rechute et aggravation</span></div>
+      <div class="diapo-header"><span class="diapo-num">Diapo 40</span><span class="diapo-title">Le parcours d'indemnisation</span></div>
       <div class="diapo-body">
-        <div class="message-cle">Message clé — <span>Les droits ne sont pas figés à la consolidation.</span></div>
+        <div class="message-cle">Message clé — <span>Trois sources de paiement s'empilent — l'AT/MP est le régime le plus favorable.</span></div>
         <div class="dev-label">À développer</div>
         <ul>
-          <li>Une rechute se déclare par un nouveau certificat médical — elle rouvre les droits (soins 100 %, IJ).</li>
-          <li>En cas d'aggravation des séquelles, le taux d'IPP peut être révisé à la hausse.</li>
+          <li>IJ AT/MP majorées (60 % → 80 %) + soins à 100 % + maintien de salaire par l'employeur le jour J.</li>
+          <li>En cas de séquelles : rente ou capital selon le taux d'IPP.</li>
+          <li>La situation évolue vers la guérison ou la consolidation — notion charnière à bien expliquer.</li>
         </ul>
-        <div class="angle-cgt">Ne pas laisser croire que « c'est terminé » après la consolidation : la porte reste ouverte.</div>
       </div>
     </div>
 
     <div class="diapo">
-      <div class="diapo-header"><span class="diapo-num">Diapo 36</span><span class="diapo-title">Indemnisation des séquelles</span></div>
+      <div class="diapo-header"><span class="diapo-num">Diapo 41</span><span class="diapo-title">Protection de l'emploi pendant l'arrêt</span></div>
       <div class="diapo-body">
-        <div class="message-cle">Message clé — <span>Le seuil de 10 % d'IPP commande tout.</span></div>
+        <div class="message-cle">Message clé — <span>Pendant l'arrêt AT/MP, le contrat est suspendu et le licenciement est interdit.</span></div>
         <div class="dev-label">À développer</div>
         <ul>
-          <li>Taux d'IPP &lt; 10 % : indemnité en capital (versée en une fois).</li>
-          <li>Taux ≥ 10 % : rente viagère, calculée sur le salaire annuel de référence × « taux utile ».</li>
-          <li>Le taux est fixé par le médecin-conseil selon un barème indicatif — il est contestable.</li>
+          <li>Contrat suspendu ; licenciement interdit sauf <strong>faute grave non liée à l'accident</strong> ou impossibilité de maintien pour motif étranger à l'AT — appréciés strictement par les juges.</li>
+          <li>Tout licenciement en violation = licenciement <strong>nul</strong> : réintégration possible ou indemnités renforcées.</li>
+          <li>Indemnité spéciale de licenciement en cas d'inaptitude d'origine professionnelle = 2× l'indemnité légale (L.1226-14).</li>
         </ul>
-        <p class="ref">Salaire annuel de référence encadré par un plancher et un plafond (montants à actualiser).</p>
-        <div class="angle-cgt">Vérifier systématiquement le taux : un taux sous-évalué, ça se conteste (commission médicale de recours amiable).</div>
+        <p class="ref">L.1226-9, L.1226-13, L.1226-14 CT.</p>
+        <div class="angle-cgt">Vérifier systématiquement tout licenciement intervenu pendant ou juste après un arrêt AT/MP. Erreurs fréquentes : absence de visite de reprise avant le licenciement, absence de recherche sérieuse de reclassement.</div>
+      </div>
+    </div>
+
+    <div class="diapo">
+      <div class="diapo-header"><span class="diapo-num">Diapo 42</span><span class="diapo-title">Guérison ou consolidation ?</span></div>
+      <div class="diapo-body">
+        <div class="message-cle">Message clé — <span>Notion charnière — la consolidation ouvre l'évaluation des séquelles et de l'IPP.</span></div>
+        <div class="dev-label">À développer</div>
+        <ul>
+          <li><strong>Guérison :</strong> retour à l'état antérieur, sans séquelle — fin de la prise en charge AT/MP.</li>
+          <li><strong>Consolidation :</strong> état stabilisé avec séquelles permanentes → évaluation du taux d'IPP par le médecin-conseil CPAM.</li>
+          <li>La date de consolidation est fixée par le médecin-conseil — elle peut être contestée si prononcée trop tôt (état pas stabilisé).</li>
+          <li>Piège : l'employeur peut pousser à une consolidation rapide pour réduire l'arrêt — être vigilant.</li>
+        </ul>
+        <div class="angle-cgt">Contester une consolidation prématurée est possible — demander une contre-expertise médicale. L'appui juridique de l'UD est indispensable pour ces dossiers.</div>
+      </div>
+    </div>
+
+    <div class="diapo">
+      <div class="diapo-header"><span class="diapo-num">Diapo 43</span><span class="diapo-title">La visite de reprise et le mi-temps thérapeutique <span class="badge-new">NOUVEAU</span></span></div>
+      <div class="diapo-body">
+        <div class="message-cle">Message clé — <span>La visite de reprise est obligatoire après 30 jours — le médecin du travail statue sur l'aptitude.</span></div>
+        <div class="dev-label">À développer</div>
+        <ul>
+          <li><strong>Visite de reprise obligatoire</strong> dans les 8 jours suivant la reprise, après tout arrêt AT/MP de plus de 30 jours (R.4624-22 CT).</li>
+          <li>Le médecin du travail peut proposer des aménagements de poste, un mi-temps thérapeutique, ou prononcer une inaptitude → l'employeur doit chercher un reclassement.</li>
+          <li><strong>Mi-temps thérapeutique :</strong> reprise à temps partiel avec maintien d'une partie des IJ AT/MP — accord médecin traitant + médecin-conseil CPAM. Durée max 1 an renouvelable.</li>
+          <li>Si l'employeur refuse d'organiser la visite ou ignore les préconisations : nouvelle faute documentable.</li>
+        </ul>
+        <p class="ref">R.4624-22 CT ; L.1226-9, L.1226-14 CT.</p>
+        <div class="angle-cgt">Insister sur la convocation écrite pour la visite de reprise et tracer tout refus de reclassement. Le mi-temps thérapeutique est méconnu des salariés — le rappeler systématiquement dès la consolidation.</div>
+      </div>
+    </div>
+
+    <div class="diapo">
+      <div class="diapo-header"><span class="diapo-num">Diapo 44</span><span class="diapo-title">Rechute et aggravation</span></div>
+      <div class="diapo-body">
+        <div class="message-cle">Message clé — <span>Les droits AT/MP ne sont pas figés à la consolidation — la porte reste ouverte.</span></div>
+        <div class="dev-label">À développer</div>
+        <ul>
+          <li>Une rechute se déclare par un nouveau certificat médical → elle rouvre les droits AT/MP (soins 100 %, IJ majorées).</li>
+          <li>En cas d'aggravation des séquelles constatée par un médecin, le taux d'IPP peut être révisé à la hausse.</li>
+          <li>Délai pour demander la révision du taux : avant consolidation définitive ou dans les 2 ans.</li>
+        </ul>
+        <div class="angle-cgt">Ne jamais dire qu'un dossier est définitivement clos après la consolidation. Une rechute ou une aggravation peut survenir des années plus tard — informer le salarié de cette possibilité.</div>
+      </div>
+    </div>
+
+    <div class="diapo">
+      <div class="diapo-header"><span class="diapo-num">Diapo 45</span><span class="diapo-title">Indemnisation des séquelles</span></div>
+      <div class="diapo-body">
+        <div class="message-cle">Message clé — <span>Le seuil de 10 % d'IPP commande tout — en dessous : capital ; au-dessus : rente viagère.</span></div>
+        <div class="dev-label">À développer</div>
+        <ul>
+          <li>Taux d'IPP fixé par le médecin-conseil selon un barème indicatif <strong>fonctionnel</strong> (pas seulement anatomique — tenir compte du retentissement professionnel).</li>
+          <li>IPP &lt; 10 % : indemnité en capital unique. IPP ≥ 10 % : rente viagère indexée.</li>
+          <li>Mécanisme du <strong>taux utile</strong> : fraction ≤ 10 % ÷ 2 ; fraction > 10 % × 1,5 — voir diapo ressource dédiée.</li>
+        </ul>
+        <p class="ref">L.434-1 à L.434-3 CSS.</p>
+        <div class="angle-cgt">Vérifier systématiquement le taux d'IPP — un taux sous-évalué se conteste (CNITAAT puis TJ). La CGT peut orienter vers un médecin-expert ou un avocat partenaire. +2 points d'IPP sur un salaire de 2 000 €, c'est +40 €/mois à vie.</div>
       </div>
     </div>
 
     <div class="diapo schema">
-      <div class="diapo-header"><span class="diapo-num">Diapo 37</span><span class="diapo-title">Schéma — L'échelle du taux d'IPP <span class="badge-schema">SCHÉMA</span></span></div>
+      <div class="diapo-header"><span class="diapo-num">Diapo 46</span><span class="diapo-title">Schéma — L'échelle du taux d'IPP <span class="badge-schema">SCHÉMA</span></span></div>
       <div class="diapo-body">
-        <div class="message-cle">Message clé — <span>Seuil de 10 % : capital en dessous, rente au-dessus.</span></div>
+        <div class="message-cle">Message clé — <span>Seuil de 10 % : capital en dessous, rente au-dessus — visualiser l'écart financier.</span></div>
         <ul>
-          <li>Insister : un taux sous-évalué se conteste. Faire visualiser l'écart financier entre capital et rente.</li>
+          <li>Faire estimer l'écart financier entre capital (versement unique ~3 000 €) et rente (40–80 €/mois à vie) pour un IPP de 9 % vs 11 %.</li>
         </ul>
       </div>
     </div>
 
-    <div class="diapo">
-      <div class="diapo-header"><span class="diapo-num">Diapo 38</span><span class="diapo-title">En cas d'accident mortel</span></div>
+    <div class="diapo ressource">
+      <div class="diapo-header"><span class="diapo-num">Diapo 47</span><span class="diapo-title">Le « taux utile » — calcul de la rente <span class="badge-res">RESSOURCE</span></span></div>
       <div class="diapo-body">
-        <div class="message-cle">Message clé — <span>Les proches ont des droits — ne pas les laisser seuls.</span></div>
-        <div class="dev-label">À développer</div>
+        <div class="message-cle">Message clé — <span>Le taux utile amplifie les hauts taux d'IPP — faire faire le calcul en groupe.</span></div>
+        <div class="dev-label">Atelier calcul (10 min)</div>
         <ul>
-          <li>Les ayants droit (conjoint, partenaire, enfants) peuvent percevoir des rentes.</li>
-          <li>Capital décès et prise en charge des frais funéraires prévus.</li>
-          <li>Les ayants droit peuvent engager une action en faute inexcusable.</li>
+          <li><strong>Formule :</strong> fraction ≤ 10 % divisée par 2 ; fraction > 10 % multipliée par 1,5.</li>
+          <li>Exemple IPP 25 % : taux utile = (10 % ÷ 2) + (15 % × 1,5) = 5 % + 22,5 % = 27,5 %.</li>
+          <li>Rente = taux utile × salaire annuel de référence (plancher/plafond à vérifier).</li>
+          <li>Donner 3 taux d'IPP différents et faire calculer en groupe — ancre l'enjeu financier de la contestation.</li>
         </ul>
-        <div class="angle-cgt">La CGT accompagne les familles dans des moments très difficiles : ne pas les laisser seules face aux démarches.</div>
+        <p class="ref">L.434-2 CSS ; barème fonctionnel indicatif CNAM.</p>
       </div>
     </div>
 
     <div class="diapo">
-      <div class="diapo-header"><span class="diapo-num">Diapo 39</span><span class="diapo-title">Inaptitude et reclassement</span></div>
+      <div class="diapo-header"><span class="diapo-num">Diapo 48</span><span class="diapo-title">En cas d'accident mortel</span></div>
       <div class="diapo-body">
-        <div class="message-cle">Message clé — <span>Protéger l'emploi du ou de la salarié·e.</span></div>
+        <div class="message-cle">Message clé — <span>Les proches ont des droits — ne pas les laisser seuls face aux démarches.</span></div>
         <div class="dev-label">À développer</div>
         <ul>
-          <li>L'inaptitude est prononcée par le médecin du travail.</li>
-          <li>L'employeur a une obligation de reclassement (recherche sérieuse et loyale) ; le CSE est consulté.</li>
-          <li>À défaut de reclassement ou de licenciement, l'employeur doit reprendre le versement du salaire après 1 mois.</li>
+          <li>Rentes aux ayants droit : conjoint/partenaire, enfants à charge.</li>
+          <li>Capital décès et prise en charge des frais funéraires.</li>
+          <li>Les ayants droit peuvent engager une action en <strong>faute inexcusable</strong> pour obtenir réparation des préjudices moraux.</li>
+          <li>Rôle du syndicat : accompagner la famille dans les premières heures, constituer le dossier, ne pas laisser la CPAM et l'employeur seuls maîtres des premières pièces.</li>
         </ul>
-        <p class="ref">Art. L.1226-10 et suivants (inaptitude d'origine professionnelle).</p>
+        <div class="angle-cgt">La CGT accompagne les familles dans des moments très difficiles. L'UD doit être prévenue immédiatement en cas d'accident mortel dans une entreprise syndiquée.</div>
+      </div>
+    </div>
+
+    <div class="diapo fp">
+      <div class="diapo-header"><span class="diapo-num">Diapo 49</span><span class="diapo-title">La FIVA — Fonds d'Indemnisation des Victimes de l'Amiante <span class="badge-fp">FP + PRIVÉ</span></span></div>
+      <div class="diapo-body">
+        <div class="message-cle">Message clé — <span>La FIVA indemnise les préjudices non couverts par la rente AT/MP — cumulable, toutes victimes amiante.</span></div>
+        <div class="dev-label">À développer</div>
+        <ul>
+          <li>Couvre : préjudice moral, souffrances endurées, préjudice esthétique, préjudice d'agrément, préjudice d'accompagnement des proches.</li>
+          <li>S'applique à toutes les maladies liées à l'amiante (MP n°30 et autres) — secteur privé ET Fonction Publique.</li>
+          <li>Cumulable avec la rente AT/MP SS. Délai d'instruction : 6 mois maximum.</li>
+          <li>Recours juridique reste possible après offre FIVA.</li>
+        </ul>
+        <p class="ref">Loi 2000-1257 du 23 déc. 2000 ; fiva.fr — formulaires en ligne.</p>
+        <div class="angle-cgt">L'amiante reste la première cause de MP mortelle (~3 000 décès/an). De nombreuses victimes ou ayants droit ignorent la FIVA. La CGT a accompagné des milliers de dossiers FIVA — orienter systématiquement toute victime d'amiante vers l'UD.</div>
       </div>
     </div>
 
     <div class="diapo">
-      <div class="diapo-header"><span class="diapo-num">Diapo 40</span><span class="diapo-title">Inaptitude d'origine professionnelle</span></div>
+      <div class="diapo-header"><span class="diapo-num">Diapo 50</span><span class="diapo-title">Inaptitude et reclassement</span></div>
       <div class="diapo-body">
-        <div class="message-cle">Message clé — <span>Des protections financières renforcées.</span></div>
+        <div class="message-cle">Message clé — <span>L'inaptitude ouvre une obligation de reclassement sérieuse et loyale — le CSE est consulté.</span></div>
         <div class="dev-label">À développer</div>
         <ul>
-          <li>Indemnité spéciale de licenciement (en principe le double de l'indemnité légale).</li>
-          <li>Indemnité compensatrice (équivalente au préavis).</li>
-          <li>Tout licenciement doit être motivé par l'impossibilité de reclassement.</li>
+          <li>Inaptitude prononcée par le médecin du travail à l'issue de la visite de reprise (ou d'une visite à la demande).</li>
+          <li>Obligation de reclassement : recherche sérieuse et loyale de tous les postes disponibles ; le CSE est consulté avant toute proposition.</li>
+          <li>À défaut de reclassement ou de licenciement : l'employeur doit reprendre le versement du salaire après 1 mois.</li>
         </ul>
-        <p class="ref">Art. L.1226-14.</p>
+        <p class="ref">L.1226-10 et suivants CT (inaptitude d'origine professionnelle).</p>
+      </div>
+    </div>
+
+    <div class="diapo">
+      <div class="diapo-header"><span class="diapo-num">Diapo 51</span><span class="diapo-title">Inaptitude d'origine professionnelle — protections renforcées</span></div>
+      <div class="diapo-body">
+        <div class="message-cle">Message clé — <span>Des protections financières renforcées vs inaptitude ordinaire.</span></div>
+        <div class="dev-label">À développer</div>
+        <ul>
+          <li><strong>Indemnité spéciale de licenciement</strong> = 2× l'indemnité légale (L.1226-14).</li>
+          <li><strong>Indemnité compensatrice de préavis</strong> versée même si le salarié ne l'exécute pas.</li>
+          <li>Tout licenciement doit être motivé par l'impossibilité de reclassement — justification exigée.</li>
+          <li>Vigilance : s'assurer que l'inaptitude est bien reconnue « d'origine professionnelle » (mention dans l'avis du médecin du travail).</li>
+        </ul>
+        <p class="ref">L.1226-14 CT.</p>
+        <div class="angle-cgt">La qualification « d'origine professionnelle » est souvent absente de l'avis du médecin du travail faute de demande explicite. Vérifier systématiquement l'avis et demander une rectification si nécessaire.</div>
+      </div>
+    </div>
+
+    <div class="diapo">
+      <div class="diapo-header"><span class="diapo-num">Diapo 52</span><span class="diapo-title">La tarification AT/MP : un levier</span></div>
+      <div class="diapo-body">
+        <div class="message-cle">Message clé — <span>La sinistralité pèse sur la cotisation — argument économique pour la prévention.</span></div>
+        <div class="dev-label">À développer</div>
+        <ul>
+          <li>La cotisation AT/MP patronale est individualisée (CARSAT) selon la sinistralité de l'entreprise : plus d'AT/MP reconnus = cotisation plus élevée.</li>
+          <li>Des cotisations supplémentaires (majoration) peuvent être imposées en cas de risques non maîtrisés.</li>
+          <li>Argument de négociation : faire reconnaître les AT/MP pèse directement sur le coût pour l'employeur.</li>
+        </ul>
+        <div class="angle-cgt">Transformer la sinistralité en argument économique en CSE : prévenir coûte moins cher que réparer. Demander le taux de cotisation AT/MP de l'entreprise — c'est une donnée publique CARSAT.</div>
       </div>
     </div>
   </div>
@@ -718,82 +938,123 @@
   <div class="chapitre" id="fie">
     <div class="chapitre-header">
       <span class="chapitre-badge">Jour 2</span>
-      <div class="chapitre-title">Faute inexcusable &amp; recours — Diapos 41 – 46</div>
+      <div class="chapitre-title">Faute inexcusable &amp; recours — Diapos 53 – 60</div>
     </div>
 
     <div class="diapo">
-      <div class="diapo-header"><span class="diapo-num">Diapo 41</span><span class="diapo-title">Intercalaire — La faute inexcusable</span></div>
+      <div class="diapo-header"><span class="diapo-num">Diapo 53</span><span class="diapo-title">Intercalaire — La faute inexcusable</span></div>
       <div class="diapo-body">
-        <div class="message-cle">Message clé — <span>Le levier de la réparation renforcée — aller au-delà du forfait.</span></div>
-        <ul><li>Rappeler le lien avec la loi de 1898 (diapo 6) : la faute inexcusable est la seule exception à l'immunité civile de l'employeur.</li></ul>
+        <div class="message-cle">Message clé — <span>Le levier de la réparation renforcée — aller au-delà du forfait légal.</span></div>
+        <ul>
+          <li>L'indemnisation AT/MP de base est forfaitaire. La faute inexcusable permet d'obtenir la réparation du préjudice réel.</li>
+          <li>Rappeler le lien avec 1898 (diapo 6) : la faute inexcusable est la seule exception à l'immunité civile de l'employeur.</li>
+          <li>Insister : ce n'est pas réservé aux catastrophes — un employeur qui ignore une alerte écrite peut être condamné.</li>
+        </ul>
       </div>
     </div>
 
     <div class="diapo">
-      <div class="diapo-header"><span class="diapo-num">Diapo 42</span><span class="diapo-title">La faute inexcusable — c'est quoi ?</span></div>
+      <div class="diapo-header"><span class="diapo-num">Diapo 54</span><span class="diapo-title">La faute inexcusable — c'est quoi ?</span></div>
       <div class="diapo-body">
-        <div class="message-cle">Message clé — <span>Un manquement à l'obligation de sécurité de l'employeur.</span></div>
+        <div class="message-cle">Message clé — <span>Un manquement à l'obligation de sécurité — l'employeur savait ou aurait dû savoir.</span></div>
         <div class="dev-label">À développer</div>
         <ul>
-          <li>L'employeur avait, ou aurait dû avoir, conscience du danger.</li>
+          <li>L'employeur avait — ou aurait dû avoir — <strong>conscience du danger</strong> auquel était exposé le salarié.</li>
           <li>Il n'a pas pris les mesures de protection nécessaires.</li>
-          <li>Origine jurisprudentielle (arrêts « amiante » de 2002), assise sur l'obligation de sécurité.</li>
+          <li>Origine jurisprudentielle : arrêts « amiante » de la Cour de cassation du 28 fév. 2002 — généralisés à tous les AT/MP.</li>
+          <li>Preuve : alertes écrites (PV de CSE, mails, registre DGI), DUERP qui ne mentionne pas le risque, défaut de formation à la sécurité.</li>
         </ul>
-        <p class="ref">Obligation de sécurité : L.4121-1 ; faute inexcusable : L.452-1 et s.</p>
+        <p class="ref">Obligation de sécurité : L.4121-1 CT ; faute inexcusable : L.452-1 et s. CSS.</p>
+      </div>
+    </div>
+
+    <div class="diapo ressource">
+      <div class="diapo-header"><span class="diapo-num">Diapo 55</span><span class="diapo-title">Faute inexcusable — exemples reconnus par les tribunaux <span class="badge-res">RESSOURCE</span></span></div>
+      <div class="diapo-body">
+        <div class="message-cle">Message clé — <span>Atelier « Y a-t-il faute inexcusable ? » — faire argumenter les groupes.</span></div>
+        <div class="dev-label">Atelier pratique (15 min)</div>
+        <ul>
+          <li>Carter de machine retiré et non remplacé — signalement écrit ignoré → <strong>faute inexcusable confirmée</strong>.</li>
+          <li>Salarié affecté à un poste sans formation aux risques chimiques → <strong>faute inexcusable</strong>.</li>
+          <li>Alertes répétées sur cadences excessives documentées en PV de CSSCT — pas de réponse → <strong>faute inexcusable sur TMS</strong>.</li>
+          <li>Charge de travail documentée conduisant au burn-out — mails RH ignorés → <strong>faute inexcusable en progression</strong>.</li>
+        </ul>
+        <div class="angle-cgt">La faute inexcusable se construit sur des années de traces écrites. Insister : chaque PV de CSE mentionnant un risque non traité est une brique de preuve. Un dossier bien construit en amont se gagne souvent.</div>
       </div>
     </div>
 
     <div class="diapo">
-      <div class="diapo-header"><span class="diapo-num">Diapo 43</span><span class="diapo-title">Les effets de la faute inexcusable</span></div>
+      <div class="diapo-header"><span class="diapo-num">Diapo 56</span><span class="diapo-title">Les effets de la faute inexcusable</span></div>
       <div class="diapo-body">
-        <div class="message-cle">Message clé — <span>Une réparation qui se rapproche du préjudice réel.</span></div>
+        <div class="message-cle">Message clé — <span>Une réparation qui se rapproche du préjudice réel — majoration de rente + préjudices personnels.</span></div>
         <div class="dev-label">À développer</div>
         <ul>
-          <li>Majoration de la rente ou du capital (souvent doublement).</li>
-          <li>Réparation des préjudices personnels : souffrances physiques et morales, préjudice esthétique, d'agrément, perte de promotion professionnelle.</li>
-          <li>La CPAM avance les sommes puis les récupère auprès de l'employeur.</li>
+          <li><strong>Majoration de la rente ou du capital</strong> jusqu'au maximum légal (souvent le doublement).</li>
+          <li><strong>Réparation des préjudices personnels</strong> : souffrances physiques et morales, préjudice esthétique, d'agrément, perte de promotion professionnelle.</li>
+          <li>La CPAM avance les sommes puis les récupère auprès de l'employeur (action récursoire).</li>
+          <li>Extension jurisprudentielle en 2010 (Conseil constitutionnel) : la liste des préjudices réparables est ouverte.</li>
         </ul>
-        <p class="ref">Majoration : L.452-2 ; préjudices : L.452-3 (élargi par le Conseil constitutionnel en 2010).</p>
-        <div class="angle-cgt">Levier puissant, mais le dossier se monte avec l'appui juridique de l'UD.</div>
+        <p class="ref">Majoration : L.452-2 CSS ; préjudices : L.452-3 (élargi QPC 18 juin 2010).</p>
+        <div class="angle-cgt">Levier puissant, mais le dossier se monte avec l'appui juridique de l'UD. Ne jamais laisser un salarié s'engager seul dans cette procédure.</div>
       </div>
     </div>
 
     <div class="diapo">
-      <div class="diapo-header"><span class="diapo-num">Diapo 44</span><span class="diapo-title">La procédure (faute inexcusable)</span></div>
+      <div class="diapo-header"><span class="diapo-num">Diapo 57</span><span class="diapo-title">La procédure (faute inexcusable)</span></div>
       <div class="diapo-body">
-        <div class="message-cle">Message clé — <span>Les étapes et le délai à ne pas manquer.</span></div>
+        <div class="message-cle">Message clé — <span>Les étapes et le délai de 2 ans à ne pas laisser passer.</span></div>
         <div class="dev-label">À développer</div>
         <ul>
-          <li>Action de la victime (ou de ses ayants droit).</li>
-          <li>Tentative de conciliation auprès de la CPAM, puis saisine du pôle social du tribunal judiciaire.</li>
-          <li><strong>Prescription : 2 ans</strong> — d'où l'urgence d'agir.</li>
+          <li>Tentative de <strong>conciliation auprès de la CPAM</strong> (saisine par lettre recommandée).</li>
+          <li>En cas d'échec : saisine du <strong>pôle social du tribunal judiciaire</strong>.</li>
+          <li><strong>Prescription : 2 ans</strong> à compter de la date de l'accident ou de la date à laquelle la victime a eu connaissance du caractère professionnel.</li>
+          <li>Point de vigilance : le délai de prescription peut être interrompu par la conciliation.</li>
         </ul>
+        <div class="angle-cgt">Ne jamais attendre la fin du traitement pour entamer la procédure — agir dès la consolidation. L'UD peut orienter vers un avocat spécialisé.</div>
+      </div>
+    </div>
+
+    <div class="diapo ressource">
+      <div class="diapo-header"><span class="diapo-num">Diapo 58</span><span class="diapo-title">Cas pratique — Faute inexcusable : à vous de plaider <span class="badge-res">RESSOURCE</span></span></div>
+      <div class="diapo-body">
+        <div class="message-cle">Message clé — <span>Cas Ahmed — mise en situation complète : enquête, arbre des causes, faute inexcusable.</span></div>
+        <div class="dev-label">Mise en situation (25 min) — 3 groupes de 4/4/3</div>
+        <ul>
+          <li><strong>Scénario :</strong> Ahmed, opérateur sur presse d'emboutissage (PME 85 salariés). Sectionnement partiel de l'index droit lors d'un débourrage manuel. Carter de protection retiré 3 semaines avant. Signalement écrit par Ahmed 2 semaines avant — aucune réponse.</li>
+          <li><strong>Groupe A :</strong> Enquête CSE — arbre des causes (causes immédiates, profondes, organisationnelles).</li>
+          <li><strong>Groupe B :</strong> DUERP et PAPRIPACT — mettre à jour, prioriser, proposer des mesures.</li>
+          <li><strong>Groupe C :</strong> Revendication syndicale + faute inexcusable — construire l'argumentaire, identifier les preuves.</li>
+        </ul>
+        <div class="angle-cgt">Corrigé attendu groupe C : le signalement écrit + l'absence de réponse + le retrait non corrigé du carter = conscience du danger + absence de mesure → faute inexcusable quasi certaine. L'employeur ne pourra pas prétendre l'ignorance.</div>
       </div>
     </div>
 
     <div class="diapo">
-      <div class="diapo-header"><span class="diapo-num">Diapo 45</span><span class="diapo-title">Contester une décision</span></div>
+      <div class="diapo-header"><span class="diapo-num">Diapo 59</span><span class="diapo-title">Contester une décision</span></div>
       <div class="diapo-body">
-        <div class="message-cle">Message clé — <span>Deux circuits selon la nature du litige.</span></div>
+        <div class="message-cle">Message clé — <span>Deux circuits selon la nature du litige — agir vite, les délais sont courts.</span></div>
         <div class="dev-label">À développer</div>
         <ul>
-          <li>Contestation d'ordre médical (taux d'IPP, état de santé) : commission médicale de recours amiable, puis pôle social.</li>
-          <li>Autres litiges : pôle social du tribunal judiciaire.</li>
-          <li>Les délais de recours sont courts : agir sans attendre.</li>
+          <li><strong>Décision de prise en charge</strong> (reconnaissance ou refus) : Commission de Recours Amiable (CRA) CPAM dans les <strong>2 mois</strong>, puis pôle social TJ.</li>
+          <li><strong>Taux d'IPP :</strong> expertise médicale demandée à la CPAM, puis CNITAAT, puis TJ pôle social.</li>
+          <li>Demander toujours la notification écrite de toute décision CPAM pour faire courir les délais formellement.</li>
+          <li>Ne pas laisser passer les 2 mois sans saisir la CRA — même sans avoir tous les arguments.</li>
         </ul>
+        <div class="angle-cgt">Conseil pratique : saisir la CRA « à titre conservatoire » dès réception d'une décision défavorable, puis compléter l'argumentation. Les délais d'ordre public ne se relèvent pas.</div>
       </div>
     </div>
 
     <div class="diapo">
-      <div class="diapo-header"><span class="diapo-num">Diapo 46</span><span class="diapo-title">La prescription</span></div>
+      <div class="diapo-header"><span class="diapo-num">Diapo 60</span><span class="diapo-title">La prescription</span></div>
       <div class="diapo-body">
-        <div class="message-cle">Message clé — <span>Surveiller les délais, c'est le réflexe vital.</span></div>
+        <div class="message-cle">Message clé — <span>Surveiller les délais — c'est le réflexe vital en droit de la Sécurité sociale.</span></div>
         <div class="dev-label">À développer</div>
         <ul>
-          <li>En AT/MP, beaucoup d'actions se prescrivent par 2 ans.</li>
-          <li>Repérer le point de départ du délai au cas par cas.</li>
-          <li>En cas de doute : saisir tôt l'UD et, si besoin, un avocat.</li>
+          <li>En AT/MP : beaucoup d'actions se prescrivent par <strong>2 ans</strong> — déclaration tardive, contestation de décision, faute inexcusable.</li>
+          <li>Identifier avec précision le point de départ du délai au cas par cas (date de l'accident, date de la décision CPAM, date de consolidation).</li>
+          <li>En cas de doute : saisir l'UD immédiatement. Mieux vaut agir trop tôt qu'attendre.</li>
         </ul>
+        <div class="angle-cgt">La prescription est la première cause de perte de droits dans les dossiers AT/MP. Former les élus à noter systématiquement les dates et à alerter l'UD dès qu'un délai approche.</div>
       </div>
     </div>
   </div>
@@ -802,61 +1063,53 @@
   <div class="chapitre" id="cse">
     <div class="chapitre-header">
       <span class="chapitre-badge">Jour 2</span>
-      <div class="chapitre-title">CSE, syndicat &amp; clôture — Diapos 47 – 56</div>
+      <div class="chapitre-title">CSE, syndicat &amp; clôture — Diapos 61 – 65</div>
     </div>
 
     <div class="diapo">
-      <div class="diapo-header"><span class="diapo-num">Diapo 47</span><span class="diapo-title">Intercalaire — Le rôle du CSE/CSSCT et du syndicat</span></div>
+      <div class="diapo-header"><span class="diapo-num">Diapo 61</span><span class="diapo-title">Intercalaire — Le rôle du CSE/CSSCT et du syndicat</span></div>
       <div class="diapo-body">
-        <div class="message-cle">Message clé — <span>Passer du dossier individuel à l'action collective.</span></div>
-        <ul><li>C'est ici que la formation prend tout son sens syndical.</li></ul>
+        <div class="message-cle">Message clé — <span>Passer du dossier individuel à l'action collective — le cœur du sens syndical.</span></div>
+        <ul>
+          <li>Un AT bien traité protège un salarié. Un CSE qui systématise l'analyse AT/MP protège tous les salariés.</li>
+          <li>Chaque accident individuel est la fenêtre sur un dysfonctionnement organisationnel collectif.</li>
+        </ul>
       </div>
     </div>
 
     <div class="diapo">
-      <div class="diapo-header"><span class="diapo-num">Diapo 48</span><span class="diapo-title">Les leviers du CSE / CSSCT</span></div>
+      <div class="diapo-header"><span class="diapo-num">Diapo 62</span><span class="diapo-title">Les leviers du CSE / CSSCT</span></div>
       <div class="diapo-body">
-        <div class="message-cle">Message clé — <span>Des outils concrets et opposables.</span></div>
+        <div class="message-cle">Message clé — <span>Des outils concrets et opposables à l'employeur.</span></div>
         <div class="dev-label">À développer</div>
         <ul>
-          <li>Enquête du CSE après un AT (notamment grave).</li>
-          <li>Droit d'alerte en cas de danger grave et imminent ; droit de retrait du ou des salarié·es.</li>
-          <li>Analyse et mise à jour du DUERP ; recours possible à une expertise.</li>
+          <li><strong>Enquête du CSE</strong> après un AT grave ou répété (L.2312-13) — résultats versés au dossier.</li>
+          <li><strong>Droit d'alerte DGI</strong> (L.4132-1) : consigner dans le registre spécial → réunion CSE dans les 24 h.</li>
+          <li><strong>Droit de retrait</strong> individuel (L.4131-1) : le salarié se retire sans attendre l'accord de l'employeur.</li>
+          <li><strong>DUERP</strong> : mise à jour obligatoire après tout AT grave ; le CSE est associé à son élaboration.</li>
+          <li><strong>Expertise SSCT</strong> (L.2315-94) : en cas de risque grave ou de projet important modifiant les conditions de travail.</li>
         </ul>
-        <p class="ref">Enquêtes : L.2312-13 ; alerte/retrait : L.4131-1 et s. ; DUERP : R.4121-1.</p>
+        <p class="ref">L.2312-13, L.4131-1, L.4132-1, R.4121-1, L.2315-94 CT.</p>
       </div>
     </div>
 
     <div class="diapo">
-      <div class="diapo-header"><span class="diapo-num">Diapo 49</span><span class="diapo-title">La tarification AT/MP : un levier</span></div>
+      <div class="diapo-header"><span class="diapo-num">Diapo 63</span><span class="diapo-title">L'enquête : l'arbre des causes</span></div>
       <div class="diapo-body">
-        <div class="message-cle">Message clé — <span>La sinistralité pèse sur la cotisation de l'employeur — argument de négociation.</span></div>
+        <div class="message-cle">Message clé — <span>Une méthode pour comprendre, jamais pour accuser — partir du dommage, remonter les causes.</span></div>
         <div class="dev-label">À développer</div>
         <ul>
-          <li>La cotisation AT/MP dépend de la sinistralité de l'entreprise (gérée par la CARSAT).</li>
-          <li>Plus il y a d'AT/MP reconnus, plus la cotisation augmente ; des cotisations supplémentaires sont possibles.</li>
-          <li>Faire reconnaître les AT/MP pèse sur le coût pour l'employeur.</li>
+          <li>Partir du dommage, poser la question « pourquoi ? » à chaque étape jusqu'aux causes racines (organisationnelles, managériales, matérielles).</li>
+          <li>Refuser l'explication par « l'erreur humaine » ou « l'inattention » : presque toujours, l'organisation est en cause.</li>
+          <li>Aboutir à des mesures concrètes, inscrites au DUERP et au PAPRIPACT avec délai et responsable.</li>
+          <li>L'arbre des causes bien mené construit aussi le dossier de faute inexcusable.</li>
         </ul>
-        <div class="angle-cgt">Transformer la sinistralité en argument de négociation pour la prévention : prévenir coûte moins cher que réparer.</div>
-      </div>
-    </div>
-
-    <div class="diapo">
-      <div class="diapo-header"><span class="diapo-num">Diapo 50</span><span class="diapo-title">L'enquête : l'arbre des causes</span></div>
-      <div class="diapo-body">
-        <div class="message-cle">Message clé — <span>Une méthode pour comprendre, pas pour accuser.</span></div>
-        <div class="dev-label">À développer</div>
-        <ul>
-          <li>Recueillir les faits immédiatement, sans chercher de coupable.</li>
-          <li>Remonter les causes : techniques, humaines, organisationnelles (logique multicausale).</li>
-          <li>Aboutir à des mesures de prévention, puis en assurer le suivi.</li>
-        </ul>
-        <div class="angle-cgt">Refuser l'explication paresseuse par « l'erreur humaine » : presque toujours, l'organisation est en cause.</div>
+        <div class="angle-cgt">Outil : INRS guide ED 6233 (gratuit sur inrs.fr). Durée exercice pratique en groupes : 25 min.</div>
       </div>
     </div>
 
     <div class="diapo schema">
-      <div class="diapo-header"><span class="diapo-num">Diapo 51</span><span class="diapo-title">Schéma — L'arbre des causes <span class="badge-schema">SCHÉMA</span></span></div>
+      <div class="diapo-header"><span class="diapo-num">Diapo 64</span><span class="diapo-title">Schéma — L'arbre des causes <span class="badge-schema">SCHÉMA</span></span></div>
       <div class="diapo-body">
         <div class="message-cle">Message clé — <span>Plusieurs familles de causes mènent à l'accident.</span></div>
         <ul>
@@ -866,61 +1119,74 @@
     </div>
 
     <div class="diapo">
-      <div class="diapo-header"><span class="diapo-num">Diapo 52</span><span class="diapo-title">Du cas individuel au collectif</span></div>
+      <div class="diapo-header"><span class="diapo-num">Diapo 65</span><span class="diapo-title">Du cas individuel au collectif</span></div>
       <div class="diapo-body">
-        <div class="message-cle">Message clé — <span>La finalité syndicale de la démarche.</span></div>
+        <div class="message-cle">Message clé — <span>La finalité syndicale : transformer chaque AT/MP en revendication collective.</span></div>
         <div class="dev-label">À développer</div>
         <ul>
-          <li>Chaque AT/MP révèle un problème d'organisation du travail.</li>
-          <li>En faire une revendication : effectifs, cadences, matériel, formation, aménagements.</li>
-          <li>Inscrire les mesures au DUERP et au programme annuel de prévention.</li>
+          <li>Chaque AT/MP révèle un problème d'organisation du travail : effectifs, cadences, matériel, formation, aménagements.</li>
+          <li>Inscrire les mesures au DUERP et au PAPRIPACT — voter en CSE avec un délai et un responsable nommé.</li>
+          <li>Utiliser les données de sinistralité (taux de fréquence, taux de gravité) pour construire une revendication chiffrée.</li>
         </ul>
       </div>
     </div>
 
-    <div class="diapo">
-      <div class="diapo-header"><span class="diapo-num">Diapo 53</span><span class="diapo-title">Mise en situation — « De l'accident à la prévention »</span></div>
+    <div class="diapo ressource">
+      <div class="diapo-header"><span class="diapo-num">Ressource A</span><span class="diapo-title">Le DUERP — outil de prévention collective <span class="badge-res">RESSOURCE</span></span></div>
       <div class="diapo-body">
-        <div class="message-cle">Message clé — <span>Mettre en pratique l'enquête et la revendication.</span></div>
+        <div class="message-cle">Message clé — <span>Obligatoire dans toute entreprise ≥ 1 salarié — le CSE doit l'exiger et le contrôler.</span></div>
         <ul>
-          <li>Cas d'un AT grave sur une ligne de production.</li>
-          <li>Construire collectivement : enquête (arbre des causes), suites DUERP, revendication.</li>
-          <li>Restitution en plénière puis synthèse formateur.</li>
+          <li>Mis à jour annuellement et après tout AT grave ou changement des conditions de travail.</li>
+          <li>Depuis la loi Santé au Travail 2021 : dématérialisé, conservé 40 ans, accessible aux salariés sur demande.</li>
+          <li>Un DUERP qui ne mentionne pas les RPS, la pénibilité ou les risques chimiques est contestable en CSE.</li>
         </ul>
+        <p class="ref">R.4121-1 à R.4121-4 CT ; loi 2021-1018.</p>
+        <div class="angle-cgt">Un DUERP incomplet qui ne mentionne pas un risque ayant causé un AT est une pièce clé pour la faute inexcusable. Documenter systématiquement les lacunes du DUERP en PV de CSE.</div>
+      </div>
+    </div>
+
+    <div class="diapo ressource">
+      <div class="diapo-header"><span class="diapo-num">Ressource B</span><span class="diapo-title">Accompagner un·e collègue — la check-list militante <span class="badge-res">RESSOURCE</span></span></div>
+      <div class="diapo-body">
+        <div class="message-cle">Message clé — <span>Le livrable pratique de la formation — distribuer imprimé en fin de J2.</span></div>
+        <ul>
+          <li><strong>Réflexes immédiats :</strong> déclarer dans les 24 h, CMI détaillé, feuille d'accident, notes manuscrites (heure, lieu, témoins).</li>
+          <li><strong>Suivi procédure CPAM :</strong> surveiller les délais, utiliser la phase contradictoire, saisir la CRA si décision défavorable.</li>
+          <li><strong>Suivi médical :</strong> visite de reprise, taux d'IPP, contester si sous-évalué, mi-temps thérapeutique.</li>
+          <li><strong>Protection emploi :</strong> vérifier tout licenciement pendant/après arrêt AT/MP.</li>
+          <li><strong>Action collective :</strong> enquête CSE, arbre des causes, mise à jour DUERP.</li>
+        </ul>
+        <div class="angle-cgt">Cette check-list peut être transmise à tout collègue venant vous voir après un accident — c'est l'acte militant concret de sortie de formation. Ajouter les coordonnées UD CGT Occitanie en bas.</div>
       </div>
     </div>
 
     <div class="diapo">
-      <div class="diapo-header"><span class="diapo-num">Diapo 54</span><span class="diapo-title">Évaluation et bilan des 2 jours</span></div>
+      <div class="diapo-header"><span class="diapo-num">Diapo finale</span><span class="diapo-title">Mise en situation — « De l'accident à la prévention » + Évaluation</span></div>
       <div class="diapo-body">
-        <div class="message-cle">Message clé — <span>Mesurer les acquis et préparer la suite.</span></div>
+        <div class="message-cle">Message clé — <span>Mettre en pratique l'enquête AT et la revendication collective — puis mesurer les acquis.</span></div>
         <ul>
-          <li>Évaluation à chaud, puis à froid (2 à 3 mois après).</li>
-          <li>Chacun repart avec un mini plan d'action ; organiser l'essaimage dans les UD.</li>
+          <li>Cas Ahmed (voir diapo 58) — restitution plénière et synthèse formateur.</li>
+          <li>Évaluation à chaud : quiz final + fiche satisfaction.</li>
+          <li>Tour de table final : une chose que je vais faire différemment dès demain.</li>
+          <li>Distribuer : check-list militante, coordonnées UD CGT Occitanie, liens ressources (ameli.fr, INRS, fiva.fr).</li>
         </ul>
+        <div class="angle-cgt">Message de clôture : vous n'êtes plus seul·es. Chaque dossier difficile — appelez l'UD. Et formez les prochains militants de votre entreprise.</div>
       </div>
     </div>
 
     <div class="diapo">
-      <div class="diapo-header"><span class="diapo-num">Diapo 55</span><span class="diapo-title">Ressources utiles</span></div>
+      <div class="diapo-header"><span class="diapo-num">Ressources</span><span class="diapo-title">Ressources utiles — 8 références clés</span></div>
       <div class="diapo-body">
-        <div class="message-cle">Message clé — <span>Où trouver l'information fiable et à jour.</span></div>
+        <div class="message-cle">Message clé — <span>Orienter les stagiaires vers les bonnes sources — à distribuer en version papier ou QR code.</span></div>
         <ul>
-          <li><strong>ameli.fr</strong> – Risques professionnels : procédures, formulaires, feuille d'accident.</li>
-          <li><strong>Légifrance :</strong> L.411-1, L.411-2, R.441-2, R.441-10, L.452-1 et s., tableaux de MP.</li>
-          <li><strong>INRS :</strong> tableaux de MP, prévention, risques par métier ; service-public.fr.</li>
-          <li><strong>CGT :</strong> collectif santé au travail de l'UD et appui juridique.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="diapo">
-      <div class="diapo-header"><span class="diapo-num">Diapo 56</span><span class="diapo-title">Clôture — Merci</span></div>
-      <div class="diapo-body">
-        <div class="message-cle">Message clé — <span>Ouvrir sur l'action.</span></div>
-        <ul>
-          <li>Donner les contacts de l'UD et du collectif santé au travail.</li>
-          <li>Encourager chacun à accompagner un premier dossier et à revenir vers le réseau CGT.</li>
+          <li><strong>ameli.fr</strong> — Formulaires DAT, feuille d'accident, calcul IJ, droits AT/MP complets.</li>
+          <li><strong>Légifrance</strong> — CSS L.411-1 (AT), L.461-1 (MP), L.1226-9 (protection emploi), L.452-1 (FIE) — textes intégraux gratuits.</li>
+          <li><strong>INRS (inrs.fr)</strong> — 120 tableaux de MP, arbre des causes (ED 6233), fiches risques par métier.</li>
+          <li><strong>FIVA (fiva.fr)</strong> — Formulaires et procédure pour toutes les victimes de l'amiante.</li>
+          <li><strong>service-public.fr</strong> — Fiches pratiques AT/MP accessibles à tous les salariés.</li>
+          <li><strong>Carsat Occitanie</strong> — carsat-lr.fr / carsat-mp.fr — Prévention et tarification.</li>
+          <li><strong>Dreets Occitanie</strong> — dreets.gouv.fr/occitanie — Inspection du travail, signalement AT grave.</li>
+          <li><strong>CGT Occitanie — UD/UR</strong> — Collectif santé au travail, appui juridique, accompagnement dossiers complexes.</li>
         </ul>
       </div>
     </div>
@@ -930,7 +1196,7 @@
 </main>
 
 <footer>
-  <strong>CGT</strong> Comité Régional Occitanie — Formation syndicale secteur privé
+  <strong>CGT</strong> Comité Régional Occitanie — Formation syndicale AT/MP 2 jours · 65 diapositives · Mis à jour 2025
 </footer>
 
 </body>
