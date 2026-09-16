@@ -30,6 +30,8 @@
     let currentQ = -1;
     let answered = false;
     let myScore = 0;
+    let totalQ = 12;
+    let myLastCorrect = false;
 
     function uid_gen() {
       return Math.random().toString(36).substring(2, 10);
@@ -58,12 +60,15 @@
         const data = snap.val();
         if (!data) return;
 
+        if (data.totalQ) totalQ = data.totalQ;
+
         if (data.status === 'question' && data.currentQ !== currentQ) {
           currentQ = data.currentQ;
           answered = false;
+          myLastCorrect = false;
           afficherQuestion(data);
         } else if (data.status === 'reveal' && data.correctIndex !== undefined && data.correctIndex >= 0) {
-          afficherReveal(data.correctIndex);
+          afficherReveal(data.correctIndex, data.scores, data.participants);
         } else if (data.status === 'scoreboard') {
           afficherScore(data.scores);
         }
@@ -75,7 +80,8 @@
       document.getElementById('result-screen').classList.add('hidden');
       document.getElementById('question-screen').classList.remove('hidden');
 
-      document.getElementById('q-num-join').textContent = `Question ${data.currentQ + 1} / 12`;
+      document.getElementById('q-num-join').textContent = `Question ${data.currentQ + 1} / ${totalQ}`;
+      document.getElementById('interim-score').classList.add('hidden');
       document.getElementById('q-text-join').textContent = data.questionText;
 
       const letters = ['A', 'B', 'C', 'D'];
@@ -88,15 +94,45 @@
       document.getElementById('wait-answer').classList.add('hidden');
     }
 
-    function afficherReveal(correctIndex) {
-      answered = true; // bloque toute nouvelle sélection
+    function afficherReveal(correctIndex, scores, participants) {
+      answered = true;
       const btns = document.querySelectorAll('.choice-btn');
+      let myChoice = -1;
       btns.forEach((b, i) => {
+        if (b.classList.contains('selected')) myChoice = i;
         b.disabled = true;
         if (i === correctIndex) b.classList.add('correct');
         else b.classList.add('wrong');
       });
       document.getElementById('wait-answer').classList.add('hidden');
+
+      // Score intermédiaire
+      myLastCorrect = (myChoice === correctIndex);
+      if (myLastCorrect) myScore++;
+      const interimEl = document.getElementById('interim-score');
+      if (interimEl) {
+        interimEl.classList.remove('hidden');
+        interimEl.innerHTML = myLastCorrect
+          ? `<span class="interim-correct">+1 ✓</span> Score : <strong>${myScore}</strong> / ${totalQ}`
+          : `<span class="interim-wrong">✗</span> Score : <strong>${myScore}</strong> / ${totalQ}`;
+      }
+
+      // Podium live
+      if (scores && participants) {
+        const sorted = Object.entries(scores)
+          .map(([id, s]) => ({ name: participants[id] || id, score: s }))
+          .sort((a, b) => b.score - a.score)
+          .slice(0, 3);
+        const medals = ['🥇', '🥈', '🥉'];
+        const podiumEl = document.getElementById('live-podium');
+        if (podiumEl && sorted.length > 0) {
+          podiumEl.classList.remove('hidden');
+          podiumEl.innerHTML = '<div class="podium-live-title">Classement</div>' +
+            sorted.map((p, i) =>
+              `<div class="podium-live-row">${medals[i]} <span>${p.name}</span><strong>${p.score}</strong></div>`
+            ).join('');
+        }
+      }
     }
 
     async function choisir(idx) {
@@ -114,9 +150,9 @@
       document.getElementById('question-screen').classList.add('hidden');
       document.getElementById('result-screen').classList.remove('hidden');
       const myS = (scores && scores[uid]) || 0;
-      const total = 12;
-      const wrong = total - myS;
+      const wrong = totalQ - myS;
       document.getElementById('my-score').textContent = myS;
+      document.getElementById('my-total').textContent = totalQ;
       document.getElementById('my-wrong').textContent = wrong;
     }
 
@@ -198,6 +234,19 @@
     .choice-btn.correct .cl { color: var(--vert); }
     #wait-answer { font-size: .78rem; color: var(--muted); text-align: center; padding: .5rem; }
 
+    /* SCORE INTERMÉDIAIRE */
+    .interim-score-bar { font-size: .9rem; color: var(--texte); text-align: center; padding: .65rem .85rem; background: #1A1A2E; border: 1px solid #2E2E4E; margin-top: .75rem; }
+    .interim-correct { color: var(--vert); font-weight: 700; font-size: 1rem; }
+    .interim-wrong { color: #FF6B7A; font-weight: 700; font-size: 1rem; }
+
+    /* PODIUM LIVE */
+    .live-podium { background: var(--card); border: 1px solid var(--border); padding: .65rem .85rem; margin-top: .5rem; }
+    .podium-live-title { font-size: .65rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin-bottom: .4rem; }
+    .podium-live-row { display: flex; align-items: center; gap: .5rem; padding: .25rem 0; font-size: .85rem; border-bottom: 1px solid #252525; }
+    .podium-live-row:last-child { border-bottom: none; }
+    .podium-live-row span { flex: 1; }
+    .podium-live-row strong { color: var(--jaune); font-family: 'Anton', sans-serif; }
+
     /* SCORE */
     .score-wrap { text-align: center; padding: 1rem 0; }
     .score-num { font-family: 'Anton', sans-serif; font-size: 3.5rem; color: var(--jaune); display: block; }
@@ -241,13 +290,15 @@
         <div class="q-text-join" id="q-text-join"></div>
         <div class="choices-join" id="choices-join"></div>
         <div id="wait-answer" class="hidden">Réponse envoyée — attendez la correction…</div>
+        <div id="interim-score" class="hidden interim-score-bar"></div>
+        <div id="live-podium" class="hidden live-podium"></div>
       </div>
 
       <!-- SCORE FINAL -->
       <div id="result-screen" class="hidden">
         <div class="score-wrap">
           <span class="score-num" id="my-score">0</span>
-          <div class="score-label">bonne(s) réponse(s) sur 12</div>
+          <div class="score-label">bonne(s) réponse(s) sur <span id="my-total">12</span></div>
           <div class="score-wrong"><span id="my-wrong">12</span> mauvaise(s) réponse(s)</div>
           <div class="score-bravo">Merci pour votre participation !</div>
         </div>

@@ -65,6 +65,7 @@
       await set(ref(db, `sessions/${sessionId}`), {
         status: 'lobby',
         currentQ: -1,
+        totalQ: QUESTIONS.length,
         createdAt: Date.now()
       });
 
@@ -160,7 +161,9 @@
       const q = QUESTIONS[currentQ];
       await update(ref(db, `sessions/${sessionId}`), {
         status: 'reveal',
-        correctIndex: q.correct
+        correctIndex: q.correct,
+        scores: scores,
+        participants: participants
       });
 
       // Calculer les scores
