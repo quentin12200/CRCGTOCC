@@ -59,7 +59,17 @@
     .badge-fp { font-size: .65rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; background: #2E7D32; color: #fff; padding: .15rem .45rem; margin-left: .3rem; vertical-align: middle; }
     .badge-schema { font-size: .65rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; background: #888; color: #fff; padding: .15rem .45rem; margin-left: .3rem; vertical-align: middle; }
     .badge-res { font-size: .65rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; background: #F57C00; color: #fff; padding: .15rem .45rem; margin-left: .3rem; vertical-align: middle; }
-    .diapo-body { padding: 0 1.1rem 1rem; }
+    /* FICHES RESSOURCES */
+    .ressources-section { margin-top: 2.5rem; border-top: 3px solid #F57C00; padding-top: 1.5rem; }
+    .ressources-section-title { font-family: 'Anton', sans-serif; font-size: 1.1rem; color: #F57C00; letter-spacing: .06em; text-transform: uppercase; margin-bottom: 1rem; display: flex; align-items: center; gap: .75rem; }
+    .ressources-section-title::before { content: ''; display: block; width: 28px; height: 3px; background: #F57C00; }
+    .diapo.ressource { border-color: #F57C00; background: #1C1206; }
+    .diapo.ressource .diapo-header { background: #261A08; border-bottom: 1px solid #3D2A0E; }
+    .diapo.ressource .diapo-num { color: #F57C00; }
+
+    .diapo-body { padding: 0 1.1rem 1rem; max-height: 420px; overflow-y: auto; scrollbar-width: thin; scrollbar-color: var(--border-card) transparent; }
+    .diapo-body::-webkit-scrollbar { width: 4px; }
+    .diapo-body::-webkit-scrollbar-thumb { background: var(--border-card); border-radius: 2px; }
     .message-cle { font-size: .78rem; font-weight: 700; color: var(--texte-muted); text-transform: uppercase; letter-spacing: .06em; margin-bottom: .4rem; }
     .message-cle span { font-weight: 400; text-transform: none; letter-spacing: 0; color: var(--texte); font-size: .875rem; }
     .dev-label { font-size: .72rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--texte-muted); margin: .6rem 0 .3rem; }
@@ -1463,6 +1473,9 @@
       </div>
     </div>
 
+    <div class="ressources-section">
+      <div class="ressources-section-title">Fiches ressources — À distribuer / projeter</div>
+
     <div class="diapo ressource">
       <div class="diapo-header"><span class="diapo-num">Ressource A</span><span class="diapo-title">Le DUERP — outil de prévention collective <span class="badge-res">RESSOURCE</span></span></div>
       <div class="diapo-body">
@@ -1498,6 +1511,8 @@
         </div>
       </div>
     </div>
+
+    </div><!-- /.ressources-section -->
 
     <div class="diapo">
       <div class="diapo-header"><span class="diapo-num">Diapo finale</span><span class="diapo-title">Mise en situation — « De l'accident à la prévention » + Évaluation</span></div>
