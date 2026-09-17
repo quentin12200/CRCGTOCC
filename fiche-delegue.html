@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Fiche Délégué — Accompagner un accidenté du travail — CGT Occitanie</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%23E2001A'/%3E%3Ctext x='16' y='23' text-anchor='middle' font-family='sans-serif' font-weight='bold' font-size='16' fill='%23FFD200'%3ECGT%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --rouge: #E2001A; --rouge-dark: #C40017; --jaune: #FFD200;
+      --fond: #F5F4F0; --fond-card: #FFFFFF; --texte: #1A1A1A;
+      --muted: #6B6B6B; --border: #E0DED8;
+      --vert: #1A7A3C; --vert-l: #E8F5EE;
+      --bleu: #1565C0; --bleu-l: #EEF3FB;
+    }
+    body { background: var(--fond); color: var(--texte); font-family: 'Archivo', sans-serif; min-height: 100vh; }
+
+    /* AUTH */
+    #auth-wall { position: fixed; inset: 0; background: var(--rouge); display: flex; align-items: center; justify-content: center; z-index: 9999; }
+    #auth-box { background: #fff; border-radius: 12px; padding: 2.5rem; max-width: 420px; width: 90%; text-align: center; }
+    #auth-box .logo { font-family: 'Anton', sans-serif; font-size: 2rem; color: var(--rouge); margin-bottom: .25rem; }
+    #auth-box p { color: var(--muted); font-size: .9rem; margin-bottom: 1.5rem; }
+    #auth-box input { width: 100%; border: 2px solid var(--border); border-radius: 8px; padding: .75rem 1rem; font-size: 1rem; margin-bottom: .75rem; outline: none; }
+    #auth-box input:focus { border-color: var(--rouge); }
+    #auth-box button { width: 100%; background: var(--rouge); color: #fff; border: none; border-radius: 8px; padding: .85rem; font-size: 1rem; font-weight: 600; cursor: pointer; }
+    #auth-error { color: var(--rouge); font-size: .85rem; margin-top: .5rem; min-height: 1.2em; }
+
+    /* NAV */
+    nav { background: #1A1A1A; padding: 0 2rem; height: 52px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+    .nav-logo { font-family: 'Anton', sans-serif; font-size: 1.25rem; background: var(--jaune); color: var(--rouge); padding: 2px 10px 0; line-height: 1.5; text-decoration: none; }
+    .nav-back { color: #ccc; text-decoration: none; font-size: .82rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; }
+    .nav-back:hover { color: var(--jaune); }
+
+    /* HERO */
+    .hero { background: #1A1A1A; padding: 3.5rem 2rem 2.5rem; border-bottom: 5px solid var(--rouge); }
+    .hero .kicker { font-size: .72rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--jaune); margin-bottom: .75rem; display: flex; align-items: center; gap: .5rem; }
+    .hero .kicker::before { content: ''; width: .5em; height: .5em; background: var(--jaune); transform: rotate(45deg); display: inline-block; }
+    .hero h1 { font-family: 'Anton', sans-serif; font-size: clamp(2rem, 5vw, 3.5rem); color: #fff; line-height: 1; text-transform: uppercase; }
+    .hero h1 span { color: var(--jaune); }
+    .hero .sub { color: #aaa; font-size: .9rem; margin-top: .75rem; line-height: 1.6; max-width: 60ch; }
+
+    /* PRINT BUTTON */
+    .hero-actions { margin-top: 1.25rem; display: flex; gap: .75rem; flex-wrap: wrap; }
+    .btn-print { display: inline-flex; align-items: center; gap: .4rem; background: var(--jaune); color: #1A1A1A; font-size: .8rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; border: none; padding: .6rem 1.1rem; cursor: pointer; }
+    .btn-print:hover { opacity: .85; }
+
+    /* LAYOUT */
+    main { max-width: 900px; margin: 0 auto; padding: 2.5rem 1.5rem 4rem; }
+
+    /* TIMELINE DELAIS */
+    .timeline { position: relative; padding-left: 2.5rem; margin: 1.5rem 0 2rem; }
+    .timeline::before { content: ''; position: absolute; left: .85rem; top: 0; bottom: 0; width: 2px; background: var(--border); }
+    .tl-item { position: relative; margin-bottom: 1.5rem; }
+    .tl-item:last-child { margin-bottom: 0; }
+    .tl-dot {
+      position: absolute; left: -1.65rem; top: .2rem;
+      width: 1.25rem; height: 1.25rem; border-radius: 50%;
+      background: var(--rouge); display: flex; align-items: center; justify-content: center;
+      font-family: 'Anton', sans-serif; font-size: .65rem; color: #fff;
+    }
+    .tl-dot.vert { background: var(--vert); }
+    .tl-dot.bleu { background: var(--bleu); }
+    .tl-dot.jaune { background: #B8860B; }
+    .tl-time { font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--rouge); margin-bottom: .3rem; }
+    .tl-item.vert .tl-time { color: var(--vert); }
+    .tl-item.bleu .tl-time { color: var(--bleu); }
+    .tl-item.jaune .tl-time { color: #B8860B; }
+    .tl-title { font-weight: 700; font-size: 1rem; color: var(--texte); margin-bottom: .35rem; }
+    .tl-body { font-size: .875rem; color: #444; line-height: 1.6; }
+    .tl-body ul { padding-left: 1.2rem; margin-top: .35rem; }
+    .tl-body li { margin-bottom: .2rem; }
+    .tl-body strong { color: #111; }
+
+    /* SECTION */
+    .section { margin-bottom: 2.5rem; }
+    .section-head {
+      font-size: .68rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
+      color: var(--rouge); margin-bottom: 1.25rem; display: flex; align-items: center; gap: .7rem;
+    }
+    .section-head::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+    .section h2 { font-family: 'Anton', sans-serif; font-size: 1.5rem; margin-bottom: 1rem; }
+    .section h3 { font-weight: 700; font-size: 1rem; margin: 1.25rem 0 .6rem; }
+    .section p { line-height: 1.7; color: #333; margin-bottom: .6rem; font-size: .9rem; }
+    .section ul, .section ol { padding-left: 1.3rem; margin-bottom: .75rem; }
+    .section li { line-height: 1.65; color: #333; font-size: .88rem; margin-bottom: .2rem; }
+
+    /* CHECKLIST */
+    .checklist { list-style: none; padding: 0; }
+    .checklist li { display: flex; align-items: flex-start; gap: .75rem; padding: .6rem .5rem; border-bottom: 1px solid var(--border); cursor: pointer; transition: background .1s; }
+    .checklist li:last-child { border-bottom: none; }
+    .checklist li:hover { background: #fafaf9; }
+    .check-box {
+      flex-shrink: 0; width: 1.25rem; height: 1.25rem; border: 2px solid var(--border);
+      border-radius: 3px; margin-top: .1rem; display: flex; align-items: center; justify-content: center;
+      transition: all .15s;
+    }
+    .checklist li.done .check-box { background: var(--vert); border-color: var(--vert); }
+    .checklist li.done .check-box::after { content: '✓'; color: #fff; font-size: .8rem; font-weight: 700; }
+    .checklist li.done .check-text { text-decoration: line-through; color: var(--muted); }
+    .check-text { font-size: .875rem; line-height: 1.5; }
+    .check-text strong { color: #111; display: block; }
+    .check-text small { color: var(--muted); font-size: .78rem; }
+
+    /* CALLOUT */
+    .callout { border-radius: 6px; padding: 1rem 1.25rem; margin: 1rem 0; font-size: .875rem; line-height: 1.65; }
+    .callout-rouge { background: #fff5f5; border-left: 4px solid var(--rouge); }
+    .callout-vert { background: var(--vert-l); border-left: 4px solid var(--vert); }
+    .callout-jaune { background: #fffbea; border-left: 4px solid var(--jaune); }
+    .callout-bleu { background: var(--bleu-l); border-left: 4px solid var(--bleu); }
+    .callout strong { display: block; font-size: .8rem; text-transform: uppercase; letter-spacing: .06em; margin-bottom: .4rem; }
+
+    /* SCRIPT BOX */
+    .script-box { background: #1A1A1A; color: #e8e8e8; padding: 1.25rem 1.5rem; border-radius: 6px; font-size: .88rem; line-height: 1.7; margin: 1rem 0; position: relative; }
+    .script-box .script-label { font-size: .68rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--jaune); margin-bottom: .75rem; }
+    .script-box em { color: #aaa; font-style: italic; }
+    .script-box strong { color: var(--jaune); font-style: normal; }
+
+    /* GRID */
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    @media (max-width: 600px) { .two-col { grid-template-columns: 1fr; } }
+
+    /* DROITS TABLE */
+    .droits-table { width: 100%; border-collapse: collapse; font-size: .85rem; margin: 1rem 0; }
+    .droits-table th { background: #1A1A1A; color: #fff; padding: .6rem .9rem; text-align: left; font-size: .75rem; text-transform: uppercase; letter-spacing: .06em; }
+    .droits-table td { padding: .6rem .9rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+    .droits-table tr:nth-child(even) td { background: #fafaf9; }
+    .droits-table td:first-child { font-weight: 600; white-space: nowrap; }
+
+    /* CONTACT STRIP */
+    .contacts { display: flex; gap: .75rem; flex-wrap: wrap; margin-top: 1rem; }
+    .contact-chip { display: inline-flex; align-items: center; gap: .5rem; border: 2px solid var(--border); padding: .5rem .9rem; font-size: .82rem; font-weight: 600; background: var(--fond-card); text-decoration: none; color: var(--texte); }
+    .contact-chip:hover { border-color: var(--rouge); }
+
+    /* PRINT */
+    @media print {
+      #auth-wall, nav, .hero-actions, .no-print { display: none !important; }
+      body { background: #fff; }
+      .hero { background: #1A1A1A; -webkit-print-color-adjust: exact; }
+      .callout, .script-box { page-break-inside: avoid; }
+      .tl-item { page-break-inside: avoid; }
+    }
+    @media (max-width: 600px) {
+      .hero { padding: 2rem 1rem 1.5rem; }
+      main { padding: 1.5rem 1rem 3rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="auth-wall">
+  <div id="auth-box">
+    <div class="logo">CGT</div>
+    <p>Espace Délégué — Accès sécurisé</p>
+    <input type="password" id="auth-input" placeholder="Mot de passe" autocomplete="current-password">
+    <button id="auth-btn">Accéder</button>
+    <div id="auth-error"></div>
+  </div>
+</div>
+
+<div id="page-content" style="display:none">
+
+<nav>
+  <a class="nav-logo" href="/">CGT</a>
+  <a class="nav-back" href="/stagiaires.html">← Espace stagiaire</a>
+</nav>
+
+<div class="hero">
+  <div class="kicker">Fiche pratique · Formation AT/MP</div>
+  <h1>Je suis délégué —<br><span>Que faire ?</span></h1>
+  <p class="sub">Guide d'action rapide pour accompagner un collègue victime d'un accident du travail ou d'une maladie professionnelle. À utiliser dès le lendemain de la formation.</p>
+  <div class="hero-actions">
+    <button class="btn-print" onclick="window.print()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+      Imprimer cette fiche
+    </button>
+  </div>
+</div>
+
+<main>
+
+  <!-- URGENCE -->
+  <div class="section">
+    <div class="section-head">Chronologie d'action</div>
+    <h2>Les délais qui ne pardonnent pas</h2>
+
+    <div class="callout callout-rouge">
+      <strong>Règle d'or</strong>
+      Chaque heure qui passe peut faire perdre des droits à ton collègue. Agis vite, documente tout, mets par écrit.
+    </div>
+
+    <div class="timeline">
+
+      <div class="tl-item">
+        <div class="tl-dot">J0</div>
+        <div class="tl-time">Jour de l'accident</div>
+        <div class="tl-title">L'accident vient de se produire</div>
+        <div class="tl-body">
+          <ul>
+            <li><strong>Soins d'abord</strong> — médecin ou urgences, garder le certificat médical initial.</li>
+            <li>Le salarié informe son employeur <strong>dans la journée</strong> (ou dès que possible).</li>
+            <li>Si tu es présent : note l'heure, le lieu exact, les témoins, les circonstances. Photo si pertinent.</li>
+            <li>Rédiger une attestation de témoin (nom, prénom, ce qu'on a vu) — utile en cas de contestation.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-dot">48h</div>
+        <div class="tl-time">Dans les 48 heures</div>
+        <div class="tl-title">Déclaration AT par l'employeur</div>
+        <div class="tl-body">
+          <ul>
+            <li>L'employeur doit <strong>déclarer à la CPAM</strong> dans les 48h — c'est son obligation légale.</li>
+            <li>Vérifier qu'il l'a bien fait : demander une copie de la DAT (Déclaration d'Accident du Travail).</li>
+            <li>S'il ne déclare pas dans les 2 ans, le salarié peut déclarer lui-même directement à la CPAM.</li>
+            <li>Les <strong>réserves employeur</strong> doivent être faites à ce moment (ou dans les 10 jours suivants).</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="tl-item vert">
+        <div class="tl-dot vert">J1–3</div>
+        <div class="tl-time">Premiers jours</div>
+        <div class="tl-title">Contacter le collègue</div>
+        <div class="tl-body">
+          Prendre contact avec le collègue accidenté. Lui expliquer ses droits, qu'il n'est pas seul, et ce que tu vas faire pour l'aider. Voir le script ci-dessous.
+        </div>
+      </div>
+
+      <div class="tl-item bleu">
+        <div class="tl-dot bleu">30j</div>
+        <div class="tl-time">Dans les 30 jours</div>
+        <div class="tl-title">Décision de la CPAM sur la reconnaissance</div>
+        <div class="tl-body">
+          <ul>
+            <li>Sans réserves : <strong>30 jours</strong> pour accepter ou refuser.</li>
+            <li>Avec réserves : <strong>70 jours</strong> + phase contradictoire (10+10j) = 3 mois maximum.</li>
+            <li>La CPAM peut envoyer un questionnaire au salarié dans les 20 jours — répondre soigneusement.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="tl-item jaune">
+        <div class="tl-dot jaune">2m</div>
+        <div class="tl-time">Refus : dans les 2 mois</div>
+        <div class="tl-title">Contester la décision de la CPAM</div>
+        <div class="tl-body">
+          Courrier recommandé de recours amiable à la CPAM → Commission de Recours Amiable (CRA) → si échec : Pôle social du Tribunal Judiciaire.
+        </div>
+      </div>
+
+      <div class="tl-item vert">
+        <div class="tl-dot vert">Fin</div>
+        <div class="tl-time">Consolidation / Guérison</div>
+        <div class="tl-title">Évaluation de l'IPP</div>
+        <div class="tl-body">
+          <ul>
+            <li>Le médecin-conseil fixe le <strong>taux d'IPP</strong> (0–100 %). Contester si trop bas.</li>
+            <li>AT → recours devant le <strong>CMRA</strong> (Comité Médical Régional d'Appel).</li>
+            <li>MP → recours devant le <strong>TCI</strong> (Tribunal du Contentieux de l'Incapacité).</li>
+            <li>Capital si IPP &lt; 10 % ; rente viagère si ≥ 10 %.</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- CHECKLIST -->
+  <div class="section">
+    <div class="section-head">Checklist délégué</div>
+    <h2>À vérifier point par point</h2>
+
+    <ul class="checklist" id="checklist">
+      <li onclick="toggle(this)">
+        <div class="check-box"></div>
+        <div class="check-text">
+          <strong>DAT envoyée dans les 48h</strong>
+          <small>Demander copie de la Déclaration d'Accident du Travail à l'employeur</small>
+        </div>
+      </li>
+      <li onclick="toggle(this)">
+        <div class="check-box"></div>
+        <div class="check-text">
+          <strong>Certificat médical initial conservé</strong>
+          <small>Le CMI décrit les lésions et fait foi devant la CPAM</small>
+        </div>
+      </li>
+      <li onclick="toggle(this)">
+        <div class="check-box"></div>
+        <div class="check-text">
+          <strong>Cerfa sécurisé utilisé</strong>
+          <small>Obligatoire depuis le 1er juillet 2025 — vérifier que le médecin a utilisé le bon formulaire</small>
+        </div>
+      </li>
+      <li onclick="toggle(this)">
+        <div class="check-box"></div>
+        <div class="check-text">
+          <strong>Témoins identifiés</strong>
+          <small>Nom, prénom, coordonnées, ce qu'ils ont vu — attestations écrites si possible</small>
+        </div>
+      </li>
+      <li onclick="toggle(this)">
+        <div class="check-box"></div>
+        <div class="check-text">
+          <strong>Réserves employeur vérifiées</strong>
+          <small>Délai : au moment de la DAT ou dans les 10 jours suivants — peuvent allonger l'enquête CPAM</small>
+        </div>
+      </li>
+      <li onclick="toggle(this)">
+        <div class="check-box"></div>
+        <div class="check-text">
+          <strong>IJ versées correctement</strong>
+          <small>AT/MP : dès j1 (pas de carence), 60 % salaire j1–j28, 80 % j29+ · max 240,49/320,66 €/j (2026)</small>
+        </div>
+      </li>
+      <li onclick="toggle(this)">
+        <div class="check-box"></div>
+        <div class="check-text">
+          <strong>Maintien de salaire employeur respecté</strong>
+          <small>Vérifier selon ancienneté : 30/30j (1–5 ans), 40/40j (6–10 ans)… L.1226-1 CT</small>
+        </div>
+      </li>
+      <li onclick="toggle(this)">
+        <div class="check-box"></div>
+        <div class="check-text">
+          <strong>Frais médicaux pris en charge à 100 %</strong>
+          <small>Aucun reste à charge — si refus de remboursement, contacter la CPAM immédiatement</small>
+        </div>
+      </li>
+      <li onclick="toggle(this)">
+        <div class="check-box"></div>
+        <div class="check-text">
+          <strong>Protection contre le licenciement</strong>
+          <small>Licenciement interdit pendant l'arrêt AT · tout licenciement en lien avec l'accident = nul</small>
+        </div>
+      </li>
+      <li onclick="toggle(this)">
+        <div class="check-box"></div>
+        <div class="check-text">
+          <strong>Questionnaire CPAM répondu</strong>
+          <small>Si envoyé dans les 20 jours, répondre soigneusement avec aide du délégué</small>
+        </div>
+      </li>
+      <li onclick="toggle(this)">
+        <div class="check-box"></div>
+        <div class="check-text">
+          <strong>Taux IPP contesté si sous-évalué</strong>
+          <small>AT → CMRA · MP → TCI · délai : 2 mois à compter de la notification</small>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <!-- SCRIPT -->
+  <div class="section">
+    <div class="section-head">Premier contact</div>
+    <h2>Script d'appel au collègue</h2>
+    <p>Pour le premier appel dans les 24–48h après l'accident :</p>
+
+    <div class="script-box">
+      <div class="script-label">Script — Adapter selon la situation</div>
+      <p>« Bonjour [prénom], c'est [ton prénom], délégué CGT chez [employeur]. J'ai appris ce qui t'est arrivé, j'espère que tu vas le mieux possible dans cette situation. »</p>
+      <br>
+      <p>« Je t'appelle parce qu'en tant que délégué, c'est mon rôle de t'informer de tes droits et de t'accompagner si tu le souhaites. »</p>
+      <br>
+      <p>« Est-ce que l'employeur a fait la déclaration d'accident à la CPAM ? <em>(écouter)</em> Est-ce que tu as bien conservé ton certificat médical ? <em>(écouter)</em> »</p>
+      <br>
+      <p>« <strong>Quelques points importants :</strong> tu n'as pas de délai de carence, les IJ t'arrivent dès le premier jour. Tous tes frais médicaux sont à 100 %. Tu ne peux pas être licencié pendant ton arrêt pour l'accident. »</p>
+      <br>
+      <p>« Je reste disponible — n'hésite pas à m'appeler si quelque chose ne te semble pas normal. »</p>
+    </div>
+  </div>
+
+  <!-- DROITS CLÉS -->
+  <div class="section">
+    <div class="section-head">Référence rapide</div>
+    <h2>Droits AT/MP à mémoriser</h2>
+
+    <table class="droits-table">
+      <thead>
+        <tr><th>Point clé</th><th>Règle</th><th>Piège fréquent</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Carence AT/MP</td>
+          <td>Aucune — IJ dès j1</td>
+          <td>L'employeur qui applique 3j de carence fait une erreur</td>
+        </tr>
+        <tr>
+          <td>IJ AT (j1–j28)</td>
+          <td>60 % du SDJB · max 240,49 €/j</td>
+          <td>Vérifier que la CPAM utilise bien le salaire du mois précédent</td>
+        </tr>
+        <tr>
+          <td>IJ AT (j29+)</td>
+          <td>80 % du SDJB · max 320,66 €/j</td>
+          <td>L'augmentation à 80 % doit arriver automatiquement au j29</td>
+        </tr>
+        <tr>
+          <td>Frais médicaux</td>
+          <td>100 % sans franchise</td>
+          <td>Vérifier que le code « AT » est bien apposé sur la feuille de soins</td>
+        </tr>
+        <tr>
+          <td>DAT employeur</td>
+          <td>48h sous peine d'amende</td>
+          <td>L'employeur peut formuler des réserves — ça allonge l'enquête</td>
+        </tr>
+        <tr>
+          <td>Décision CPAM</td>
+          <td>30j (sans réserves) · 3 mois max (avec)</td>
+          <td>Absence de réponse = acceptation tacite dans certains cas</td>
+        </tr>
+        <tr>
+          <td>Licenciement</td>
+          <td>Interdit pendant l'arrêt AT</td>
+          <td>Rupture conventionnelle aussi déconseillée pendant l'arrêt</td>
+        </tr>
+        <tr>
+          <td>IPP &lt; 10 %</td>
+          <td>Capital forfaitaire (483 € à 4 833 €)</td>
+          <td>Vérifier le taux fixé — le médecin-conseil peut sous-estimer</td>
+        </tr>
+        <tr>
+          <td>IPP ≥ 10 %</td>
+          <td>Rente viagère (taux utile × salaire annuel)</td>
+          <td>Taux utile ≠ taux IPP : fraction ≤50% ÷2 ; fraction >50% ×1,5</td>
+        </tr>
+        <tr>
+          <td>Retraite anticipée</td>
+          <td>IPP ≥ 20% → départ dès 60 ans</td>
+          <td>Dossier à constituer en amont avec la CARSAT</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- SI ÇA SE PASSE MAL -->
+  <div class="section">
+    <div class="section-head">Résolution de problèmes</div>
+    <h2>Si ça ne se passe pas comme prévu</h2>
+
+    <div class="two-col">
+      <div>
+        <div class="callout callout-rouge">
+          <strong>L'employeur ne déclare pas</strong>
+          Le salarié peut déclarer lui-même à la CPAM dans les 2 ans. Accompagne-le au guichet ou aide-le à rédiger un courrier recommandé.
+        </div>
+        <div class="callout callout-rouge">
+          <strong>La CPAM refuse la reconnaissance</strong>
+          Recours amiable (CRA) dans les 2 mois. Préparer un dossier solide : circonstances, témoins, lien avec le travail. Puis Tribunal judiciaire si refus de la CRA.
+        </div>
+        <div class="callout callout-rouge">
+          <strong>L'employeur conteste / pose des réserves</strong>
+          Phase contradictoire : le salarié peut répondre aux réserves (10 jours). Aide-le à rédiger une réponse factuelle et documentée.
+        </div>
+      </div>
+      <div>
+        <div class="callout callout-jaune">
+          <strong>Les IJ ne arrivent pas</strong>
+          Vérifier que le DAT a été envoyé et que la CPAM a le certificat médical initial. Appeler le 36 46 (Assurance Maladie).
+        </div>
+        <div class="callout callout-jaune">
+          <strong>Le taux IPP paraît trop bas</strong>
+          Demander expertise médicale contradictoire. AT → CMRA · MP → TCI. Délai : 2 mois. Un médecin mandaté par le salarié peut contester.
+        </div>
+        <div class="callout callout-vert">
+          <strong>Faute inexcusable de l'employeur (FIE)</strong>
+          Si l'employeur avait conscience du danger et n'a pas agi → majoration rente + indemnisation complémentaire. Recours devant le Tribunal judiciaire (pôle social).
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- OUTILS -->
+  <div class="section">
+    <div class="section-head">Outils disponibles</div>
+    <h2>Ressources sur ce site</h2>
+
+    <div class="contacts">
+      <a class="contact-chip" href="/calculateur-ij.html">Calculateur IJ &amp; Maintien de salaire</a>
+      <a class="contact-chip" href="/checklist-at.html">Checklist AT complète</a>
+      <a class="contact-chip" href="/faq-atmp.html">FAQ AT/MP (17 questions)</a>
+      <a class="contact-chip" href="/lexique.html">Lexique AT/MP</a>
+      <a class="contact-chip" href="/courriers.html">Modèles de courriers</a>
+    </div>
+
+    <div class="callout callout-bleu" style="margin-top:1.25rem">
+      <strong>Contacts urgents</strong>
+      CPAM : <strong>36 46</strong> (lun–ven 8h–17h) ·
+      Ameli.fr : espace assuré en ligne ·
+      Légifrance : textes officiels ·
+      En cas de litige : Union Locale CGT de ton secteur
+    </div>
+  </div>
+
+</main>
+
+</div><!-- /#page-content -->
+
+<script>
+  (function () {
+    const KEYS = ['cgt_auth', 'cgt_stagiaire_auth'];
+    const PASSES = ['cgt2024', 'cgt2025', 'cgt2026', 'formation', 'atmp2026'];
+
+    function isAuthed() {
+      return KEYS.some(k => { try { return !!localStorage.getItem(k); } catch { return false; } });
+    }
+
+    if (isAuthed()) show();
+
+    document.getElementById('auth-btn').addEventListener('click', () => {
+      const p = document.getElementById('auth-input').value;
+      if (PASSES.includes(p.toLowerCase().trim())) {
+        try { localStorage.setItem('cgt_stagiaire_auth', '1'); } catch {}
+        show();
+      } else {
+        document.getElementById('auth-error').textContent = 'Mot de passe incorrect.';
+      }
+    });
+    document.getElementById('auth-input').addEventListener('keydown', e => {
+      if (e.key === 'Enter') document.getElementById('auth-btn').click();
+    });
+
+    function show() {
+      document.getElementById('auth-wall').style.display = 'none';
+      document.getElementById('page-content').style.display = 'block';
+      loadChecklist();
+    }
+
+    function loadChecklist() {
+      const saved = (() => { try { return JSON.parse(localStorage.getItem('delegue_checklist') || '[]'); } catch { return []; } })();
+      const items = document.querySelectorAll('#checklist li');
+      items.forEach((li, i) => { if (saved[i]) li.classList.add('done'); });
+    }
+
+    window.toggle = function(li) {
+      li.classList.toggle('done');
+      const states = [...document.querySelectorAll('#checklist li')].map(l => l.classList.contains('done'));
+      try { localStorage.setItem('delegue_checklist', JSON.stringify(states)); } catch {}
+    };
+  })();
+</script>
+</body>
+</html>
