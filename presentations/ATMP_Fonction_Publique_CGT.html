@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>CGT · Accidents du Travail & Maladies Professionnelles — Fonction Publique</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;600;700;800&family=Spectral:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --red:#E2001A; --red-d:#A60012; --yellow:#FFD200; --ink:#141414;
+  --paper:#FBFAF6; --card:#F1EFE8; --line:#E4E0D4; --muted:#6C6A63; --white:#fff;
+  --blue:#1A3A6B; --blue-l:#E8EEF7;
+  --disp:'Anton','Arial Narrow',Impact,sans-serif;
+  --ui:'Archivo','Helvetica Neue',Arial,sans-serif;
+  --body:'Spectral',Georgia,'Times New Roman',serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;overflow:hidden;background:#0c0c0c;color:var(--ink);font-family:var(--body)}
+body{-webkit-font-smoothing:antialiased}
+
+#deck{position:fixed;top:0;right:0;bottom:0;left:0}
+.slide{position:absolute;top:0;right:0;bottom:0;left:0;display:flex;flex-direction:column;justify-content:center;
+  padding:5.5vh 7vw;opacity:0;visibility:hidden;pointer-events:none;
+  transform:translateY(14px) scale(.995);transition:opacity .45s ease,transform .45s ease;
+  background:var(--paper);
+  background-image:radial-gradient(rgba(20,20,20,.035) 1px,transparent 1px);background-size:22px 22px;}
+.slide.active{opacity:1;visibility:visible;pointer-events:auto;transform:none;z-index:2}
+.slide::before{content:"";position:absolute;left:0;top:0;bottom:0;width:14px;background:var(--red)}
+.slide.dark::before{background:var(--yellow)}
+.slide.blue-slide::before{background:var(--blue)}
+
+.kicker{font-family:var(--ui);font-weight:800;letter-spacing:.22em;text-transform:uppercase;
+  font-size:clamp(11px,1.25vw,18px);color:var(--red);margin-bottom:1.4vh;display:flex;align-items:center;gap:.8em}
+.kicker .dot{width:.6em;height:.6em;background:var(--yellow);display:inline-block;transform:rotate(45deg)}
+.kicker.blue{color:var(--blue)}
+h1,h2{font-family:var(--disp);font-weight:400;line-height:.98;letter-spacing:.01em;text-transform:uppercase}
+.title{font-size:clamp(34px,6.2vw,104px);color:var(--ink)}
+.title .em{color:var(--red)}
+.title .em-blue{color:var(--blue)}
+.lede{font-size:clamp(16px,2.1vw,30px);max-width:60ch;margin-top:2.4vh;color:#2b2b2b}
+.foot{font-family:var(--ui);font-weight:700;color:var(--red);margin-top:auto;font-size:clamp(14px,1.6vw,22px);
+  text-transform:uppercase;letter-spacing:.12em}
+
+.slide.active .reveal{animation:rise .55s cubic-bezier(.2,.7,.2,1) both}
+.slide.active .reveal:nth-child(2){animation-delay:.06s}
+.slide.active .reveal:nth-child(3){animation-delay:.12s}
+.slide.active .reveal:nth-child(4){animation-delay:.18s}
+.slide.active .reveal:nth-child(5){animation-delay:.24s}
+.slide.active .reveal:nth-child(6){animation-delay:.30s}
+@keyframes rise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+
+.s-title .title{font-size:clamp(40px,7.4vw,128px)}
+.s-title .accent{height:14px;width:min(42vw,520px);background:var(--yellow);margin:3vh 0}
+
+.slide.s-divider{background:var(--ink);color:var(--white);
+  background-image:radial-gradient(rgba(255,255,255,.05) 1px,transparent 1px);background-size:24px 24px}
+.s-divider .kicker{color:var(--yellow)}
+.s-divider .title{color:var(--yellow);font-size:clamp(40px,8vw,132px)}
+.s-divider .lede{color:#e8e8e8}
+.s-divider .barline{height:10px;width:min(36vw,440px);background:var(--red);margin-top:3vh}
+
+.slide.s-blue{background:var(--blue);color:var(--white);}
+.s-blue .kicker{color:var(--yellow)}
+.s-blue .title{color:#fff;font-size:clamp(36px,6.5vw,108px)}
+.s-blue .lede{color:#d0daea}
+.s-blue .barline{height:10px;width:min(36vw,440px);background:var(--yellow);margin-top:3vh}
+
+.bullets{list-style:none;margin-top:2vh;display:flex;flex-direction:column;gap:1.5vh;max-width:64ch}
+.bullets li{display:flex;gap:.9em;align-items:flex-start;font-size:clamp(16px,2.05vw,30px);line-height:1.3}
+.bullets:has(li:nth-child(5)) li{font-size:clamp(14px,1.8vw,26px);line-height:1.25}
+.bullets:has(li:nth-child(5)){gap:1.2vh;margin-top:1.5vh}
+.bullets:has(li:nth-child(6)) li{font-size:clamp(13px,1.6vw,22px);gap:.7em;line-height:1.2}
+.bullets:has(li:nth-child(6)){gap:1vh;margin-top:1.2vh}
+.bull{flex-shrink:0;width:1em;height:1em;background:var(--yellow);display:grid;place-items:center;margin-top:.2em}
+.bull-blue{flex-shrink:0;width:1em;height:1em;background:var(--blue);display:grid;place-items:center;margin-top:.2em}
+.bull svg,.bull-blue svg{width:.55em;height:.55em;fill:white}
+
+.s-stat{display:grid;grid-template-columns:1fr 1fr 1fr;gap:3vw;align-items:center}
+.stat-box{text-align:center}
+.stat-num{font-family:var(--disp);font-size:clamp(40px,7vw,120px);line-height:1;color:var(--red)}
+.stat-num.blue{color:var(--blue)}
+.stat-num.yellow{color:var(--yellow)}
+.stat-label{font-family:var(--ui);font-size:clamp(12px,1.3vw,20px);color:var(--muted);margin-top:.8vh;max-width:18ch;margin-left:auto;margin-right:auto;line-height:1.3}
+
+.compare-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:2vw;margin-top:2vh}
+.versant-card{padding:1.5vh 1.5vw;border:2px solid var(--line);border-radius:2px;font-family:var(--ui)}
+.versant-card.fpe{border-color:var(--blue);background:var(--blue-l)}
+.versant-card.fpt{border-color:#1a6b3a;background:#e8f4ed}
+.versant-card.fph{border-color:var(--red);background:#fbeaea}
+.versant-name{font-weight:800;font-size:clamp(13px,1.6vw,22px);text-transform:uppercase;letter-spacing:.06em}
+.versant-name.fpe{color:var(--blue)}
+.versant-name.fpt{color:#1a6b3a}
+.versant-name.fph{color:var(--red)}
+.versant-stat{font-size:clamp(28px,4.5vw,72px);font-family:var(--disp);margin:.5vh 0;line-height:1}
+.versant-detail{font-size:clamp(11px,1.2vw,17px);color:var(--muted);line-height:1.4}
+
+.diff-table{width:100%;border-collapse:collapse;margin-top:2vh;font-family:var(--ui);font-size:clamp(12px,1.3vw,18px)}
+.diff-table th{background:var(--ink);color:var(--yellow);padding:.7vh 1.2vw;text-align:left;font-weight:700;font-size:clamp(11px,1.2vw,16px);letter-spacing:.06em;text-transform:uppercase}
+.diff-table td{padding:.6vh 1.2vw;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.3}
+.diff-table tr:nth-child(odd) td{background:#f4f2eb}
+.diff-table .label{font-weight:700;color:var(--ink)}
+.badge-fp{background:var(--blue);color:#fff;font-size:.75em;padding:.15em .5em;font-family:var(--ui);font-weight:700;vertical-align:middle}
+.badge-prive{background:var(--red);color:#fff;font-size:.75em;padding:.15em .5em;font-family:var(--ui);font-weight:700;vertical-align:middle}
+
+.callout{background:var(--yellow);padding:1.5vh 2vw;margin-top:2vh;max-width:70ch}
+.callout p{font-family:var(--ui);font-size:clamp(14px,1.6vw,22px);font-weight:600;color:var(--ink)}
+.callout.red{background:var(--red)}
+.callout.red p{color:var(--white)}
+.callout.blue{background:var(--blue)}
+.callout.blue p{color:var(--white)}
+
+.ref{font-family:var(--ui);font-size:clamp(10px,.9vw,14px);color:var(--muted);margin-top:auto;padding-top:1.5vh}
+
+/* speaker notes */
+#notes-panel{display:none;position:fixed;bottom:0;left:0;right:0;height:30vh;
+  background:rgba(10,10,10,.97);color:#e8e8e8;overflow-y:auto;z-index:100;
+  font-family:'Archivo',sans-serif;font-size:clamp(12px,1.1vw,15px);padding:1rem 2rem}
+#notes-panel.visible{display:block}
+#notes-panel h4{color:var(--yellow);margin-bottom:.5rem;font-size:.9em;text-transform:uppercase;letter-spacing:.1em}
+#notes-panel .notes-body b{color:var(--yellow)}
+#notes-panel .notes-body .cgt{color:#ffd26b;font-style:italic}
+#notes-panel .notes-body .ref{color:#aaa;font-size:.85em}
+
+/* nav */
+#nav{position:fixed;bottom:1.5vh;right:2vw;display:flex;gap:.6rem;z-index:200;font-family:var(--ui)}
+#nav button{background:rgba(20,20,20,.75);color:#fff;border:none;padding:.5rem 1.1rem;
+  font-size:clamp(13px,1.1vw,17px);cursor:pointer;letter-spacing:.04em;transition:background .2s}
+#nav button:hover{background:rgba(226,0,26,.85)}
+#counter{position:fixed;bottom:1.5vh;left:2vw;font-family:var(--ui);font-size:clamp(11px,.9vw,14px);
+  color:rgba(255,255,255,.5);z-index:200}
+#progress{position:fixed;top:0;left:0;height:3px;background:var(--yellow);z-index:300;transition:width .4s}
+</style>
+</head>
+<body>
+<div id="progress"></div>
+<div id="deck"></div>
+<div id="notes-panel"><h4>Notes formateur</h4><div class="notes-body" id="notes-text"></div></div>
+<div id="counter"><span id="cur">1</span> / <span id="tot">1</span></div>
+<div id="nav">
+  <button id="btn-notes" title="N — notes">N</button>
+  <button id="btn-prev" title="← Précédent">◀</button>
+  <button id="btn-next" title="→ Suivant">▶</button>
+</div>
+
+<script>
+const SLIDES = [
+
+/* ===== 0 — COUVERTURE ===== */
+{type:"title",
+ kicker:"CGT Occitanie · Formation AT/MP",
+ title:"Accidents du Travail &amp; Maladies Professionnelles",
+ sub:"dans la <em>Fonction Publique</em>",
+ foot:"FPE · FPT · FPH — 3 versants, droits communs et spécificités",
+ notes:"<b>Présentation spécifique Fonction Publique.</b> Cette formation complémentaire couvre les trois versants (État, Territorial, Hospitalier). Elle s'appuie sur le régime de l'accident de service et de la maladie professionnelle tel qu'il existe dans le droit de la FP — différent du Code de la Sécurité Sociale, mais avec des convergences importantes. <span class='cgt'>Point militant : les agents publics sont souvent moins bien informés de leurs droits que les salariés du privé. La CGT dans la FP est un acteur de premier plan pour défendre ces droits — CHSCT/F3SCT, déclarations d'accident de service, recours, contestations.</span>"},
+
+/* ===== 1 — ENJEU ===== */
+{type:"stat",
+ kicker:"Enjeu de santé publique",
+ title:"10 % des agents FP accidentés chaque année",
+ stats:[
+   {num:"7 %", label:"FPE — Fonction Publique d'État", cls:"blue"},
+   {num:"11 %", label:"FPT — Fonction Publique Territoriale", cls:""},
+   {num:"15 %", label:"FPH — Fonction Publique Hospitalière", cls:"yellow"},
+ ],
+ foot:"Source : Enquête Conditions de travail 2019 · Secteur privé : 11 %",
+ notes:"<b>Ces chiffres sont à l'égal du privé — ou pire.</b> Le mythe selon lequel la FP serait « protégée » ne résiste pas aux données. La FPH enregistre 15 % d'accidentés, soit le taux le plus élevé de tous les secteurs d'activité. La FPT (11 %) est à parité avec le privé. <span class='cgt'>Argument militant : l'État employeur a les mêmes obligations de prévention que tout employeur privé — code du travail, DUERP, F3SCT. Et pourtant, les agents sont souvent sous-déclarants par peur hiérarchique. Le syndicat doit lever cette peur.</span>"},
+
+/* ===== 2 — CHIFFRES 2023 ===== */
+{type:"compare",
+ kicker:"Données 2023",
+ title:"Chiffres clés par versant",
+ fpe:{label:"FPE", stat:"30 000", detail:"accidents du travail et de trajet\n600 maladies professionnelles\n2,4 millions d'agents"},
+ fpt:{label:"FPT", stat:"5,6 / 100", detail:"accidents de service pour 100 agents\n2 800 MP reconnues — durée moy. arrêt 143 j\n1,9 million d'agents"},
+ fph:{label:"FPH", stat:"25 000", detail:"accidents de service avec arrêt\n1 900 MP notifiées — durée moy. arrêt 149 j\n1,2 million d'agents"},
+ notes:"<b>La FPH concentre les risques les plus sévères.</b> Durée moyenne d'arrêt 149 jours — la plus longue de toute la FP. La FPT connaît une hausse des MP depuis 2021. En FPE, baisse notable des accidents (-27 % entre 2021 et 2023) mais stabilité des MP. <span class='cgt'>Données à mobiliser en F3SCT : demander la communication des statistiques ATMP de l'établissement et les comparer aux moyennes sectorielles. C'est un droit — décret 2020-1427.</span>"},
+
+/* ===== 3 — DIVIDER : CADRE JURIDIQUE ===== */
+{type:"divider", kicker:"Partie 1", title:"Cadre juridique", lede:"Accident de service, maladie professionnelle : définitions et régime applicable dans la FP"},
+
+/* ===== 4 — FP vs PRIVÉ ===== */
+{type:"table",
+ kicker:"Distinction fondamentale",
+ title:"Secteur privé vs Fonction Publique",
+ rows:[
+   {label:"Texte de base", prive:"Code de la Sécurité Sociale", fp:"Code Général de la Fonction Publique (CGFP) art. L.822-18 à L.822-26"},
+   {label:"Terminologie", prive:"Accident du travail (AT)", fp:"Accident de service (AS) — même définition de fond"},
+   {label:"Indemnisation arrêt", prive:"IJ CPAM (60→80 % du salaire)", fp:"Maintien intégral du traitement — sans délai de carence"},
+   {label:"Organisme", prive:"CPAM + Carsat", fp:"Administration employeur + CNRACL (FPT/FPH)"},
+   {label:"Maladie professionnelle", prive:"Tableaux MP + CRRMP", fp:"Mêmes tableaux + reconnaissance par commission spécialisée"},
+   {label:"Invalidité", prive:"Pension invalidité SS (3 catégories)", fp:"Allocation temporaire d'invalidité (ATI) ou retraite pour invalidité"},
+ ],
+ notes:"<b>La différence principale : pas d'IJ CPAM.</b> L'agent en accident de service continue de percevoir son traitement intégral, versé par l'administration — sans délai de carence. C'est un avantage considérable par rapport au privé (60 % dès J1 pour le privé). En revanche, les démarches administratives peuvent être plus longues et moins automatisées. <span class='cgt'>Point clé à faire comprendre aux agents : 'maintien intégral du traitement' ne veut pas dire que tout est automatique — il faut DÉCLARER l'accident de service pour faire reconnaître l'imputabilité. Sans déclaration, c'est un arrêt maladie ordinaire, avec les conséquences sur le compte épargne-temps et les droits à congé maladie.</span> <span class='ref'>Réf. L.822-18 CGFP ; Loi 84-16 art. 34 (FPE) ; Loi 84-53 art. 57 (FPT) ; Loi 86-33 art. 41 (FPH).</span>"},
+
+/* ===== 5 — DÉFINITION ACCIDENT DE SERVICE ===== */
+{type:"bullets",
+ kicker:"Définition",
+ title:"Qu'est-ce qu'un accident de service ?",
+ bullets:[
+   "<b>Événement soudain et involontaire</b> survenant à l'occasion ou en raison du service",
+   "<b>Cause externe identifiable</b> — lésion corporelle directe",
+   "Lien de causalité entre l'accident et le service (imputabilité)",
+   "<b>Accident de trajet</b> : entre domicile et lieu de travail (couvert dans les 3 versants)",
+   "Depuis la <b>loi déontologie 2016</b> : présomption d'imputabilité au service si accident survenu pendant les heures de service",
+ ],
+ callout:{type:"yellow", text:"Présomption d'imputabilité : l'administration doit prouver que l'accident N'EST PAS imputable au service — et non l'inverse."},
+ notes:"<b>La présomption d'imputabilité est l'arme principale de défense de l'agent.</b> Depuis la loi n°2017-55 du 20 janvier 2017 (portant statut général des autorités administratives indépendantes), transposée dans le droit de la FP, le renversement de la charge de la preuve protège l'agent. L'administration ne peut plus simplement nier le lien au service — elle doit le démontrer. <span class='cgt'>En pratique : encourager les agents à déclarer IMMÉDIATEMENT, même pour des blessures qui semblent bénignes. Un lien entre une blessure non déclarée et des séquelles ultérieures est très difficile à prouver a posteriori.</span> <span class='ref'>Réf. CGFP art. L.822-20 ; CE 16 juillet 2014 (accident de trajet).</span>"},
+
+/* ===== 6 — MALADIE PROFESSIONNELLE FP ===== */
+{type:"bullets",
+ kicker:"Maladie professionnelle",
+ title:"Reconnaissance dans la FP",
+ bullets:[
+   "<b>Mêmes tableaux</b> de maladies professionnelles qu'au régime général (100+ tableaux)",
+   "Reconnaissance <b>forfaitaire</b> si tableau rempli — présomption de causalité",
+   "Hors tableau : <b>commission de réforme</b> (FPE/FPT) ou <b>commission médicale</b> (FPH) — lien direct et essentiel + 25 % d'IPP ou décès",
+   "<b>TMS, affections psychiques (burn-out)</b> : en forte hausse — tableaux 57 et 57bis, voie CRRMP",
+   "Délai de déclaration : <b>2 ans</b> après première constatation médicale",
+ ],
+ notes:"<b>Le burn-out reconnu comme MP progresse dans la FP.</b> La FPH est particulièrement touchée par les affections psychiques post-COVID : stress, épuisement, PTSD. La voie hors tableau (commission médicale) permet la reconnaissance si le lien est démontré avec le service. <span class='cgt'>Insister : les agents souvent n'osent pas. La peur du regard hiérarchique est réelle. Le syndicat doit accompagner la constitution du dossier : chronologie, témoignages, arrêts antérieurs, évaluations, charge de travail. Sans dossier solide, la commission refuse.</span> <span class='ref'>Réf. Art. R.461-1 CSS (tableaux) ; Décret 60-1089 (FPE) ; Décret 87-602 (FPT/FPH).</span>"},
+
+/* ===== 7 — DIVIDER : 3 VERSANTS ===== */
+{type:"divider", kicker:"Partie 2", title:"Les 3 versants", lede:"Spécificités FPE · FPT · FPH : organismes, procédures et indemnisations"},
+
+/* ===== 8 — FPE ===== */
+{type:"blue",
+ kicker:"Versant 1",
+ title:"Fonction Publique d'État (FPE)",
+ bullets:[
+   "<b>2,4 millions d'agents</b> civils — taux accidentalité 7 %",
+   "<b>30 000 AT/trajet</b> et 600 MP en 2023",
+   "Gestion : <b>ministères</b> (budgets propres), pas de CNRACL",
+   "Déclaration : <b>signalement hiérarchique immédiat</b> + rapport circonstancié",
+   "Reconnaissance : <b>30 jours</b> légaux après dossier complet",
+   "Invalidité : <b>Allocation Temporaire d'Invalidité (ATI)</b> si IPP ≥ 10 %",
+ ],
+ notes:"<b>La FPE fonctionne en autogestion des risques.</b> Pas de CNRACL — chaque ministère gère ses ATMP sur budget propre. C'est un facteur d'inégalité : un ministère sous-doté peut traiter plus lentement les dossiers. Les policiers, militaires, douaniers ont des dispositifs spécifiques avec reconnaissance facilitée pour les blessures en service. <span class='cgt'>CGT FP : surveiller les délais de reconnaissance — un refus non motivé dans les 30 jours vaut reconnaissance implicite dans certains cas. Toujours contester par écrit dans les 2 mois.</span>"},
+
+/* ===== 9 — FPT ===== */
+{type:"bullets",
+ kicker:"Versant 2",
+ title:"Fonction Publique Territoriale (FPT)",
+ bullets:[
+   "<b>1,9 million d'agents</b> — taux accidentalité 11 %",
+   "<b>Organisme : CNRACL</b> (Caisse Nationale de Retraite des Agents des Collectivités Locales)",
+   "Secteurs les plus exposés : nettoyage/maintenance (16 %), voirie (11 %), espaces verts (8 %)",
+   "Durée moyenne d'arrêt : <b>143 jours</b> — 2 800 MP reconnues en 2023",
+   "Déclaration : agent → hiérarchie → <b>CNRACL sous 48h</b>",
+   "Décision CNRACL : <b>30 jours légaux</b> (4–8 semaines en pratique)",
+ ],
+ callout:{type:"yellow", text:"CNRACL : 0 801 801 807 (gratuit) · www.cnracl.fr · espace agent en ligne"},
+ notes:"<b>La CNRACL est l'interlocuteur central en FPT.</b> Elle gère reconnaissance, versements, révisions. Les collectivités petites n'ont pas toujours de service RH formé — le syndicat doit combler ce vide. Les secteurs de nettoyage et voirie concentrent à eux seuls 27 % des ATMP de la FPT. Ce sont souvent des agents en bas de la grille indiciaire, moins syndiqués. <span class='cgt'>Action prioritaire : sensibiliser les agents des services techniques aux droits ATMP. Les TMS (dos, épaules, genoux) sont quasi-systématiques après 10 ans de carrière voirie — souvent sous-déclarés.</span>"},
+
+/* ===== 10 — FPH ===== */
+{type:"bullets",
+ kicker:"Versant 3",
+ title:"Fonction Publique Hospitalière (FPH)",
+ bullets:[
+   "<b>1,2 million d'agents</b> — taux accidentalité <b>15 %</b> (le plus élevé)",
+   "25 000 accidents de service avec arrêt · 1 900 MP en 2023 · durée arrêt : <b>149 jours</b>",
+   "Risques majeurs : piqûres (VIH, hépatite B/C), manutention de patients, violences, stress",
+   "Accidents exposants : <b>déclaration urgente &lt; 1h</b> — tests VIH/hépatite, traitement antirétroviral",
+   "Organismes : CNRACL + mutuelles hospitalières",
+   "MP en hausse : TMS (dos, lombaires), affections psychiques post-COVID, asthme pro",
+ ],
+ callout:{type:"red", text:"Accident exposant VIH : déclaration immédiate, accès médecine du travail < 1h, traitement dans les 4h."},
+ notes:"<b>La FPH cumule tous les risques.</b> Biologiques (piqûres, projections), physiques (manutention de patients lourds, 3x8), psychosociaux (violence, charge, sous-effectif). Depuis 2020, hausse de +350 MP notifiées dont une grande part en affections psychiques. <span class='cgt'>Le syndicat doit être présent en F3SCT lors de chaque accident grave. C'est une obligation légale que l'établissement doit respecter — enquête conjointe, accès aux données, plan de prévention. Ne pas laisser l'employeur gérer seul.</span> <span class='ref'>Réf. Décret 2020-1427 (F3SCT) ; Protocole AES (Accidents Exposant au Sang) 2020.</span>"},
+
+/* ===== 11 — DIVIDER : DROITS ===== */
+{type:"divider", kicker:"Partie 3", title:"Droits & indemnisations", lede:"Ce que l'agent peut exiger à chaque étape"},
+
+/* ===== 12 — PENDANT L'ARRÊT ===== */
+{type:"bullets",
+ kicker:"Arrêt de travail",
+ title:"Indemnisation pendant l'arrêt",
+ bullets:[
+   "<b>Maintien intégral du traitement</b> dès le premier jour — pas de délai de carence",
+   "Pas d'IJ CPAM — c'est l'employeur public qui verse le salaire",
+   "<b>FPT/FPH :</b> certaines collectivités/établissements maintiennent 100 % + primes",
+   "<b>Frais médicaux :</b> pris en charge à <b>100 %</b> — tiers payant intégral (soins, médicaments, rééducation, appareillage)",
+   "<b>Pas de ticket modérateur</b>, pas de franchise, pas d'avance",
+   "<b>Protection du poste :</b> licenciement interdit pendant l'arrêt lié à l'ATMP",
+ ],
+ notes:"<b>Le maintien de traitement est LE grand avantage de la FP.</b> Mais attention : il n'est maintenu que si l'imputabilité est reconnue. Si l'administration refuse (ou tarde à statuer), le traitement peut être suspendu après 90 jours de CLM. Le syndicat doit intervenir avant ce seuil. En FPT, beaucoup de petites collectivités font pression sur l'agent pour qu'il déclare en arrêt maladie ordinaire plutôt qu'accident de service — pour protéger leur taux d'absentéisme. C'est illégal. <span class='cgt'>Réponse militante : rappeler à l'agent qu'il a le droit de déclarer l'accident à la CNRACL lui-même (sous 2 ans) si l'employeur refuse ou tarde.</span>"},
+
+/* ===== 13 — INDEMNITÉS PERMANENTES ===== */
+{type:"bullets",
+ kicker:"Invalidité permanente",
+ title:"Capital et rente d'incapacité permanente",
+ bullets:[
+   "<b>IPP &lt; 10 %</b> : indemnité en capital forfaitaire (barème identique au privé depuis avril 2026)",
+   "<b>IPP ≥ 10 %</b> : <b>Allocation Temporaire d'Invalidité (ATI)</b> — rente viagère cumulable avec la reprise d'activité",
+   "ATI calculée sur le traitement et le taux d'incapacité — indexée sur la valeur du point d'indice",
+   "Si invalidité totale : <b>retraite pour invalidité</b> au taux plein (sans condition d'âge ni de trimestres)",
+   "<b>FPH :</b> indemnité d'exposition pour accidents exposants (500 € à 2 000 €)",
+   "Contestation : <b>2 mois</b> pour saisir le tribunal administratif",
+ ],
+ callout:{type:"blue", text:"Retraite pour invalidité : liquidée sans décote, sans condition de durée d'assurance. Avantage majeur vs invalidité SS privé."},
+ notes:"<b>L'ATI est plus favorable que la rente SS dans de nombreux cas.</b> Elle est cumulable avec la reprise d'une activité à temps partiel thérapeutique. La retraite pour invalidité (pour les cas les plus graves) est liquidée au taux plein sans condition d'âge — un avantage considérable par rapport au régime général. <span class='cgt'>Exemple : un agent hospitalier de 50 ans avec IPP de 66 % peut partir à la retraite immédiatement, au taux plein, sans décote. Expliquer ce droit clairement — beaucoup de cadres RH ne le connaissent pas eux-mêmes.</span> <span class='ref'>Réf. Décret 60-1089 (ATI FPE) ; art. L.27 Code des pensions civiles et militaires.</span>"},
+
+/* ===== 14 — PROTECTION EMPLOI ===== */
+{type:"bullets",
+ kicker:"Protection de l'emploi",
+ title:"Droits liés au statut de l'agent",
+ bullets:[
+   "<b>Licenciement interdit</b> pendant l'arrêt pour accident de service",
+   "<b>Reclassement obligatoire</b> si inapte au poste — l'employeur doit proposer un emploi adapté",
+   "<b>Temps partiel thérapeutique</b> disponible après reprise",
+   "<b>CLM/CLD</b> (congé longue maladie/longue durée) si pathologie longue — maintien 50 à 100 % du traitement selon ancienneté",
+   "<b>Aménagement de poste</b> : médecin de prévention recommande, l'employeur doit justifier s'il refuse",
+   "Départ anticipé à la retraite si IPP ≥ 20 % (60 ans) ou IPP 10–19 % (2 ans avant âge légal)",
+ ],
+ notes:"<b>Le statut de la FP offre des protections réelles — mais elles ne s'appliquent pas automatiquement.</b> Le reclassement doit être demandé et suivi. En FPH, le sous-effectif chronique pousse parfois les employeurs à « forcer » la reprise prématurée. La visite de reprise avec le médecin du travail est obligatoire. <span class='cgt'>Rôle du syndicat : accompagner à la visite de reprise, vérifier que l'aménagement de poste est réel (pas du poste allégé de façade), et si reclassement, s'assurer que la nouvelle affectation correspond aux capacités résiduelles de l'agent.</span>"},
+
+/* ===== 15 — DIVIDER : PROCÉDURES ===== */
+{type:"divider", kicker:"Partie 4", title:"Procédures", lede:"Déclarer, faire reconnaître, contester : mode d'emploi"},
+
+/* ===== 16 — DÉCLARER ===== */
+{type:"bullets",
+ kicker:"Déclaration — étapes clés",
+ title:"Comment déclarer un accident de service ?",
+ bullets:[
+   "<b>Immédiatement :</b> signalement verbal à la hiérarchie + premiers soins",
+   "<b>Même jour :</b> déclaration écrite + rapport circonstancié (lieu, heure, témoins, lésions)",
+   "<b>Dans les 48h :</b> transmission à l'organisme gestionnaire (CNRACL / ministère)",
+   "<b>Certificat médical initial :</b> décrire TOUTES les lésions — y compris psychologiques, acouphènes, douleurs diffuses",
+   "<b>Si l'employeur tarde ou refuse :</b> l'agent peut saisir directement la CNRACL <b>dans les 2 ans</b>",
+   "<b>Délai de reconnaissance :</b> 30 jours légaux après dossier complet",
+ ],
+ callout:{type:"yellow", text:"Photographier ou scanner chaque document dès réception. Un dossier bien constitué dès J1 fait la différence."},
+ notes:"<b>La déclaration est un acte militant en FP.</b> Beaucoup d'agents craignent les représailles hiérarchiques — surtout en FPH où la culture du « on gère entre nous » est forte. Rappeler que la déclaration est un droit protégé, que toute représaille constitue une faute de l'employeur, et que le syndicat peut accompagner. <span class='cgt'>Astuce pratique : demander systématiquement le numéro d'enregistrement de la déclaration. Un refus d'enregistrement est un refus contestable devant le tribunal administratif.</span> <span class='ref'>Réf. Décret 2019-122 (FSSCT) ; CGFP art. L.822-22.</span>"},
+
+/* ===== 17 — CONTESTER ===== */
+{type:"bullets",
+ kicker:"Recours",
+ title:"Contester un refus ou une décision",
+ bullets:[
+   "<b>Refus de reconnaissance :</b> recours gracieux auprès de l'autorité dans les <b>2 mois</b>",
+   "Puis <b>recours contentieux</b> devant le <b>Tribunal Administratif</b> (TA)",
+   "<b>Contestation du taux d'IPP :</b> expertise médicale demandée — commission médicale ou expertise judiciaire",
+   "<b>Aggravation ultérieure :</b> révision du taux possible — délai illimité si aggravation médicalement prouvée",
+   "<b>Accidents graves/mortels :</b> F3SCT doit être saisie pour enquête — droit impératif",
+   "Appel : <b>Cour administrative d'appel</b> → Conseil d'État si nécessaire",
+ ],
+ callout:{type:"red", text:"Délai de 2 mois pour contester une décision : court et impératif. Ne jamais laisser passer sans action écrite."},
+ notes:"<b>Le recours administratif en FP est différent du privé.</b> Pas de prud'hommes — c'est le tribunal administratif qui juge. La procédure est plus longue mais le taux de succès des recours bien préparés est significatif (20–30 % de révision). La CGT peut accompagner la saisine du TA et orienter vers un avocat en droit public. <span class='cgt'>Arme utile : demander l'accès au dossier médical complet avant tout recours (CADA possible si l'administration refuse). Les erreurs dans le dossier initial sont fréquentes.</span>"},
+
+/* ===== 18 — DIVIDER : PRÉVENTION ===== */
+{type:"divider", kicker:"Partie 5", title:"Prévention", lede:"Le rôle du syndicat dans la F3SCT et le DUERP"},
+
+/* ===== 19 — F3SCT ===== */
+{type:"bullets",
+ kicker:"Instance de prévention",
+ title:"La F3SCT — ex-CHSCT",
+ bullets:[
+   "Formation Spécialisée en matière de Santé, Sécurité et Conditions de Travail",
+   "Obligatoire : collectivités &gt; 50 agents (FPT), établissements FPH, ministères (FPE)",
+   "<b>Missions :</b> analyser risques, enquêter après accidents graves, proposer prévention",
+   "<b>Droit d'alerte :</b> si danger grave et imminent, la F3SCT peut imposer l'arrêt du travail",
+   "<b>Accès aux données ATMP</b> de l'établissement — registre et statistiques annuelles",
+   "Représentation syndicale : <b>membres désignés par les OS</b> — temps de délégation protégé",
+ ],
+ notes:"<b>La F3SCT est l'outil syndical de prévention dans la FP.</b> Depuis la réforme 2022 (décret 2021-571), elle remplace le CHSCT dans les collectivités. Ses pouvoirs sont comparables : droit d'enquête, droit d'alerte, consultation obligatoire sur les projets affectant les conditions de travail. <span class='cgt'>Action prioritaire après chaque ATMP grave : saisir la F3SCT pour enquête. L'employeur ne peut pas refuser. L'enquête permet de documenter les causes, d'imposer des mesures correctives et de constituer un dossier en cas de faute inexcusable.</span> <span class='ref'>Réf. Décret 2021-571 (F3SCT) ; CGFP art. L.251-1 et suiv.</span>"},
+
+/* ===== 20 — DUERP ===== */
+{type:"bullets",
+ kicker:"Évaluation des risques",
+ title:"Le Document Unique (DUERP)",
+ bullets:[
+   "Obligatoire dans toutes les collectivités et établissements — dès 1 agent",
+   "<b>Recense tous les risques</b> par poste : physiques, chimiques, biologiques, psychosociaux",
+   "Mis à jour <b>annuellement</b> minimum — ou après tout AT grave",
+   "<b>La F3SCT doit être consultée</b> lors de chaque mise à jour",
+   "En l'absence de DUERP ou en cas de DUERP incomplet : l'employeur engage sa responsabilité",
+   "Consultable par tous les agents — affichage obligatoire de son existence",
+ ],
+ callout:{type:"yellow", text:"Demander systématiquement la communication du DUERP en F3SCT. Un DUERP vague ou non mis à jour est un manquement à l'obligation de prévention."},
+ notes:"<b>Le DUERP est à la fois outil de prévention et arme juridique.</b> Si un AT survient sur un risque non identifié dans le DUERP, l'employeur est en faute — et la voie de la faute inexcusable peut s'ouvrir. <span class='cgt'>Action concrète : en F3SCT, demander à voir le DUERP et identifier les risques sous-évalués ou les postes manquants. Proposer des amendements — la F3SCT a voix consultative. Si l'employeur refuse d'inscrire un risque réel, consigner la position syndicale au procès-verbal.</span>"},
+
+/* ===== 21 — FOCUS FPH : RISQUES BIOLOGIQUES ===== */
+{type:"bullets",
+ kicker:"Focus FPH",
+ title:"Accidents exposants (AES) — VIH, Hépatite",
+ bullets:[
+   "Piqûres de seringues, projections de sang ou liquides biologiques",
+   "<b>Déclaration urgente :</b> accès médecine du travail &lt; 1h, test VIH/hépatite immédiat",
+   "Traitement antirétroviral préventif si indiqué : <b>dans les 4 heures</b> (efficacité maximale)",
+   "Reconnaissance automatique de l'imputabilité au service",
+   "Suivi médical : <b>6 mois minimum</b> (VIH) · 3 mois (hépatite)",
+   "Vaccinations obligatoires : <b>DTP, hépatite B, grippe</b> — prise en charge 100 %",
+ ],
+ callout:{type:"red", text:"Tout AES non déclaré dans l'heure perd le bénéfice du traitement préventif optimal. Afficher les protocoles dans chaque unité."},
+ notes:"<b>Les AES sont tragiquement sous-déclarés en FPH.</b> Les soignants, par habitude ou par peur des regards, minimisent. Pourtant chaque piqûre non déclarée est un risque réel et un droit perdu. La CGT dans les hôpitaux doit afficher les protocoles, former les délégués à les rappeler, et s'assurer que la médecine du travail est accessible H24. <span class='cgt'>Données : 15 000 AES déclarés/an en France (estimation basse — réalité 2 à 3× supérieure). Le CHU de Toulouse, par exemple, a réduit ses AES de 40 % en 5 ans grâce à des containers à aiguilles mieux positionnés et une culture de déclaration renforcée par les syndicats.</span>"},
+
+/* ===== 22 — FOCUS FPT : TMS ===== */
+{type:"bullets",
+ kicker:"Focus FPT",
+ title:"Troubles musculosquelettiques (TMS)",
+ bullets:[
+   "<b>45–50 % des MP en FPT</b> — première cause de maladie professionnelle",
+   "Secteurs : voirie, nettoyage, espaces verts, petite enfance, restauration collective",
+   "Principaux tableaux : 57 (membres supérieurs), 98 (lombalgies), 69 (épaules)",
+   "<b>Déclaration en MP</b> : délai 2 ans après première constatation médicale",
+   "<b>RQTH</b> automatique si IPP ≥ 10 % — facilite le reclassement",
+   "Prévention : formation aux gestes sains, équipement de levage, organisation du travail",
+ ],
+ callout:{type:"yellow", text:"Chaque agent voirie ou nettoyage avec douleurs lombaires chroniques doit être orienté vers une déclaration en MP — tableau 98."},
+ notes:"<b>Les TMS sont la première cause d'invalidité dans les métiers de terrain de la FPT.</b> Un agent voirie de 45 ans avec douleurs lombaires depuis 3 ans a probablement un tableau 98 qui s'applique. Le problème : ni l'agent ni le médecin du travail ne pensent spontanément à la MP. <span class='cgt'>Action syndicale : former les sections locales à reconnaître les TMS reconnaissables en MP. Créer une liste des postes exposés et des tableaux applicables dans chaque collectivité. Ce travail de terrain permet d'orienter des dizaines d'agents vers des droits ignorés.</span>"},
+
+/* ===== 23 — RÔLE CGT ===== */
+{type:"bullets",
+ kicker:"Action syndicale",
+ title:"Ce que la CGT peut faire pour les agents",
+ bullets:[
+   "<b>Accompagner la déclaration</b> d'accident de service ou de MP — ne jamais laisser un agent seul",
+   "<b>Contester les refus</b> de reconnaissance et les taux d'IPP sous-évalués",
+   "<b>Siéger en F3SCT</b> — enquêtes accidents, DUERP, alertes danger grave",
+   "<b>Négocier</b> des accords de prévention et des mesures d'aménagement de poste",
+   "<b>Informer</b> les agents de leurs droits : ATI, retraite pour invalidité, reclassement",
+   "<b>Recours contentieux</b> : tribunal administratif, appel — orientation vers avocats partenaires",
+ ],
+ notes:"<b>Le syndicat est l'acteur central de la défense des droits ATMP dans la FP.</b> La complexité administrative de la FP (3 versants, 2 régimes, CNRACL, ministères, F3SCT) décourage les agents. Le syndicat doit être le point d'entrée simple : 'j'ai eu un accident, je ne sais pas quoi faire'. La réponse doit être : 'on s'en occupe ensemble'. <span class='cgt'>Message clé pour conclure : la FP n'est pas un monde à part. Les droits ATMP existent, ils sont parfois meilleurs que dans le privé (maintien de traitement, retraite invalidité), mais ils ne s'appliquent que si l'on déclare, que l'on suit, et que l'on conteste quand nécessaire. La CGT est là pour ça.</span>"},
+
+/* ===== 24 — CLÔTURE ===== */
+{type:"title",
+ kicker:"CGT Occitanie · Formation AT/MP Fonction Publique",
+ title:"Vos droits, on les défend ensemble",
+ sub:"Déclarer · Faire reconnaître · Contester · Prévenir",
+ foot:"CGT Comité Régional Occitanie — ud31@cgt.fr · www.cgt.fr",
+ notes:"<b>Message de clôture.</b> Insister sur l'importance du collectif : un agent isolé face à son administration est rarement entendu. Un syndicat structuré, présent en F3SCT, qui connaît les dossiers, change la donne. <span class='cgt'>Invitation finale : rejoindre ou renforcer la section syndicale dans son établissement — c'est la meilleure garantie de droits ATMP effectifs.</span>"},
+
+]; /* fin SLIDES */
+
+/* ============================
+   RENDU
+   ============================ */
+const deck = document.getElementById('deck');
+let cur = 0;
+const TOTAL = SLIDES.length;
+document.getElementById('tot').textContent = TOTAL;
+
+function bull(txt, blue){
+  return `<li><span class="${blue?'bull-blue':'bull'}"><svg viewBox="0 0 8 8"><polygon points="4,0 8,8 0,8"/></svg></span><span>${txt}</span></li>`;
+}
+function mkSlide(s, i){
+  const el = document.createElement('div');
+  el.className = 'slide';
+  el.dataset.notes = s.notes || '';
+
+  if(s.type === 'title'){
+    el.classList.add('s-title');
+    el.innerHTML = `
+      <div class="kicker reveal"><span class="dot"></span>${s.kicker}</div>
+      <h1 class="title reveal">${s.title}</h1>
+      ${s.sub ? `<div class="accent reveal"></div><div class="lede reveal">${s.sub}</div>` : '<div class="accent reveal"></div>'}
+      <div class="foot reveal">${s.foot}</div>`;
+  }
+  else if(s.type === 'divider'){
+    el.classList.add('s-divider','dark');
+    el.innerHTML = `
+      <div class="kicker reveal"><span class="dot"></span>${s.kicker}</div>
+      <h2 class="title reveal">${s.title}</h2>
+      <div class="lede reveal">${s.lede}</div>
+      <div class="barline reveal"></div>`;
+  }
+  else if(s.type === 'blue'){
+    el.classList.add('s-blue','blue-slide');
+    const lis = (s.bullets||[]).map(b=>bull(b, true)).join('');
+    el.innerHTML = `
+      <div class="kicker reveal">${s.kicker}</div>
+      <h2 class="title reveal">${s.title}</h2>
+      <ul class="bullets reveal">${lis}</ul>`;
+  }
+  else if(s.type === 'stat'){
+    const boxes = s.stats.map(st=>`
+      <div class="stat-box reveal">
+        <div class="stat-num ${st.cls}">${st.num}</div>
+        <div class="stat-label">${st.label}</div>
+      </div>`).join('');
+    el.innerHTML = `
+      <div class="kicker reveal"><span class="dot"></span>${s.kicker}</div>
+      <h2 class="title reveal">${s.title}</h2>
+      <div class="s-stat reveal">${boxes}</div>
+      <div class="foot reveal">${s.foot}</div>`;
+  }
+  else if(s.type === 'compare'){
+    function vCard(v, cls){
+      return `<div class="versant-card ${cls} reveal">
+        <div class="versant-name ${cls}">${v.label}</div>
+        <div class="versant-stat">${v.stat}</div>
+        <div class="versant-detail">${v.detail.replace(/\n/g,'<br>')}</div>
+      </div>`;
+    }
+    el.innerHTML = `
+      <div class="kicker reveal"><span class="dot"></span>${s.kicker}</div>
+      <h2 class="title reveal">${s.title}</h2>
+      <div class="compare-grid">
+        ${vCard(s.fpe,'fpe')}${vCard(s.fpt,'fpt')}${vCard(s.fph,'fph')}
+      </div>`;
+  }
+  else if(s.type === 'table'){
+    const rows = s.rows.map(r=>`
+      <tr>
+        <td class="label">${r.label}</td>
+        <td><span class="badge-prive">Privé</span> ${r.prive}</td>
+        <td><span class="badge-fp">FP</span> ${r.fp}</td>
+      </tr>`).join('');
+    el.innerHTML = `
+      <div class="kicker reveal"><span class="dot"></span>${s.kicker}</div>
+      <h2 class="title reveal" style="font-size:clamp(28px,4.5vw,72px)">${s.title}</h2>
+      <table class="diff-table reveal">
+        <thead><tr><th>Point</th><th>Secteur privé</th><th>Fonction Publique</th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table>`;
+  }
+  else { /* bullets */
+    const lis = (s.bullets||[]).map(b=>bull(b)).join('');
+    let calloutHtml = '';
+    if(s.callout){
+      calloutHtml = `<div class="callout ${s.callout.type} reveal"><p>${s.callout.text}</p></div>`;
+    }
+    el.innerHTML = `
+      <div class="kicker reveal"><span class="dot"></span>${s.kicker}</div>
+      <h2 class="title reveal" style="font-size:clamp(28px,5vw,80px)">${s.title}</h2>
+      <ul class="bullets reveal">${lis}</ul>
+      ${calloutHtml}`;
+    if(s.ref) el.innerHTML += `<p class="ref reveal">${s.ref}</p>`;
+  }
+  return el;
+}
+
+const els = SLIDES.map((s,i)=>{ const e=mkSlide(s,i); deck.appendChild(e); return e; });
+
+function go(n){
+  if(n<0||n>=TOTAL) return;
+  els[cur].classList.remove('active');
+  cur=n;
+  els[cur].classList.add('active');
+  document.getElementById('cur').textContent = cur+1;
+  document.getElementById('progress').style.width = ((cur+1)/TOTAL*100)+'%';
+  const np = document.getElementById('notes-text');
+  np.innerHTML = els[cur].dataset.notes || '<em>—</em>';
+}
+go(0);
+
+document.addEventListener('keydown', e=>{
+  if(e.key==='ArrowRight'||e.key===' '||e.key==='ArrowDown') go(cur+1);
+  else if(e.key==='ArrowLeft'||e.key==='ArrowUp') go(cur-1);
+  else if(e.key==='n'||e.key==='N'){
+    document.getElementById('notes-panel').classList.toggle('visible');
+  }
+});
+document.getElementById('btn-next').onclick=()=>go(cur+1);
+document.getElementById('btn-prev').onclick=()=>go(cur-1);
+document.getElementById('btn-notes').onclick=()=>{
+  document.getElementById('notes-panel').classList.toggle('visible');
+};
+
+// Touch/swipe
+let tx=0;
+deck.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;},{passive:true});
+deck.addEventListener('touchend',e=>{
+  const dx=e.changedTouches[0].clientX-tx;
+  if(Math.abs(dx)>50){ if(dx<0) go(cur+1); else go(cur-1); }
+},{passive:true});
+</script>
+</body>
+</html>
