@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Guide AT/MP Fonction Publique — CGT</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%23E2001A'/%3E%3Ctext x='16' y='23' text-anchor='middle' font-family='sans-serif' font-weight='bold' font-size='16' fill='%23FFD200'%3ECGT%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --rouge:       #E2001A;
+      --rouge-dark:  #C40017;
+      --jaune:       #FFD200;
+      --fond:        #F5F4F0;
+      --fond-card:   #FFFFFF;
+      --texte:       #1A1A1A;
+      --texte-muted: #6B6B6B;
+      --border:      #E0DED8;
+      --bleu:        #1A3A6B;
+      --bleu-l:      #E8EEF7;
+      --vert:        #1a6b3a;
+      --vert-l:      #e8f4ed;
+      --rouge-l:     #fbeaea;
+    }
+
+    body {
+      background: var(--fond);
+      color: var(--texte);
+      font-family: 'Archivo', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── HEADER ── */
+    header {
+      background: var(--rouge);
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .header-title { flex: 1; }
+    .header-title h1 {
+      font-family: 'Anton', sans-serif;
+      font-size: 1.1rem;
+      letter-spacing: 0.04em;
+      color: #fff;
+      line-height: 1.2;
+    }
+    .header-title span {
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.75);
+    }
+    .header-actions { display: flex; gap: 0.5rem; }
+    .btn-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: rgba(255,255,255,0.15);
+      color: #fff;
+      text-decoration: none;
+      padding: 0.4rem 0.9rem;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      border: 1px solid rgba(255,255,255,0.3);
+      transition: background 0.2s;
+    }
+    .btn-back:hover { background: rgba(255,255,255,0.25); }
+
+    /* ── STRIPE ── */
+    .stripe { height: 5px; background: var(--jaune); }
+
+    /* ── LAYOUT ── */
+    .layout {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 0;
+      flex: 1;
+      max-width: 1100px;
+      margin: 0 auto;
+      width: 100%;
+      padding: 0 1rem;
+      align-items: start;
+    }
+    @media (max-width: 768px) {
+      .layout { grid-template-columns: 1fr; }
+      .sidebar { display: none; }
+    }
+
+    /* ── SIDEBAR ── */
+    .sidebar {
+      position: sticky;
+      top: 72px;
+      padding: 2rem 0 2rem 0;
+      border-right: 2px solid var(--border);
+      min-height: calc(100vh - 72px);
+    }
+    .sidebar nav { display: flex; flex-direction: column; gap: 0.15rem; }
+    .sidebar a {
+      color: var(--texte-muted);
+      text-decoration: none;
+      font-size: 0.8rem;
+      padding: 0.4rem 1rem;
+      border-left: 3px solid transparent;
+      transition: all 0.15s;
+      line-height: 1.3;
+    }
+    .sidebar a:hover { color: var(--rouge); border-left-color: var(--rouge); background: rgba(226,0,26,0.05); }
+    .sidebar a.active { color: var(--rouge); border-left-color: var(--rouge); font-weight: 600; }
+    .sidebar-section {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--texte-muted);
+      padding: 1rem 1rem 0.3rem;
+    }
+
+    /* ── CONTENT ── */
+    .content {
+      padding: 2rem 2rem 4rem;
+      max-width: 800px;
+    }
+
+    .page-title {
+      font-family: 'Anton', sans-serif;
+      font-size: 2.2rem;
+      letter-spacing: 0.02em;
+      color: var(--texte);
+      line-height: 1;
+      margin-bottom: 0.4rem;
+    }
+    .page-meta {
+      font-size: 0.8rem;
+      color: var(--texte-muted);
+      margin-bottom: 2rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 2px solid var(--border);
+    }
+
+    /* ── SECTIONS ── */
+    .section {
+      margin-bottom: 3rem;
+      scroll-margin-top: 80px;
+    }
+    .section-title {
+      font-family: 'Anton', sans-serif;
+      font-size: 1.4rem;
+      letter-spacing: 0.02em;
+      color: var(--texte);
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 3px solid var(--jaune);
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .section-title .rouge { color: var(--rouge); }
+
+    h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      margin: 1.4rem 0 0.6rem;
+      color: var(--texte);
+    }
+
+    p { line-height: 1.65; margin-bottom: 0.8rem; font-size: 0.92rem; }
+
+    ul, ol {
+      padding-left: 1.4rem;
+      margin-bottom: 1rem;
+    }
+    li { line-height: 1.6; margin-bottom: 0.3rem; font-size: 0.92rem; }
+
+    /* ── BADGES VERSANTS ── */
+    .badge {
+      display: inline-block;
+      padding: 0.15em 0.55em;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      vertical-align: middle;
+      margin-right: 0.3em;
+    }
+    .badge-fpe { background: var(--bleu); color: #fff; }
+    .badge-fpt { background: var(--vert); color: #fff; }
+    .badge-fph { background: var(--rouge); color: #fff; }
+
+    /* ── TABLEAUX ── */
+    .table-wrap { overflow-x: auto; margin: 1.2rem 0; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+    }
+    th {
+      background: var(--texte);
+      color: var(--jaune);
+      padding: 0.6rem 1rem;
+      text-align: left;
+      font-weight: 700;
+      font-size: 0.78rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    td {
+      padding: 0.55rem 1rem;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+      line-height: 1.4;
+    }
+    tr:nth-child(odd) td { background: rgba(0,0,0,0.025); }
+    .td-label { font-weight: 700; }
+
+    /* ── COMPARE CARDS ── */
+    .versant-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin: 1.2rem 0;
+    }
+    @media (max-width: 600px) { .versant-grid { grid-template-columns: 1fr; } }
+    .versant-card {
+      padding: 1rem;
+      border: 2px solid var(--border);
+      border-radius: 2px;
+    }
+    .versant-card.fpe { border-color: var(--bleu); background: var(--bleu-l); }
+    .versant-card.fpt { border-color: var(--vert); background: var(--vert-l); }
+    .versant-card.fph { border-color: var(--rouge); background: var(--rouge-l); }
+    .vc-name { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.4rem; }
+    .vc-name.fpe { color: var(--bleu); }
+    .vc-name.fpt { color: var(--vert); }
+    .vc-name.fph { color: var(--rouge); }
+    .vc-stat { font-family: 'Anton', sans-serif; font-size: 1.8rem; line-height: 1; margin-bottom: 0.3rem; }
+    .vc-detail { font-size: 0.8rem; color: var(--texte-muted); line-height: 1.4; }
+
+    /* ── ENCADRÉS ── */
+    .callout {
+      padding: 1rem 1.25rem;
+      margin: 1.2rem 0;
+      border-left: 4px solid var(--jaune);
+      background: #fff8d6;
+      font-size: 0.9rem;
+      line-height: 1.55;
+    }
+    .callout.rouge { border-left-color: var(--rouge); background: #fff0f0; }
+    .callout.bleu { border-left-color: var(--bleu); background: var(--bleu-l); }
+    .callout strong { display: block; margin-bottom: 0.3rem; font-size: 0.8rem; letter-spacing: 0.06em; text-transform: uppercase; }
+    .callout.jaune strong { color: #7a6000; }
+    .callout.rouge strong { color: var(--rouge-dark); }
+    .callout.bleu strong { color: var(--bleu); }
+
+    /* CGT encadré militant */
+    .cgt-box {
+      padding: 1rem 1.25rem;
+      margin: 1.2rem 0;
+      background: var(--rouge);
+      color: #fff;
+      font-size: 0.88rem;
+      line-height: 1.55;
+    }
+    .cgt-box strong { display: block; font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.4rem; opacity: 0.85; }
+
+    /* ── CONTACTS ── */
+    .contacts-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1rem;
+      margin: 1.2rem 0;
+    }
+    .contact-card {
+      background: var(--fond-card);
+      border: 1px solid var(--border);
+      padding: 1rem;
+      border-radius: 2px;
+    }
+    .contact-name { font-weight: 700; font-size: 0.9rem; margin-bottom: 0.3rem; }
+    .contact-tel {
+      display: inline-block;
+      background: var(--rouge);
+      color: #fff;
+      padding: 0.2em 0.6em;
+      font-size: 0.82rem;
+      font-weight: 700;
+      margin: 0.3rem 0;
+    }
+    .contact-url { font-size: 0.82rem; color: var(--bleu); }
+    .contact-detail { font-size: 0.78rem; color: var(--texte-muted); margin-top: 0.3rem; line-height: 1.4; }
+
+    /* ── NAV TOP MOBILE ── */
+    .mobile-nav {
+      display: none;
+      background: #fff;
+      border-bottom: 1px solid var(--border);
+      padding: 0.75rem 1rem;
+      overflow-x: auto;
+      gap: 0.5rem;
+      white-space: nowrap;
+    }
+    @media (max-width: 768px) { .mobile-nav { display: flex; } }
+    .mobile-nav a {
+      color: var(--texte-muted);
+      text-decoration: none;
+      font-size: 0.78rem;
+      padding: 0.3rem 0.7rem;
+      background: var(--fond);
+      border: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: #1a1a1a;
+      color: rgba(255,255,255,0.5);
+      padding: 1.25rem 2rem;
+      font-size: 0.78rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    footer a { color: var(--jaune); text-decoration: none; }
+  </style>
+</head>
+<body>
+<script>
+  if(localStorage.getItem('cgt_stagiaire_auth')!=='ok'&&localStorage.getItem('cgt_auth')!=='ok'){
+    location.replace('/login-stagiaire.html?from='+encodeURIComponent(location.pathname));
+  }
+</script>
+
+<header>
+  <div class="header-title">
+    <h1>Guide AT/MP — Fonction Publique</h1>
+    <span>3 versants : État · Territorial · Hospitalier — Septembre 2026</span>
+  </div>
+  <div class="header-actions">
+    <a class="btn-back" href="/stagiaires.html">
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M10 6H2M2 6L5 3M2 6L5 9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Stagiaires
+    </a>
+    <a class="btn-back" href="/index.html">
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M10 6H2M2 6L5 3M2 6L5 9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Formateur
+    </a>
+  </div>
+</header>
+<div class="stripe"></div>
+
+<nav class="mobile-nav">
+  <a href="#enjeu">Enjeu</a>
+  <a href="#donnees">Données</a>
+  <a href="#cadre">Cadre juridique</a>
+  <a href="#risques">Secteurs à risque</a>
+  <a href="#lesions">Types de lésions</a>
+  <a href="#procedures">Procédures</a>
+  <a href="#droits">Droits &amp; indemnisations</a>
+  <a href="#prevention">Prévention</a>
+  <a href="#contacts">Contacts</a>
+</nav>
+
+<div class="layout">
+
+  <aside class="sidebar">
+    <nav>
+      <div class="sidebar-section">Contexte</div>
+      <a href="#enjeu">Enjeu majeur</a>
+      <a href="#donnees">Données 2023</a>
+      <a href="#cadre">Cadre juridique</a>
+
+      <div class="sidebar-section">Sinistralité</div>
+      <a href="#risques">Secteurs à risque FPT</a>
+      <a href="#fph">Spécificités FPH</a>
+      <a href="#lesions">Types de lésions</a>
+      <a href="#evolution">Évolution 2021-2023</a>
+
+      <div class="sidebar-section">Procédures</div>
+      <a href="#procedures">Déclaration</a>
+      <a href="#delais">Délais clés</a>
+
+      <div class="sidebar-section">Droits</div>
+      <a href="#droits">Indemnisations</a>
+      <a href="#invalidite">Invalidité & ATI</a>
+      <a href="#deces">Décès</a>
+
+      <div class="sidebar-section">Prévention</div>
+      <a href="#prevention">DUERP & F3SCT</a>
+
+      <div class="sidebar-section">Ressources</div>
+      <a href="#contacts">Contacts</a>
+    </nav>
+  </aside>
+
+  <main class="content">
+
+    <h1 class="page-title">AT/MP dans la Fonction Publique</h1>
+    <div class="page-meta">
+      Guide complet pour les 3 versants (État, Territorial, Hospitalier) · CGT Occitanie · Septembre 2026
+    </div>
+
+    <!-- ═══ ENJEU ═══ -->
+    <section class="section" id="enjeu">
+      <h2 class="section-title"><span class="rouge">01 —</span> Enjeu majeur</h2>
+
+      <div class="versant-grid">
+        <div class="versant-card fpe">
+          <div class="vc-name fpe"><span class="badge badge-fpe">FPE</span> État</div>
+          <div class="vc-stat">7 %</div>
+          <div class="vc-detail">d'agents accidentés chaque année</div>
+        </div>
+        <div class="versant-card fpt">
+          <div class="vc-name fpt"><span class="badge badge-fpt">FPT</span> Territorial</div>
+          <div class="vc-stat">11 %</div>
+          <div class="vc-detail">d'agents accidentés chaque année</div>
+        </div>
+        <div class="versant-card fph">
+          <div class="vc-name fph"><span class="badge badge-fph">FPH</span> Hospitalier</div>
+          <div class="vc-stat">15 %</div>
+          <div class="vc-detail">d'agents accidentés chaque année — taux le plus élevé de tous secteurs</div>
+        </div>
+      </div>
+
+      <p>Le secteur privé affiche un taux de <strong>11 %</strong> à titre comparatif. La Fonction Publique n'est pas un monde protégé : la FPH enregistre le taux d'accidentalité le plus élevé de toute l'économie française.</p>
+
+      <div class="cgt-box">
+        <strong>Angle CGT</strong>
+        Le mythe du « fonctionnaire à l'abri » ne résiste pas aux chiffres. L'État employeur a les mêmes obligations de prévention que tout employeur privé (DUERP, F3SCT, plan de prévention). La CGT doit lever la peur hiérarchique qui conduit à la sous-déclaration massive.
+      </div>
+    </section>
+
+    <!-- ═══ DONNÉES ═══ -->
+    <section class="section" id="donnees">
+      <h2 class="section-title"><span class="rouge">02 —</span> Données 2023</h2>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Versant</th>
+              <th>Accidents de service</th>
+              <th>Maladies professionnelles</th>
+              <th>Durée arrêt moy.</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="td-label"><span class="badge badge-fpe">FPE</span> État</td>
+              <td>30 000 AT/trajet</td>
+              <td>600 MP reconnues</td>
+              <td>—</td>
+            </tr>
+            <tr>
+              <td class="td-label"><span class="badge badge-fpt">FPT</span> Territorial</td>
+              <td>5,6 AS pour 100 agents</td>
+              <td>2 800 MP reconnues</td>
+              <td>143 jours</td>
+            </tr>
+            <tr>
+              <td class="td-label"><span class="badge badge-fph">FPH</span> Hospitalier</td>
+              <td>25 000 AS avec arrêt</td>
+              <td>1 900 MP notifiées</td>
+              <td>149 jours</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>La FPH présente la durée d'arrêt la plus longue, reflet de la sévérité des accidents (manipulation de patients, exposition biologique, violences). La FPT enregistre une hausse des maladies professionnelles depuis 2021.</p>
+    </section>
+
+    <!-- ═══ CADRE JURIDIQUE ═══ -->
+    <section class="section" id="cadre">
+      <h2 class="section-title"><span class="rouge">03 —</span> Cadre juridique</h2>
+
+      <p>Le régime des AT/MP dans la Fonction Publique est encadré par le <strong>Code Général de la Fonction Publique (CGFP), articles L.822-18 à L.822-26</strong>.</p>
+
+      <h3>Définition de l'accident de service</h3>
+      <p>Un <strong>accident de service</strong> est un événement soudain survenu à l'occasion ou en relation directe avec le service, entraînant une lésion physique ou psychologique.</p>
+
+      <h3>Présomption d'imputabilité</h3>
+      <p>Depuis la <strong>loi déontologie de 2016</strong>, l'agent bénéficie d'une présomption d'imputabilité : l'accident survenu en service est présumé lié au service. C'est à l'employeur d'apporter la preuve contraire. Cette inversion de la charge de la preuve est un acquis majeur.</p>
+
+      <div class="callout bleu">
+        <strong>Référence légale</strong>
+        CGFP art. L.822-18 et suivants. Loi n°2016-483 du 20 avril 2016 relative à la déontologie et aux droits et obligations des fonctionnaires.
+      </div>
+    </section>
+
+    <!-- ═══ SECTEURS À RISQUE ═══ -->
+    <section class="section" id="risques">
+      <h2 class="section-title"><span class="rouge">04 —</span> Secteurs à risque <span class="badge badge-fpt">FPT</span></h2>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Secteur d'activité</th><th>Part des accidents de service</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="td-label">Nettoyage &amp; maintenance</td><td>16 %</td></tr>
+            <tr><td class="td-label">Voirie &amp; circulation</td><td>11 %</td></tr>
+            <tr><td class="td-label">Espaces verts</td><td>8 %</td></tr>
+            <tr><td class="td-label">Animation &amp; enfance</td><td>7 %</td></tr>
+            <tr><td class="td-label">Autres secteurs</td><td>58 %</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p><em>Source : Observatoire de l'absentéisme 2024, WTW.</em></p>
+
+      <div class="cgt-box">
+        <strong>Angle CGT</strong>
+        Vérifier en F3SCT si ces secteurs sont bien identifiés dans le DUERP de votre collectivité. Chaque secteur à risque doit avoir un plan d'action spécifique : formation gestes-postures, EPI adaptés, matériel ergonomique, organisation du travail.
+      </div>
+    </section>
+
+    <!-- ═══ FPH ═══ -->
+    <section class="section" id="fph">
+      <h2 class="section-title"><span class="rouge">05 —</span> Spécificités <span class="badge badge-fph">FPH</span></h2>
+
+      <p>La Fonction Publique Hospitalière présente une accidentalité structurellement élevée en raison de :</p>
+
+      <ul>
+        <li><strong>Manipulation de patients</strong> — mobilisations, transferts, soins corporels</li>
+        <li><strong>Expositions biologiques</strong> — risques VIH, hépatites B et C, COVID et autres agents infectieux</li>
+        <li><strong>Charge de travail</strong> — sous-effectif chronique, turn-over élevé</li>
+        <li><strong>Violences</strong> — agressions physiques et verbales de patients, familles, public</li>
+        <li><strong>Stress et épuisement</strong> — burn-out reconnu de plus en plus comme MP</li>
+        <li><strong>Horaires atypiques</strong> — travail de nuit, 3×8, gardes longues</li>
+      </ul>
+
+      <div class="callout rouge">
+        <strong>Alerte</strong>
+        Les accidents exposants au sang (AES) nécessitent une prise en charge urgente : médecine du travail dans l'heure, tests VIH et hépatites, traitement antirétroviral si indiqué. Chaque AES doit être déclaré — sans exception.
+      </div>
+    </section>
+
+    <!-- ═══ LÉSIONS ═══ -->
+    <section class="section" id="lesions">
+      <h2 class="section-title"><span class="rouge">06 —</span> Types de lésions et maladies professionnelles</h2>
+
+      <h3>Accidents de service — causes principales</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Cause</th><th>Part</th><th>Versants principaux</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="td-label">Efforts de soulèvement / manutention</td><td>35 %</td><td>FPH, FPT</td></tr>
+            <tr><td class="td-label">Chutes (plain-pied ou hauteur)</td><td>25 %</td><td>FPT, FPH</td></tr>
+            <tr><td class="td-label">Piqûres d'aiguilles (AES)</td><td>10 %</td><td>FPH principalement</td></tr>
+            <tr><td class="td-label">Violences &amp; agressions</td><td>8 %</td><td>FPH, FPE (police, enseignement)</td></tr>
+            <tr><td class="td-label">Autres (accidents trajet, outils, véhicules…)</td><td>22 %</td><td>Tous versants</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Maladies professionnelles — répartition</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Type de maladie</th><th>Part</th><th>Tendance</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="td-label">Troubles musculo-squelettiques (TMS)</td><td>45–50 %</td><td>Stable</td></tr>
+            <tr><td class="td-label">Affections psychiques (burn-out, dépression)</td><td>15–20 %</td><td>↑ En forte hausse</td></tr>
+            <tr><td class="td-label">Affections respiratoires</td><td>10–12 %</td><td>Stable</td></tr>
+            <tr><td class="td-label">Maladies infectieuses</td><td>5–8 %</td><td>↑ Depuis COVID</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="cgt-box">
+        <strong>Angle CGT</strong>
+        Les affections psychiques sont en forte hausse depuis 2020. La CGT doit pousser leur reconnaissance systématique comme maladies professionnelles — un burn-out lié aux conditions de travail est une MP. Le DUERP doit comporter un volet risques psychosociaux obligatoire.
+      </div>
+    </section>
+
+    <!-- ═══ ÉVOLUTION ═══ -->
+    <section class="section" id="evolution">
+      <h2 class="section-title"><span class="rouge">07 —</span> Évolution 2021–2023</h2>
+
+      <div class="versant-grid">
+        <div class="versant-card fpe">
+          <div class="vc-name fpe"><span class="badge badge-fpe">FPE</span> État</div>
+          <div class="vc-stat">−27 %</div>
+          <div class="vc-detail">41 000 → 30 000 AT/trajet<br>Effet télétravail post-COVID<br>Mais maladies professionnelles en hausse</div>
+        </div>
+        <div class="versant-card fpt">
+          <div class="vc-name fpt"><span class="badge badge-fpt">FPT</span> Territorial</div>
+          <div class="vc-stat">Stable</div>
+          <div class="vc-detail">5,6 AS pour 100 agents<br>2 800 MP reconnues<br>Durée arrêt : 143 j en moyenne</div>
+        </div>
+        <div class="versant-card fph">
+          <div class="vc-name fph"><span class="badge badge-fph">FPH</span> Hospitalier</div>
+          <div class="vc-stat">+4 %</div>
+          <div class="vc-detail">24 000 → 25 000 AS avec arrêt<br>1 900 MP reconnues<br>Durée arrêt : 149 j en moyenne</div>
+        </div>
+      </div>
+
+      <p>Toutes catégories confondues, les maladies professionnelles sont en hausse, tirées par les TMS et surtout les affections psychiques. La baisse des accidents en FPE masque une réalité : le télétravail réduit les accidents de trajet mais aggrave les TMS de bureau et l'isolement.</p>
+    </section>
+
+    <!-- ═══ PROCÉDURES ═══ -->
+    <section class="section" id="procedures">
+      <h2 class="section-title"><span class="rouge">08 —</span> Procédures de déclaration</h2>
+
+      <h3>Obligations générales</h3>
+      <ul>
+        <li><strong>Agent → hiérarchie</strong> : déclaration immédiate ou au plus tard en fin de journée</li>
+        <li><strong>Hiérarchie → gestionnaire RH</strong> : transmission sous 48 à 72 heures maximum</li>
+        <li><strong>Délai de reconnaissance légal</strong> : 30 jours (4 à 8 semaines en pratique)</li>
+      </ul>
+
+      <h3><span class="badge badge-fpt">FPT</span> Procédure territoriale</h3>
+      <ul>
+        <li><strong>Phase 1 (&lt; 24h)</strong> : alerte à la hiérarchie + premiers soins + constat par témoins si possible</li>
+        <li><strong>Phase 2 (24–48h)</strong> : rapport circonstancié de l'agent + transmission à la CNRACL</li>
+        <li><strong>CNRACL</strong> : décision sous 30 jours légaux (souvent 4 à 8 semaines en pratique)</li>
+      </ul>
+
+      <h3><span class="badge badge-fph">FPH</span> Accidents exposants (AES)</h3>
+      <ul>
+        <li><strong>Phase urgente (&lt; 1h)</strong> : médecine du travail interne + bilan biologique VIH/hépatites</li>
+        <li>Traitement antirétroviral prophylactique si indiqué (à débuter dans les 4 heures)</li>
+        <li>Déclaration en accident de service en parallèle — ne pas attendre les résultats biologiques</li>
+      </ul>
+
+      <div class="callout rouge">
+        <strong>Sous-déclaration — un problème majeur</strong>
+        Les agents sous-déclarent par peur hiérarchique, par banalisation des accidents ou par méconnaissance de leurs droits. Le délai de prescription est de <strong>2 ans</strong> à compter de l'accident ou de la première constatation médicale de la maladie professionnelle.
+      </div>
+
+      <div class="cgt-box">
+        <strong>Angle CGT — saisine directe CNRACL</strong>
+        Si l'employeur refuse de transmettre la déclaration d'accident à la CNRACL, l'agent ou son syndicat peut <strong>saisir directement la CNRACL dans un délai de 2 ans</strong>. Ne jamais laisser un agent seul face à un refus de l'administration.
+      </div>
+    </section>
+
+    <!-- ═══ DÉLAIS ═══ -->
+    <section class="section" id="delais">
+      <h2 class="section-title"><span class="rouge">09 —</span> Délais clés à retenir</h2>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Étape</th><th>Délai</th><th>Remarque</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="td-label">Déclaration à la hiérarchie</td><td>Immédiat / fin de journée</td><td>Ne jamais attendre</td></tr>
+            <tr><td class="td-label">Transmission par l'employeur</td><td>48–72 heures</td><td>Obligation légale</td></tr>
+            <tr><td class="td-label">Décision de reconnaissance</td><td>30 jours légaux</td><td>4–8 semaines en pratique</td></tr>
+            <tr><td class="td-label">Prescription pour déclarer</td><td>2 ans</td><td>À compter de l'accident ou du diagnostic MP</td></tr>
+            <tr><td class="td-label">AES — traitement antirétroviral</td><td>&lt; 4 heures</td><td>Urgence absolue</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ═══ DROITS ═══ -->
+    <section class="section" id="droits">
+      <h2 class="section-title"><span class="rouge">10 —</span> Droits et indemnisations pendant l'arrêt</h2>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Période</th>
+              <th>Taux légal <span class="badge badge-fpt">FPT</span> <span class="badge badge-fph">FPH</span></th>
+              <th>En pratique</th>
+              <th><span class="badge badge-fpe">FPE</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="td-label">Jours 1 à 3 (carence)</td>
+              <td>0 %</td>
+              <td>Souvent 100 % via délibération</td>
+              <td>100 % maintenu</td>
+            </tr>
+            <tr>
+              <td class="td-label">Jours 4 à 30</td>
+              <td>90 % du traitement</td>
+              <td>100 % si accord employeur</td>
+              <td>100 % maintenu</td>
+            </tr>
+            <tr>
+              <td class="td-label">Après le 30ème jour</td>
+              <td>66,67 % du traitement</td>
+              <td>Beaucoup maintiennent 100 %</td>
+              <td>100 % maintenu</td>
+            </tr>
+            <tr>
+              <td class="td-label">Soins médicaux</td>
+              <td colspan="3">100 % pris en charge — consultations, hospitalisation, médicaments, appareillage, kinésithérapie, dentaire et optique majorés</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="cgt-box">
+        <strong>Angle CGT</strong>
+        Le maintien à 100 % dépend souvent d'une délibération de la collectivité ou d'un accord d'établissement — la CGT doit l'obtenir en négociation. Si votre collectivité ne maintient pas 100 %, c'est un axe de revendication immédiat à porter en F3SCT.
+      </div>
+    </section>
+
+    <!-- ═══ INVALIDITÉ ═══ -->
+    <section class="section" id="invalidite">
+      <h2 class="section-title"><span class="rouge">11 —</span> Invalidité permanente et ATI</h2>
+
+      <h3>Allocation Temporaire d'Invalidité (ATI)</h3>
+      <ul>
+        <li>Versée dès que l'incapacité partielle est supérieure à <strong>25 jours</strong> (critère d'accès plus souple que le privé)</li>
+        <li>Taux : <strong>50 % du salaire de base</strong></li>
+        <li>Durée : versée jusqu'à la stabilisation médicale</li>
+      </ul>
+
+      <h3>Indemnité et rente d'invalidité selon le taux d'IPP</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Taux d'IPP</th><th>Prestation</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="td-label">IPP &lt; 10 %</td><td>Indemnité unique en capital (barème officiel CNRACL)</td></tr>
+            <tr><td class="td-label">IPP ≥ 10 %</td><td>Rente viagère — versement mensuel ou trimestriel, à vie</td></tr>
+            <tr><td class="td-label">Invalidité &gt; 50 %</td><td>Majoration tierce personne pour aide aux actes essentiels</td></tr>
+            <tr><td class="td-label">Inaptitude totale et définitive</td><td>Retraite pour invalidité au taux plein immédiat</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout rouge">
+        <strong>Attention au taux d'IPP</strong>
+        Le taux d'IPP est fixé par la commission médicale — il peut et doit être contesté s'il est sous-évalué. La différence entre 8 % et 12 % peut représenter des milliers d'euros sur une carrière. Toujours faire examiner le taux par un médecin indépendant avant acceptation.
+      </div>
+    </section>
+
+    <!-- ═══ DÉCÈS ═══ -->
+    <section class="section" id="deces">
+      <h2 class="section-title"><span class="rouge">12 —</span> En cas de décès</h2>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Ayant droit</th><th>Prestation</th><th>Conditions</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="td-label">Conjoint survivant</td>
+              <td>Pension de veuvage : 50 % de la rente annuelle de l'agent décédé</td>
+              <td>Mariage, PACS ou concubinage notoire selon statut</td>
+            </tr>
+            <tr>
+              <td class="td-label">Enfants à charge</td>
+              <td>15 à 20 % par enfant</td>
+              <td>Jusqu'à 21 ans ; jusqu'à 25 ans si études supérieures</td>
+            </tr>
+            <tr>
+              <td class="td-label">Frais funéraires</td>
+              <td>Prise en charge par l'employeur</td>
+              <td>Sur présentation des justificatifs</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="cgt-box">
+        <strong>Angle CGT</strong>
+        Ces droits ne sont quasiment jamais connus spontanément par les familles. Lors de chaque décès lié à un AT ou une MP, contacter immédiatement la famille et l'orienter. La saisine directe de la CNRACL est possible dans les 2 ans — c'est une arme puissante face aux employeurs récalcitrants.
+      </div>
+    </section>
+
+    <!-- ═══ PRÉVENTION ═══ -->
+    <section class="section" id="prevention">
+      <h2 class="section-title"><span class="rouge">13 —</span> Prévention — DUERP et F3SCT</h2>
+
+      <h3>Document Unique d'Évaluation des Risques Professionnels (DUERP)</h3>
+      <ul>
+        <li>Obligatoire dès le 1er agent, mis à jour annuellement et après tout AT grave</li>
+        <li>Doit couvrir tous les risques : physiques, chimiques, biologiques, psychosociaux</li>
+        <li>Consultable par les agents et les représentants syndicaux</li>
+        <li>La CGT peut en demander communication en F3SCT à tout moment</li>
+      </ul>
+
+      <h3>Formation Spécialisée en matière de Santé, Sécurité et Conditions de Travail (F3SCT)</h3>
+      <ul>
+        <li><span class="badge badge-fpt">FPT</span> Obligatoire dans les collectivités de plus de 50 agents</li>
+        <li><span class="badge badge-fph">FPH</span> Obligatoire dans tous les établissements de santé</li>
+        <li><span class="badge badge-fpe">FPE</span> Obligatoire dans tous les ministères</li>
+        <li>Compétences : enquêtes AT, avis sur DUERP, inspection des locaux, droit d'alerte</li>
+      </ul>
+
+      <h3>Droit d'alerte</h3>
+      <p>Tout représentant CGT en F3SCT peut exercer le <strong>droit d'alerte en cas de danger grave et imminent</strong>. L'employeur doit répondre dans les 24 heures. Si le danger persiste, le recours au tribunal administratif est possible.</p>
+
+      <div class="cgt-box">
+        <strong>Angle CGT</strong>
+        La F3SCT est l'outil syndical central pour la prévention dans la FP. Chaque section CGT doit avoir des représentants formés et actifs en F3SCT : enquêtes AT, analyse du DUERP, propositions de mesures de prévention. C'est là que se construit la sécurité au quotidien.
+      </div>
+    </section>
+
+    <!-- ═══ CONTACTS ═══ -->
+    <section class="section" id="contacts">
+      <h2 class="section-title"><span class="rouge">14 —</span> Contacts et ressources</h2>
+
+      <div class="contacts-grid">
+        <div class="contact-card">
+          <div class="contact-name">CNRACL</div>
+          <span class="contact-tel">0 801 801 807 (gratuit)</span>
+          <div class="contact-url"><a href="https://www.cnracl.fr" target="_blank" rel="noopener">www.cnracl.fr</a></div>
+          <div class="contact-detail">Caisse nationale des agents territoriaux et hospitaliers · Lundi–Vendredi 8h30–17h · Interlocuteur direct FPT et FPH</div>
+        </div>
+        <div class="contact-card">
+          <div class="contact-name">Ministère de la Fonction Publique</div>
+          <div class="contact-url"><a href="https://www.fonction-publique.gouv.fr" target="_blank" rel="noopener">www.fonction-publique.gouv.fr</a></div>
+          <div class="contact-detail">Circulaires, barèmes, textes de référence, statuts des 3 versants</div>
+        </div>
+        <div class="contact-card">
+          <div class="contact-name">INRS</div>
+          <div class="contact-url"><a href="https://www.inrs.fr" target="_blank" rel="noopener">www.inrs.fr</a></div>
+          <div class="contact-detail">Fiches prévention par métier · Guides DUERP · EPI · Formation gestes et postures</div>
+        </div>
+        <div class="contact-card">
+          <div class="contact-name">HAS</div>
+          <div class="contact-url"><a href="https://www.has-sante.fr" target="_blank" rel="noopener">www.has-sante.fr</a></div>
+          <div class="contact-detail">Guides de bonne pratique médicale · Protocoles d'urgence · Références maladies professionnelles</div>
+        </div>
+        <div class="contact-card">
+          <div class="contact-name">Légifrance</div>
+          <div class="contact-url"><a href="https://www.legifrance.gouv.fr" target="_blank" rel="noopener">www.legifrance.gouv.fr</a></div>
+          <div class="contact-detail">CGFP art. L.822-18 et suivants · Textes réglementaires · Jurisprudence</div>
+        </div>
+        <div class="contact-card">
+          <div class="contact-name">CGT Occitanie</div>
+          <span class="contact-tel">ud31@cgt.fr</span>
+          <div class="contact-url"><a href="https://www.cgt.fr" target="_blank" rel="noopener">www.cgt.fr</a></div>
+          <div class="contact-detail">Accompagnement individuel et collectif · Défense des droits AT/MP · F3SCT · Recours contentieux</div>
+        </div>
+      </div>
+
+      <div class="cgt-box">
+        <strong>Message final</strong>
+        La CGT est le premier contact pour tout agent confronté à un AT ou une MP dans la FP. La complexité administrative des 3 versants (CNRACL, ministères, F3SCT) ne doit pas décourager les agents. Un syndicat structuré, présent en F3SCT, qui connaît les dossiers, change la donne. Vos droits — on les défend ensemble.
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<footer>
+  <span>CGT Occitanie · Guide AT/MP Fonction Publique · Septembre 2026</span>
+  <span>
+    <a href="/index.html">Espace formateur</a> ·
+    <a href="/stagiaires.html">Espace stagiaire</a>
+  </span>
+</footer>
+
+<script>
+// Active sidebar link on scroll
+const sections = document.querySelectorAll('.section[id]');
+const links = document.querySelectorAll('.sidebar a[href^="#"]');
+function onScroll(){
+  let active = '';
+  sections.forEach(s=>{
+    const top = s.getBoundingClientRect().top;
+    if(top < 120) active = s.id;
+  });
+  links.forEach(l=>{
+    l.classList.toggle('active', l.getAttribute('href')==='#'+active);
+  });
+}
+window.addEventListener('scroll', onScroll, {passive:true});
+onScroll();
+</script>
+</body>
+</html>
