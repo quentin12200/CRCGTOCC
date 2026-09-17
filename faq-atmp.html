@@ -246,9 +246,10 @@ const FAQ = [
     cat: "droits",
     q: "Qu’est-ce que la consolidation et qu’est-ce que ça change ?",
     a: `La <strong>consolidation</strong> est la date à laquelle l'état de la victime se stabilise : les lésions ne peuvent plus évoluer de façon significative, avec ou sans séquelles permanentes. Elle est fixée par le médecin-conseil de la CPAM.
-    <div class="highlight">À la consolidation :<br>• Les IJ AT/MP s'arrêtent<br>• Le médecin-conseil fixe un <strong>taux d'IPP</strong> (Incapacité Permanente Partielle)<br>• Si IPP &lt; 10 % : versement d'un capital unique<br>• Si IPP ≥ 10 % : rente viagère</div>
+    <div class="highlight">À la consolidation :<br>• Les IJ AT/MP s'arrêtent<br>• Le médecin-conseil fixe un <strong>taux d'IPP</strong> (Incapacité Permanente Partielle)<br>• Si IPP &lt; 10 % : versement d'un <strong>capital unique forfaitaire</strong> (ex. : 4 833,18 € à 9 % — montants 2026)<br>• Si IPP ≥ 10 % : <strong>rente viagère</strong> trimestrielle (ou mensuelle si taux ≥ 50 %)<br>• Salaire minimum de calcul des rentes : <strong>21 498,47 €</strong> depuis le 1er avril 2026</div>
+    <p><strong>Retraite anticipée :</strong> IPP ≥ 20 % → départ possible dès <strong>60 ans</strong> ; IPP 10–19 % → départ <strong>2 ans avant l'âge légal</strong> sous conditions (17 ans d'exposition aux facteurs de risques professionnels).</p>
     La date de consolidation peut être contestée dans les <strong>2 mois</strong> si elle vous paraît prématurée. La CGT peut vous orienter vers un médecin conseil.
-    <p class="ref">Réf. L.434-1, L.434-2 CSS</p>`
+    <p class="ref">Réf. L.434-1, L.434-2 CSS — ameli.fr (07/04/2026)</p>`
   },
   {
     cat: "droits",
@@ -303,10 +304,31 @@ const FAQ = [
   {
     cat: "recours",
     q: "Puis-je contester le taux d’IPP fixé par la CPAM ?",
-    a: `Oui. Le taux d'IPP peut être contesté dans un délai de <strong>2 mois</strong> à compter de la notification.
+    a: `Oui. Le taux d’IPP peut être contesté dans un délai de <strong>2 mois</strong> à compter de la notification, auprès de la Commission Médicale de Recours Amiable (CMRA).
     <div class="highlight">Procédure : saisir le Pôle Social du Tribunal Judiciaire. Une expertise médicale peut être ordonnée par le tribunal. La CPAM doit justifier son taux, et le tribunal peut le réviser à la hausse comme à la baisse.</div>
-    Conseils : se faire accompagner par un médecin conseil (non lié à la CPAM) pour évaluer indépendamment le taux, et contacter la CGT ou l'UD pour un accompagnement juridique.
-    <p class="ref">Réf. L.143-1 CSS — barème indicatif d'invalidité AT/MP</p>`
+    Conseils : se faire accompagner par un médecin conseil (non lié à la CPAM) pour évaluer indépendamment le taux, et contacter la CGT ou l’UD pour un accompagnement juridique.
+    <p class="ref">Réf. L.143-1 CSS — barème indicatif d’invalidité AT/MP</p>`
+  },
+  {
+    cat: "droits",
+    q: "Quels sont les montants de l’indemnité en capital et de la rente d’IPP ?",
+    a: `<strong>IPP &lt; 10 % — indemnité en capital forfaitaire</strong> (versée en une seule fois, exonérée CSG/CRDS et impôt) :
+    <div class="highlight"><table style="width:100%;border-collapse:collapse;font-size:0.9em"><thead><tr style="background:#e8f5e9"><th style="padding:4px 8px;text-align:left">Taux IPP</th><th style="padding:4px 8px;text-align:right">Montant (depuis le 1er avril 2026)</th></tr></thead><tbody>
+    <tr><td style="padding:3px 8px">1 %</td><td style="padding:3px 8px;text-align:right">483,38 €</td></tr>
+    <tr style="background:#f9f9f9"><td style="padding:3px 8px">2 %</td><td style="padding:3px 8px;text-align:right">785,71 €</td></tr>
+    <tr><td style="padding:3px 8px">3 %</td><td style="padding:3px 8px;text-align:right">1 148,17 €</td></tr>
+    <tr style="background:#f9f9f9"><td style="padding:3px 8px">4 %</td><td style="padding:3px 8px;text-align:right">1 812,24 €</td></tr>
+    <tr><td style="padding:3px 8px">5 %</td><td style="padding:3px 8px;text-align:right">2 295,79 €</td></tr>
+    <tr style="background:#f9f9f9"><td style="padding:3px 8px">6 %</td><td style="padding:3px 8px;text-align:right">2 839,52 €</td></tr>
+    <tr><td style="padding:3px 8px">7 %</td><td style="padding:3px 8px;text-align:right">3 443,41 €</td></tr>
+    <tr style="background:#f9f9f9"><td style="padding:3px 8px">8 %</td><td style="padding:3px 8px;text-align:right">4 108,24 €</td></tr>
+    <tr><td style="padding:3px 8px">9 %</td><td style="padding:3px 8px;text-align:right">4 833,18 €</td></tr>
+    </tbody></table></div>
+    <strong>IPP ≥ 10 % — rente viagère</strong> : Rente = salaire annuel × taux utile.<br>
+    <em>Taux utile</em> : fraction ≤ 50 % divisée par 2 ; fraction > 50 % multipliée par 1,5.<br>
+    Plancher de calcul : <strong>salaire minimum des rentes = 21 498,47 €</strong> depuis le 1er avril 2026.<br>
+    La rente est exonérée de CSG/CRDS et d’impôt sur le revenu. Versée chaque trimestre (taux 10–49 %) ou chaque mois (taux ≥ 50 %).
+    <p class="ref">Réf. L.434-1, L.434-2 CSS — ameli.fr (07/04/2026)</p>`
   },
   {
     cat: "recours",
