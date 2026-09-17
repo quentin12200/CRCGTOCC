@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>FAQ AT/MP — CGT Occitanie</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%23E2001A'/%3E%3Ctext x='16' y='23' text-anchor='middle' font-family='sans-serif' font-weight='bold' font-size='16' fill='%23FFD200'%3ECGT%3C/text%3E%3C/svg%3E">
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --rouge: #E2001A; --jaune: #FFD200;
+      --fond: #141414; --card: #1E1E1E;
+      --texte: #FBFAF6; --muted: #9A9A9A;
+      --vert: #2ECC71; --vert-bg: #0D2B1A;
+      --orange: #F57C00; --border: #2E2E2E;
+    }
+    body { background: var(--fond); color: var(--texte); font-family: 'Archivo', sans-serif; min-height: 100vh; padding: 0 0 4rem; }
+
+    .topbar { background: var(--rouge); padding: 1rem 1.5rem; display: flex; align-items: center; gap: 1rem; position: sticky; top: 0; z-index: 100; }
+    .topbar-badge { font-family: 'Anton', sans-serif; font-size: 1.1rem; color: var(--jaune); letter-spacing: .06em; }
+    .topbar-title { font-family: 'Anton', sans-serif; font-size: 1rem; color: #fff; letter-spacing: .04em; }
+    .topbar-back { margin-left: auto; color: rgba(255,255,255,.75); font-size: .8rem; text-decoration: none; }
+    .topbar-back:hover { color: #fff; }
+    .stripe { height: 4px; background: var(--jaune); }
+
+    .hero { background: linear-gradient(135deg, #0A0A1A 0%, #0D1525 100%); border-bottom: 1px solid var(--border); padding: 2rem 1.5rem 1.5rem; text-align: center; }
+    .hero-icon { font-size: 2.5rem; margin-bottom: .75rem; }
+    .hero h1 { font-family: 'Anton', sans-serif; font-size: clamp(1.4rem, 4vw, 2rem); color: var(--jaune); letter-spacing: .04em; margin-bottom: .5rem; }
+    .hero p { font-size: .9rem; color: var(--muted); max-width: 52ch; margin: 0 auto; line-height: 1.6; }
+
+    .content { max-width: 740px; margin: 0 auto; padding: 1.5rem 1rem 0; }
+
+    /* FILTRES */
+    .filters { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: 1.5rem; }
+    .filter-btn {
+      background: var(--card); border: 1px solid var(--border); color: var(--muted);
+      padding: .4rem .9rem; font-family: 'Archivo', sans-serif; font-size: .75rem;
+      font-weight: 700; letter-spacing: .06em; text-transform: uppercase; cursor: pointer;
+      transition: border-color .15s, color .15s, background .15s;
+    }
+    .filter-btn:hover { border-color: #555; color: var(--texte); }
+    .filter-btn.active { border-color: var(--rouge); color: var(--rouge); background: #1A0005; }
+    .filter-btn[data-cat="declaration"].active { border-color: var(--orange); color: var(--orange); background: #1C1206; }
+    .filter-btn[data-cat="ij"].active { border-color: var(--vert); color: var(--vert); background: var(--vert-bg); }
+    .filter-btn[data-cat="droits"].active { border-color: #7BB3FF; color: #7BB3FF; background: #0A1220; }
+    .filter-btn[data-cat="recours"].active { border-color: #D98FFF; color: #D98FFF; background: #1A0A1A; }
+
+    /* SEARCH */
+    .search-wrap { position: relative; margin-bottom: 1.25rem; }
+    .search-wrap svg { position: absolute; left: .85rem; top: 50%; transform: translateY(-50%); color: var(--muted); }
+    #search { width: 100%; background: var(--card); border: 1px solid var(--border); color: var(--texte); font-family: 'Archivo', sans-serif; font-size: .9rem; padding: .7rem 1rem .7rem 2.5rem; outline: none; transition: border-color .15s; }
+    #search:focus { border-color: var(--rouge); }
+    #search::placeholder { color: var(--muted); }
+
+    /* FAQ ITEMS */
+    .faq-list { display: flex; flex-direction: column; gap: .5rem; }
+    .faq-item { border: 1px solid var(--border); overflow: hidden; }
+    .faq-item[data-cat="declaration"] { border-left: 3px solid var(--orange); }
+    .faq-item[data-cat="ij"] { border-left: 3px solid var(--vert); }
+    .faq-item[data-cat="droits"] { border-left: 3px solid #7BB3FF; }
+    .faq-item[data-cat="recours"] { border-left: 3px solid #D98FFF; }
+    .faq-item[data-cat="employeur"] { border-left: 3px solid var(--rouge); }
+
+    .faq-q {
+      width: 100%; background: var(--card); border: none; color: var(--texte);
+      font-family: 'Archivo', sans-serif; font-size: .9rem; font-weight: 600;
+      padding: 1rem 3rem 1rem 1rem; text-align: left; cursor: pointer;
+      display: flex; align-items: flex-start; gap: .75rem; line-height: 1.4;
+      position: relative; transition: background .15s;
+    }
+    .faq-q:hover { background: #252525; }
+    .faq-q.open { background: #1C1C1C; }
+    .faq-q::after {
+      content: '+'; position: absolute; right: 1rem; top: 50%; transform: translateY(-50%);
+      font-size: 1.3rem; color: var(--muted); font-weight: 400; transition: transform .2s;
+    }
+    .faq-q.open::after { content: '−'; }
+    .faq-cat-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 5px; }
+    .faq-item[data-cat="declaration"] .faq-cat-dot { background: var(--orange); }
+    .faq-item[data-cat="ij"] .faq-cat-dot { background: var(--vert); }
+    .faq-item[data-cat="droits"] .faq-cat-dot { background: #7BB3FF; }
+    .faq-item[data-cat="recours"] .faq-cat-dot { background: #D98FFF; }
+    .faq-item[data-cat="employeur"] .faq-cat-dot { background: var(--rouge); }
+
+    .faq-a {
+      display: none; padding: 1rem 1.25rem 1.25rem;
+      background: #181818; border-top: 1px solid var(--border);
+      font-size: .87rem; line-height: 1.7; color: #C8C7C2;
+    }
+    .faq-a.open { display: block; }
+    .faq-a strong { color: var(--texte); }
+    .faq-a .highlight { background: #1A0005; border-left: 3px solid var(--rouge); padding: .6rem .85rem; margin: .75rem 0; font-size: .84rem; }
+    .faq-a .highlight.vert { background: var(--vert-bg); border-color: var(--vert); }
+    .faq-a .ref { font-size: .75rem; color: var(--muted); margin-top: .75rem; }
+
+    /* NO RESULT */
+    .no-result { text-align: center; padding: 3rem 1rem; color: var(--muted); display: none; }
+    .no-result.show { display: block; }
+
+    /* CATÉGORIE LABEL */
+    .cat-label {
+      font-size: .68rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+      padding: .15rem .5rem; border-radius: 2px; display: inline-block;
+    }
+    .cat-declaration { background: #1C1206; color: var(--orange); }
+    .cat-ij { background: var(--vert-bg); color: var(--vert); }
+    .cat-droits { background: #0A1220; color: #7BB3FF; }
+    .cat-recours { background: #1A0A1A; color: #D98FFF; }
+    .cat-employeur { background: #1A0005; color: #FF8A95; }
+
+    .count-label { font-size: .75rem; color: var(--muted); margin-bottom: 1rem; }
+  </style>
+</head>
+<body>
+<script>
+  if(localStorage.getItem('cgt_stagiaire_auth')!=='ok'&&localStorage.getItem('cgt_auth')!=='ok'){
+    location.replace('/login-stagiaire.html?from='+encodeURIComponent(location.pathname));
+  }
+</script>
+
+<div class="topbar">
+  <span class="topbar-badge">CGT</span>
+  <span class="topbar-title">FAQ — Accidents du Travail &amp; Maladies Professionnelles</span>
+  <a class="topbar-back" href="/stagiaires.html">← Retour</a>
+</div>
+<div class="stripe"></div>
+
+<div class="hero">
+  <div class="hero-icon">❓</div>
+  <h1>Questions fréquentes AT/MP</h1>
+  <p>Les vraies questions posées en formation, avec des réponses claires et les références légales.</p>
+</div>
+
+<div class="content">
+  <div class="search-wrap">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <input type="text" id="search" placeholder="Rechercher une question…" autocomplete="off">
+  </div>
+
+  <div class="filters">
+    <button class="filter-btn active" data-cat="all">Toutes</button>
+    <button class="filter-btn" data-cat="declaration">Déclaration</button>
+    <button class="filter-btn" data-cat="ij">Indemnités</button>
+    <button class="filter-btn" data-cat="droits">Droits &amp; protection</button>
+    <button class="filter-btn" data-cat="employeur">Employeur</button>
+    <button class="filter-btn" data-cat="recours">Recours</button>
+  </div>
+
+  <div class="count-label" id="count-label"></div>
+
+  <div class="faq-list" id="faq-list"></div>
+  <div class="no-result" id="no-result">Aucune question ne correspond à votre recherche.</div>
+</div>
+
+<script>
+const FAQ = [
+  {
+    cat: "declaration",
+    q: "Mon employeur refuse de déclarer mon accident. Que faire ?",
+    a: `L'employeur a <strong>48 heures</strong> pour envoyer la déclaration d'accident du travail (DAT) à la CPAM (source ameli.fr). Le salarié doit, lui, informer l'employeur dans les <strong>24 heures</strong>. S'il refuse ou tarde, vous pouvez <strong>déclarer vous-même</strong> votre AT dans un délai de <strong>2 ans</strong> suivant l'accident (L.441-2 CSS).
+    <div class="highlight">Envoyer un courrier en LRAR à la CPAM avec : date, lieu, circonstances de l'accident, nature des lésions, témoins éventuels. Joindre le certificat médical initial.</div>
+    Le refus de l'employeur de déclarer peut constituer une faute pouvant engager sa responsabilité. Contactez votre délégué CGT.
+    <p class="ref">Réf. L.441-2 CSS — Art. R.441-2 CSS</p>`
+  },
+  {
+    cat: "declaration",
+    q: "Est-ce qu'un accident de trajet est considéré comme un AT ?",
+    a: `Oui. L'accident de trajet bénéficie du <strong>régime AT/MP</strong> s'il survient sur le trajet direct entre le domicile et le lieu de travail, ou entre le lieu de travail et le lieu de restauration habituel.
+    <div class="highlight">Le trajet peut comporter des détours justifiés (déposer un enfant à l'école, achats courants). Il suffit que le détour soit raisonnable et ne résulte pas d'un intérêt purement personnel non lié aux nécessités essentielles.</div>
+    Même régime : soins 100 %, IJ majorées, protection du contrat. <strong>Nuance :</strong> la rente d'IPP suit les mêmes règles mais la faute inexcusable de l'employeur ne s'applique pas aux accidents de trajet.
+    <p class="ref">Réf. L.411-2 CSS</p>`
+  },
+  {
+    cat: "declaration",
+    q: "Peut-on déclarer un AT longtemps après les faits ?",
+    a: `Oui, sous certaines conditions. La victime dispose d'un délai de <strong>2 ans</strong> à compter de la date de l'accident pour déclarer elle-même un AT si l'employeur ne l'a pas fait (L.441-2 CSS).
+    <div class="highlight vert">En pratique : réunir un maximum de preuves (témoins, documents internes, échanges écrits, photos) et envoyer la déclaration en LRAR à la CPAM avec le certificat médical initial.</div>
+    Au-delà de 2 ans, la prescription est en principe acquise — sauf si la victime n'avait pas connaissance des lésions (cas rares, type maladie à développement lent).
+    <p class="ref">Réf. L.441-2, L.431-2 CSS</p>`
+  },
+  {
+    cat: "ij",
+    q: "Comment sont calculées mes indemnités journalières AT/MP ?",
+    a: `La base de calcul est le <strong>Salaire Journalier de Base (SDJB)</strong> = salaire brut du mois précédant l'arrêt ÷ 30,42.
+    <br><br>
+    <strong>Taux appliqués :</strong><br>
+    • J1 à J28 : <strong>60 %</strong> du SDJB (plafond 2026 : 240,49 €/j)<br>
+    • À partir du J29 : <strong>80 %</strong> du SDJB (plafond 2026 : 320,66 €/j)<br>
+    • <strong>Pas de délai de carence</strong> (contrairement à la maladie ordinaire : 3 jours)
+    <div class="highlight vert">Exemple : salarié à 2 400 €/mois. SDJB = 2 400 ÷ 30,42 = 78,90 €. IJ J1-J28 = 47,34 €/j. IJ J29+ = 63,12 €/j.</div>
+    <p class="ref">Réf. L.433-2, L.433-3 CSS — PMSS 2026 = 4 005 €/mois</p>`
+  },
+  {
+    cat: "ij",
+    q: "Quelle est la différence entre IJ AT/MP et IJ maladie ordinaire ?",
+    a: `La différence est significative — c'est l'un des arguments centraux pour la reconnaissance AT/MP :
+    <br><br>
+    <strong>IJ maladie ordinaire :</strong><br>
+    • 3 jours de carence<br>
+    • 50 % du SDJB (moy. 3 derniers mois ÷ 91,25)<br>
+    • Plafond 2026 : 42,97 €/j (1,4 × SMIC juillet 2026)<br><br>
+    <strong>IJ AT/MP :</strong><br>
+    • Pas de carence<br>
+    • 60 % puis 80 % du SDJB<br>
+    • Plafond 2026 : 320,66 €/j
+    <div class="highlight">Sur un mois à 2 000 €, la différence entre IJ maladie et IJ AT/MP peut dépasser 300 à 400 €. Sur 6 mois d'arrêt : 1 800 à 2 400 € de plus grâce à la qualification AT.</div>
+    <p class="ref">Réf. L.433-1, L.433-2, L.321-1 CSS</p>`
+  },
+  {
+    cat: "ij",
+    q: "Mon employeur doit-il maintenir mon salaire pendant l’arrêt AT ?",
+    a: `La loi impose le maintien du salaire par l'employeur <strong>le jour de l'accident</strong> uniquement. Le reste de l'arrêt, c'est la CPAM qui verse les IJ.
+    <div class="highlight">Cependant, de nombreuses <strong>conventions collectives</strong> imposent un maintien partiel du salaire : souvent 90 % du salaire brut pendant 30 à 90 jours, puis 66 % jusqu'à 180 jours. L'employeur complète les IJ CPAM jusqu'au niveau garanti.</div>
+    À vérifier : votre convention collective de branche et votre accord d'entreprise. La CGT peut vous aider à identifier vos droits réels.
+    <p class="ref">Réf. L.1226-1 CT — CCN applicable à la branche</p>`
+  },
+  {
+    cat: "ij",
+    q: "Puis-je travailler pour un autre employeur pendant mon arrêt AT ?",
+    a: `Non. Un arrêt de travail interdit toute activité salariée pendant la durée de l'arrêt, y compris pour un autre employeur. La CPAM peut contrôler le respect de l'arrêt et suspendre les IJ en cas d'activité non autorisée.
+    <div class="highlight">Exception : activités expressément autorisées par le médecin prescripteur (type mi-temps thérapeutique), dans le cadre d'un accord CPAM.</div>
+    <p class="ref">Réf. L.433-1 CSS</p>`
+  },
+  {
+    cat: "droits",
+    q: "Mon employeur peut-il me licencier pendant mon arrêt AT ?",
+    a: `Non. La loi interdit à l'employeur de rompre le contrat de travail d'un salarié victime d'un AT pendant la durée de l'arrêt, <strong>sauf :</strong>
+    <br><br>
+    • <strong>Faute grave</strong> du salarié, étrangère à l'accident<br>
+    • <strong>Impossibilité de maintenir le contrat</strong> pour motif étranger à l'accident ou à la maladie
+    <div class="highlight">Tout licenciement prononcé en dehors de ces deux exceptions est <strong>nul de plein droit</strong>. Le salarié peut demander sa réintégration ou des indemnités majorées.</div>
+    Si l'employeur tente de licencier, contacter immédiatement la CGT et l'inspection du travail.
+    <p class="ref">Réf. L.1226-9, L.1226-13 CT</p>`
+  },
+  {
+    cat: "droits",
+    q: "Qu’est-ce que la faute inexcusable de l’employeur ?",
+    a: `La <strong>faute inexcusable de l'employeur (FIE)</strong> est reconnue lorsque l'employeur avait ou aurait dû avoir conscience du danger et n'a pas pris les mesures nécessaires pour le prévenir.
+    <div class="highlight">Depuis l'arrêt Amiante (2002), il existe une <strong>présomption de FIE</strong> quand le salarié avait alerté sur le risque. La victime doit alors seulement prouver qu'elle avait alerté, l'employeur devant prouver qu'il a tout mis en œuvre.</div>
+    Conséquences : <strong>majoration de la rente</strong> jusqu'au taux maximum, indemnisation complémentaire de toutes les préjudices (souffrances, préjudice esthétique, d'agrément…). Délai pour agir : <strong>2 ans</strong> à compter de la consolidation.
+    <p class="ref">Réf. L.452-1 à L.452-4 CSS — Cass. Soc. 28 fév. 2002 (arrêts Amiante)</p>`
+  },
+  {
+    cat: "droits",
+    q: "Qu’est-ce que la consolidation et qu’est-ce que ça change ?",
+    a: `La <strong>consolidation</strong> est la date à laquelle l'état de la victime se stabilise : les lésions ne peuvent plus évoluer de façon significative, avec ou sans séquelles permanentes. Elle est fixée par le médecin-conseil de la CPAM.
+    <div class="highlight">À la consolidation :<br>• Les IJ AT/MP s'arrêtent<br>• Le médecin-conseil fixe un <strong>taux d'IPP</strong> (Incapacité Permanente Partielle)<br>• Si IPP &lt; 10 % : versement d'un capital unique<br>• Si IPP ≥ 10 % : rente viagère</div>
+    La date de consolidation peut être contestée dans les <strong>2 mois</strong> si elle vous paraît prématurée. La CGT peut vous orienter vers un médecin conseil.
+    <p class="ref">Réf. L.434-1, L.434-2 CSS</p>`
+  },
+  {
+    cat: "droits",
+    q: "Qu’est-ce qu’une rechute AT/MP et comment la déclarer ?",
+    a: `Une <strong>rechute</strong> est une aggravation de l'état de santé postérieure à la guérison ou à la consolidation, qui résulte directement de l'accident ou de la maladie professionnelle initiale.
+    <div class="highlight vert">La rechute rouvre tous les droits AT/MP : soins à 100 %, IJ au taux majoré (60→80 %), protection du contrat.</div>
+    Démarche : faire établir un <strong>certificat médical de rechute</strong> par son médecin, l'envoyer à la CPAM (même procédure que la déclaration initiale). La CPAM peut instruire et éventuellement refuser — délai de contestation identique.
+    <p class="ref">Réf. L.443-1, L.443-2 CSS</p>`
+  },
+  {
+    cat: "employeur",
+    q: "L’employeur peut-il contester la reconnaissance de mon AT par la CPAM ?",
+    a: `Oui. L'employeur peut émettre des réserves motivées <strong>au moment de remplir la DAT ou dans les 10 jours suivants</strong> (source ameli.fr).
+    <div class="highlight">Ces réserves doivent porter sur : la matérialité des faits, la cause médicale des lésions, ou le caractère professionnel de l'accident. Des réserves générales sans motivation ne suffisent pas.</div>
+    Si l'employeur émet des réserves, la CPAM ouvre une enquête (70 jours max) puis une phase contradictoire (10 jours consultation + 10 jours observations). La CPAM statue au plus tard dans les <strong>3 mois</strong>. Vous recevrez un questionnaire en ligne — <strong>20 jours</strong> pour y répondre. Préparez vos éléments (témoins, documents, photos).
+    <p class="ref">Réf. R.441-7 à R.441-14 CSS</p>`
+  },
+  {
+    cat: "employeur",
+    q: "L’employeur est-il obligé d’organiser une visite de reprise ?",
+    a: `Oui. Après tout arrêt consécutif à un AT ou une MP, quelle que soit la durée, l'employeur <strong>doit</strong> organiser une visite de reprise auprès du médecin du travail dans les <strong>8 jours</strong> suivant la reprise du travail.
+    <div class="highlight">Cette visite est obligatoire avant toute reprise effective du poste. Le médecin du travail peut prononcer une aptitude, une aptitude avec réserves, ou une inaptitude. En cas d'inaptitude, des obligations spécifiques pèsent sur l'employeur (reclassement).</div>
+    Si l'employeur ne l'organise pas, il engage sa responsabilité. Vous pouvez vous-même contacter le service de santé au travail.
+    <p class="ref">Réf. R.4624-31, R.4624-32 CT</p>`
+  },
+  {
+    cat: "employeur",
+    q: "Que se passe-t-il si je suis déclaré inapte après un AT ?",
+    a: `L'inaptitude constatée par le médecin du travail après un AT déclenche une procédure spécifique :
+    <br><br>
+    1. L'employeur doit rechercher un poste de <strong>reclassement</strong> adapté aux préconisations du médecin du travail<br>
+    2. Si reclassement impossible : licenciement pour inaptitude d'origine professionnelle<br>
+    <div class="highlight">En cas de licenciement pour inaptitude d'origine professionnelle, le salarié a droit à une <strong>indemnité spéciale de licenciement = 2× l'indemnité légale</strong>, ainsi qu'une indemnité compensatrice de préavis.</div>
+    La CGT peut vous accompagner pour vérifier que la procédure est respectée et que vous touchez toutes vos indemnités.
+    <p class="ref">Réf. L.1226-10, L.1226-14 CT</p>`
+  },
+  {
+    cat: "recours",
+    q: "La CPAM a refusé mon AT. Quels recours ai-je ?",
+    a: `En cas de refus de prise en charge par la CPAM, deux étapes de recours sont prévues :
+    <br><br>
+    <strong>1. Commission de Recours Amiable (CRA)</strong><br>
+    Délai : <strong>2 mois</strong> à compter de la notification du refus. Courrier LRAR à la CPAM. Gratuit. La CRA se prononce dans les 2 mois ; silence vaut rejet.
+    <div class="highlight">Joindre au recours : tous les éléments de preuve (certificat médical, témoignages, photos, témoins, registre d'accidents bénins). La CGT peut vous aider à rédiger ce recours.</div>
+    <strong>Délais d'instruction à connaître :</strong><br>
+    • Sans réserves employeur : <strong>30 jours</strong> → silence = acceptation<br>
+    • Avec réserves ou enquête : <strong>3 mois</strong> (70 jours d'investigation max + phase contradictoire de 10+10 jours)<br><br>
+    <strong>2. Pôle Social du Tribunal Judiciaire</strong><br>
+    Après rejet de la CRA, délai de <strong>2 mois</strong> pour saisir le tribunal. Procédure gratuite, représentation par avocat non obligatoire.
+    <p class="ref">Réf. L.142-1, R.142-1 CSS — R.441-7 à R.441-14 CSS</p>`
+  },
+  {
+    cat: "recours",
+    q: "Puis-je contester le taux d’IPP fixé par la CPAM ?",
+    a: `Oui. Le taux d'IPP peut être contesté dans un délai de <strong>2 mois</strong> à compter de la notification.
+    <div class="highlight">Procédure : saisir le Pôle Social du Tribunal Judiciaire. Une expertise médicale peut être ordonnée par le tribunal. La CPAM doit justifier son taux, et le tribunal peut le réviser à la hausse comme à la baisse.</div>
+    Conseils : se faire accompagner par un médecin conseil (non lié à la CPAM) pour évaluer indépendamment le taux, et contacter la CGT ou l'UD pour un accompagnement juridique.
+    <p class="ref">Réf. L.143-1 CSS — barème indicatif d'invalidité AT/MP</p>`
+  },
+  {
+    cat: "recours",
+    q: "Qu’est-ce que le FIVA et quand y recourir ?",
+    a: `Le <strong>Fonds d'Indemnisation des Victimes de l'Amiante (FIVA)</strong> offre une indemnisation complémentaire à la rente CPAM pour les victimes de maladies liées à l'amiante (mésothéliome, asbestose, plaques pleurales…).
+    <div class="highlight vert">Le FIVA indemnise tous les préjudices : souffrances physiques et morales, préjudice esthétique, préjudice d'agrément, préjudice professionnel, préjudice des proches. L'indemnisation est indépendante de la rente AT/MP et cumulative.</div>
+    La demande se fait directement auprès du FIVA (fiva.fr). La CGT accompagne de nombreuses victimes dans ces démarches — ne pas hésiter à contacter l'UD.
+    <p class="ref">Réf. L.53 LFSS 2001 — Décret 2001-963 du 23 oct. 2001</p>`
+  }
+];
+
+const list = document.getElementById('faq-list');
+const noResult = document.getElementById('no-result');
+const countLabel = document.getElementById('count-label');
+let activeFilter = 'all';
+let searchVal = '';
+
+function render() {
+  const filtered = FAQ.filter(f => {
+    const matchCat = activeFilter === 'all' || f.cat === activeFilter;
+    const matchSearch = !searchVal || f.q.toLowerCase().includes(searchVal) || f.a.toLowerCase().includes(searchVal);
+    return matchCat && matchSearch;
+  });
+
+  list.innerHTML = filtered.map((f, i) => `
+    <div class="faq-item" data-cat="${f.cat}">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        <span class="faq-cat-dot"></span>
+        ${f.q}
+      </button>
+      <div class="faq-a">${f.a}</div>
+    </div>
+  `).join('');
+
+  noResult.classList.toggle('show', filtered.length === 0);
+  countLabel.textContent = filtered.length + ' question' + (filtered.length > 1 ? 's' : '');
+}
+
+function toggleFaq(btn) {
+  const a = btn.nextElementSibling;
+  const isOpen = btn.classList.contains('open');
+  // Fermer tous
+  document.querySelectorAll('.faq-q.open').forEach(b => { b.classList.remove('open'); b.nextElementSibling.classList.remove('open'); });
+  if (!isOpen) { btn.classList.add('open'); a.classList.add('open'); }
+}
+window.toggleFaq = toggleFaq;
+
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    activeFilter = btn.dataset.cat;
+    render();
+  });
+});
+
+document.getElementById('search').addEventListener('input', e => {
+  searchVal = e.target.value.toLowerCase().trim();
+  render();
+});
+
+render();
+</script>
+</body>
+</html>
