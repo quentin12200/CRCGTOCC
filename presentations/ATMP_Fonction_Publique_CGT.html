@@ -423,7 +423,109 @@ const SLIDES = [
  ],
  notes:"<b>Le syndicat est l'acteur central de la défense des droits ATMP dans la FP.</b> La complexité administrative de la FP (3 versants, 2 régimes, CNRACL, ministères, F3SCT) décourage les agents. Le syndicat doit être le point d'entrée simple : 'j'ai eu un accident, je ne sais pas quoi faire'. La réponse doit être : 'on s'en occupe ensemble'. <span class='cgt'>Message clé pour conclure : la FP n'est pas un monde à part. Les droits ATMP existent, ils sont parfois meilleurs que dans le privé (maintien de traitement, retraite invalidité), mais ils ne s'appliquent que si l'on déclare, que l'on suit, et que l'on conteste quand nécessaire. La CGT est là pour ça.</span>"},
 
-/* ===== 24 — CLÔTURE ===== */
+/* ===== 24 — SECTEURS À RISQUE FPT ===== */
+{type:"table",
+ kicker:"FPT · Secteurs à risque",
+ title:"Où se blessent les agents territoriaux ?",
+ tableHead:["Secteur","Part des AS"],
+ tableRows:[
+   ["Nettoyage & maintenance","16 %"],
+   ["Voirie & circulation","11 %"],
+   ["Espaces verts","8 %"],
+   ["Animation & enfance","7 %"],
+   ["Autres secteurs","58 %"],
+ ],
+ callout:{type:"yellow", text:"Source : Observatoire de l'absentéisme 2024 (WTW) — la sinistralité se concentre sur les métiers physiques exposés."},
+ notes:"<b>Ancrage terrain.</b> Ces chiffres sont utiles pour interpeller les employeurs locaux : une collectivité qui gère des espaces verts ou de la voirie doit avoir un plan de prévention adapté, un DUERP à jour, des formations gestes-postures, du matériel adapté. <span class='cgt'>CGT : vérifier en F3SCT si ces secteurs sont bien identifiés dans le DUERP et si les EPI sont fournis.</span>"},
+
+/* ===== 25 — TYPES DE LÉSIONS ===== */
+{type:"bullets",
+ kicker:"3 versants · Lésions & maladies",
+ title:"Comment se blesse-t-on dans la FP ?",
+ bullets:[
+   "<b>Efforts de soulèvement / manutention : 35 %</b> — première cause toutes catégories",
+   "<b>Chutes de plain-pied ou de hauteur : 25 %</b> — voirie, nettoyage, soin",
+   "<b>Piqûres d'aiguilles : 10 %</b> (FPH) — exposition VIH, hépatites B et C",
+   "<b>Violences & agressions : 8 %</b> — en hausse dans les EHPAD, urgences, écoles",
+   "<b>MP — TMS : 45-50 %</b> de l'ensemble des maladies professionnelles reconnues",
+   "<b>MP — Affections psychiques : 15-20 %</b> et en forte hausse depuis 2020",
+ ],
+ callout:{type:"red", text:"Les violences sont sous-déclarées : les agents banalisent ou craignent que déclarer soit perçu comme une faiblesse."},
+ notes:"<b>Chaque type de lésion appelle une réponse concrète.</b> Manutention → aide technique, formations. Chutes → entretien des sols, EPI. Piqûres → protocoles rigoureux, conteneurs à aiguilles. Violences → plan de prévention, signalement systématique. <span class='cgt'>La CGT doit demander en F3SCT la ventilation des AT par type de lésion : sans données, pas de prévention ciblée.</span>"},
+
+/* ===== 26 — ÉVOLUTION 2021-2023 ===== */
+{type:"compare",
+ kicker:"Tendances · 2021 → 2023",
+ title:"Évolution récente de la sinistralité",
+ cards:[
+   {label:"FPE", cls:"fpe", stat:"-27 %", detail:"41 000 → 30 000 AT/trajet\nEffet télétravail post-COVID\nMais MP en hausse"},
+   {label:"FPT", cls:"fpt", stat:"Stable", detail:"5,6 AS pour 100 agents\n2 800 MP reconnues\nDurée arrêt : 143 j moy."},
+   {label:"FPH", cls:"fph", stat:"+4 %", detail:"24 000 → 25 000 AS avec arrêt\n1 900 MP reconnues\nDurée arrêt : 149 j moy."},
+ ],
+ callout:{type:"yellow", text:"Toutes les catégories enregistrent une hausse des maladies professionnelles, tirée par les TMS et les affections psychiques."},
+ notes:"<b>La baisse en FPE masque une réalité : le télétravail réduit les accidents de trajet mais pas les TMS de bureau.</b> La FPH reste en tension structurelle (pénurie de personnel, charge de travail). <span class='cgt'>Argument CGT : la prévention doit suivre les tendances — si les MP augmentent, le DUERP doit l'intégrer et des mesures concrètes doivent être prises.</span>"},
+
+/* ===== 27 — INDEMNISATIONS PENDANT L'ARRÊT ===== */
+{type:"table",
+ kicker:"FPT & FPH · Indemnisations",
+ title:"Maintien de traitement pendant l'arrêt",
+ tableHead:["Période","Taux légal FPT/FPH","En pratique"],
+ tableRows:[
+   ["Jours 1 à 3 (carence)","0 %","Souvent 100 % via délibération"],
+   ["Jours 4 à 30","90 % du traitement","100 % si accord employeur"],
+   ["Après le 30ème jour","66,67 % du traitement","Beaucoup maintiennent 100 %"],
+   ["FPE (régime général)","100 % — maintien intégral","Maintenu par les ministères"],
+   ["Soins médicaux","100 % pris en charge","Consultation, hospit., kiné, médicaments"],
+ ],
+ callout:{type:"blue", text:"Le maintien à 100 % dépend souvent d'une délibération de la collectivité ou d'un accord d'établissement — la CGT doit l'obtenir en négociation."},
+ notes:"<b>Point clé à expliquer aux agents :</b> le taux légal n'est pas toujours le taux effectif. De nombreux employeurs ont pris des délibérations ou des accords pour maintenir 100 %, notamment sous pression syndicale. <span class='cgt'>CGT : si votre collectivité/établissement ne maintient pas 100 %, c'est un axe de revendication immédiat. Demandez la délibération en F3SCT.</span>"},
+
+/* ===== 28 — ATI & INVALIDITÉ PERMANENTE ===== */
+{type:"bullets",
+ kicker:"Droits · Invalidité",
+ title:"Allocation temporaire d'invalidité (ATI) et rente",
+ bullets:[
+   "<b>ATI versée dès IPP &gt; 25 jours d'incapacité</b> — critère d'accès plus souple que le privé",
+   "<b>Taux de l'ATI : 50 % du salaire de base</b> — versée jusqu'à stabilisation médicale",
+   "<b>IPP &lt; 10 % : indemnité unique en capital</b> selon le barème officiel CNRACL",
+   "<b>IPP ≥ 10 % : rente viagère mensuelle ou trimestrielle</b> — à vie",
+   "<b>Si invalidité &gt; 50 % : majoration tierce personne</b> pour aide aux actes essentiels",
+   "<b>Retraite pour invalidité</b> possible si inaptitude totale et définitive — taux plein immédiat",
+ ],
+ callout:{type:"yellow", text:"Le taux d'IPP est fixé par la commission médicale — il peut et doit être contesté s'il est sous-évalué."},
+ notes:"<b>L'ATI est un droit souvent méconnu des agents.</b> Contrairement au privé (rente AT seulement à partir de 10 % IPP), la FP prévoit une ATI dès que l'incapacité dépasse 25 jours. <span class='cgt'>CGT : ne jamais accepter un taux d'IPP sans le faire examiner par un médecin indépendant. La différence entre 8 % et 12 % peut représenter des milliers d'euros sur une carrière.</span>"},
+
+/* ===== 29 — DÉCÈS & SOUS-DÉCLARATION ===== */
+{type:"bullets",
+ kicker:"Droits · Décès & sous-déclaration",
+ title:"En cas de décès — et pourquoi les agents ne déclarent pas",
+ bullets:[
+   "<b>Pension de veuvage conjoint : 50 % de la rente annuelle</b> de l'agent décédé",
+   "<b>Enfants à charge : 15 à 20 % par enfant</b> jusqu'à 21 ans (25 si études)",
+   "<b>Frais funéraires : pris en charge par l'employeur</b> (sur justificatifs)",
+   "<b>Sous-déclaration massive</b> : peur hiérarchique, banalisation, méconnaissance",
+   "<b>Délai de prescription : 2 ans</b> pour déclarer après l'accident ou le diagnostic",
+   "<b>La CGT peut saisir directement la CNRACL</b> dans les 2 ans si l'employeur refuse de transmettre",
+ ],
+ callout:{type:"red", text:"Si l'employeur refuse de transmettre la déclaration, l'agent (ou son syndicat) peut saisir directement la CNRACL — délai 2 ans. Ne jamais laisser tomber."},
+ notes:"<b>Le décès par AT/MP ouvre des droits considérables pour la famille.</b> Ces droits ne sont quasiment jamais connus spontanément. <span class='cgt'>CGT : lors de chaque AS grave ou décès, contacter immédiatement la famille et lui expliquer ses droits. La saisine directe de la CNRACL est une arme puissante face aux employeurs récalcitrants.</span>"},
+
+/* ===== 30 — CONTACTS & RESSOURCES ===== */
+{type:"bullets",
+ kicker:"Ressources · Contacts",
+ title:"Où trouver l'information, qui appeler ?",
+ bullets:[
+   "<b>CNRACL</b> : 0 801 801 807 (appel gratuit) · www.cnracl.fr · Lun-Ven 8h30-17h",
+   "<b>Ministère de la Fonction Publique</b> : www.fonction-publique.gouv.fr — circulaires, barèmes",
+   "<b>INRS</b> : www.inrs.fr — fiches prévention par métier, DUERP, EPI",
+   "<b>HAS</b> : www.has-sante.fr — guides de bonne pratique, protocoles d'urgence",
+   "<b>Légifrance</b> : CGFP art. L.822-18 et suivants — texte de référence",
+   "<b>CGT Occitanie</b> : ud31@cgt.fr — accompagnement individuel et collectif",
+ ],
+ callout:{type:"blue", text:"La CNRACL est l'interlocuteur direct pour FPT et FPH. Pour la FPE : le service RH ministériel et la DAJ (Direction des Affaires Juridiques)."},
+ notes:"<b>Donner ces contacts aux stagiaires sous forme de fiche mémo.</b> Beaucoup d'agents ne savent pas qu'ils peuvent appeler la CNRACL directement, sans passer par leur employeur. <span class='cgt'>Rappel militant : la CGT est le premier contact. Mais la formation doit outiller les agents pour qu'ils puissent aussi agir eux-mêmes.</span>"},
+
+/* ===== 31 — RÔLE CGT ÉLARGI ===== */
 {type:"title",
  kicker:"CGT Occitanie · Formation AT/MP Fonction Publique",
  title:"Vos droits, on les défend ensemble",
@@ -493,27 +595,44 @@ function mkSlide(s, i){
         <div class="versant-detail">${v.detail.replace(/\n/g,'<br>')}</div>
       </div>`;
     }
+    // Support both old format (s.fpe/s.fpt/s.fph) and new format (s.cards:[])
+    let cardsHtml;
+    if(s.cards){
+      cardsHtml = s.cards.map(c=>vCard(c, c.cls||'')).join('');
+    } else {
+      cardsHtml = vCard(s.fpe,'fpe')+vCard(s.fpt,'fpt')+vCard(s.fph,'fph');
+    }
+    let calloutHtml = '';
+    if(s.callout) calloutHtml = `<div class="callout ${s.callout.type} reveal"><p>${s.callout.text}</p></div>`;
     el.innerHTML = `
       <div class="kicker reveal"><span class="dot"></span>${s.kicker}</div>
       <h2 class="title reveal">${s.title}</h2>
       <div class="compare-grid">
-        ${vCard(s.fpe,'fpe')}${vCard(s.fpt,'fpt')}${vCard(s.fph,'fph')}
-      </div>`;
+        ${cardsHtml}
+      </div>${calloutHtml}`;
   }
   else if(s.type === 'table'){
-    const rows = s.rows.map(r=>`
-      <tr>
-        <td class="label">${r.label}</td>
-        <td><span class="badge-prive">Privé</span> ${r.prive}</td>
-        <td><span class="badge-fp">FP</span> ${r.fp}</td>
-      </tr>`).join('');
+    let tableHtml;
+    if(s.tableHead && s.tableRows){
+      // New flexible table format
+      const thead = s.tableHead.map(h=>`<th>${h}</th>`).join('');
+      const tbody = s.tableRows.map(row=>`<tr>${row.map((c,i)=>`<td${i===0?' class="label"':''}>${c}</td>`).join('')}</tr>`).join('');
+      tableHtml = `<table class="diff-table reveal"><thead><tr>${thead}</tr></thead><tbody>${tbody}</tbody></table>`;
+    } else {
+      const rows = s.rows.map(r=>`
+        <tr>
+          <td class="label">${r.label}</td>
+          <td><span class="badge-prive">Privé</span> ${r.prive}</td>
+          <td><span class="badge-fp">FP</span> ${r.fp}</td>
+        </tr>`).join('');
+      tableHtml = `<table class="diff-table reveal"><thead><tr><th>Point</th><th>Secteur privé</th><th>Fonction Publique</th></tr></thead><tbody>${rows}</tbody></table>`;
+    }
+    let calloutHtml = '';
+    if(s.callout) calloutHtml = `<div class="callout ${s.callout.type} reveal"><p>${s.callout.text}</p></div>`;
     el.innerHTML = `
       <div class="kicker reveal"><span class="dot"></span>${s.kicker}</div>
       <h2 class="title reveal" style="font-size:clamp(28px,4.5vw,72px)">${s.title}</h2>
-      <table class="diff-table reveal">
-        <thead><tr><th>Point</th><th>Secteur privé</th><th>Fonction Publique</th></tr></thead>
-        <tbody>${rows}</tbody>
-      </table>`;
+      ${tableHtml}${calloutHtml}`;
   }
   else { /* bullets */
     const lis = (s.bullets||[]).map(b=>bull(b)).join('');
