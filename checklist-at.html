@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Checklist AT — CGT Occitanie</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%23E2001A'/%3E%3Ctext x='16' y='23' text-anchor='middle' font-family='sans-serif' font-weight='bold' font-size='16' fill='%23FFD200'%3ECGT%3C/text%3E%3C/svg%3E">
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --rouge: #E2001A; --jaune: #FFD200;
+      --fond: #141414; --card: #1E1E1E;
+      --texte: #FBFAF6; --muted: #9A9A9A;
+      --vert: #2ECC71; --vert-bg: #0D2B1A;
+      --orange: #F57C00; --orange-bg: #1C1206;
+      --border: #2E2E2E;
+    }
+    body {
+      background: var(--fond); color: var(--texte);
+      font-family: 'Archivo', sans-serif;
+      min-height: 100vh; padding: 0 0 4rem;
+    }
+
+    /* HEADER */
+    .topbar {
+      background: var(--rouge); padding: 1rem 1.5rem;
+      display: flex; align-items: center; gap: 1rem;
+      position: sticky; top: 0; z-index: 100;
+    }
+    .topbar-badge { font-family: 'Anton', sans-serif; font-size: 1.1rem; color: var(--jaune); letter-spacing: .06em; }
+    .topbar-title { font-family: 'Anton', sans-serif; font-size: 1rem; color: #fff; letter-spacing: .04em; }
+    .stripe { height: 4px; background: var(--jaune); }
+    .topbar-back { margin-left: auto; color: rgba(255,255,255,.75); font-size: .8rem; text-decoration: none; }
+    .topbar-back:hover { color: #fff; }
+
+    /* HERO */
+    .hero {
+      background: linear-gradient(135deg, #1A0005 0%, #2A0008 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 2rem 1.5rem 1.5rem;
+      text-align: center;
+    }
+    .hero-icon { font-size: 2.5rem; margin-bottom: .75rem; }
+    .hero h1 { font-family: 'Anton', sans-serif; font-size: clamp(1.4rem, 4vw, 2rem); color: var(--jaune); letter-spacing: .04em; margin-bottom: .5rem; }
+    .hero p { font-size: .9rem; color: var(--muted); max-width: 50ch; margin: 0 auto; line-height: 1.6; }
+
+    /* URGENCE BANNER */
+    .urgence-banner {
+      background: #3A0008; border-left: 4px solid var(--rouge);
+      margin: 1.5rem auto; max-width: 720px; padding: .85rem 1.25rem;
+      font-size: .85rem; line-height: 1.6; color: #FFAAB5;
+    }
+    .urgence-banner strong { color: #fff; }
+
+    /* LAYOUT */
+    .content { max-width: 720px; margin: 0 auto; padding: 0 1rem; }
+
+    /* PHASE */
+    .phase { margin-bottom: 2rem; }
+    .phase-header {
+      display: flex; align-items: center; gap: .75rem;
+      padding: .65rem 1rem; margin-bottom: .75rem;
+      border-left: 4px solid var(--rouge);
+      background: #1A0005;
+    }
+    .phase-num {
+      font-family: 'Anton', sans-serif; font-size: 1.4rem; color: var(--rouge);
+      min-width: 2rem; line-height: 1;
+    }
+    .phase-title { font-family: 'Anton', sans-serif; font-size: 1rem; color: var(--texte); letter-spacing: .04em; line-height: 1.2; }
+    .phase-delay { font-size: .72rem; color: var(--muted); font-weight: 700; text-transform: uppercase; letter-spacing: .08em; margin-top: .15rem; }
+
+    .phase.orange .phase-header { border-color: var(--orange); background: var(--orange-bg); }
+    .phase.orange .phase-num { color: var(--orange); }
+    .phase.vert .phase-header { border-color: var(--vert); background: var(--vert-bg); }
+    .phase.vert .phase-num { color: var(--vert); }
+
+    /* CHECKLIST ITEMS */
+    .check-list { display: flex; flex-direction: column; gap: .5rem; }
+    .check-item {
+      display: flex; align-items: flex-start; gap: .85rem;
+      background: var(--card); border: 1px solid var(--border);
+      padding: .9rem 1rem; cursor: pointer;
+      transition: border-color .15s, background .15s;
+      user-select: none;
+    }
+    .check-item:hover { border-color: #444; }
+    .check-item.done { background: var(--vert-bg); border-color: var(--vert); }
+    .check-box {
+      width: 22px; height: 22px; border: 2px solid #444;
+      border-radius: 3px; flex-shrink: 0; margin-top: 1px;
+      display: flex; align-items: center; justify-content: center;
+      transition: border-color .15s, background .15s;
+    }
+    .check-item.done .check-box { background: var(--vert); border-color: var(--vert); }
+    .check-box svg { opacity: 0; transition: opacity .15s; }
+    .check-item.done .check-box svg { opacity: 1; }
+    .check-text { flex: 1; }
+    .check-label { font-size: .92rem; font-weight: 600; line-height: 1.4; color: var(--texte); }
+    .check-item.done .check-label { color: var(--vert); }
+    .check-detail { font-size: .78rem; color: var(--muted); line-height: 1.5; margin-top: .3rem; }
+    .check-tag {
+      display: inline-block; font-size: .65rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .08em;
+      padding: .15rem .5rem; border-radius: 2px; margin-top: .4rem;
+    }
+    .tag-urgent { background: #3A0008; color: #FF8A95; }
+    .tag-cpam { background: #0A1A2E; color: #7BB3FF; }
+    .tag-employeur { background: #1A1005; color: #F5C842; }
+    .tag-medical { background: #0D2B1A; color: #5EE898; }
+    .tag-cgt { background: #1A0A1A; color: #D98FFF; }
+
+    /* DÉLAIS RECAP */
+    .delais-card {
+      background: var(--card); border: 1px solid var(--border);
+      padding: 1.25rem; margin-bottom: 2rem;
+    }
+    .delais-title { font-family: 'Anton', sans-serif; font-size: .9rem; color: var(--jaune); letter-spacing: .04em; margin-bottom: .85rem; }
+    .delai-row { display: flex; align-items: center; gap: .75rem; padding: .4rem 0; border-bottom: 1px solid #252525; font-size: .82rem; }
+    .delai-row:last-child { border-bottom: none; }
+    .delai-time { font-family: 'Anton', sans-serif; font-size: .95rem; color: var(--rouge); min-width: 90px; }
+    .delai-time.orange { color: var(--orange); }
+    .delai-time.vert { color: var(--vert); }
+    .delai-desc { color: var(--muted); line-height: 1.4; }
+
+    /* CONTACTS */
+    .contacts-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: .75rem; margin-bottom: 2rem; }
+    .contact-card { background: var(--card); border: 1px solid var(--border); padding: .85rem 1rem; }
+    .contact-name { font-weight: 700; font-size: .85rem; color: var(--texte); margin-bottom: .2rem; }
+    .contact-role { font-size: .72rem; color: var(--muted); margin-bottom: .4rem; }
+    .contact-info { font-size: .8rem; color: var(--jaune); font-weight: 600; }
+
+    /* PRINT */
+    .btn-print {
+      display: flex; align-items: center; gap: .5rem;
+      background: transparent; border: 1px solid var(--border);
+      color: var(--muted); padding: .5rem 1rem; font-size: .78rem;
+      font-family: 'Archivo', sans-serif; cursor: pointer;
+      margin: 0 auto 1.5rem; transition: border-color .15s, color .15s;
+    }
+    .btn-print:hover { border-color: var(--jaune); color: var(--jaune); }
+
+    /* PROGRESS */
+    .progress-wrap { position: sticky; top: 56px; z-index: 50; background: #111; border-bottom: 1px solid var(--border); padding: .5rem 1rem; display: flex; align-items: center; gap: .75rem; }
+    .progress-bar { flex: 1; height: 6px; background: #2E2E2E; border-radius: 3px; overflow: hidden; }
+    .progress-fill { height: 100%; background: var(--vert); border-radius: 3px; transition: width .3s; width: 0%; }
+    .progress-label { font-size: .72rem; color: var(--muted); white-space: nowrap; }
+
+    /* SECTION LABEL */
+    .section-label { font-size: .7rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin: 1.75rem 0 .75rem; display: flex; align-items: center; gap: .75rem; }
+    .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+    @media print {
+      .topbar, .stripe, .progress-wrap, .btn-print, .topbar-back { display: none !important; }
+      body { background: #fff; color: #000; padding: 0; }
+      .hero { background: #f5f5f5; border: 1px solid #ccc; }
+      .hero h1 { color: #E2001A; }
+      .hero p { color: #444; }
+      .check-item { border: 1px solid #ccc; background: #fafafa; break-inside: avoid; }
+      .check-label { color: #000; }
+      .check-detail { color: #555; }
+      .phase-header { background: #f0f0f0; }
+      .phase-num { color: #E2001A; }
+      .check-box { border-color: #aaa; }
+      .delais-card, .contact-card { border: 1px solid #ccc; background: #fafafa; }
+      .urgence-banner { background: #fff3f3; border-left-color: #E2001A; color: #900; }
+    }
+  </style>
+</head>
+<body>
+<script>
+  if(localStorage.getItem('cgt_stagiaire_auth')!=='ok'&&localStorage.getItem('cgt_auth')!=='ok'){
+    location.replace('/login-stagiaire.html?from='+encodeURIComponent(location.pathname));
+  }
+</script>
+
+<div class="topbar">
+  <span class="topbar-badge">CGT</span>
+  <span class="topbar-title">Checklist — Accident du Travail</span>
+  <a class="topbar-back" href="/stagiaires.html">← Retour</a>
+</div>
+<div class="stripe"></div>
+
+<div class="progress-wrap">
+  <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+  <span class="progress-label" id="progress-label">0 / 0 étapes</span>
+</div>
+
+<div class="hero">
+  <div class="hero-icon">🚨</div>
+  <h1>Que faire en cas d&apos;accident du travail ?</h1>
+  <p>Checklist étape par étape pour ne rien oublier — du moment de l&apos;accident jusqu&apos;à la consolidation.</p>
+</div>
+
+<div class="content">
+
+  <div class="urgence-banner">
+    <strong>⚠️ Délai critique :</strong> La déclaration d&apos;AT doit être faite par l&apos;employeur dans les <strong>24 heures</strong> suivant l&apos;accident (hors dimanche et jours fériés). Passé ce délai, la CPAM peut contester la prise en charge. Relancez immédiatement si l&apos;employeur tarde.
+  </div>
+
+  <!-- PHASE 1 -->
+  <div class="phase" id="phase-1">
+    <div class="phase-header">
+      <div class="phase-num">1</div>
+      <div>
+        <div class="phase-title">Le jour même de l&apos;accident</div>
+        <div class="phase-delay">Dans les heures qui suivent</div>
+      </div>
+    </div>
+    <div class="check-list">
+      <div class="check-item" onclick="toggle(this)">
+        <div class="check-box"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7L5.5 10.5L12 3.5" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="check-text">
+          <div class="check-label">Informer immédiatement le responsable hiérarchique</div>
+          <div class="check-detail">Déclarer l&apos;accident verbalement sur le champ, même pour un accident apparemment bénin. L&apos;information doit être faite le jour même.</div>
+          <span class="check-tag tag-urgent">Urgent</span>
+        </div>
+      </div>
+      <div class="check-item" onclick="toggle(this)">
+        <div class="check-box"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7L5.5 10.5L12 3.5" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="check-text">
+          <div class="check-label">Consulter un médecin — de préférence son médecin traitant</div>
+          <div class="check-detail">Le médecin établit un <strong>certificat médical initial (CMI)</strong> en 3 exemplaires : 1 pour vous, 1 pour la CPAM, 1 pour l&apos;employeur. Ce document est fondamental — il décrit les lésions et leur lien avec l&apos;accident.</div>
+          <span class="check-tag tag-medical">Médical</span>
+        </div>
+      </div>
+      <div class="check-item" onclick="toggle(this)">
+        <div class="check-box"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7L5.5 10.5L12 3.5" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="check-text">
+          <div class="check-label">Obtenir la feuille d&apos;accident du travail (formulaire S6201)</div>
+          <div class="check-detail">L&apos;employeur doit vous remettre cette feuille. Elle permet la prise en charge à 100 % des soins sans avance de frais. Si l&apos;employeur refuse ou tarde, demandez-la directement à votre CPAM.</div>
+          <span class="check-tag tag-employeur">Employeur</span>
+          <span class="check-tag tag-cpam">CPAM</span>
+        </div>
+      </div>
+      <div class="check-item" onclick="toggle(this)">
+        <div class="check-box"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7L5.5 10.5L12 3.5" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="check-text">
+          <div class="check-label">Relever les témoins et collecter les preuves</div>
+          <div class="check-detail">Noms et coordonnées des témoins, photos du lieu, de l&apos;équipement ou de la cause. Ces éléments sont essentiels si l&apos;employeur conteste l&apos;accident ou si la CPAM ouvre une enquête.</div>
+          <span class="check-tag tag-urgent">Preuves</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PHASE 2 -->
+  <div class="phase" id="phase-2">
+    <div class="phase-header">
+      <div class="phase-num">2</div>
+      <div>
+        <div class="phase-title">Dans les 24 heures</div>
+        <div class="phase-delay">Délai légal employeur — surveiller</div>
+      </div>
+    </div>
+    <div class="check-list">
+      <div class="check-item" onclick="toggle(this)">
+        <div class="check-box"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7L5.5 10.5L12 3.5" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="check-text">
+          <div class="check-label">Vérifier que l&apos;employeur a bien déclaré l&apos;AT à la CPAM</div>
+          <div class="check-detail">L&apos;employeur doit envoyer la <strong>déclaration d&apos;accident du travail (DAT)</strong> à la CPAM dans les 24h. Si ce n&apos;est pas fait, vous pouvez déclarer vous-même dans les <strong>2 ans</strong> suivant l&apos;accident (L.441-2 CSS).</div>
+          <span class="check-tag tag-employeur">Employeur</span>
+          <span class="check-tag tag-urgent">Délai 24h</span>
+        </div>
+      </div>
+      <div class="check-item" onclick="toggle(this)">
+        <div class="check-box"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7L5.5 10.5L12 3.5" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="check-text">
+          <div class="check-label">Faire remplir la déclaration d&apos;accident du travail (DAT) si nécessaire</div>
+          <div class="check-detail">Si l&apos;employeur refuse de déclarer, vous pouvez déclarer vous-même via ameli.fr ou par courrier en LRAR à la CPAM. Conservez une copie. Le refus de l&apos;employeur peut constituer une faute.</div>
+          <span class="check-tag tag-cpam">CPAM</span>
+        </div>
+      </div>
+      <div class="check-item" onclick="toggle(this)">
+        <div class="check-box"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7L5.5 10.5L12 3.5" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="check-text">
+          <div class="check-label">Conserver une copie de tous les documents</div>
+          <div class="check-detail">Certificat médical initial, DAT, feuille d&apos;accident, ordonnances, arrêts de travail. Créer un dossier physique ou numérique dédié à cet AT.</div>
+          <span class="check-tag tag-urgent">Documentation</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PHASE 3 -->
+  <div class="phase orange" id="phase-3">
+    <div class="phase-header">
+      <div class="phase-num">3</div>
+      <div>
+        <div class="phase-title">Pendant l&apos;arrêt de travail</div>
+        <div class="phase-delay">Droits et démarches à connaître</div>
+      </div>
+    </div>
+    <div class="check-list">
+      <div class="check-item" onclick="toggle(this)">
+        <div class="check-box"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7L5.5 10.5L12 3.5" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="check-text">
+          <div class="check-label">Envoyer les arrêts de travail dans les 48h</div>
+          <div class="check-detail">Envoyer le volet 1 et 2 à la CPAM, le volet 3 à l&apos;employeur. Dès le <strong>1er jour</strong> (pas de carence en AT/MP, contrairement à la maladie ordinaire).</div>
+          <span class="check-tag tag-cpam">CPAM</span>
+          <span class="check-tag tag-employeur">Employeur</span>
+        </div>
+      </div>
+      <div class="check-item" onclick="toggle(this)">
+        <div class="check-box"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7L5.5 10.5L12 3.5" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="check-text">
+          <div class="check-label">Connaître le montant de ses indemnités journalières</div>
+          <div class="check-detail">IJ AT/MP = 60 % du SDJB les 28 premiers jours, puis 80 % à partir du 29ᵉ jour. SDJB = salaire brut du mois précédent ÷ 30,42. Plafond 2026 : 105,32 €/j à partir du 29ᵉ jour. Pas de délai de carence.</div>
+          <span class="check-tag tag-cpam">IJ 2026</span>
+        </div>
+      </div>
+      <div class="check-item" onclick="toggle(this)">
+        <div class="check-box"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7L5.5 10.5L12 3.5" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="check-text">
+          <div class="check-label">Vérifier que l&apos;employeur maintient le salaire (convention collective)</div>
+          <div class="check-detail">La loi impose le maintien du salaire le jour de l&apos;accident. De nombreuses CCN imposent un maintien à 90 % puis 66 %. Vérifier la CCN de la branche. L&apos;employeur complète les IJ CPAM jusqu&apos;au niveau garanti.</div>
+          <span class="check-tag tag-employeur">Maintien salaire</span>
+        </div>
+      </div>
+      <div class="check-item" onclick="toggle(this)">
+        <div class="check-box"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7L5.5 10.5L12 3.5" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="check-text">
+          <div class="check-label">Protection du contrat de travail pendant l&apos;arrêt</div>
+          <div class="check-detail">L&apos;employeur <strong>ne peut pas licencier</strong> le salarié pendant l&apos;arrêt AT, sauf faute grave étrangère à l&apos;accident ou impossibilité de maintenir le contrat (L.1226-9 CT). Tout licenciement hors de ces cas est nul.</div>
+          <span class="check-tag tag-cgt">Droit</span>
+        </div>
+      </div>
+      <div class="check-item" onclick="toggle(this)">
+        <div class="check-box"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7L5.5 10.5L12 3.5" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="check-text">
+          <div class="check-label">Contacter la CGT ou le délégué syndical</div>
+          <div class="check-detail">Dès le début de l&apos;arrêt, informer le délégué CGT ou l&apos;Union Départementale. La CGT peut accompagner : enquête CSE, contestation du refus de prise en charge, recours CPAM, demande de faute inexcusable.</div>
+          <span class="check-tag tag-cgt">CGT Occitanie</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PHASE 4 -->
+  <div class="phase vert" id="phase-4">
+    <div class="phase-header">
+      <div class="phase-num">4</div>
+      <div>
+        <div class="phase-title">Décision de la CPAM — réception du courrier</div>
+        <div class="phase-delay">Dans les 30 jours suivant la DAT</div>
+      </div>
+    </div>
+    <div class="check-list">
+      <div class="check-item" onclick="toggle(this)">
+        <div class="check-box"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7L5.5 10.5L12 3.5" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="check-text">
+          <div class="check-label">Vérifier la notification de prise en charge de la CPAM</div>
+          <div class="check-detail">La CPAM a 30 jours pour instruire le dossier (60 jours si enquête). Elle notifie sa décision par courrier. Si refus → délai de <strong>2 mois</strong> pour contester devant la Commission de recours amiable (CRA).</div>
+          <span class="check-tag tag-cpam">Décision</span>
+        </div>
+      </div>
+      <div class="check-item" onclick="toggle(this)">
+        <div class="check-box"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7L5.5 10.5L12 3.5" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="check-text">
+          <div class="check-label">En cas de refus : saisir la CRA dans les 2 mois</div>
+          <div class="check-detail">Commission de Recours Amiable = premier recours obligatoire avant le tribunal. Lettre LRAR à la CPAM. En cas d&apos;échec : Pôle Social du Tribunal Judiciaire. La CGT peut vous accompagner à chaque étape.</div>
+          <span class="check-tag tag-cgt">Recours</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PHASE 5 -->
+  <div class="phase" id="phase-5">
+    <div class="phase-header">
+      <div class="phase-num">5</div>
+      <div>
+        <div class="phase-title">Guérison ou consolidation</div>
+        <div class="phase-delay">Fin de l&apos;arrêt — droits à long terme</div>
+      </div>
+    </div>
+    <div class="check-list">
+      <div class="check-item" onclick="toggle(this)">
+        <div class="check-box"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7L5.5 10.5L12 3.5" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="check-text">
+          <div class="check-label">Comprendre la différence guérison / consolidation</div>
+          <div class="check-detail"><strong>Guérison :</strong> retour à l&apos;état antérieur, pas de séquelles. <strong>Consolidation :</strong> l&apos;état se stabilise avec des séquelles permanentes → déclenche l&apos;évaluation du taux d&apos;Incapacité Permanente Partielle (IPP).</div>
+          <span class="check-tag tag-medical">Médical</span>
+        </div>
+      </div>
+      <div class="check-item" onclick="toggle(this)">
+        <div class="check-box"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7L5.5 10.5L12 3.5" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="check-text">
+          <div class="check-label">En cas d&apos;IPP : exiger l&apos;évaluation du taux et contester si nécessaire</div>
+          <div class="check-detail">La CPAM fixe un taux d&apos;IPP. Si &lt; 10 % : capital. Si ≥ 10 % : rente viagère. Le taux peut être contesté par expertise médicale. En cas de <strong>faute inexcusable de l&apos;employeur</strong>, la rente est majorée.</div>
+          <span class="check-tag tag-cgt">IPP / Rente</span>
+        </div>
+      </div>
+      <div class="check-item" onclick="toggle(this)">
+        <div class="check-box"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7L5.5 10.5L12 3.5" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="check-text">
+          <div class="check-label">Visite de reprise obligatoire auprès du médecin du travail</div>
+          <div class="check-detail">Obligatoire après tout arrêt AT/MP, quelle que soit la durée. L&apos;employeur doit organiser cette visite dans les 8 jours suivant la reprise. Elle conditionne la reprise du poste.</div>
+          <span class="check-tag tag-medical">Médecin travail</span>
+        </div>
+      </div>
+      <div class="check-item" onclick="toggle(this)">
+        <div class="check-box"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7L5.5 10.5L12 3.5" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="check-text">
+          <div class="check-label">Surveiller les rechutes — elles rouvrent les droits AT/MP</div>
+          <div class="check-detail">Une rechute se déclare avec un nouveau certificat médical de rechute. Elle rouvre tous les droits AT/MP : soins à 100 %, IJ majorées, protection du contrat. La signaler immédiatement à la CPAM.</div>
+          <span class="check-tag tag-cpam">Rechute</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RÉCAP DÉLAIS -->
+  <div class="section-label">Récapitulatif des délais clés</div>
+  <div class="delais-card">
+    <div class="delais-title">⏱ Délais à retenir</div>
+    <div class="delai-row"><span class="delai-time">24 heures</span><span class="delai-desc">Déclaration AT par l&apos;employeur à la CPAM (hors dimanche et jours fériés)</span></div>
+    <div class="delai-row"><span class="delai-time">48 heures</span><span class="delai-desc">Envoi de l&apos;arrêt de travail à la CPAM et à l&apos;employeur</span></div>
+    <div class="delai-row"><span class="delai-time orange">30 jours</span><span class="delai-desc">Instruction CPAM (ou 60 jours si enquête complémentaire)</span></div>
+    <div class="delai-row"><span class="delai-time orange">2 mois</span><span class="delai-desc">Délai pour contester un refus de prise en charge devant la CRA</span></div>
+    <div class="delai-row"><span class="delai-time orange">8 jours</span><span class="delai-desc">Visite de reprise auprès du médecin du travail après la fin de l&apos;arrêt</span></div>
+    <div class="delai-row"><span class="delai-time vert">2 ans</span><span class="delai-desc">Délai maximum pour déclarer soi-même un AT si l&apos;employeur n&apos;a pas déclaré</span></div>
+    <div class="delai-row"><span class="delai-time vert">10 ans</span><span class="delai-desc">Délai pour engager une action en faute inexcusable de l&apos;employeur</span></div>
+  </div>
+
+  <!-- CONTACTS UTILES -->
+  <div class="section-label">Contacts utiles</div>
+  <div class="contacts-grid">
+    <div class="contact-card">
+      <div class="contact-name">CGT Occitanie</div>
+      <div class="contact-role">Union Régionale — accompagnement AT/MP</div>
+      <div class="contact-info">cgt-occitanie.fr</div>
+    </div>
+    <div class="contact-card">
+      <div class="contact-name">CPAM</div>
+      <div class="contact-role">Caisse Primaire d&apos;Assurance Maladie</div>
+      <div class="contact-info">ameli.fr · 36 46</div>
+    </div>
+    <div class="contact-card">
+      <div class="contact-name">Carsat Sud-Est</div>
+      <div class="contact-role">Prévention des risques professionnels</div>
+      <div class="contact-info">carsat-sudest.fr</div>
+    </div>
+    <div class="contact-card">
+      <div class="contact-name">DREETS Occitanie</div>
+      <div class="contact-role">Inspection du Travail</div>
+      <div class="contact-info">occitanie.dreets.gouv.fr</div>
+    </div>
+  </div>
+
+  <button class="btn-print" onclick="window.print()">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+    Imprimer cette checklist
+  </button>
+
+</div>
+
+<script>
+  const STORAGE_KEY = 'checklist_at_state';
+  const items = document.querySelectorAll('.check-item');
+  const fill = document.getElementById('progress-fill');
+  const label = document.getElementById('progress-label');
+
+  function save() {
+    try {
+      const state = Array.from(items).map(el => el.classList.contains('done'));
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    } catch(e) {}
+  }
+
+  function load() {
+    try {
+      const state = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
+      if (Array.isArray(state)) {
+        items.forEach((el, i) => { if (state[i]) el.classList.add('done'); });
+      }
+    } catch(e) {}
+  }
+
+  function updateProgress() {
+    const done = document.querySelectorAll('.check-item.done').length;
+    const total = items.length;
+    fill.style.width = (done / total * 100) + '%';
+    label.textContent = done + ' / ' + total + ' étapes';
+  }
+
+  function toggle(el) {
+    el.classList.toggle('done');
+    updateProgress();
+    save();
+  }
+  window.toggle = toggle;
+
+  load();
+  updateProgress();
+</script>
+</body>
+</html>
