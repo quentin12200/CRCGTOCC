@@ -343,7 +343,7 @@ input[type=number]:focus,select:focus{border-color:var(--red)}
     <h4>Hypothèses et limites du calcul</h4>
     <ul>
       <li>SDJB maladie = salaire brut × 3 ÷ 91,25 (hypothèse salaire constant sur 3 mois). SDJB AT/MP = brut ÷ 30,42 (dernier mois).</li>
-      <li>Plafonds 2024 : IJ maladie max 52,28 €/j · IJ AT/MP j1–j28 max 76,21 €/j · IJ AT/MP j29+ max 101,62 €/j (basés sur PMSS 2024 = 3 864 €/mois).</li>
+      <li>Plafonds 2026 : IJ maladie max 41,95 €/j (plafond LFSS 2026) · IJ AT/MP j1–j28 max 79,00 €/j · IJ AT/MP j29+ max 105,32 €/j (PMSS 2026 = 4 005 €/mois).</li>
       <li>Maintien légal calculé en jours calendaires. Le salaire journalier de référence employeur = brut ÷ 30.</li>
       <li>Net estimé = montant brut × 0,78 pour la part employeur (cotisations salariales ~22 %) · montant IJ × 0,933 (CSG/CRDS 6,7 % uniquement).</li>
       <li>Ce calculateur n'intègre pas : temps partiel thérapeutique, longue maladie ALD, complément prévoyance, accord d'entreprise, dispositions spécifiques fonctionnaires ou régimes spéciaux.</li>
@@ -355,10 +355,10 @@ input[type=number]:focus,select:focus{border-color:var(--red)}
 </main>
 
 <script>
-const PMSS = 3864;
-const MAX_IJ_MAL = 52.28;
-const MAX_IJ_AT1 = 76.21;  // 60% × PMSS/30.42
-const MAX_IJ_AT2 = 101.62; // 80% × PMSS/30.42
+const PMSS = 4005;
+const MAX_IJ_MAL = 41.95;  // plafond LFSS 2026 (1,4 × SMIC journalier)
+const MAX_IJ_AT1 = 79.00;  // 60% × PMSS/30.42
+const MAX_IJ_AT2 = 105.32; // 80% × PMSS/30.42
 
 let currentType = 'maladie';
 
@@ -401,7 +401,7 @@ function calculate(){
   if(type==='maladie'){
     sdjb = (brut*3)/91.25; // = brut/30.42 si salaire constant
     ijPerDay = Math.min(0.5*sdjb, MAX_IJ_MAL);
-    ijLabel  = `50 % × ${fmt(sdjb)} (max 52,28 €/j)`;
+    ijLabel  = `50 % × ${fmt(sdjb)} (max 41,95 €/j)`;
     carenceLabel = '3 jours (délai de carence légal)';
 
     const carence = Math.min(3, dur);
