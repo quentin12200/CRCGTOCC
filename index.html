@@ -30,6 +30,7 @@
       color: var(--texte);
       font-family: 'Archivo', sans-serif;
       min-height: 100vh;
+      position: relative;
       display: flex;
       flex-direction: column;
     }
@@ -340,14 +341,41 @@
       filter: drop-shadow(0 2px 8px rgba(0,0,0,.3));
     }
 
+    /* ── Fond dynamique animé ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      animation: bgShift 20s ease infinite;
+    }
+    :root:not([data-theme="dark"]) body::before {
+      background-image:
+        radial-gradient(ellipse at 15% 20%, #FFE8E0 0%, transparent 50%),
+        radial-gradient(ellipse at 85% 80%, #FFF0E0 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 50%, #F5F4F0 0%, #FAFAF7 100%);
+    }
+    :root[data-theme="dark"] body::before {
+      background-image:
+        radial-gradient(ellipse at 20% 20%, rgba(226,0,26,.2) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 80%, rgba(90,0,10,.3) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 50%, #0A0A0A 0%, #111010 100%);
+    }
+    @keyframes bgShift {
+      0%,100% { background-position: 0% 50%; }
+      33%      { background-position: 100% 0%; }
+      66%      { background-position: 50% 100%; }
+    }
+
     /* ── DARK MODE ── */
     :root[data-theme="dark"] {
-      --fond:        #0F0F0F;
-      --fond-card:   #1A1A1A;
+      --fond:        #0A0A0A;
+      --fond-card:   #161616;
       --texte:       #E8E6E0;
       --texte-muted: #999;
       --border:      #2C2C2C;
-      --border-card: #2A2A2A;
+      --border-card: #242424;
     }
     :root[data-theme="dark"] footer {
       background: #111;
