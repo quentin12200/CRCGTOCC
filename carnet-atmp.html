@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Carnet AT/MP — Formation CGT Occitanie</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%23E2001A'/%3E%3Ctext x='16' y='23' text-anchor='middle' font-family='sans-serif' font-weight='bold' font-size='16' fill='%23FFD200'%3ECGT%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --rouge: #E2001A; --rouge-dark: #C40017;
+      --jaune: #FFD200;
+      --fond: #F5F4F0; --fond-card: #FFFFFF;
+      --texte: #1A1A1A; --texte-muted: #6B6B6B;
+      --border: #E0DED8;
+    }
+    body { background: var(--fond); color: var(--texte); font-family: 'Archivo', sans-serif; min-height: 100vh; }
+
+    /* HEADER */
+    header.site-header {
+      background: var(--rouge);
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,.18);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .logo-wrap { flex-shrink: 0; height: 56px; display: flex; align-items: center; }
+    .logo-wrap img { height: 56px; width: auto; background: white; padding: 4px 6px; }
+    .header-divider { width: 2px; height: 40px; background: rgba(255,255,255,.3); flex-shrink: 0; }
+    .header-title { flex: 1; }
+    .header-title h1 { font-family: 'Anton', sans-serif; font-size: 1.15rem; letter-spacing: .04em; color: #fff; line-height: 1.2; }
+    .header-title span { font-size: .75rem; color: rgba(255,255,255,.75); font-weight: 400; }
+    .header-badge { font-size: .65rem; color: #1A1A1A; background: var(--jaune); padding: .3rem .65rem; white-space: nowrap; letter-spacing: .04em; font-weight: 700; }
+    .stripe { height: 5px; background: var(--jaune); }
+
+    /* LAYOUT */
+    .site-wrap { display: flex; min-height: calc(100vh - 65px); }
+
+    /* SIDEBAR */
+    nav.sidebar {
+      width: 260px; flex-shrink: 0;
+      background: #1A1A1A; color: #fff;
+      padding: 1.5rem 0;
+      position: sticky; top: 65px; height: calc(100vh - 65px); overflow-y: auto;
+    }
+    .sidebar-logo { padding: 0 1.25rem 1.25rem; border-bottom: 1px solid #333; }
+    .sidebar-logo .brand { font-family: 'Anton', sans-serif; font-size: 1.1rem; color: var(--jaune); }
+    .sidebar-logo .sub { font-size: .72rem; color: #aaa; margin-top: .15rem; }
+    nav.sidebar ul { list-style: none; padding: .75rem 0; }
+    nav.sidebar ul li a {
+      display: block; padding: .5rem 1.25rem;
+      color: #ccc; text-decoration: none; font-size: .84rem;
+      border-left: 3px solid transparent;
+      transition: all .15s;
+    }
+    nav.sidebar ul li a:hover, nav.sidebar ul li a.active {
+      color: #fff; border-left-color: var(--rouge); background: rgba(255,255,255,.05);
+    }
+    nav.sidebar .section-label {
+      padding: .9rem 1.25rem .3rem; font-size: .66rem; color: #555;
+      text-transform: uppercase; letter-spacing: .08em; font-weight: 700;
+    }
+    .sidebar-num { display: inline-block; background: var(--rouge); color: #fff; font-size: .65rem; font-weight: 700; border-radius: 3px; padding: .05rem .35rem; margin-right: .35rem; }
+
+    /* MAIN */
+    main { flex: 1; padding: 2.5rem 2.5rem 4rem; max-width: 860px; }
+
+    /* SECTION */
+    section.carnet-section { margin-bottom: 4rem; scroll-margin-top: 80px; }
+    section.carnet-section > h2 {
+      font-family: 'Anton', sans-serif; font-size: 1.75rem;
+      border-bottom: 4px solid var(--rouge); padding-bottom: .5rem;
+      margin-bottom: 2rem; letter-spacing: .02em;
+    }
+
+    /* MOMENT FORT */
+    .moment-fort {
+      background: #1A1A1A;
+      border-radius: 8px;
+      padding: 2.5rem 2rem;
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+    .moment-fort .mf-label {
+      font-size: .7rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
+      color: #666; margin-bottom: 1.25rem;
+    }
+    .moment-fort .mf-chiffre {
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(2.2rem, 5.5vw, 4.5rem);
+      color: var(--jaune);
+      line-height: 1.1;
+      margin-bottom: .75rem;
+    }
+    .moment-fort .mf-chiffre.rouge { color: var(--rouge); }
+    .moment-fort .mf-sub {
+      font-size: clamp(1rem, 2.5vw, 1.3rem);
+      color: #ccc;
+      line-height: 1.4;
+      font-weight: 500;
+    }
+    .moment-fort .mf-detail {
+      margin-top: 1rem; font-size: .88rem; color: #888; line-height: 1.6;
+    }
+
+    /* DEVELOPPEMENT */
+    .developpement {
+      background: var(--fond-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 2rem;
+      margin-bottom: 1.5rem;
+    }
+    .developpement .bloc-label {
+      font-size: .7rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+      color: var(--texte-muted); margin-bottom: 1.25rem;
+      display: flex; align-items: center; gap: .6rem;
+    }
+    .developpement .bloc-label::before { content: ''; display: block; width: 20px; height: 2px; background: var(--texte-muted); }
+    .developpement h3 { font-size: 1rem; font-weight: 700; margin: 1.25rem 0 .5rem; color: #111; }
+    .developpement p { line-height: 1.75; color: #333; margin-bottom: .85rem; font-size: .93rem; }
+    .developpement ul, .developpement ol { padding-left: 1.4rem; margin-bottom: .85rem; }
+    .developpement li { line-height: 1.65; color: #333; margin-bottom: .3rem; font-size: .93rem; }
+    .developpement strong { color: #111; }
+    .ref-loi { font-size: .78rem; background: #f0f0f0; border-radius: 4px; padding: .1rem .4rem; color: #555; font-family: monospace; white-space: nowrap; }
+
+    /* CAS PRATIQUE */
+    .cas-pratique {
+      background: #fffbea;
+      border-left: 4px solid var(--jaune);
+      border-radius: 0 8px 8px 0;
+      padding: 1.75rem 1.75rem 1.75rem 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .cas-pratique .bloc-label {
+      font-size: .7rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+      color: #a07c00; margin-bottom: 1rem;
+    }
+    .cas-pratique .scenario {
+      font-style: italic; color: #555; font-size: .93rem; line-height: 1.7;
+      background: rgba(255,255,255,.7); border-radius: 6px; padding: 1rem 1.25rem;
+      margin-bottom: 1rem; border: 1px solid #ffe082;
+    }
+    .cas-pratique .question {
+      font-weight: 600; color: #333; font-size: .92rem; line-height: 1.6;
+    }
+
+    /* POINT SYNDICAL */
+    .point-syndical {
+      background: #fff5f5;
+      border-left: 4px solid var(--rouge);
+      border-radius: 0 8px 8px 0;
+      padding: 1.75rem 1.75rem 1.75rem 1.5rem;
+      margin-bottom: .5rem;
+    }
+    .point-syndical .bloc-label {
+      font-size: .7rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+      color: var(--rouge-dark); margin-bottom: 1rem;
+    }
+    .point-syndical p { line-height: 1.75; color: #333; font-size: .93rem; margin-bottom: .75rem; }
+    .point-syndical strong { color: #111; }
+    .point-syndical ul { padding-left: 1.4rem; margin-bottom: .75rem; }
+    .point-syndical li { line-height: 1.65; color: #333; font-size: .93rem; margin-bottom: .3rem; }
+    .action-forte {
+      display: inline-block; background: var(--rouge); color: #fff;
+      font-size: .75rem; font-weight: 700; letter-spacing: .05em;
+      padding: .2rem .6rem; border-radius: 4px; margin: .1rem 0;
+    }
+
+    /* SEPARATEUR */
+    .sep { height: 1px; background: var(--border); margin: 4rem 0; }
+
+    /* FOOTER */
+    footer { text-align: center; padding: 2rem; font-size: .8rem; color: var(--texte-muted); border-top: 1px solid var(--border); }
+
+    /* MOBILE */
+    @media (max-width: 768px) {
+      header.site-header { padding: .75rem 1rem; }
+      nav.sidebar { display: none; }
+      main { padding: 1.5rem 1rem 3rem; }
+      .moment-fort { padding: 2rem 1.25rem; }
+      .developpement, .cas-pratique, .point-syndical { padding: 1.25rem 1rem 1.25rem 1rem; }
+      .cas-pratique { border-left-width: 3px; padding-left: 1rem; }
+      .point-syndical { border-left-width: 3px; padding-left: 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+<script>
+  if (localStorage.getItem('cgt_stagiaire_auth') !== 'ok' && localStorage.getItem('cgt_auth') !== 'ok') {
+    location.replace('/login-stagiaire.html?from=' + encodeURIComponent(location.pathname));
+  }
+</script>
+
+<header class="site-header">
+  <div class="logo-wrap">
+    <img src="/assets/logo-cgt.png" alt="CGT" onerror="this.style.display='none'">
+  </div>
+  <div class="header-divider"></div>
+  <div class="header-title">
+    <h1>Carnet de formation AT/MP</h1>
+    <span>Formation syndicale CGT Occitanie · Version scrollable</span>
+  </div>
+  <div class="header-badge">Scrollable</div>
+</header>
+<div class="stripe"></div>
+
+<div class="site-wrap">
+
+  <nav class="sidebar">
+    <div class="sidebar-logo">
+      <div class="brand">Carnet AT/MP</div>
+      <div class="sub">CGT Occitanie · 9 parties</div>
+    </div>
+    <div class="section-label">Navigation</div>
+    <ul>
+      <li><a href="#ampleur"><span class="sidebar-num">1</span>L'ampleur du problème</a></li>
+      <li><a href="#definitions"><span class="sidebar-num">2</span>Définitions fondamentales</a></li>
+      <li><a href="#declaration"><span class="sidebar-num">3</span>La déclaration DAT</a></li>
+      <li><a href="#instruction"><span class="sidebar-num">4</span>L'instruction CPAM</a></li>
+      <li><a href="#ij"><span class="sidebar-num">5</span>Les indemnités journalières</a></li>
+      <li><a href="#ipp"><span class="sidebar-num">6</span>L'incapacité permanente</a></li>
+      <li><a href="#fie"><span class="sidebar-num">7</span>La faute inexcusable</a></li>
+      <li><a href="#prevention"><span class="sidebar-num">8</span>Prévention et CSE</a></li>
+      <li><a href="#action"><span class="sidebar-num">9</span>Action syndicale</a></li>
+    </ul>
+    <div class="section-label">Retour</div>
+    <ul>
+      <li><a href="/stagiaires.html">← Espace stagiaire</a></li>
+    </ul>
+  </nav>
+
+  <main>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- SECTION 1 : AMPLEUR -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section class="carnet-section" id="ampleur">
+      <h2>1. L'ampleur du problème</h2>
+
+      <div class="moment-fort">
+        <div class="mf-label">Moment fort — Chiffres 2023</div>
+        <div class="mf-chiffre">700 000</div>
+        <div class="mf-sub">accidents du travail reconnus en 2023</div>
+        <div class="mf-detail">
+          1 287 décès &nbsp;·&nbsp; 1 AT sur 2 sous-déclaré &nbsp;·&nbsp; 1,3 Md€/an transférés vers la branche maladie
+        </div>
+      </div>
+
+      <div class="developpement">
+        <div class="bloc-label">Développement</div>
+        <h3>La sinistralité en France</h3>
+        <p>Les accidents du travail et maladies professionnelles représentent un problème de santé publique massif. En 2023, la Caisse Nationale d'Assurance Maladie (CNAM) a recensé <strong>700 000 AT</strong> reconnus, dont <strong>1 287 décès</strong> — soit plus de 3 morts par jour au travail.</p>
+        <p>Ces chiffres ne représentent que la partie visible de l'iceberg. Selon les estimations concordantes, <strong>1 AT sur 2 n'est pas déclaré</strong>. La sous-déclaration touche particulièrement les petites entreprises, les travailleurs précaires (intérim, CDD), et les secteurs à forte pression managériale.</p>
+        <h3>Les secteurs les plus touchés</h3>
+        <ul>
+          <li><strong>BTP :</strong> taux de fréquence le plus élevé, risques de chute, d'écrasement</li>
+          <li><strong>Transport et logistique :</strong> TMS, accidents de la route, manutention</li>
+          <li><strong>Industrie agroalimentaire :</strong> coupures, écrasements, ambiances froides</li>
+          <li><strong>Aide à la personne et santé :</strong> TMS, accidents d'exposition au sang, violences</li>
+          <li><strong>Commerce :</strong> chutes, manutention, braquages</li>
+        </ul>
+        <h3>Les maladies professionnelles en hausse</h3>
+        <p>Les maladies professionnelles (MP) progressent régulièrement. Les troubles musculo-squelettiques (TMS) représentent à eux seuls <strong>plus de 80% des MP reconnues</strong>. Les pathologies psychiques (burn-out, dépressions liées au travail) peinent encore à être reconnues malgré un système complémentaire ouvert en 2012.</p>
+        <p>Le coût pour la collectivité est considérable : <strong>11 Md€/an</strong> gérés par la branche AT/MP, dont une partie injustement transférée vers la branche maladie à cause de la sous-déclaration.</p>
+      </div>
+
+      <div class="cas-pratique">
+        <div class="bloc-label">📋 Cas pratique</div>
+        <div class="scenario">"Dans votre entreprise, avez-vous déjà vu un AT non déclaré ? Dans quel contexte ? Qu'est-ce qui a conduit à ne pas déclarer ?"</div>
+        <div class="question">Tour de table : recenser les situations vécues. Quelles pressions ? Quelles conséquences pour le salarié ?</div>
+      </div>
+
+      <div class="point-syndical">
+        <div class="bloc-label">⚡ Point syndical CGT</div>
+        <p>La sous-déclaration n'est pas un hasard : elle représente <strong>1,3 Md€/an transférés</strong> de la branche AT/MP vers la branche maladie (rapport Diricq 2022). L'employeur paie moins de cotisations AT/MP si ses accidents n'apparaissent pas dans ses statistiques. C'est une <strong>fraude sociale organisée</strong>.</p>
+        <p>L'employeur <span class="action-forte">EST OBLIGÉ</span> de déclarer tout AT à sa connaissance — <span class="ref-loi">L.441-2 CSS</span> — sous peine d'amende administrative. La victime peut se substituer à lui dans les <strong>2 ans</strong>.</p>
+        <p>Le rôle du délégué : détecter, documenter, accompagner chaque AT. Un AT déclaré = moins de coûts reportés sur la collectivité, et un salarié qui accède à ses droits.</p>
+      </div>
+    </section>
+
+    <div class="sep"></div>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- SECTION 2 : DEFINITIONS -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section class="carnet-section" id="definitions">
+      <h2>2. Définitions fondamentales</h2>
+
+      <div class="moment-fort">
+        <div class="mf-label">Moment fort — La règle d'or</div>
+        <div class="mf-chiffre" style="font-size:clamp(1.5rem,3.5vw,2.5rem); color:#fff;">Survenu au temps et au lieu de travail</div>
+        <div class="mf-sub" style="color: var(--jaune); font-size: clamp(1.3rem,3vw,2rem); font-family: 'Anton', sans-serif; margin-top:.5rem;">→ présumé professionnel. Point.</div>
+        <div class="mf-detail">La charge de la preuve appartient à l'employeur qui conteste — pas au salarié qui revendique.</div>
+      </div>
+
+      <div class="developpement">
+        <div class="bloc-label">Développement</div>
+        <h3>L'accident du travail — <span class="ref-loi">L.411-1 CSS</span></h3>
+        <p>Est considéré comme AT <strong>tout accident survenu par le fait ou à l'occasion du travail</strong>, quelle qu'en soit la cause, à toute personne salariée. La définition légale repose sur 3 éléments :</p>
+        <ul>
+          <li>Un <strong>événement soudain</strong> (distingue l'AT de la maladie)</li>
+          <li>Survenu au <strong>temps et lieu de travail</strong></li>
+          <li>Ayant entraîné une <strong>lésion corporelle ou psychique</strong></li>
+        </ul>
+        <h3>L'accident de trajet — <span class="ref-loi">L.411-2 CSS</span></h3>
+        <p>L'accident survenant pendant le trajet <strong>aller-retour entre domicile et lieu de travail</strong> est assimilé à un AT (régime de prise en charge identique pour les soins, mais rente et FIE différentes). Périmètre élargi : trajet domicile-restaurant, domicile-crèche si c'est un détour nécessaire.</p>
+        <h3>La maladie professionnelle — <span class="ref-loi">L.461-1 CSS</span></h3>
+        <p>Deux voies de reconnaissance :</p>
+        <ul>
+          <li><strong>Tableaux MP :</strong> 98 tableaux annexés au CSS. Si la pathologie, la profession et le délai de prise en charge correspondent → reconnaissance quasi-automatique (présomption d'origine)</li>
+          <li><strong>Système complémentaire :</strong> hors tableau ou hors conditions → comité régional de reconnaissance des maladies professionnelles (CRRMP). Doit démontrer un lien direct et essentiel avec le travail.</li>
+        </ul>
+        <h3>La présomption d'imputabilité</h3>
+        <p>C'est la clé de voûte du régime AT/MP. Dès lors qu'un accident survient au temps et lieu de travail, il est <strong>présumé d'origine professionnelle</strong> sans que le salarié n'ait à en apporter la preuve. C'est à l'employeur ou à la CPAM de renverser cette présomption.</p>
+      </div>
+
+      <div class="cas-pratique">
+        <div class="bloc-label">📋 Cas pratique</div>
+        <div class="scenario">"Martine est infirmière. Elle se blesse en soulevant un patient à 6h55, avant la prise de poste officielle à 7h. Elle était habillée en tenue professionnelle et attendait la passation de relève. Son employeur dit que c'est avant l'heure, donc ce n'est pas un AT. Martine hésite à contester."</div>
+        <div class="question">AT ou pas AT ? Quel argument juridique faire valoir ? Qui doit prouver quoi ?</div>
+      </div>
+
+      <div class="point-syndical">
+        <div class="bloc-label">⚡ Point syndical CGT</div>
+        <p>La présomption d'imputabilité <span class="action-forte">EST UN DROIT ABSOLU</span>. Martine est clairement en temps de travail (présence obligatoire pour la passation de service). L'employeur qui conteste doit <strong>PROUVER</strong> que l'accident n'est pas lié au travail.</p>
+        <p>La <strong>charge de la preuve inversée</strong> est l'arme principale du militant AT/MP. Ne jamais laisser le salarié croire qu'il doit prouver le lien avec le travail — c'est l'inverse qui est vrai dans notre droit.</p>
+        <p>Réflexe militant : en cas de doute sur la qualification, déclarer en AT. La CPAM instruit et tranche. Il vaut mieux un refus motivé contestable qu'une non-déclaration qui prive le salarié de ses droits.</p>
+      </div>
+    </section>
+
+    <div class="sep"></div>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- SECTION 3 : DECLARATION -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section class="carnet-section" id="declaration">
+      <h2>3. La déclaration d'accident (DAT)</h2>
+
+      <div class="moment-fort">
+        <div class="mf-label">Moment fort — Le délai légal</div>
+        <div class="mf-chiffre">48h</div>
+        <div class="mf-sub">C'est le délai légal de déclaration de l'employeur. Pas 1 semaine — <strong style="color:var(--rouge)">48 heures.</strong></div>
+        <div class="mf-detail">Le salarié informe l'employeur le jour même (J0) · L'employeur déclare sous 48h · La victime peut déclarer elle-même dans les 2 ans</div>
+      </div>
+
+      <div class="developpement">
+        <div class="bloc-label">Développement</div>
+        <h3>Qui déclare quoi ?</h3>
+        <ul>
+          <li><strong>Le salarié :</strong> informe son employeur dès que possible (le jour de l'accident de préférence). Fait constater les lésions par un médecin (certificat médical initial = CMI). Reçoit la feuille d'accident AT permettant des soins sans avance de frais.</li>
+          <li><strong>L'employeur :</strong> déclare à la CPAM dans les <strong>48h</strong> ouvrables suivant la prise de connaissance — <span class="ref-loi">L.441-2 CSS</span>. Remet une feuille d'accident AT à la victime.</li>
+          <li><strong>La victime en substitution :</strong> si l'employeur ne déclare pas, la victime peut déclarer elle-même auprès de la CPAM dans les <strong>2 ans</strong> suivant l'accident — <span class="ref-loi">L.441-5 CSS</span>.</li>
+        </ul>
+        <h3>Le cerfa sécurisé — obligatoire depuis le 1er juillet 2025</h3>
+        <p>Depuis le 1er juillet 2025, la déclaration AT doit être effectuée via le <strong>cerfa sécurisé</strong> (net-entreprises.fr ou espace employeur ameli). Les déclarations papier ne sont plus acceptées sauf dérogation exceptionnelle.</p>
+        <h3>Les réserves de l'employeur</h3>
+        <p>L'employeur peut émettre des <strong>réserves motivées</strong> au moment de la DAT ou dans les <strong>10 jours ouvrables</strong> suivants. Ces réserves doivent porter sur les circonstances de temps et de lieu ou sur l'existence d'une cause totalement étrangère au travail. Elles déclenchent automatiquement une enquête de la CPAM (délai porté à <strong>70 jours</strong> au lieu de 30).</p>
+      </div>
+
+      <div class="cas-pratique">
+        <div class="bloc-label">📋 Cas pratique</div>
+        <div class="scenario">"L'employeur de Kevin dit qu'il va 'voir si c'est vraiment un AT' avant de déclarer. Kevin a eu un accident mardi. Son chef lui dit d'attendre la semaine prochaine. Vendredi — 3 jours après — Kevin vient voir son délégué. Il a un arrêt de travail mais pas encore de feuille d'accident AT."</div>
+        <div class="question">Que faire immédiatement ? Quels droits faire valoir ? Comment sécuriser la situation de Kevin ?</div>
+      </div>
+
+      <div class="point-syndical">
+        <div class="bloc-label">⚡ Point syndical CGT</div>
+        <p>L'employeur de Kevin <span class="action-forte">EST EN FAUTE</span> — il a dépassé les 48h sans déclarer. C'est une infraction à <span class="ref-loi">L.441-2 CSS</span> passible d'amende administrative.</p>
+        <p><strong>Actions immédiates :</strong></p>
+        <ul>
+          <li>Kevin peut <strong>déclarer lui-même</strong> l'AT auprès de la CPAM (formulaire S6200) sans attendre l'employeur</li>
+          <li>Garder une copie de tout : certificat médical initial, arrêt de travail, tout échange avec l'employeur</li>
+          <li>Mettre en demeure l'employeur par écrit de déclarer immédiatement</li>
+        </ul>
+        <p>Les <strong>réserves de l'employeur</strong> (si elles arrivent) doivent être anticipées et préparées : recueillir les témoignages, les horaires, les accès, tout ce qui prouve la présence au travail au moment de l'accident.</p>
+        <p>Kevin ne doit en aucun cas se soigner avec sa carte vitale ordinaire — la prise en charge AT/MP est <strong>100% sans avance de frais</strong>, ce que la maladie ordinaire ne garantit pas.</p>
+      </div>
+    </section>
+
+    <div class="sep"></div>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- SECTION 4 : INSTRUCTION CPAM -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section class="carnet-section" id="instruction">
+      <h2>4. L'instruction CPAM</h2>
+
+      <div class="moment-fort">
+        <div class="mf-label">Moment fort — Les délais d'instruction</div>
+        <div class="mf-chiffre">30 jours</div>
+        <div class="mf-sub">Sans réserves. <span style="color:var(--rouge)">3 mois max</span> avec réserves — puis décision obligatoire.</div>
+        <div class="mf-detail">Passé ces délais sans décision → acceptation tacite automatique de la CPAM</div>
+      </div>
+
+      <div class="developpement">
+        <div class="bloc-label">Développement</div>
+        <h3>La procédure standard (sans réserves)</h3>
+        <p>Après réception de la DAT, la CPAM dispose de <strong>30 jours francs</strong> pour se prononcer sur le caractère professionnel de l'accident. Passé ce délai sans notification → <strong>acceptation tacite</strong>.</p>
+        <h3>La procédure avec réserves (délai 70 jours)</h3>
+        <p>En cas de réserves de l'employeur, la procédure est allongée :</p>
+        <ul>
+          <li><strong>J+20 :</strong> questionnaire envoyé à la victime et/ou à l'employeur pour recueillir leurs observations</li>
+          <li><strong>J+30 :</strong> clôture du questionnaire, début de la phase contradictoire</li>
+          <li><strong>J+40 :</strong> dossier mis à disposition des parties (victime et employeur) pendant 10 jours</li>
+          <li><strong>J+50 :</strong> parties peuvent déposer des observations écrites (10 jours supplémentaires)</li>
+          <li><strong>J+70 :</strong> délai maximal de décision de la CPAM</li>
+        </ul>
+        <h3>La décision de la CPAM</h3>
+        <p><strong>Acceptation :</strong> notification à la victime et à l'employeur. La prise en charge AT/MP est ouverte rétroactivement depuis le jour de l'accident.</p>
+        <p><strong>Refus :</strong> notification motivée. Voies de recours : <strong>recours amiable auprès de la Commission de Recours Amiable (CRA)</strong> dans les 2 mois → puis Pôle social du Tribunal Judiciaire.</p>
+      </div>
+
+      <div class="cas-pratique">
+        <div class="bloc-label">📋 Cas pratique</div>
+        <div class="scenario">"La CPAM envoie un questionnaire à Sophie 15 jours après la DAT. Le questionnaire lui demande de décrire les circonstances précises de son accident, ses horaires, les témoins éventuels. Sophie est stressée et ne sait pas quoi écrire. Elle a peur de 'mal répondre' et que ça joue contre elle."</div>
+        <div class="question">Que lui conseilles-tu pour répondre au questionnaire ? Quels points faut-il absolument couvrir ?</div>
+      </div>
+
+      <div class="point-syndical">
+        <div class="bloc-label">⚡ Point syndical CGT</div>
+        <p>Le questionnaire CPAM <span class="action-forte">N'EST PAS ANODIN</span>. Les réponses construisent le dossier et peuvent être utilisées par l'employeur en cas de FIE. Il faut accompagner le camarade.</p>
+        <p><strong>Conseils pour le questionnaire :</strong></p>
+        <ul>
+          <li>Répondre avec <strong>précision</strong> sur les horaires, le lieu exact, l'activité en cours</li>
+          <li>Mentionner tout lien avec le travail : charge portée, sol mouillé, outil défectueux, pression temporelle</li>
+          <li>Citer les <strong>témoins</strong> (noms, fonctions)</li>
+          <li>Ne jamais minimiser : écrire toutes les douleurs, même celles qui semblent secondaires</li>
+          <li>Conserver une copie de ses réponses</li>
+        </ul>
+        <p>En cas de refus : la CRA est <strong>gratuite et accessible sans avocat</strong>. Le Pôle social du TJ aussi. La CGT peut accompagner toute la procédure de recours.</p>
+      </div>
+    </section>
+
+    <div class="sep"></div>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- SECTION 5 : IJ -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section class="carnet-section" id="ij">
+      <h2>5. Les indemnités journalières</h2>
+
+      <div class="moment-fort">
+        <div class="mf-label">Moment fort — L'avantage AT/MP</div>
+        <div class="mf-chiffre" style="color:#fff; font-size:clamp(1.8rem,4vw,3.5rem)">Pas de carence en AT/MP</div>
+        <div class="mf-sub" style="color:var(--jaune)">IJ dès le 1<sup>er</sup> jour — <strong>60%</strong> puis <strong>80%</strong> à partir du 29<sup>e</sup> jour</div>
+        <div class="mf-detail">Maladie ordinaire : 50% · 3 jours de carence · plafond quotidien bien inférieur</div>
+      </div>
+
+      <div class="developpement">
+        <div class="bloc-label">Développement</div>
+        <h3>Calcul des IJ AT/MP</h3>
+        <p><strong>Salaire journalier de base (SDJB) :</strong> salaire brut du mois précédent ÷ 30,42</p>
+        <ul>
+          <li><strong>J1 à J28 :</strong> IJ = 60% du SDJB — plafond <strong>240,49 €/j</strong> (2026)</li>
+          <li><strong>J29 et au-delà :</strong> IJ = 80% du SDJB — plafond <strong>320,66 €/j</strong> (2026)</li>
+        </ul>
+        <h3>Comparaison avec la maladie ordinaire</h3>
+        <ul>
+          <li>IJ maladie ordinaire = <strong>50% du SDJB</strong>, plafond 42,97 €/j (2026)</li>
+          <li><strong>3 jours de carence</strong> en maladie ordinaire (pas de prise en charge)</li>
+          <li>L'avantage AT/MP représente souvent plusieurs centaines d'euros sur un arrêt long</li>
+        </ul>
+        <h3>Le maintien de salaire — <span class="ref-loi">L.1226-1 CT</span></h3>
+        <p>L'employeur est tenu de compléter les IJ CPAM selon une grille d'ancienneté issue de la loi de mensualisation :</p>
+        <ul>
+          <li><strong>1 à 5 ans :</strong> 90% pendant 30j, puis 66,66% pendant 30j</li>
+          <li><strong>6 à 10 ans :</strong> 90% pendant 40j, puis 66,66% pendant 40j</li>
+          <li><strong>11 à 15 ans :</strong> 90% pendant 50j, puis 66,66% pendant 50j</li>
+          <li>Au-delà : grille progressive +10j par tranche de 5 ans</li>
+        </ul>
+        <p>La convention collective peut prévoir des dispositions plus favorables — toujours les vérifier.</p>
+      </div>
+
+      <div class="cas-pratique">
+        <div class="bloc-label">📋 Cas pratique</div>
+        <div class="scenario">"Paul gagne 2 400 € bruts/mois, a 8 ans d'ancienneté. Il est en arrêt AT depuis 45 jours. Son employeur lui a versé son salaire normal les 30 premiers jours, puis rien du tout depuis. Paul pense qu'il ne touche plus que les IJ CPAM."</div>
+        <div class="question">Calculer les IJ CPAM de Paul pour les 45 jours. L'employeur a-t-il des obligations supplémentaires pour les 15 derniers jours ? Quel est le manque à gagner ?</div>
+      </div>
+
+      <div class="point-syndical">
+        <div class="bloc-label">⚡ Point syndical CGT</div>
+        <p>L'employeur <span class="action-forte">EST OBLIGÉ</span> de compléter les IJ selon la loi de mensualisation (<span class="ref-loi">L.1226-1 CT</span>). Avec 8 ans d'ancienneté, Paul bénéficie de 40 jours à 90%, puis 40 jours à 66,66%. Il est donc encore dans la période de maintien à 90% jusqu'au 40e jour.</p>
+        <p><strong>Si l'employeur ne paie pas :</strong></p>
+        <ul>
+          <li>Mise en demeure par écrit de régulariser</li>
+          <li>Saisine du Conseil de Prud'hommes (référé pour urgence)</li>
+          <li>Signalement à l'inspection du travail si refus persistant</li>
+        </ul>
+        <p>Vérifier que le code <strong>AT/MP</strong> figure bien sur la feuille de soins et que Paul utilise bien sa feuille d'accident AT — sinon ses soins sont remboursés comme maladie ordinaire, moins favorablement.</p>
+        <p>La CCN peut prévoir mieux que le légal (maintien 100%, durée allongée) — l'exiger systématiquement.</p>
+      </div>
+    </section>
+
+    <div class="sep"></div>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- SECTION 6 : IPP -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section class="carnet-section" id="ipp">
+      <h2>6. L'incapacité permanente</h2>
+
+      <div class="moment-fort">
+        <div class="mf-label">Moment fort — La rente viagère</div>
+        <div class="mf-chiffre">IPP ≥ 10%</div>
+        <div class="mf-sub" style="color: var(--rouge)">= rente VIAGÈRE. Pour la vie.</div>
+        <div class="mf-detail">En dessous de 10% → capital unique · IPP ≥ 20% → retraite anticipée à 60 ans</div>
+      </div>
+
+      <div class="developpement">
+        <div class="bloc-label">Développement</div>
+        <h3>La fixation du taux IPP</h3>
+        <p>À la consolidation (fin de l'état évolutif des lésions), le médecin-conseil de la CPAM fixe un <strong>taux d'incapacité permanente partielle (IPP)</strong>. Ce taux tient compte :</p>
+        <ul>
+          <li>De la nature des séquelles (barème indicatif de référence)</li>
+          <li>De l'état général de la victime</li>
+          <li>De l'âge de la victime</li>
+          <li>Des aptitudes professionnelles restantes</li>
+        </ul>
+        <h3>Capital ou rente ?</h3>
+        <ul>
+          <li><strong>IPP inférieure à 10% :</strong> versement d'un capital unique — de 483 € (taux 1%) à 4 833 € (taux 9%)</li>
+          <li><strong>IPP égale ou supérieure à 10% :</strong> rente viagère versée trimestriellement</li>
+        </ul>
+        <h3>Calcul de la rente — Taux utile</h3>
+        <p>La rente annuelle = Salaire annuel × Taux utile</p>
+        <p><strong>Calcul du taux utile :</strong></p>
+        <ul>
+          <li>Pour la fraction du taux ≤ 50% : diviser par 2 (ex : 25% → 12,5%)</li>
+          <li>Pour la fraction du taux > 50% : multiplier par 1,5 (ex : 60% → 50%÷2 + 10%×1,5 = 25%+15% = 40%)</li>
+        </ul>
+        <p>Plancher de salaire pour le calcul de la rente : <strong>21 498,47 €/an</strong> (avril 2026) — si le salaire réel est inférieur, c'est ce plancher qui est utilisé.</p>
+        <h3>Retraite anticipée</h3>
+        <p>Un taux IPP <strong>égal ou supérieur à 20%</strong> ouvre droit à la retraite anticipée à <strong>60 ans</strong> (au lieu de 62 ans dans le régime général).</p>
+      </div>
+
+      <div class="cas-pratique">
+        <div class="bloc-label">📋 Cas pratique</div>
+        <div class="scenario">"Marie a eu un AT grave. À la consolidation, le médecin-conseil lui fixe un taux IPP de 25%. Son salaire annuel est de 30 000 €. Elle ne comprend pas comment sa rente est calculée et si elle peut contester."</div>
+        <div class="question">Calculer le taux utile de Marie et sa rente annuelle. Quelles sont ses voies de recours si elle estime le taux sous-évalué ?</div>
+      </div>
+
+      <div class="point-syndical">
+        <div class="bloc-label">⚡ Point syndical CGT</div>
+        <p>Le taux fixé par le médecin-conseil <span class="action-forte">EST CONTESTABLE SYSTÉMATIQUEMENT</span>. Pour Marie : taux utile = 25% ÷ 2 = 12,5% → rente annuelle = 30 000 × 12,5% = <strong>3 750 €/an</strong>.</p>
+        <p>La CGT recommande une <strong>expertise médicale contradictoire</strong> pour tout taux ≥ 10%. L'enjeu est une rente sur 20 à 30 ans. Un taux sous-évalué de 5 points représente des milliers d'euros perdus à vie.</p>
+        <p><strong>Voies de recours :</strong></p>
+        <ul>
+          <li><strong>AT :</strong> recours devant la Commission Médicale de Recours Amiable (CMRA) dans les <strong>2 mois</strong> suivant la notification du taux</li>
+          <li><strong>MP :</strong> recours devant le Tribunal du Contentieux de l'Incapacité (TCI) — maintenant Pôle social du TJ — dans les <strong>2 mois</strong></li>
+        </ul>
+        <p>Ne jamais accepter un premier taux sans le faire examiner par un médecin expert indépendant, que la victime choisit librement.</p>
+      </div>
+    </section>
+
+    <div class="sep"></div>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- SECTION 7 : FIE -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section class="carnet-section" id="fie">
+      <h2>7. La faute inexcusable</h2>
+
+      <div class="moment-fort">
+        <div class="mf-label">Moment fort — La définition</div>
+        <div class="mf-chiffre" style="font-size:clamp(1.5rem,3.5vw,2.8rem); color:#fff;">L'employeur savait.</div>
+        <div class="mf-sub" style="color:var(--rouge)">Il n'a pas agi. C'est la faute inexcusable.</div>
+        <div class="mf-detail">Conscience du danger + absence de mesures = FIE · Majoration de rente au maximum + indemnisation des préjudices</div>
+      </div>
+
+      <div class="developpement">
+        <div class="bloc-label">Développement</div>
+        <h3>Définition jurisprudentielle</h3>
+        <p>La Cour de cassation définit la faute inexcusable de l'employeur comme la situation où <strong>l'employeur avait ou aurait dû avoir conscience du danger auquel était exposé le salarié, et n'a pas pris les mesures nécessaires pour l'en préserver</strong> (arrêt Amiante, Cass. soc. 28 février 2002).</p>
+        <p>Les deux conditions cumulatives :</p>
+        <ul>
+          <li><strong>Conscience du danger :</strong> l'employeur connaissait (ou devait connaître) le risque</li>
+          <li><strong>Absence de mesures :</strong> il n'a pas agi pour le prévenir</li>
+        </ul>
+        <h3>Les effets de la FIE</h3>
+        <ul>
+          <li><strong>Majoration de rente au maximum :</strong> la rente de la victime est portée au taux maximal (100% du salaire annuel multiplié par le taux utile maximum)</li>
+          <li><strong>Indemnisation des préjudices extrapatrimoniaux :</strong> souffrances physiques et morales, préjudice esthétique, préjudice d'agrément, perte de chance de promotion professionnelle</li>
+          <li>La majoration de rente et les indemnités sont à la charge de l'employeur via la CPAM (qui se retourne contre lui)</li>
+        </ul>
+        <h3>Les preuves de la FIE</h3>
+        <ul>
+          <li>PV de réunion CSE mentionnant l'alerte sur le risque</li>
+          <li>DUER (Document Unique d'Évaluation des Risques) identifiant le danger sans mesure corrective</li>
+          <li>E-mails ou courriers d'alerte adressés à la direction</li>
+          <li>Refus de formation ou d'EPI signalé</li>
+          <li>Témoignages de salariés</li>
+          <li>Accidents antérieurs similaires</li>
+        </ul>
+        <h3>Prescription</h3>
+        <p>L'action en reconnaissance de FIE se prescrit par <strong>2 ans</strong> à compter de la date de l'accident (ou de la première constatation médicale pour les MP).</p>
+      </div>
+
+      <div class="cas-pratique">
+        <div class="bloc-label">📋 Cas pratique</div>
+        <div class="scenario">"Après un AT grave d'un magasinier (chute sur sol glissant en entrepôt), le délégué CSE retrouve dans les archives un PV de réunion datant de 6 mois où le CSE avait expressément alerté la direction sur le revêtement de sol dégradé et l'absence de signalisation. La direction avait répondu 'nous allons voir'. Rien n'a été fait."</div>
+        <div class="question">Les conditions de la FIE sont-elles réunies ? Quelles démarches enclencher ? Dans quels délais ?</div>
+      </div>
+
+      <div class="point-syndical">
+        <div class="bloc-label">⚡ Point syndical CGT</div>
+        <p>La FIE <span class="action-forte">EST L'OUTIL LE PLUS PUISSANT</span> du militant AT/MP. Elle cumule majoration de rente + indemnisation des préjudices. Dans ce cas : le PV CSE est une preuve directe de la conscience du danger par l'employeur.</p>
+        <p>Les preuves viennent souvent du CSE lui-même. C'est pourquoi il est vital de :</p>
+        <ul>
+          <li>Rédiger des PV de CSE précis mentionnant chaque alerte sur les risques</li>
+          <li>Mettre les alertes en écrit (mail au DRH après chaque signalement oral)</li>
+          <li>Conserver tous les documents (DUER, plans de prévention, refus d'investissement)</li>
+        </ul>
+        <p><strong>Procédure :</strong> Pôle social du Tribunal Judiciaire. La CGT peut accompagner toute la procédure, y compris orienter vers des avocats spécialisés. Ne pas dépasser les 2 ans de prescription.</p>
+      </div>
+    </section>
+
+    <div class="sep"></div>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- SECTION 8 : PREVENTION -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section class="carnet-section" id="prevention">
+      <h2>8. Prévention et CSE</h2>
+
+      <div class="moment-fort">
+        <div class="mf-label">Moment fort — L'obligation légale</div>
+        <div class="mf-chiffre" style="font-size:clamp(1.3rem,3vw,2.2rem); color:#fff; line-height:1.3;">Le CSE EST OBLIGÉ d'enquêter</div>
+        <div class="mf-sub" style="color:var(--jaune)">après tout AT grave. C'est la loi.</div>
+        <div class="mf-detail">L.2312-13 CT · L'enquête CSE est distincte et indépendante de l'enquête interne de l'employeur</div>
+      </div>
+
+      <div class="developpement">
+        <div class="bloc-label">Développement</div>
+        <h3>L'obligation d'enquête du CSE — <span class="ref-loi">L.2312-13 CT</span></h3>
+        <p>Le CSE <strong>procède à une analyse des risques professionnels</strong> et peut diligenter des enquêtes en matière d'AT et de MP. Cette obligation s'impose pour tout AT grave et toute situation de danger grave et imminent.</p>
+        <p>L'enquête est menée par <strong>une délégation du CSE</strong> composée au minimum de l'employeur (ou son représentant) et d'un représentant du personnel. Le CSE garde la maîtrise de ses conclusions.</p>
+        <h3>Le droit d'alerte — <span class="ref-loi">L.4131-1 CT</span></h3>
+        <p>Tout salarié qui a un motif raisonnable de penser qu'il se trouve dans une situation de danger grave et imminent peut <strong>se retirer de la situation de danger</strong> et alerter son représentant du personnel. Le CSE enregistre le droit d'alerte au registre spécial et en informe l'employeur.</p>
+        <h3>La F3SCT (ex-CHSCT) — entreprises ≥ 50 salariés</h3>
+        <p>La Formation Spécialisée en Santé, Sécurité et Conditions de Travail (F3SCT) est la commission santé-sécurité du CSE, obligatoire dans les entreprises de 50 salariés et plus. Elle dispose de prérogatives spécifiques en matière de prévention et peut recourir à un expert.</p>
+        <h3>Le DUER — Document Unique d'Évaluation des Risques</h3>
+        <p>L'employeur est tenu de mettre à jour le DUER au moins une fois par an, et après tout AT grave. Le DUER est <strong>accessible à tout salarié</strong>. Un DUER incomplet ou non mis à jour est un manquement de l'employeur exploitable en cas de FIE.</p>
+        <h3>L'arbre des causes</h3>
+        <p>Méthode d'analyse rétrospective d'un AT visant à identifier toutes les causes en remontant la chaîne des événements. Permet d'agir sur les causes profondes (organisation du travail, formation, équipements) plutôt que de stigmatiser le comportement de la victime.</p>
+      </div>
+
+      <div class="cas-pratique">
+        <div class="bloc-label">📋 Cas pratique</div>
+        <div class="scenario">"Après un AT dans l'atelier (salarié blessé à la main par une machine), le DRH dit au délégué CSE : 'On a déjà fait notre enquête interne avec le chef d'atelier et la RH, tout est documenté. Il est inutile que le CSE se déplace — vous aurez le rapport en fin de semaine.'"</div>
+        <div class="question">Comment réagis-tu ? Quels droits faire valoir ? Que se passe-t-il si le DRH refuse l'accès au CSE ?</div>
+      </div>
+
+      <div class="point-syndical">
+        <div class="bloc-label">⚡ Point syndical CGT</div>
+        <p>L'enquête CSE <span class="action-forte">EST UN DROIT PROPRE</span> — elle est totalement distincte de l'enquête interne de l'employeur. Refuser l'accès au CSE ou s'y opposer constitue un <strong>délit d'entrave</strong> (<span class="ref-loi">L.2317-1 CT</span>) — amende pénale, voire emprisonnement en cas de récidive.</p>
+        <p><strong>Réponse au DRH :</strong> "Le CSE exerce son droit d'enquête prévu par l'article L.2312-13 du Code du travail. Ce droit est autonome et indépendant de votre enquête interne. Nous vous informons formellement que notre délégation se présentera dans les 24h. Tout obstacle constituerait un délit d'entrave."</p>
+        <p>Les conclusions de l'enquête CSE servent à :</p>
+        <ul>
+          <li>Alimenter la mise à jour du DUER</li>
+          <li>Formuler des préconisations de prévention</li>
+          <li>Constituer des preuves pour une éventuelle FIE</li>
+          <li>Alerter l'inspection du travail si les mesures ne sont pas prises</li>
+        </ul>
+      </div>
+    </section>
+
+    <div class="sep"></div>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- SECTION 9 : ACTION -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <section class="carnet-section" id="action">
+      <h2>9. Action syndicale — ce que tu fais dès demain</h2>
+
+      <div class="moment-fort">
+        <div class="mf-label">Moment fort — L'engagement militant</div>
+        <div class="mf-chiffre" style="font-size:clamp(1.4rem,3.2vw,2.6rem); color:#fff; line-height:1.3;">"Chaque AT non accompagné</div>
+        <div class="mf-sub" style="color:var(--rouge); font-size:clamp(1.2rem,3vw,2.2rem); font-family:'Anton',sans-serif; margin-top:.25rem;">est un militant qu'on a laissé seul."</div>
+        <div class="mf-detail">3 réflexes : Documenter · Déclarer · Accompagner</div>
+      </div>
+
+      <div class="developpement">
+        <div class="bloc-label">Développement</div>
+        <h3>Le rôle du délégué — de J0 à la consolidation</h3>
+        <ul>
+          <li><strong>J0 (le jour de l'AT) :</strong> s'assurer que l'AT est déclaré, que le salarié a sa feuille d'accident AT, qu'il est orienté vers un médecin avec CMI</li>
+          <li><strong>J1 à J5 :</strong> vérifier que la DAT est bien déposée par l'employeur. Si non → accompagner la déclaration par substitution</li>
+          <li><strong>Semaines suivantes :</strong> vérifier le versement correct des IJ et du maintien de salaire. Signaler toute anomalie</li>
+          <li><strong>En cas de questionnaire CPAM :</strong> aider à la rédaction, accompagner si possible</li>
+          <li><strong>À la consolidation :</strong> vérifier le taux IPP, conseiller une expertise contradictoire si nécessaire</li>
+          <li><strong>Si FIE envisageable :</strong> rassembler les preuves, orienter vers des juristes CGT</li>
+        </ul>
+        <h3>Les ressources disponibles</h3>
+        <ul>
+          <li><strong>Fiche délégué :</strong> <a href="/fiche-delegue.html" style="color:var(--rouge)">Chronologie J0 → consolidation, script d'appel</a></li>
+          <li><strong>Calculateur IJ :</strong> <a href="/calculateur-ij.html" style="color:var(--rouge)">Simulateur plafonds 2026 intégrés</a></li>
+          <li><strong>FAQ AT/MP :</strong> <a href="/faq-atmp.html" style="color:var(--rouge)">Questions fréquentes des militants</a></li>
+          <li><strong>Courriers types :</strong> <a href="/courriers.html" style="color:var(--rouge)">Mise en demeure, contestation, demande FIE</a></li>
+          <li><strong>Checklist AT :</strong> <a href="/checklist-at.html" style="color:var(--rouge)">Du jour J à la consolidation</a></li>
+        </ul>
+        <h3>Contacts clés</h3>
+        <ul>
+          <li><strong>CPAM :</strong> 3646 (numéro national)</li>
+          <li><strong>Inspection du travail :</strong> direccte de votre département</li>
+          <li><strong>UD CGT Occitanie :</strong> votre union départementale pour les cas complexes</li>
+        </ul>
+      </div>
+
+      <div class="cas-pratique">
+        <div class="bloc-label">📋 Cas pratique</div>
+        <div class="scenario">"Tu reprends le travail lundi. En arrivant, un collègue te prend à part et te dit qu'il a eu un accident vendredi soir sur son poste — il s'est cogné la tête contre une étagère et a eu un étourdissement. Il a quand même fini sa journée. Le lendemain il avait encore mal à la tête. Son chef lui a dit : 'Ça ne vaut pas le coup de déclarer pour ça, tu vas créer des problèmes pour pas grand chose.'"</div>
+        <div class="question">Que fais-tu dès lundi matin ? Dans quel ordre ? Que dis-tu à ton collègue et à l'employeur ?</div>
+      </div>
+
+      <div class="point-syndical">
+        <div class="bloc-label">⚡ Point syndical CGT</div>
+        <p>La formation se termine ici, mais <span class="action-forte">l'action commence lundi</span>. Le militant AT/MP CGT a 3 réflexes immédiats :</p>
+        <ul>
+          <li><strong>(1) Documenter :</strong> noter les circonstances précises de l'AT du collègue — heure, lieu, activité, témoins éventuels</li>
+          <li><strong>(2) Déclarer :</strong> convaincre le collègue de déclarer — lui rappeler que c'est son droit et que l'employeur ne peut pas s'y opposer. Si le collègue hésite, lui expliquer que les conséquences d'un TC (traumatisme crânien) peuvent apparaître plusieurs jours après</li>
+          <li><strong>(3) Accompagner :</strong> proposer de l'accompagner à la médecine du travail, de l'aider avec le questionnaire CPAM si nécessaire, de vérifier ses IJ</li>
+        </ul>
+        <p>Au chef qui dit "ça ne vaut pas le coup" : rappeler que <strong>refuser ou décourager une déclaration d'AT est une infraction</strong>. L'employeur risque une amende et une mise en cause de sa responsabilité renforcée.</p>
+        <p><strong>Un AT bien traité protège tous les suivants.</strong> Les données de sinistralité correctes permettent d'imposer la prévention. Sous-déclarer, c'est laisser le danger en place pour le prochain salarié.</p>
+      </div>
+    </section>
+
+    <footer>
+      <p>Formation AT/MP · CGT Occitanie · Document réservé aux participants</p>
+      <p style="margin-top:.4rem;">Références légales : CSS = Code de la Sécurité Sociale · CT = Code du Travail · Données IJ : plafonds avril 2026</p>
+    </footer>
+
+  </main>
+
+</div>
+
+<script>
+  // Highlight active sidebar link on scroll
+  var sections = document.querySelectorAll('section.carnet-section');
+  var navLinks = document.querySelectorAll('nav.sidebar ul li a');
+
+  function onScroll() {
+    var scrollPos = window.scrollY + 100;
+    sections.forEach(function(section) {
+      var top = section.offsetTop;
+      var bottom = top + section.offsetHeight;
+      if (scrollPos >= top && scrollPos < bottom) {
+        var id = section.getAttribute('id');
+        navLinks.forEach(function(link) {
+          link.classList.remove('active');
+          if (link.getAttribute('href') === '#' + id) {
+            link.classList.add('active');
+          }
+        });
+      }
+    });
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+</script>
+
+</body>
+</html>
