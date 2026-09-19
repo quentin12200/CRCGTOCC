@@ -355,6 +355,144 @@ input[type=number]:focus,select:focus{border-color:var(--red)}
 
 </div><!-- /#results -->
 
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!-- SECTION RENTE IPP                                               -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<div class="form-card" id="ipp-form-card" style="margin-top:4vh">
+  <h2>Calcul de rente IPP <span style="font-family:var(--ui);font-size:clamp(13px,1.2vw,17px);color:var(--muted);font-weight:400;text-transform:none;letter-spacing:0;display:block;margin-top:.5vh">Incapacité Permanente Partielle — Régime général (Art. L. 434-1 et s. CSS)</span></h2>
+  <div class="form-grid">
+
+    <div class="field">
+      <label for="ipp-taux">Taux d'IPP <span>(%)</span></label>
+      <input type="number" id="ipp-taux" min="1" max="99" step="0.5" placeholder="ex : 15">
+    </div>
+
+    <div class="field">
+      <label for="ipp-salaire">Salaire annuel brut <span>(€)</span></label>
+      <input type="number" id="ipp-salaire" min="0" step="100" placeholder="ex : 28 000">
+    </div>
+
+    <div class="field full">
+      <button class="btn-calc" onclick="calculerIPP()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        Calculer la rente IPP
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<div id="ipp-results" style="display:none">
+
+  <div class="res-header">
+    <h2>Rente IPP — Résultats</h2>
+    <div class="tag-type" id="ipp-tag"></div>
+  </div>
+
+  <div class="total-strip">
+    <div>
+      <div class="lbl">Rente annuelle brute</div>
+      <div class="big" id="ipp-rente-annuelle">—</div>
+    </div>
+    <div>
+      <div class="lbl">Rente mensuelle brute</div>
+      <div class="big" style="color:#fff" id="ipp-rente-mensuelle">—</div>
+    </div>
+    <div>
+      <div class="lbl">Taux réduit appliqué</div>
+      <div class="big" style="color:#fff" id="ipp-taux-reduit">—</div>
+    </div>
+  </div>
+
+  <div class="cols">
+    <div class="col-card">
+      <div class="col-head">
+        <h3>Détail du calcul</h3>
+        <span class="badge">Régime général</span>
+      </div>
+      <div class="col-body">
+        <div class="metric">
+          <div class="metric-label">Taux IPP brut</div>
+          <div><div class="metric-val red" id="ipp-d-taux">—</div></div>
+        </div>
+        <div class="metric">
+          <div><div class="metric-label">Taux réduit (fraction SS)</div><div class="metric-sub" id="ipp-d-formule"></div></div>
+          <div><div class="metric-val" id="ipp-d-taux-reduit">—</div></div>
+        </div>
+        <div class="metric">
+          <div><div class="metric-label">Salaire de référence</div><div class="metric-sub" id="ipp-d-salaire-note"></div></div>
+          <div><div class="metric-val" id="ipp-d-salaire-ref">—</div></div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Rente annuelle brute</div>
+          <div><div class="metric-val red" id="ipp-d-annuelle">—</div></div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Rente mensuelle brute</div>
+          <div><div class="metric-val red" id="ipp-d-mensuelle">—</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-card">
+      <div class="col-head atmp">
+        <h3>Éligibilité &amp; rappels</h3>
+        <span class="badge">Infos clés</span>
+      </div>
+      <div class="col-body">
+        <div class="metric">
+          <div class="metric-label">Seuil de rente</div>
+          <div><div class="metric-val" id="ipp-eligibilite">—</div></div>
+        </div>
+        <div class="metric" id="ipp-capital-row" style="display:none">
+          <div><div class="metric-label">Capital unique indicatif</div><div class="metric-sub">Si IPP &lt; 10 % — estimation indicative</div></div>
+          <div><div class="metric-val red" id="ipp-capital">—</div></div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">PASS 2026</div>
+          <div><div class="metric-val">46 368 €</div></div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Plafond salaire (2×PASS)</div>
+          <div><div class="metric-val">92 736 €</div></div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Plancher salaire (½×PASS)</div>
+          <div><div class="metric-val">23 184 €</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ccn-notice">
+    <h3>Rappels importants — Rente IPP</h3>
+    <p>Seuil rente : <strong>IPP ≥ 10 %</strong> — en dessous, versement en capital unique. · Rente viagère <strong>non imposable</strong> (exonération d'impôt sur le revenu). · Le taux IPP est fixé à la consolidation par le médecin-conseil de la CPAM — il est contestable.</p>
+    <p><strong>Source :</strong> Art. L. 434-1 et suivants du Code de la Sécurité Sociale · PASS 2026 = 46 368 €</p>
+    <div class="ccn-links">
+      <a class="ccn-link" href="https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000006742553" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        Art. L. 434-2 CSS — Légifrance
+      </a>
+      <a class="ccn-link" href="https://www.ameli.fr/assure/remboursements/indemnites-journalieres/accident-travail-maladie-professionnelle" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        Rente AT/MP — Ameli.fr
+      </a>
+    </div>
+  </div>
+
+  <div class="hyp-box">
+    <h4>Hypothèses du calcul rente IPP</h4>
+    <ul>
+      <li>PASS 2026 = 46 368 €. Salaire de référence plafonné à 2×PASS = 92 736 € et au minimum à 0,5×PASS = 23 184 €.</li>
+      <li>Taux réduit (fraction SS) : pour IPP ≤ 50 % → IPP÷2 ; pour IPP &gt; 50 % → IPP − (100−IPP)÷2 (fraction supérieure augmentée de 50 %).</li>
+      <li>Rente annuelle brute = salaire de référence × taux réduit. Rente mensuelle = rente annuelle ÷ 12.</li>
+      <li>Capital indicatif (IPP &lt; 10 %) = salaire annuel × IPP × 0,5 — formule indicative, le montant exact est fixé par barème CPAM.</li>
+      <li>Ce calcul ne tient pas compte des majorations (tierce personne, incapacité totale) ni des règles spécifiques aux régimes spéciaux.</li>
+    </ul>
+  </div>
+
+</div><!-- /#ipp-results -->
+
 </main>
 
 <script>
@@ -554,6 +692,74 @@ function calculate(){
   const el = document.getElementById('results');
   el.classList.add('show');
   el.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+// ── CALCULATEUR RENTE IPP ──────────────────────────────────────────
+const PASS_2026 = 46368;
+const PLAFOND_SAL = 2 * PASS_2026;   // 92 736 €
+const PLANCHER_SAL = 0.5 * PASS_2026; // 23 184 €
+
+function calculerIPP() {
+  const ipp = parseFloat(document.getElementById('ipp-taux').value) || 0;
+  const salBrut = parseFloat(document.getElementById('ipp-salaire').value) || 0;
+
+  if (ipp <= 0 || ipp >= 100) { alert('Veuillez saisir un taux IPP entre 1 et 99 %.'); return; }
+  if (salBrut <= 0) { alert('Veuillez saisir un salaire annuel brut.'); return; }
+
+  // Salaire de référence : plafonné puis plancher
+  const salRef = Math.max(Math.min(salBrut, PLAFOND_SAL), PLANCHER_SAL);
+
+  // Taux réduit
+  let tauxReduit, formule;
+  if (ipp <= 50) {
+    tauxReduit = ipp / 2;
+    formule = `${fmt(ipp, 1)} % ÷ 2 (fraction ≤ 50 %)`;
+  } else {
+    tauxReduit = ipp - (100 - ipp) / 2;
+    formule = `${fmt(ipp, 1)} % − (100 − ${fmt(ipp, 1)}) ÷ 2 (fraction > 50 %)`;
+  }
+
+  const renteAnnuelle = salRef * (tauxReduit / 100);
+  const renteMensuelle = renteAnnuelle / 12;
+
+  // Affichage
+  const eligible = ipp >= 10;
+
+  document.getElementById('ipp-tag').textContent = `IPP ${fmt(ipp, 1)} %`;
+  document.getElementById('ipp-rente-annuelle').textContent = fmtE(renteAnnuelle);
+  document.getElementById('ipp-rente-mensuelle').textContent = fmtE(renteMensuelle);
+  document.getElementById('ipp-taux-reduit').textContent = fmt(tauxReduit, 2) + ' %';
+
+  document.getElementById('ipp-d-taux').textContent = fmt(ipp, 1) + ' %';
+  document.getElementById('ipp-d-formule').textContent = formule;
+  document.getElementById('ipp-d-taux-reduit').textContent = fmt(tauxReduit, 2) + ' %';
+
+  let salNote = '';
+  if (salBrut > PLAFOND_SAL) salNote = `Plafonné à 2×PASS (${fmt(salBrut, 0)} € → ${fmt(PLAFOND_SAL, 0)} €)`;
+  else if (salBrut < PLANCHER_SAL) salNote = `Relevé au plancher ½×PASS (${fmt(salBrut, 0)} € → ${fmt(PLANCHER_SAL, 0)} €)`;
+  else salNote = 'Dans les limites plancher/plafond';
+  document.getElementById('ipp-d-salaire-note').textContent = salNote;
+  document.getElementById('ipp-d-salaire-ref').textContent = fmtE(salRef);
+
+  document.getElementById('ipp-d-annuelle').textContent = fmtE(renteAnnuelle);
+  document.getElementById('ipp-d-mensuelle').textContent = fmtE(renteMensuelle);
+
+  const eligEl = document.getElementById('ipp-eligibilite');
+  if (eligible) {
+    eligEl.textContent = 'Éligible à la rente ✓';
+    eligEl.className = 'metric-val green';
+    document.getElementById('ipp-capital-row').style.display = 'none';
+  } else {
+    eligEl.textContent = 'IPP < 10 % → Capital unique';
+    eligEl.className = 'metric-val red';
+    const capital = salBrut * (ipp / 100) * 0.5;
+    document.getElementById('ipp-capital').textContent = fmtE(capital);
+    document.getElementById('ipp-capital-row').style.display = '';
+  }
+
+  const res = document.getElementById('ipp-results');
+  res.style.display = 'block';
+  res.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 </script>
 </body>

@@ -282,6 +282,193 @@
     initUpdateBadges();
   });
 
+  /* ── 9. Glossaire interactif ────────────────────────────── */
+  var GLOSSAIRE = {
+    'IPP': 'Incapacité Permanente Partielle — séquelles évaluées par la CPAM après consolidation. Taux ≥ 10% = rente viagère.',
+    'IJ': 'Indemnités Journalières — versées par la CPAM en cas d\'arrêt AT. Taux : 60% du salaire journalier de base (80% à partir du 29e jour).',
+    'DUER': 'Document Unique d\'Évaluation des Risques — obligatoire dans toute entreprise. Doit être mis à jour chaque année et à chaque changement.',
+    'TMS': 'Troubles Musculo-Squelettiques — 1ère cause de maladie professionnelle reconnue en France.',
+    'CPAM': 'Caisse Primaire d\'Assurance Maladie — instruit les dossiers AT/MP, verse les IJ et rentes.',
+    'CARSAT': 'Caisse d\'Assurance Retraite et de la Santé Au Travail — prévention, tarification AT/MP, retraite.',
+    'RQTH': 'Reconnaissance de la Qualité de Travailleur Handicapé — ouvre droit aux aides Agefiph et aménagements de poste.',
+    'PASS': 'Plafond Annuel de la Sécurité Sociale — référence de calcul (46 368 € en 2026).',
+    'CMI': 'Certificat Médical Initial — document clé lors d\'un AT. Doit décrire toutes les lésions avec précision.',
+    'CSSCT': 'Commission Santé Sécurité et Conditions de Travail — émanation du CSE pour les entreprises ≥ 300 salariés.',
+    'CSE': 'Comité Social et Économique — instance représentative du personnel. Peut mener des enquêtes AT.',
+    'ATI': 'Allocation Temporaire d\'Invalidité — rente versée aux fonctionnaires titulaires victimes d\'AT de service avec séquelles.',
+    'CAS': 'Congé pour Accident de Service — équivalent du congé AT pour les fonctionnaires. Maintien du salaire à 100%.',
+    'CLM': 'Congé Longue Maladie — pour les fonctionnaires, 3 ans max avec maintien du traitement progressif.',
+    'AT': 'Accident du Travail — accident survenu par le fait ou à l\'occasion du travail. Présomption d\'imputabilité.',
+    'MP': 'Maladie Professionnelle — maladie causée par l\'exposition professionnelle, reconnue par tableau ou hors tableau.',
+  };
+
+  function initGlossaire() {
+    var path = window.location.pathname;
+    if (path.indexOf('/presentations/') !== -1 || path.indexOf('login') !== -1) return;
+
+    var style = document.createElement('style');
+    style.textContent = [
+      '.cgt-gloss{border-bottom:1px dashed #E2001A;cursor:help;position:relative}',
+      '.cgt-gloss-tip{position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);',
+      'z-index:8000;background:#1A1A1A;border:1px solid #333;border-radius:8px;',
+      'padding:.65rem .9rem;font-family:"Inter",sans-serif;font-size:.78rem;',
+      'color:#FAFAFA;width:240px;line-height:1.5;pointer-events:none;',
+      'box-shadow:0 6px 24px rgba(0,0,0,.6);',
+      'animation:fadeUp .15s ease both}',
+      '.cgt-gloss-tip::after{content:"";position:absolute;top:100%;left:50%;',
+      'transform:translateX(-50%);border:5px solid transparent;border-top-color:#333}'
+    ].join('');
+    document.head.appendChild(style);
+
+    var terms = Object.keys(GLOSSAIRE);
+    var walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {
+      acceptNode: function(n) {
+        var p = n.parentNode;
+        if (!p) return NodeFilter.FILTER_REJECT;
+        var tag = p.tagName || '';
+        if (['SCRIPT','STYLE','A','MARK','KBD'].indexOf(tag) !== -1) return NodeFilter.FILTER_REJECT;
+        if (p.classList && (p.classList.contains('cgt-gloss') || p.classList.contains('ticker-inner'))) return NodeFilter.FILTER_REJECT;
+        return NodeFilter.FILTER_ACCEPT;
+      }
+    }, false);
+
+    var nodes = [];
+    var n;
+    while ((n = walker.nextNode())) nodes.push(n);
+
+    nodes.forEach(function(node) {
+      var text = node.nodeValue;
+      var found = false;
+      terms.forEach(function(term) {
+        if (!found && new RegExp('\\b' + term + '\\b').test(text)) found = true;
+      });
+      if (!found) return;
+
+      var html = text;
+      var replaced = {};
+      terms.forEach(function(term) {
+        if (replaced[term]) return;
+        var re = new RegExp('\\b(' + term + ')\\b', 'g');
+        if (re.test(html)) {
+          replaced[term] = true;
+          html = html.replace(new RegExp('\\b(' + term + ')\\b', 'g'), function(m) {
+            return '<span class="cgt-gloss" data-term="' + term + '">' + m + '</span>';
+          });
+        }
+      });
+      if (html === text) return;
+      var span = document.createElement('span');
+      span.innerHTML = html;
+      node.parentNode.replaceChild(span, node);
+    });
+
+    document.body.addEventListener('mouseover', function(e) {
+      var t = e.target.closest('.cgt-gloss');
+      if (!t || document.querySelector('.cgt-gloss-tip')) return;
+      var tip = document.createElement('div');
+      tip.className = 'cgt-gloss-tip';
+      tip.textContent = GLOSSAIRE[t.dataset.term] || '';
+      t.appendChild(tip);
+    });
+    document.body.addEventListener('mouseout', function(e) {
+      var t = e.target.closest('.cgt-gloss');
+      if (!t) return;
+      var tip = t.querySelector('.cgt-gloss-tip');
+      if (tip) tip.remove();
+    });
+  }
+
+  /* ── 10. Question du jour (espace stagiaire) ────────────── */
+  function injectQuestionDuJour() {
+    if (window.location.pathname.indexOf('stagiaires') === -1) return;
+    var QUESTIONS = [
+      {q:'Quel délai pour déclarer un AT à l\'employeur ?',r:['24 heures','48 heures','5 jours','8 jours'],a:0,exp:'Le salarié doit informer l\'employeur dans les 24h (sauf cas de force majeure).'},
+      {q:'Combien de morts par AT en France en 2025 ?',r:['700','1 331','2 000','500'],a:1,exp:'1 331 décès par accident du travail selon les données Assurance Maladie / CGT 2026.'},
+      {q:'Le taux d\'IPP minimum pour bénéficier d\'une rente est de :',r:['5%','10%','15%','20%'],a:1,exp:'Une rente AT est attribuée si l\'IPP est évaluée à 10% ou plus.'},
+      {q:'Le droit de retrait s\'exerce en cas de :',r:['Fatigue excessive','Désaccord avec le chef','Danger grave et imminent','Maladie'],a:2,exp:'Le droit de retrait est réservé aux situations de danger grave et imminent pour la vie ou la santé.'},
+      {q:'L\'obligation de sécurité de l\'employeur est :',r:['De moyens','De résultat','Morale','Déclarative'],a:1,exp:'L\'employeur est tenu à une obligation de résultat en matière de sécurité (jurisprudence constante).'},
+      {q:'Les IJ AT représentent quel % du salaire journalier de base ?',r:['60% puis 80%','50% puis 75%','100% dès le 1er jour','80% dès le 1er jour'],a:0,exp:'60% du salaire journalier de base pour les 28 premiers jours, puis 80% à partir du 29e jour.'},
+      {q:'Le DUER doit être mis à jour au minimum :',r:['Tous les 3 ans','Chaque année','Tous les 5 ans','À chaque AT seulement'],a:1,exp:'Le Document Unique d\'Évaluation des Risques doit être mis à jour chaque année et à chaque changement.'},
+      {q:'RQTH signifie :',r:['Registre Qualifié Travail Handicap','Reconnaissance de la Qualité de Travailleur Handicapé','Règlement Qualité Travail Hygiène','Réseau Qualité Travail Humain'],a:1,exp:'La RQTH est délivrée par la MDPH et ouvre droit aux aides Agefiph et aménagements de poste.'},
+      {q:'Le taux d\'emploi obligatoire de travailleurs handicapés est de :',r:['4%','6%','8%','10%'],a:1,exp:'Toute entreprise de 20 salariés et plus doit employer au moins 6% de travailleurs handicapés.'},
+      {q:'Les IJ journalières AT représentent combien en 2025 ?',r:['2,1 Md€','3,8 Md€','5,4 Md€','7,2 Md€'],a:2,exp:'5,4 milliards d\'euros d\'indemnités journalières AT versés en 2025, en hausse de +10,5%.'},
+    ];
+
+    var today = new Date().getDay(); // 0-6
+    var idx = (new Date().getDate() + new Date().getMonth() * 31) % QUESTIONS.length;
+    var q = QUESTIONS[idx];
+
+    var style = document.createElement('style');
+    style.textContent = [
+      '.qdj{background:#1A1A1A;border:1px solid #2C2C2C;border-radius:12px;',
+      'padding:1.5rem;margin:1.5rem 0;font-family:"Inter",sans-serif}',
+      '.qdj-label{font-size:.72rem;font-weight:700;letter-spacing:.8px;text-transform:uppercase;',
+      'color:#FFD200;margin-bottom:.75rem}',
+      '.qdj-q{font-size:1rem;font-weight:600;color:#FAFAFA;margin-bottom:1rem;line-height:1.4}',
+      '.qdj-choices{display:grid;grid-template-columns:1fr 1fr;gap:.5rem}',
+      '@media(max-width:480px){.qdj-choices{grid-template-columns:1fr}}',
+      '.qdj-btn{background:#111;border:1px solid #333;border-radius:6px;',
+      'padding:.6rem .9rem;color:#FAFAFA;font-size:.85rem;cursor:pointer;',
+      'text-align:left;transition:border-color .15s,background .15s}',
+      '.qdj-btn:hover{border-color:#E2001A;background:#1F1F1F}',
+      '.qdj-btn.correct{border-color:#2D7A2D;background:#0D1F0D;color:#7FD47F}',
+      '.qdj-btn.wrong{border-color:#7A2020;background:#1F0D0D;color:#D47F7F}',
+      '.qdj-exp{margin-top:.75rem;font-size:.82rem;color:#999;line-height:1.5;display:none}',
+      '.qdj-exp.show{display:block}'
+    ].join('');
+    document.head.appendChild(style);
+
+    var el = document.createElement('div');
+    el.className = 'qdj';
+    el.innerHTML = '<div class="qdj-label">⚡ Question du jour</div>' +
+      '<div class="qdj-q">' + q.q + '</div>' +
+      '<div class="qdj-choices">' +
+      q.r.map(function(r, i) {
+        return '<button class="qdj-btn" data-i="' + i + '">' + r + '</button>';
+      }).join('') +
+      '</div>' +
+      '<div class="qdj-exp" id="qdj-exp"></div>';
+
+    el.addEventListener('click', function(e) {
+      var btn = e.target.closest('.qdj-btn');
+      if (!btn || btn.disabled) return;
+      var i = parseInt(btn.dataset.i);
+      el.querySelectorAll('.qdj-btn').forEach(function(b, bi) {
+        b.disabled = true;
+        if (bi === q.a) b.classList.add('correct');
+        else if (bi === i) b.classList.add('wrong');
+      });
+      var exp = el.querySelector('#qdj-exp');
+      exp.textContent = (i === q.a ? '✓ Correct ! ' : '✗ Incorrect. ') + q.exp;
+      exp.classList.add('show');
+    });
+
+    // Insérer avant le footer ou à la fin du main
+    var main = document.querySelector('main') || document.querySelector('.modules-grid') || document.querySelector('.content');
+    var target = main ? main.parentNode : document.body;
+    var ref = main ? main.nextSibling : document.querySelector('.cgt-footer');
+    if (main) {
+      main.appendChild(el);
+    } else {
+      target.insertBefore(el, ref);
+    }
+  }
+
+  /* ── Init ──────────────────────────────────────────────── */
+  injectLoader();
+
+  document.addEventListener('DOMContentLoaded', function () {
+    injectIcons();
+    injectTicker();
+    injectFooter();
+    initReveal();
+    initKeyboard();
+    injectBreadcrumb();
+    initUpdateBadges();
+    initGlossaire();
+    injectQuestionDuJour();
+  });
+
   if ('serviceWorker' in navigator) {
     var _d = (window.location.pathname.match(/\//g) || []).length - 1;
     var _sw = _d > 0 ? Array(_d).fill('..').join('/') + '/sw.js' : '/sw.js';

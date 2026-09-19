@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Comparatif droits AT/MP — Statuts — CGT Occitanie</title>
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/style.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --rouge: #E2001A; --rouge-dark: #C40017; --jaune: #FFD200;
+      --fond: #F5F4F0; --fond-card: #FFFFFF; --texte: #1A1A1A;
+      --texte-muted: #6B6B6B; --border: #E0DED8; --border-card: #E8E6E0;
+      --vert: #1B7F2B; --vert-bg: #EAF4EB;
+      --rouge-icone: #C40017; --rouge-bg: #FDECEC;
+      --jaune-bg: #FFF8DC;
+    }
+    :root[data-theme="dark"] {
+      --fond: #0F0F0F; --fond-card: #1A1A1A; --texte: #E8E6E0;
+      --texte-muted: #999; --border: #2C2C2C; --border-card: #2A2A2A;
+      --vert-bg: #0A1F0D; --rouge-bg: #1F0A0A; --jaune-bg: #1A1600;
+    }
+    body { background: var(--fond); color: var(--texte); font-family: 'Archivo', sans-serif; min-height: 100vh; }
+
+    /* AUTH WALL */
+    #auth-wall { position: fixed; inset: 0; background: var(--rouge); display: flex; align-items: center; justify-content: center; z-index: 9999; }
+    #auth-box { background: #fff; border-radius: 12px; padding: 2.5rem; max-width: 420px; width: 90%; text-align: center; }
+    #auth-box .logo { font-family: 'Anton', sans-serif; font-size: 2rem; color: var(--rouge); margin-bottom: .25rem; }
+    #auth-box p { color: #6B6B6B; font-size: .9rem; margin-bottom: 1.5rem; }
+    #auth-box input { width: 100%; border: 2px solid #E0DED8; border-radius: 8px; padding: .75rem 1rem; font-size: 1rem; margin-bottom: .75rem; outline: none; }
+    #auth-box input:focus { border-color: var(--rouge); }
+    #auth-box button { width: 100%; background: var(--rouge); color: #fff; border: none; border-radius: 8px; padding: .85rem; font-size: 1rem; font-weight: 600; cursor: pointer; }
+    #auth-error { color: var(--rouge); font-size: .85rem; margin-top: .5rem; min-height: 1.2em; }
+
+    /* NAV */
+    nav { background: var(--rouge); padding: .75rem 2rem; display: flex; align-items: center; gap: 1rem; }
+    .nav-logo { font-family: 'Anton', sans-serif; font-size: 1.2rem; color: var(--jaune); letter-spacing: .06em; text-decoration: none; }
+    .nav-back { margin-left: auto; color: rgba(255,255,255,.8); font-size: .82rem; text-decoration: none; }
+    .nav-back:hover { color: #fff; }
+
+    /* HERO */
+    .hero {
+      background: linear-gradient(135deg, #1A0005 0%, #2A0008 60%, #4A000D 100%);
+      padding: 2.5rem 2rem 2rem; border-bottom: 4px solid var(--jaune);
+    }
+    .hero-kicker { font-size: .65rem; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: var(--jaune); margin-bottom: .5rem; }
+    .hero h1 { font-family: 'Anton', sans-serif; font-size: clamp(1.4rem, 4vw, 2.2rem); color: #fff; letter-spacing: .02em; line-height: 1.1; margin-bottom: .6rem; }
+    .hero-sub { font-size: .88rem; color: rgba(255,255,255,.75); line-height: 1.6; max-width: 600px; margin-bottom: 1.25rem; }
+    .btn-print {
+      display: inline-flex; align-items: center; gap: .45rem;
+      background: transparent; border: 1px solid rgba(255,255,255,.4);
+      color: rgba(255,255,255,.85); padding: .5rem 1rem; font-size: .8rem;
+      font-family: 'Archivo', sans-serif; cursor: pointer; letter-spacing: .04em;
+    }
+    .btn-print:hover { background: rgba(255,255,255,.1); }
+
+    /* MAIN */
+    main { padding: 2rem 1.5rem 4rem; max-width: 1100px; margin: 0 auto; }
+
+    /* TABLE WRAPPER */
+    .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; background: var(--fond-card); border: 1px solid var(--border-card); }
+
+    table { width: 100%; border-collapse: collapse; min-width: 700px; font-size: .82rem; }
+
+    thead tr { background: var(--rouge); }
+    thead th { color: #fff; padding: .75rem 1rem; text-align: left; font-family: 'Anton', sans-serif; font-size: .82rem; letter-spacing: .05em; white-space: nowrap; }
+    thead th:first-child { background: var(--rouge-dark); min-width: 180px; }
+
+    tbody tr:nth-child(even) td { background: #F8F7F4; }
+    :root[data-theme="dark"] tbody tr:nth-child(even) td { background: #141414; }
+
+    tbody td { padding: .7rem 1rem; border-bottom: 1px solid var(--border); vertical-align: top; line-height: 1.5; }
+    tbody td:first-child {
+      font-weight: 700; font-size: .78rem; text-transform: uppercase; letter-spacing: .05em;
+      color: var(--texte-muted); background: #F0EEE8; white-space: nowrap;
+    }
+    :root[data-theme="dark"] tbody td:first-child { background: #111; }
+
+    /* ICÔNES */
+    .ico { font-size: 1rem; font-weight: 700; }
+    .ico-oui  { color: var(--vert); }
+    .ico-non  { color: var(--rouge-icone); }
+    .ico-part { color: #B07B00; }
+
+    .note-cell { font-size: .75rem; color: var(--texte-muted); display: block; margin-top: .2rem; }
+
+    /* NOTE DE BAS */
+    .table-note {
+      font-size: .75rem; color: var(--texte-muted); padding: .75rem 1rem;
+      border-top: 1px solid var(--border); background: var(--fond-card);
+      border: 1px solid var(--border-card); border-top: none;
+    }
+
+    /* LÉGENDE */
+    .legend { display: flex; gap: 1.25rem; flex-wrap: wrap; margin-bottom: 1.25rem; font-size: .78rem; }
+    .legend-item { display: flex; align-items: center; gap: .4rem; }
+
+    /* PRINT */
+    @media print {
+      #auth-wall, nav, .btn-print { display: none !important; }
+      body { background: #fff; color: #000; }
+      .hero { background: #1A1A1A !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .table-wrap { overflow: visible; }
+      table { font-size: .72rem; min-width: unset; }
+      thead tr { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    }
+
+    @media (max-width: 600px) {
+      main { padding: 1.25rem .75rem 3rem; }
+    }
+  </style>
+</head>
+<body>
+<script src="/assets/cgt-ui.js"></script>
+<script>if(localStorage.getItem('cgt_auth')!=='ok'&&localStorage.getItem('cgt_stagiaire_auth')!=='ok'){location.replace('/login.html?from='+encodeURIComponent(location.pathname));}</script>
+
+<div id="page-content">
+
+<nav>
+  <a class="nav-logo" href="/">CGT</a>
+  <a class="nav-back" href="/stagiaires.html">← Espace stagiaire</a>
+</nav>
+
+<div class="hero">
+  <div class="hero-kicker">Formation AT/MP · CGT Occitanie</div>
+  <h1>Droits AT/MP selon le statut</h1>
+  <p class="hero-sub">Comparatif des droits en matière d'accidents du travail et maladies professionnelles pour les salariés du privé et de la fonction publique.</p>
+  <button class="btn-print no-print" onclick="window.print()">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+    Imprimer
+  </button>
+</div>
+
+<main>
+
+  <div class="legend no-print">
+    <span class="legend-item"><span class="ico ico-oui">✓</span> Applicable / Oui</span>
+    <span class="legend-item"><span class="ico ico-non">✗</span> Non applicable</span>
+    <span class="legend-item"><span class="ico ico-part">≈</span> Partiel / Conditions</span>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Thème</th>
+          <th>CDI</th>
+          <th>CDD</th>
+          <th>Intérim</th>
+          <th>Fonctionnaire</th>
+          <th>Contractuel FP</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        <tr>
+          <td>Déclaration AT</td>
+          <td><span class="ico ico-oui">✓</span><span class="note-cell">Employeur, 48 h, formulaire S6200</span></td>
+          <td><span class="ico ico-oui">✓</span><span class="note-cell">Idem CDI — obligatoire même pour contrat court</span></td>
+          <td><span class="ico ico-oui">✓</span><span class="note-cell">Entreprise utilisatrice déclare ; ETT transmet à sa CPAM</span></td>
+          <td><span class="ico ico-oui">✓</span><span class="note-cell">Employeur public — procédure similaire (déclaration à l'administration)</span></td>
+          <td><span class="ico ico-oui">✓</span><span class="note-cell">Même règles que le fonctionnaire pour l'employeur public</span></td>
+        </tr>
+
+        <tr>
+          <td>Jours de carence IJ</td>
+          <td><span class="ico ico-oui">✓</span><span class="note-cell"><strong>0 jour de carence</strong> en AT/MP</span></td>
+          <td><span class="ico ico-oui">✓</span><span class="note-cell">0 jour de carence</span></td>
+          <td><span class="ico ico-oui">✓</span><span class="note-cell">0 jour de carence</span></td>
+          <td><span class="ico ico-oui">✓</span><span class="note-cell">0 jour de carence en accident de service</span></td>
+          <td><span class="ico ico-oui">✓</span><span class="note-cell">0 jour de carence en AT reconnu</span></td>
+        </tr>
+
+        <tr>
+          <td>Taux IJ</td>
+          <td><span class="note-cell">60 % du salaire net (j1–j28)<br>80 % à partir du j29</span></td>
+          <td><span class="note-cell">Idem CDI</span></td>
+          <td><span class="note-cell">Idem CDI (base : salaire ETT)</span></td>
+          <td><span class="note-cell"><strong>100 % du traitement</strong> pendant toute la durée (congé accident de service)</span></td>
+          <td><span class="note-cell">Régime général CPAM — même taux que CDI</span></td>
+        </tr>
+
+        <tr>
+          <td>Maintien de salaire légal</td>
+          <td><span class="ico ico-part">≈</span><span class="note-cell">Selon convention collective + art. L1226-1 — subrogation possible</span></td>
+          <td><span class="ico ico-part">≈</span><span class="note-cell">Selon convention collective applicable</span></td>
+          <td><span class="ico ico-non">✗</span><span class="note-cell">Pas de maintien légal ; dépend de l'accord de branche ETT</span></td>
+          <td><span class="ico ico-oui">✓</span><span class="note-cell">Maintien intégral du traitement pendant le congé accident de service</span></td>
+          <td><span class="ico ico-part">≈</span><span class="note-cell">Complément employeur possible selon le statut du contrat (décret)</span></td>
+        </tr>
+
+        <tr>
+          <td>Reconnaissance maladie professionnelle</td>
+          <td><span class="ico ico-oui">✓</span><span class="note-cell">Tableau MP CPAM ou système complémentaire (CRRMP)</span></td>
+          <td><span class="ico ico-oui">✓</span><span class="note-cell">Idem CDI</span></td>
+          <td><span class="ico ico-part">≈</span><span class="note-cell">Possible mais complexe — expositions multiples à documenter</span></td>
+          <td><span class="ico ico-part">≈</span><span class="note-cell">Régime FIPHFP — liste propre, procédure administrative spécifique</span></td>
+          <td><span class="ico ico-oui">✓</span><span class="note-cell">Régime général CPAM — mêmes règles que CDI</span></td>
+        </tr>
+
+        <tr>
+          <td>Rente IPP</td>
+          <td><span class="ico ico-oui">✓</span><span class="note-cell">≥ 10 % → rente viagère<br>&lt; 10 % → capital unique</span></td>
+          <td><span class="ico ico-oui">✓</span><span class="note-cell">Idem CDI</span></td>
+          <td><span class="ico ico-oui">✓</span><span class="note-cell">Idem CDI</span></td>
+          <td><span class="ico ico-oui">✓</span><span class="note-cell">Allocation d'invalidité temporaire ou pension d'invalidité selon taux</span></td>
+          <td><span class="ico ico-oui">✓</span><span class="note-cell">Régime général — même système que CDI</span></td>
+        </tr>
+
+        <tr>
+          <td>Faute inexcusable</td>
+          <td><span class="ico ico-oui">✓</span><span class="note-cell">Oui — délai 2 ans ; majoration rente + indemnisation tous préjudices</span></td>
+          <td><span class="ico ico-oui">✓</span><span class="note-cell">Oui — même règles</span></td>
+          <td><span class="ico ico-part">≈</span><span class="note-cell">Possible contre l'ETT et/ou l'entreprise utilisatrice</span></td>
+          <td><span class="ico ico-part">≈</span><span class="note-cell">Faute personnelle de l'agent fautif (responsabilité administrative distincte)</span></td>
+          <td><span class="ico ico-oui">✓</span><span class="note-cell">Oui — régime général applicable</span></td>
+        </tr>
+
+        <tr>
+          <td>Droit de retrait</td>
+          <td><span class="ico ico-oui">✓</span><span class="note-cell">Art. L4131-1 CT — danger grave et imminent — sans perte de salaire</span></td>
+          <td><span class="ico ico-oui">✓</span><span class="note-cell">Idem CDI</span></td>
+          <td><span class="ico ico-oui">✓</span><span class="note-cell">Oui — exercé auprès de l'entreprise utilisatrice</span></td>
+          <td><span class="ico ico-oui">✓</span><span class="note-cell">Art. L4132-1 — droit similaire reconnu dans la FP depuis 1983</span></td>
+          <td><span class="ico ico-oui">✓</span><span class="note-cell">Oui — même texte que le fonctionnaire</span></td>
+        </tr>
+
+        <tr>
+          <td>Visite de reprise</td>
+          <td><span class="ico ico-oui">✓</span><span class="note-cell">Obligatoire après 30 j d'arrêt AT — médecin du travail</span></td>
+          <td><span class="ico ico-oui">✓</span><span class="note-cell">Idem CDI si contrat en cours</span></td>
+          <td><span class="ico ico-part">≈</span><span class="note-cell">Si contrat encore en cours ; sinon visite possible avant nouvelle mission</span></td>
+          <td><span class="ico ico-oui">✓</span><span class="note-cell">Visite de reprise obligatoire auprès du médecin de prévention</span></td>
+          <td><span class="ico ico-oui">✓</span><span class="note-cell">Idem fonctionnaire</span></td>
+        </tr>
+
+        <tr>
+          <td>Protection contre le licenciement</td>
+          <td><span class="ico ico-oui">✓</span><span class="note-cell">Suspension du contrat pendant l'arrêt — licenciement interdit sauf faute grave ou impossibilité de maintien</span></td>
+          <td><span class="ico ico-part">≈</span><span class="note-cell">Contrat suspendu mais non prolongé au-delà du terme initial</span></td>
+          <td><span class="ico ico-non">✗</span><span class="note-cell">Mission peut ne pas être renouvelée — pas de protection équivalente</span></td>
+          <td><span class="ico ico-oui">✓</span><span class="note-cell">Fonctionnaire titulaire : inamovible pendant congé accident de service</span></td>
+          <td><span class="ico ico-part">≈</span><span class="note-cell">Protection limitée selon type de contrat ; renouvellement non garanti</span></td>
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+
+  <div class="table-note">
+    Sources : Code du travail, CGFP, CPAM 2026 — Ce tableau est indicatif et ne se substitue pas à un conseil juridique personnalisé.
+    Pour toute situation individuelle, contactez votre section CGT.
+  </div>
+
+</main>
+
+</div><!-- /#page-content -->
+</body>
+</html>

@@ -45,6 +45,11 @@
     .back-link a:hover { border-color: var(--rouge); color: var(--texte); }
 
     @media (max-width: 480px) { .hero { padding: 2rem 1rem 1.5rem; } .grid { padding: 0 1rem; } }
+    .card-score { font-size: .75rem; margin-top: -.25rem; }
+    .card-score.score-green { color: #4ade80; }
+    .card-score.score-yellow { color: #fbbf24; }
+    .card-score.score-red { color: #f87171; }
+    .card-score.score-none { color: var(--texte-muted); }
   </style>
 </head>
 <body>
@@ -146,6 +151,50 @@
   </a>
 
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var modules = [
+    { key: 'cgt_quiz_atmp',       href: '/quiz/quiz-atmp.html' },
+    { key: 'cgt_quiz_sst',        href: '/quiz/quiz-sst.html' },
+    { key: 'cgt_quiz_prevoyance', href: '/quiz/quiz-prevoyance.html' },
+    { key: 'cgt_quiz_handicap',   href: '/quiz/quiz-handicap.html' },
+    { key: 'cgt_quiz_fp',         href: '/quiz/quiz-fp.html' }
+  ];
+  modules.forEach(function(m) {
+    var card = document.querySelector('a.quiz-card[href="' + m.href + '"]');
+    if (!card) return;
+    var title = card.querySelector('.card-title');
+    if (!title) return;
+    var el = document.createElement('div');
+    el.className = 'card-score';
+    try {
+      var raw = localStorage.getItem(m.key);
+      if (raw) {
+        var d = JSON.parse(raw);
+        var dateF = d.date ? d.date.split('-').reverse().join('/') : '';
+        if (d.score >= 8) {
+          el.classList.add('score-green');
+          el.textContent = '⭐ Dernier score : ' + d.score + '/10 · ' + dateF;
+        } else if (d.score >= 6) {
+          el.classList.add('score-yellow');
+          el.textContent = 'Dernier score : ' + d.score + '/10 · ' + dateF;
+        } else {
+          el.classList.add('score-red');
+          el.textContent = 'Dernier score : ' + d.score + '/10 · ' + dateF;
+        }
+      } else {
+        el.classList.add('score-none');
+        el.textContent = 'Pas encore tenté';
+      }
+    } catch(e) {
+      el.classList.add('score-none');
+      el.textContent = 'Pas encore tenté';
+    }
+    title.insertAdjacentElement('afterend', el);
+  });
+});
+</script>
 
 <div class="back-link">
   <a href="/stagiaires.html">← Retour à l'espace stagiaire</a>
