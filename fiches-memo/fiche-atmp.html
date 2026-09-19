@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fiche mémo — AT/MP : Droits et Réparation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --rouge: #E2001A;
+      --jaune: #FFD200;
+      --noir: #1A1A1A;
+      --gris: #555;
+      --gris-clair: #f0f0f0;
+      --border: #ddd;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', sans-serif;
+      font-size: 10.5pt;
+      color: var(--noir);
+      background: #fff;
+      line-height: 1.5;
+    }
+
+    /* === BOUTON IMPRESSION === */
+    .print-btn {
+      position: fixed;
+      top: 16px; right: 16px;
+      background: var(--rouge);
+      color: #fff;
+      border: none;
+      padding: .6rem 1.2rem;
+      font-family: 'Inter', sans-serif;
+      font-size: .85rem;
+      font-weight: 600;
+      cursor: pointer;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,.2);
+      z-index: 999;
+    }
+    .print-btn:hover { background: #C40017; }
+
+    /* === PAGE WRAPPER === */
+    .page {
+      width: 210mm;
+      min-height: 297mm;
+      margin: 0 auto;
+      padding: 15mm;
+      background: #fff;
+    }
+
+    /* === EN-TÊTE === */
+    header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 10px;
+      padding-bottom: 10px;
+      border-bottom: 4px solid var(--rouge);
+    }
+    .logo-cgt {
+      width: 52px; height: 52px;
+      background: var(--rouge);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .logo-cgt span {
+      font-family: 'Anton', sans-serif;
+      font-size: 1.1rem;
+      color: var(--jaune);
+      letter-spacing: .05em;
+    }
+    .header-text { flex: 1; }
+    .header-text h1 {
+      font-family: 'Anton', sans-serif;
+      font-size: 1.35rem;
+      letter-spacing: .04em;
+      color: var(--rouge);
+      line-height: 1.1;
+    }
+    .header-text .subtitle {
+      font-size: .72rem;
+      color: var(--gris);
+      font-weight: 500;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      margin-top: 2px;
+    }
+    .header-badge {
+      background: var(--jaune);
+      color: var(--noir);
+      font-family: 'Anton', sans-serif;
+      font-size: .7rem;
+      letter-spacing: .08em;
+      padding: .3rem .6rem;
+      text-align: center;
+      line-height: 1.3;
+    }
+
+    /* === CHIFFRES CLÉS === */
+    .chiffres-section {
+      background: var(--rouge);
+      color: #fff;
+      padding: 8px 12px;
+      margin-bottom: 10px;
+    }
+    .chiffres-section h2 {
+      font-family: 'Anton', sans-serif;
+      font-size: .85rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--jaune);
+      margin-bottom: 6px;
+    }
+    .chiffres-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+    }
+    .chiffre-item { text-align: center; }
+    .chiffre-item .val {
+      font-family: 'Anton', sans-serif;
+      font-size: 1.15rem;
+      color: var(--jaune);
+      display: block;
+      line-height: 1.1;
+    }
+    .chiffre-item .label {
+      font-size: .65rem;
+      opacity: .9;
+      line-height: 1.3;
+    }
+
+    /* === COLONNES BASSES === */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    /* === SECTIONS === */
+    .section {
+      border: 1.5px solid var(--border);
+      padding: 8px 10px;
+    }
+    .section h2 {
+      font-family: 'Anton', sans-serif;
+      font-size: .8rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--rouge);
+      border-bottom: 2px solid var(--jaune);
+      padding-bottom: 4px;
+      margin-bottom: 7px;
+    }
+    .section ul { list-style: none; }
+    .section ul li {
+      padding: 2px 0 2px 14px;
+      position: relative;
+      font-size: .82rem;
+      line-height: 1.4;
+    }
+    .section ul li::before {
+      content: '▸';
+      color: var(--rouge);
+      position: absolute;
+      left: 0;
+      font-size: .7rem;
+      top: 3px;
+    }
+
+    /* === DÉMARCHES (numérotées) === */
+    .steps { list-style: none; }
+    .steps li {
+      display: flex;
+      gap: 8px;
+      padding: 3px 0;
+      font-size: .82rem;
+      line-height: 1.4;
+    }
+    .steps li .num {
+      background: var(--rouge);
+      color: #fff;
+      font-family: 'Anton', sans-serif;
+      font-size: .7rem;
+      min-width: 18px;
+      height: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    /* === CONTACTS === */
+    .contacts { list-style: none; }
+    .contacts li {
+      padding: 2px 0;
+      font-size: .8rem;
+      line-height: 1.4;
+      border-bottom: 1px dashed var(--border);
+    }
+    .contacts li:last-child { border-bottom: none; }
+    .contacts .org {
+      font-weight: 700;
+      color: var(--noir);
+      display: block;
+    }
+    .contacts .detail { color: var(--gris); font-size: .73rem; }
+
+    /* === PIED DE PAGE === */
+    footer {
+      border-top: 3px solid var(--jaune);
+      padding-top: 6px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: .68rem;
+      color: var(--gris);
+      margin-top: auto;
+    }
+    footer strong { color: var(--rouge); }
+
+    /* === IMPRESSION === */
+    @media print {
+      @page { size: A4; margin: 15mm; }
+      body { font-size: 10pt; }
+      .print-btn { display: none !important; }
+      .page { width: 100%; padding: 0; margin: 0; }
+    }
+
+    @media screen {
+      body { background: #e8e8e8; }
+      .page { box-shadow: 0 4px 24px rgba(0,0,0,.15); margin: 24px auto; }
+    }
+  </style>
+</head>
+<body>
+
+<button class="print-btn" onclick="window.print()">
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+  Imprimer / Télécharger PDF
+</button>
+
+<div class="page">
+
+  <header>
+    <div class="logo-cgt"><span>CGT</span></div>
+    <div class="header-text">
+      <h1>AT/MP — Droits et Réparation</h1>
+      <div class="subtitle">Fiche mémo · CGT Occitanie · Formation syndicale</div>
+    </div>
+    <div class="header-badge">FICHE<br>MÉMO<br>2025</div>
+  </header>
+
+  <!-- Chiffres clés -->
+  <div class="chiffres-section">
+    <h2>Chiffres clés 2025 — Sinistralité France</h2>
+    <div class="chiffres-grid">
+      <div class="chiffre-item">
+        <span class="val">1 331</span>
+        <div class="label">morts par accident du travail</div>
+      </div>
+      <div class="chiffre-item">
+        <span class="val">551 225</span>
+        <div class="label">AT avec arrêt de travail</div>
+      </div>
+      <div class="chiffre-item">
+        <span class="val">693 718</span>
+        <div class="label">sinistres AT au total</div>
+      </div>
+      <div class="chiffre-item">
+        <span class="val">84 M</span>
+        <div class="label">journées de travail perdues</div>
+      </div>
+      <div class="chiffre-item">
+        <span class="val">5,4 Md€</span>
+        <div class="label">IJ versées (+10,5 %)</div>
+      </div>
+      <div class="chiffre-item">
+        <span class="val">1 971</span>
+        <div class="label">maladies psychiques reconnues (×2 en 5 ans)</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Deux colonnes -->
+  <div class="two-col">
+
+    <!-- Vos droits -->
+    <div class="section">
+      <h2>Vos droits en bref</h2>
+      <ul>
+        <li>Tout accident survenu au temps et lieu de travail est présumé AT — pas besoin de prouver la faute de l'employeur.</li>
+        <li>IJ AT = 60 % du salaire journalier de base les 28 premiers jours, puis 80 % (plafond SS en vigueur).</li>
+        <li>En cas de faute inexcusable de l'employeur : majoration de rente + indemnisation complémentaire.</li>
+        <li>Maladie professionnelle : inscription à un tableau suffit ; hors tableau, CRRMP saisi si exposition professionnelle prouvée à ≥ 25 %.</li>
+        <li>À la consolidation : rente d'IPP si taux ≥ 10 % (capital si &lt; 10 %) ou indemnisation en capital unique.</li>
+      </ul>
+    </div>
+
+    <!-- Démarches -->
+    <div class="section">
+      <h2>Démarches clés</h2>
+      <ol class="steps">
+        <li><span class="num">1</span><span>Déclarer l'AT à l'employeur <strong>dans les 24 h</strong> (l'employeur a 48 h pour notifier la CPAM).</span></li>
+        <li><span class="num">2</span><span>Consulter un médecin : certificat médical initial en 3 exemplaires (CPAM, employeur, salarié).</span></li>
+        <li><span class="num">3</span><span>La CPAM instruit le dossier sous <strong>30 jours</strong> (60 j si enquête). Contester en cas de refus : <em>commission de recours amiable</em> → TJ.</span></li>
+        <li><span class="num">4</span><span>À la consolidation : demander la fixation du taux d'IPP et, si faute inexcusable, saisir le TASS / pôle social du TJ.</span></li>
+      </ol>
+    </div>
+
+  </div>
+
+  <!-- Contacts -->
+  <div class="section" style="margin-bottom:10px;">
+    <h2>Contacts utiles</h2>
+    <ul class="contacts">
+      <li>
+        <span class="org">CARSAT Languedoc-Roussillon</span>
+        <span class="detail">29 cours Gambetta — 34068 Montpellier · 04 67 12 95 00 · carsat-lr.fr</span>
+      </li>
+      <li>
+        <span class="org">CARSAT Midi-Pyrénées</span>
+        <span class="detail">2 rue G. Vézian — 31065 Toulouse · 05 62 14 30 30 · carsat-mp.fr</span>
+      </li>
+      <li>
+        <span class="org">Inspection du Travail (DREETS Occitanie)</span>
+        <span class="detail">Signalement accident grave : dreets.occitanie@dreets.gouv.fr · 0800 013 404 (gratuit)</span>
+      </li>
+      <li>
+        <span class="org">CGT Occitanie — Section AT/MP</span>
+        <span class="detail">contact@cgt-occitanie.fr · cgt-occitanie-atmp.vercel.app</span>
+      </li>
+    </ul>
+  </div>
+
+  <footer>
+    <div><strong>CGT Occitanie</strong> — Formation AT/MP 2025</div>
+    <div>cgt-occitanie-atmp.vercel.app</div>
+    <div>Fiche mémo — usage interne stagiaires</div>
+  </footer>
+
+</div>
+
+<script>
+  // Auth check
+  if (localStorage.getItem('cgt_stagiaire_auth') !== 'ok' && localStorage.getItem('cgt_auth') !== 'ok') {
+    window.location.href = '/login.html';
+  }
+</script>
+
+</body>
+</html>
