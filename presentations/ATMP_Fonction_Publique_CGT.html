@@ -748,6 +748,14 @@ document.addEventListener('keydown', e=>{
   else if(e.key==='n'||e.key==='N'){
     document.getElementById('notes-panel').classList.toggle('visible');
   }
+  else if(e.key==='l'||e.key==='L'){
+    document.getElementById('spotlight').classList.toggle('on');
+  }
+});
+document.addEventListener('mousemove',e=>{
+  const sp=document.getElementById('spotlight');
+  sp.style.setProperty('--mx',e.clientX+'px');
+  sp.style.setProperty('--my',e.clientY+'px');
 });
 document.getElementById('btn-next').onclick=()=>go(cur+1);
 document.getElementById('btn-prev').onclick=()=>go(cur-1);
