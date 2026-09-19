@@ -283,7 +283,7 @@
     <button class="filter-btn" data-cat="formation">Formation</button>
   </div>
 
-  <div class="results-meta" id="results-meta">Entrez un terme pour rechercher dans les <strong>55 entrées</strong> de l'index.</div>
+  <div class="results-meta" id="results-meta">Entrez un terme pour rechercher dans les <strong>85 entrées</strong> de l'index.</div>
 
   <div class="results-list" id="results-list"></div>
 
@@ -718,6 +718,240 @@ const SEARCH_INDEX = [
     tags: ["fiches","mémo","synthèse","prévoyance","invalidité","AT/MP","téléchargement"]
   },
 
+  // ── PROCEDURE-AT.HTML ────────────────────────────────────────────────────
+  {
+    title: "Que faire en cas d'AT ? — Procédure 10 étapes",
+    page: "procedure-at.html",
+    section: "Procédure",
+    excerpt: "Chronologie complète J0 → consolidation : déclaration, soins, suivi CPAM. Guide pas à pas pour la victime et le délégué CGT.",
+    cat: "demarches",
+    tags: ["AT","procédure","étapes","victime","délégué","déclaration","j0"]
+  },
+  {
+    title: "Délais critiques en cas d'AT — 48h, 10j, 30j",
+    page: "procedure-at.html",
+    section: "Étapes clés",
+    excerpt: "48h : déclaration DAT. 10j : réserves employeur. 30 ou 70j : instruction CPAM. 2 mois : recours CRA. Respecter chaque délai est impératif.",
+    cat: "demarches",
+    tags: ["délai","48h","10 jours","30 jours","70 jours","CRA","instruction","DAT"]
+  },
+
+  // ── COMPARATIF-STATUTS.HTML ───────────────────────────────────────────────
+  {
+    title: "Comparatif droits AT/MP — CDI, CDD, intérim, FP",
+    page: "comparatif-statuts.html",
+    section: "Tableau comparatif",
+    excerpt: "Tableau des droits AT/MP selon le statut : CDI, CDD, intérim, fonction publique. Soins, IJ, IPP, protection contre le licenciement.",
+    cat: "droits",
+    tags: ["CDI","CDD","intérim","fonction publique","statut","comparatif","droits","tableau"]
+  },
+  {
+    title: "Droits AT/MP des salariés précaires — CDD et intérim",
+    page: "comparatif-statuts.html",
+    section: "CDD et intérim",
+    excerpt: "Mêmes droits AT/MP que les CDI : même IJ, même présomption, même protection. La sous-déclaration touche davantage les précaires.",
+    cat: "droits",
+    tags: ["CDD","intérim","précaire","droits","AT/MP","sous-déclaration","IJ"]
+  },
+
+  // ── QUIZ/INDEX.HTML ───────────────────────────────────────────────────────
+  {
+    title: "Quiz de formation — Page d'accueil",
+    page: "quiz/index.html",
+    section: "Accueil quiz",
+    excerpt: "5 quiz interactifs : AT/MP, SST, Prévoyance, Handicap, Fonction Publique. Correction immédiate, score mémorisé.",
+    cat: "formation",
+    tags: ["quiz","test","formation","score","interactif","AT/MP","SST","prévoyance"]
+  },
+  {
+    title: "Quiz — Testez vos connaissances sur tous les modules",
+    page: "quiz/index.html",
+    section: "Modules disponibles",
+    excerpt: "AT/MP, santé-sécurité, prévoyance collective, handicap et emploi, fonction publique. Questions à choix multiples avec explications.",
+    cat: "formation",
+    tags: ["quiz","modules","connaissances","QCM","correction","explication"]
+  },
+
+  // ── QUIZ/QUIZ-ATMP.HTML ───────────────────────────────────────────────────
+  {
+    title: "Quiz AT/MP — Accidents du travail et maladies pro",
+    page: "quiz/quiz-atmp.html",
+    section: "Quiz",
+    excerpt: "Quiz interactif sur les AT/MP : définitions, déclaration, IJ, IPP, faute inexcusable. Correction avec références juridiques.",
+    cat: "formation",
+    tags: ["quiz","AT/MP","accident du travail","maladie professionnelle","IJ","IPP","FIE"]
+  },
+  {
+    title: "Quiz AT/MP — Résultats et révisions",
+    page: "quiz/quiz-atmp.html",
+    section: "Correction",
+    excerpt: "Réponses expliquées après chaque question. Score final et conseils de révision. Références aux articles CSS.",
+    cat: "formation",
+    tags: ["quiz","correction","score","révision","CSS","AT/MP","explications"]
+  },
+
+  // ── QUIZ/QUIZ-SST.HTML ────────────────────────────────────────────────────
+  {
+    title: "Quiz SST — Santé-Sécurité au Travail",
+    page: "quiz/quiz-sst.html",
+    section: "Quiz",
+    excerpt: "Questions sur le DUER, le droit d'alerte, le CSE, les équipements de protection, la prévention des risques professionnels.",
+    cat: "formation",
+    tags: ["quiz","SST","DUER","CSE","droit d'alerte","prévention","risques"]
+  },
+  {
+    title: "Quiz SST — DUER, accidents graves, droits CSE",
+    page: "quiz/quiz-sst.html",
+    section: "Contenu",
+    excerpt: "Évalue les connaissances sur la prévention : plan de prévention, enquêtes AT, registre des accidents bénins, obligation sécurité.",
+    cat: "formation",
+    tags: ["DUER","prévention","accident grave","enquête","registre","sécurité","obligation"]
+  },
+
+  // ── QUIZ/QUIZ-PREVOYANCE.HTML ─────────────────────────────────────────────
+  {
+    title: "Quiz Prévoyance — Garanties collectives et invalidité",
+    page: "quiz/quiz-prevoyance.html",
+    section: "Quiz",
+    excerpt: "Questions sur la prévoyance collective : incapacité, invalidité, décès, complémentaire santé. Régimes obligatoires et facultatifs.",
+    cat: "formation",
+    tags: ["quiz","prévoyance","invalidité","incapacité","décès","complémentaire santé"]
+  },
+  {
+    title: "Quiz Prévoyance — Régimes invalidité et taux",
+    page: "quiz/quiz-prevoyance.html",
+    section: "Contenu",
+    excerpt: "Catégories d'invalidité (1/2/3), pension d'invalidité SS, garanties employeur, portabilité des droits. Calculs et montants.",
+    cat: "formation",
+    tags: ["invalidité","catégorie","pension","portabilité","prévoyance","SS","calcul"]
+  },
+
+  // ── QUIZ/QUIZ-HANDICAP.HTML ───────────────────────────────────────────────
+  {
+    title: "Quiz Handicap — RQTH et emploi des travailleurs handicapés",
+    page: "quiz/quiz-handicap.html",
+    section: "Quiz",
+    excerpt: "Questions sur la RQTH, l'AGEFIPH, l'obligation d'emploi des TH (6 %), l'AAH, les aménagements de poste.",
+    cat: "formation",
+    tags: ["quiz","handicap","RQTH","AGEFIPH","TH","6%","AAH","aménagement"]
+  },
+  {
+    title: "Quiz Handicap — Obligation d'emploi et droits",
+    page: "quiz/quiz-handicap.html",
+    section: "Contenu",
+    excerpt: "DOETH, contribution AGEFIPH, reconnaissance MDPH, maintien dans l'emploi, inaptitude et reclassement.",
+    cat: "formation",
+    tags: ["DOETH","AGEFIPH","MDPH","inaptitude","reclassement","maintien emploi","handicap"]
+  },
+
+  // ── QUIZ/QUIZ-FP.HTML ─────────────────────────────────────────────────────
+  {
+    title: "Quiz Fonction Publique — AT et accident de service",
+    page: "quiz/quiz-fp.html",
+    section: "Quiz",
+    excerpt: "Questions sur l'accident de service, la maladie professionnelle et les droits AT/MP spécifiques aux agents publics.",
+    cat: "formation",
+    tags: ["quiz","fonction publique","accident de service","CNRACL","F3SCT","agent public"]
+  },
+  {
+    title: "Quiz FP — Droits AT des agents FPE, FPT, FPH",
+    page: "quiz/quiz-fp.html",
+    section: "Contenu",
+    excerpt: "Traitement intégral, CITIS, CNRACL, F3SCT, différences entre versants FP. Spécificités des 3 versants.",
+    cat: "formation",
+    tags: ["FPE","FPT","FPH","CITIS","CNRACL","traitement","versant","quiz"]
+  },
+
+  // ── FICHES-MEMO/FICHE-ATMP.HTML ───────────────────────────────────────────
+  {
+    title: "Fiche mémo AT/MP — Droits et réparation",
+    page: "fiches-memo/fiche-atmp.html",
+    section: "Fiche mémo",
+    excerpt: "Synthèse imprimable : définitions AT/MP, déclaration, IJ, IPP, rente, faute inexcusable. Références juridiques CSS. Format A4.",
+    cat: "droits",
+    tags: ["fiche mémo","AT/MP","IJ","IPP","rente","FIE","CSS","imprimable","synthèse"]
+  },
+  {
+    title: "Fiche mémo AT/MP — Procédure et délais",
+    page: "fiches-memo/fiche-atmp.html",
+    section: "Procédure",
+    excerpt: "DAT 48h, instruction 30/70 jours, consolidation, contestation IPP dans les 2 mois. Mémo des délais clés.",
+    cat: "demarches",
+    tags: ["mémo","DAT","délai","instruction","consolidation","IPP","contestation","48h"]
+  },
+
+  // ── FICHES-MEMO/FICHE-SST.HTML ────────────────────────────────────────────
+  {
+    title: "Fiche mémo SST — Santé-Sécurité au Travail",
+    page: "fiches-memo/fiche-sst.html",
+    section: "Fiche mémo",
+    excerpt: "Synthèse des droits et obligations SST : DUER, prévention, rôle du CSE, droit d'alerte, plan de prévention. Format A4 imprimable.",
+    cat: "droits",
+    tags: ["fiche mémo","SST","DUER","CSE","droit d'alerte","prévention","imprimable"]
+  },
+  {
+    title: "Fiche mémo SST — Rôle du délégué et du CSE",
+    page: "fiches-memo/fiche-sst.html",
+    section: "Rôle syndical",
+    excerpt: "Enquête AT du CSE, visite des lieux, droit d'alerte grave danger imminent, registre dangers graves et imminents.",
+    cat: "droits",
+    tags: ["CSE","délégué","enquête","alerte","danger imminent","registre","SST"]
+  },
+
+  // ── FICHES-MEMO/FICHE-PREVOYANCE.HTML ─────────────────────────────────────
+  {
+    title: "Fiche mémo Prévoyance — Garanties collectives",
+    page: "fiches-memo/fiche-prevoyance.html",
+    section: "Fiche mémo",
+    excerpt: "Mémo prévoyance : incapacité, invalidité cat. 1/2/3, décès, portabilité, accord de branche. Format A4 imprimable.",
+    cat: "droits",
+    tags: ["fiche mémo","prévoyance","invalidité","incapacité","décès","portabilité","accord de branche"]
+  },
+  {
+    title: "Fiche mémo Prévoyance — Pension invalidité et calculs",
+    page: "fiches-memo/fiche-prevoyance.html",
+    section: "Calculs",
+    excerpt: "Pension SS : 30 % (cat.1), 50 % (cat.2), 50 % + majoration (cat.3). Garanties employeur cumulables.",
+    cat: "calculs",
+    tags: ["pension","invalidité","30%","50%","cat.1","cat.2","cat.3","prévoyance","calcul"]
+  },
+
+  // ── FICHES-MEMO/FICHE-HANDICAP.HTML ──────────────────────────────────────
+  {
+    title: "Fiche mémo Handicap — RQTH et emploi",
+    page: "fiches-memo/fiche-handicap.html",
+    section: "Fiche mémo",
+    excerpt: "Mémo sur la RQTH, l'obligation d'emploi des TH (6 %), l'AGEFIPH, l'AAH, les aménagements de poste. Format A4 imprimable.",
+    cat: "droits",
+    tags: ["fiche mémo","handicap","RQTH","AGEFIPH","TH","AAH","aménagement","6%","imprimable"]
+  },
+  {
+    title: "Fiche mémo Handicap — Maintien dans l'emploi",
+    page: "fiches-memo/fiche-handicap.html",
+    section: "Maintien emploi",
+    excerpt: "MDPH, Cap emploi, obligation de reclassement, inaptitude, fonds de maintien emploi. Droits du travailleur handicapé.",
+    cat: "droits",
+    tags: ["MDPH","Cap emploi","inaptitude","reclassement","maintien emploi","handicap","FIPHFP"]
+  },
+
+  // ── FICHES-MEMO/FICHE-ATMP-FP.HTML ───────────────────────────────────────
+  {
+    title: "Fiche mémo AT/MP Fonction Publique",
+    page: "fiches-memo/fiche-atmp-fp.html",
+    section: "Fiche mémo",
+    excerpt: "Mémo AT/MP pour les agents publics : accident de service, CITIS, CNRACL, F3SCT, droits FPE/FPT/FPH. Format A4 imprimable.",
+    cat: "droits",
+    tags: ["fiche mémo","fonction publique","accident de service","CITIS","CNRACL","F3SCT","FP","imprimable"]
+  },
+  {
+    title: "Fiche mémo FP — Procédure accident de service",
+    page: "fiches-memo/fiche-atmp-fp.html",
+    section: "Procédure",
+    excerpt: "Déclarer l'accident de service dans les 2 ans, commission de réforme, traitement intégral, rechute. Différences FPE/FPT/FPH.",
+    cat: "demarches",
+    tags: ["accident de service","déclaration","2 ans","commission de réforme","traitement","FP","procédure"]
+  },
+
   // ── GUIDE-ATMP-FP.HTML ────────────────────────────────────────────────────
   {
     title: "Guide AT/MP Fonction Publique — Présentation générale",
@@ -836,7 +1070,20 @@ const PAGE_LABELS = {
   'faq-atmp.html':      'FAQ AT/MP',
   'calculateur-ij.html':'Calculateur IJ',
   'fiches.html':        'Fiches pratiques',
-  'guide-atmp-fp.html': 'Guide FP'
+  'guide-atmp-fp.html':          'Guide FP',
+  'procedure-at.html':           'Procédure AT',
+  'comparatif-statuts.html':     'Comparatif statuts',
+  'quiz/index.html':             'Quiz — Accueil',
+  'quiz/quiz-atmp.html':         'Quiz AT/MP',
+  'quiz/quiz-sst.html':          'Quiz SST',
+  'quiz/quiz-prevoyance.html':   'Quiz Prévoyance',
+  'quiz/quiz-handicap.html':     'Quiz Handicap',
+  'quiz/quiz-fp.html':           'Quiz FP',
+  'fiches-memo/fiche-atmp.html': 'Fiche mémo AT/MP',
+  'fiches-memo/fiche-sst.html':  'Fiche mémo SST',
+  'fiches-memo/fiche-prevoyance.html': 'Fiche mémo Prévoyance',
+  'fiches-memo/fiche-handicap.html':   'Fiche mémo Handicap',
+  'fiches-memo/fiche-atmp-fp.html':    'Fiche mémo FP'
 };
 
 // ─── Rendu des résultats ──────────────────────────────────────────────────────
