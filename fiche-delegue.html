@@ -148,6 +148,15 @@
       .hero { padding: 2rem 1rem 1.5rem; }
       main { padding: 1.5rem 1rem 3rem; }
     }
+
+    /* CHECKLIST PROGRESS */
+    .checklist-progress { background:#fff; border:1px solid #E0DED8; border-radius:6px; padding:1rem 1.25rem; margin-bottom:1.25rem; }
+    .cp-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:.6rem; }
+    .cp-label { font-size:.7rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:#6B6B6B; }
+    .cp-count { font-family:'Anton',sans-serif; font-size:1.1rem; color:#E2001A; letter-spacing:.02em; }
+    .cp-bar-track { height:8px; background:#F0EEE8; border-radius:4px; overflow:hidden; }
+    .cp-bar-fill { height:100%; width:0%; background:linear-gradient(to right,#E2001A,#FFD200); border-radius:4px; transition:width .4s ease; }
+    .cp-status { font-size:.78rem; color:#6B6B6B; margin-top:.5rem; min-height:1.2em; }
   </style>
 </head>
 <body>
@@ -275,6 +284,17 @@
   <div class="section">
     <div class="section-head">Checklist délégué</div>
     <h2>À vérifier point par point</h2>
+
+    <div class="checklist-progress">
+      <div class="cp-header">
+        <span class="cp-label">Progression</span>
+        <span class="cp-count" id="cp-count">0 / 11 actions</span>
+      </div>
+      <div class="cp-bar-track">
+        <div class="cp-bar-fill" id="cp-bar"></div>
+      </div>
+      <div class="cp-status" id="cp-status"></div>
+    </div>
 
     <ul class="checklist" id="checklist">
       <li onclick="toggle(this)">
@@ -538,13 +558,30 @@
       const saved = (() => { try { return JSON.parse(localStorage.getItem('delegue_checklist') || '[]'); } catch { return []; } })();
       const items = document.querySelectorAll('#checklist li');
       items.forEach((li, i) => { if (saved[i]) li.classList.add('done'); });
+      updateProgress();
     }
 
     window.toggle = function(li) {
       li.classList.toggle('done');
       const states = [...document.querySelectorAll('#checklist li')].map(l => l.classList.contains('done'));
       try { localStorage.setItem('delegue_checklist', JSON.stringify(states)); } catch {}
+      updateProgress();
     };
+
+    function updateProgress() {
+      const items = document.querySelectorAll('.checklist li');
+      const done = document.querySelectorAll('.checklist li.done').length;
+      const total = items.length;
+      const pct = total ? Math.round(done/total*100) : 0;
+      document.getElementById('cp-count').textContent = done + ' / ' + total + ' actions';
+      document.getElementById('cp-bar').style.width = pct + '%';
+      const status = document.getElementById('cp-status');
+      if (done === 0) status.textContent = 'Commencez par J0 — déclarez l\'accident aujourd\'hui.';
+      else if (pct < 40) status.textContent = 'Bon début — les premières 48h sont critiques.';
+      else if (pct < 70) status.textContent = 'Bonne progression — ne lâchez pas le suivi.';
+      else if (pct < 100) status.textContent = 'Presque terminé — vérifiez la consolidation.';
+      else { status.textContent = '✓ Toutes les actions accomplies. Dossier complet.'; status.style.color = '#2E7D32'; document.getElementById('cp-bar').style.background = '#2E7D32'; }
+    }
   })();
 </script>
 </body>

@@ -16,7 +16,12 @@
       --jaune: #FFD200;
       --fond: #F5F4F0; --fond-card: #FFFFFF;
       --texte: #1A1A1A; --texte-muted: #6B6B6B;
-      --border: #E0DED8;
+      --border: #E0DED8; --border-card: #E0DED8;
+    }
+    :root[data-theme="dark"] {
+      --fond: #0F0F0F; --fond-card: #1A1A1A;
+      --texte: #E8E6E0; --texte-muted: #999;
+      --border: #2C2C2C; --border-card: #2A2A2A;
     }
     body { background: var(--fond); color: var(--texte); font-family: 'Archivo', sans-serif; min-height: 100vh; }
 
@@ -182,6 +187,52 @@
     /* FOOTER */
     footer { text-align: center; padding: 2rem; font-size: .8rem; color: var(--texte-muted); border-top: 1px solid var(--border); }
 
+    /* PROGRESS BAR */
+    #read-progress { position: fixed; top: 65px; left: 0; right: 0; height: 4px; background: var(--rouge); width: 0%; transition: width .1s linear; z-index: 99; }
+
+    /* DARK MODE TOGGLE */
+    #dark-toggle {
+      width: 32px; height: 32px; border-radius: 50%; border: 1px solid rgba(255,255,255,.35);
+      background: transparent; color: #fff; font-size: 1rem; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-left: .5rem;
+    }
+    #dark-toggle:hover { background: rgba(255,255,255,.15); }
+
+    /* BACK TO TOP */
+    #back-top {
+      position: fixed; bottom: 2rem; right: 2rem; width: 44px; height: 44px;
+      border-radius: 50%; background: var(--rouge); color: #fff; font-size: 1.2rem;
+      border: none; cursor: pointer; display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none; transition: opacity .3s; z-index: 200;
+      box-shadow: 0 2px 8px rgba(0,0,0,.3);
+    }
+    #back-top.visible { opacity: 1; pointer-events: auto; }
+
+    /* DARK MODE OVERRIDES */
+    :root[data-theme="dark"] body { background: var(--fond); color: var(--texte); }
+    :root[data-theme="dark"] .developpement { background: #1A1A1A; border-color: #2C2C2C; }
+    :root[data-theme="dark"] .developpement h3 { color: var(--texte); }
+    :root[data-theme="dark"] .developpement p, :root[data-theme="dark"] .developpement li { color: #ccc; }
+    :root[data-theme="dark"] .developpement strong { color: var(--texte); }
+    :root[data-theme="dark"] .ref-loi { background: #222; color: #aaa; }
+    :root[data-theme="dark"] .cas-pratique { background: #1A1A0A; border-left-color: var(--jaune); }
+    :root[data-theme="dark"] .cas-pratique .scenario { background: rgba(255,255,255,.04); border-color: #3a3200; color: #bbb; }
+    :root[data-theme="dark"] .cas-pratique .question { color: #ccc; }
+    :root[data-theme="dark"] .point-syndical { background: #1A0A0A; border-left-color: var(--rouge); }
+    :root[data-theme="dark"] .point-syndical p, :root[data-theme="dark"] .point-syndical li { color: #ccc; }
+    :root[data-theme="dark"] .point-syndical strong { color: var(--texte); }
+    :root[data-theme="dark"] nav.sidebar { background: #0D0D0D; }
+    :root[data-theme="dark"] .moment-fort { background: #111; }
+
+    /* SCROLL ANIMATIONS */
+    .developpement, .cas-pratique, .point-syndical {
+      opacity: 0; transform: translateY(24px);
+      transition: opacity .4s ease, transform .4s ease;
+    }
+    .developpement.visible, .cas-pratique.visible, .point-syndical.visible {
+      opacity: 1; transform: translateY(0);
+    }
+
     /* MOBILE */
     @media (max-width: 768px) {
       header.site-header { padding: .75rem 1rem; }
@@ -206,6 +257,13 @@
   if (localStorage.getItem('cgt_stagiaire_auth') !== 'ok' && localStorage.getItem('cgt_auth') !== 'ok') {
     location.replace('/login-stagiaire.html?from=' + encodeURIComponent(location.pathname));
   }
+  (function() {
+    try {
+      if (localStorage.getItem('cgt_theme') === 'dark') {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+    } catch(e) {}
+  })();
 </script>
 
 <header class="site-header">
@@ -218,7 +276,9 @@
     <span>Formation syndicale CGT Occitanie · Version scrollable</span>
   </div>
   <div class="header-badge">Scrollable</div>
+  <button id="dark-toggle" aria-label="Basculer thème sombre" title="Thème sombre / clair">🌙</button>
 </header>
+<div id="read-progress"></div>
 <div class="stripe"></div>
 
 <div class="site-wrap">
@@ -764,6 +824,8 @@
 
 </div>
 
+<button id="back-top" aria-label="Retour en haut">↑</button>
+
 <script>
   // Highlight active sidebar link on scroll
   var sections = document.querySelectorAll('section.carnet-section');
@@ -788,6 +850,98 @@
 
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
+
+  // 1. BARRE DE PROGRESSION
+  var progressBar = document.getElementById('read-progress');
+  window.addEventListener('scroll', function() {
+    var pct = window.scrollY / (document.body.scrollHeight - window.innerHeight) * 100;
+    progressBar.style.width = Math.min(100, pct) + '%';
+  }, { passive: true });
+
+  // 2. COMPTEURS ANIMÉS
+  function animateCounter(el) {
+    var original = el.textContent.trim();
+    var numStr = original.replace(/\s/g, '').replace(/,/g, '');
+    var num = parseFloat(numStr);
+    if (isNaN(num) || el.dataset.counted === '1') return;
+    // Only animate pure numbers (with spaces/commas as thousand separators)
+    if (!/^[\d\s,]+$/.test(original)) return;
+    el.dataset.counted = '1';
+    var duration = 1500;
+    var start = null;
+    var isSpaced = /\s/.test(original); // uses space separators like "1 331"
+    function format(v) {
+      var rounded = Math.round(v);
+      if (isSpaced) {
+        return rounded.toLocaleString('fr-FR').replace(/ /g, ' ');
+      }
+      return rounded.toLocaleString('fr-FR');
+    }
+    function step(ts) {
+      if (!start) start = ts;
+      var elapsed = ts - start;
+      var progress = Math.min(1, Math.sqrt(elapsed / duration));
+      el.textContent = format(num * progress);
+      if (elapsed < duration) requestAnimationFrame(step);
+      else el.textContent = original;
+    }
+    requestAnimationFrame(step);
+  }
+
+  var counterObserver = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        animateCounter(entry.target);
+        counterObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.3 });
+
+  document.querySelectorAll('.mf-chiffre').forEach(function(el) {
+    var txt = el.textContent.trim();
+    if (/^[\d\s,]+$/.test(txt)) counterObserver.observe(el);
+  });
+
+  // 3. ANIMATIONS D'ENTRÉE AU SCROLL
+  var scrollEls = document.querySelectorAll('.developpement, .cas-pratique, .point-syndical');
+  var entryObserver = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        entryObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  scrollEls.forEach(function(el) { entryObserver.observe(el); });
+
+  // 4. DARK MODE TOGGLE
+  var darkBtn = document.getElementById('dark-toggle');
+  function applyTheme(dark) {
+    if (dark) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+      darkBtn.textContent = '☀️';
+    } else {
+      document.documentElement.removeAttribute('data-theme');
+      darkBtn.textContent = '🌙';
+    }
+  }
+  // Init icon
+  applyTheme(document.documentElement.getAttribute('data-theme') === 'dark');
+
+  darkBtn.addEventListener('click', function() {
+    var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    try { localStorage.setItem('cgt_theme', isDark ? '' : 'dark'); } catch(e) {}
+    applyTheme(!isDark);
+  });
+
+  // 5. BOUTON RETOUR EN HAUT
+  var backTop = document.getElementById('back-top');
+  window.addEventListener('scroll', function() {
+    backTop.classList.toggle('visible', window.scrollY > 400);
+  }, { passive: true });
+  backTop.addEventListener('click', function() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
 </script>
 
 </body>

@@ -16,7 +16,11 @@
       --fond: #F5F4F0; --fond-card: #FFFFFF; --texte: #1A1A1A;
       --texte-muted: #6B6B6B; --border: #E0DED8; --border-card: #E8E6E0;
     }
-    body { background: var(--fond); color: var(--texte); font-family: 'Archivo', sans-serif; min-height: 100vh; display: flex; flex-direction: column; }
+    :root[data-theme="dark"] {
+      --fond: #0F0F0F; --fond-card: #1A1A1A; --texte: #E8E6E0;
+      --texte-muted: #999; --border: #2C2C2C; --border-card: #2A2A2A;
+    }
+    body { background: var(--fond); color: var(--texte); font-family: 'Archivo', sans-serif; min-height: 100vh; display: flex; flex-direction: column; transition: background .3s, color .3s; }
 
     header {
       background: var(--rouge);
@@ -36,6 +40,20 @@
       font-size: .68rem; color: #1A1A1A; background: #FFD200;
       padding: .3rem .65rem; white-space: nowrap; letter-spacing: .04em; font-weight: 700;
     }
+    /* Dark mode toggle */
+    .theme-toggle {
+      width: 32px; height: 32px; border-radius: 50%; border: none;
+      background: rgba(255,255,255,.15); cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; transition: background .15s;
+    }
+    .theme-toggle:hover { background: rgba(255,255,255,.28); }
+    .theme-toggle svg { display: block; }
+    .icon-moon { display: block; }
+    .icon-sun  { display: none; }
+    [data-theme="dark"] .icon-moon { display: none; }
+    [data-theme="dark"] .icon-sun  { display: block; }
+
     .stripe { height: 5px; background: var(--jaune); }
 
     /* ── HERO ── */
@@ -47,8 +65,6 @@
     .hero-title { font-family: 'Anton', sans-serif; font-size: clamp(1.6rem, 3.5vw, 2.6rem); color: #fff; line-height: 1.1; letter-spacing: .02em; margin-bottom: .6rem; }
     .hero-sub { font-size: .85rem; color: rgba(255,255,255,.8); line-height: 1.6; max-width: 480px; }
     .hero-stripe { height: 5px; background: var(--jaune); }
-
-    /* ── CARD IMG ── */
 
     /* ── CARD ICON ── */
     .card-icon {
@@ -71,13 +87,36 @@
     main { flex: 1; max-width: 980px; width: 100%; margin: 0 auto; padding: 2.5rem 1.5rem 2rem; }
 
     .welcome-box {
-      background: #fff; border-left: 5px solid var(--rouge);
+      background: var(--fond-card); border-left: 5px solid var(--rouge);
       padding: 1.1rem 1.4rem; margin-bottom: 2rem;
       display: flex; align-items: flex-start; gap: 1rem;
     }
     .welcome-box .icon { font-size: 1.8rem; flex-shrink: 0; }
     .welcome-box h2 { font-family: 'Anton', sans-serif; font-size: 1rem; letter-spacing: .04em; color: var(--rouge); margin-bottom: .25rem; }
     .welcome-box p { font-size: .85rem; color: var(--texte-muted); line-height: 1.6; }
+
+    /* ── SEARCH ── */
+    .search-wrap {
+      position: relative;
+      margin-bottom: 1.75rem;
+    }
+    .search-wrap .search-icon {
+      position: absolute; left: .85rem; top: 50%; transform: translateY(-50%);
+      pointer-events: none; color: var(--rouge);
+    }
+    #search-modules {
+      width: 100%; padding: .7rem 1rem .7rem 2.8rem;
+      border: 1.5px solid var(--border-card); border-radius: 4px;
+      background: var(--fond-card); color: var(--texte);
+      font-family: 'Archivo', sans-serif; font-size: .9rem;
+      outline: none; transition: border-color .15s;
+    }
+    #search-modules::placeholder { color: var(--texte-muted); }
+    #search-modules:focus { border-color: var(--rouge); }
+    .no-results {
+      display: none; text-align: center; padding: 2rem 1rem;
+      color: var(--texte-muted); font-size: .9rem; font-style: italic;
+    }
 
     .section-label {
       font-size: .68rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
@@ -88,10 +127,12 @@
     .modules-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 1.25rem; margin-bottom: 2.5rem; }
     .card {
       background: var(--fond-card); border: 1px solid var(--border-card);
- padding: 1.5rem;
+      padding: 1.5rem;
       display: flex; flex-direction: column; gap: .8rem;
-      box-shadow: 0 1px 4px rgba(0,0,0,.06); transition: box-shadow .15s;
+      box-shadow: 0 1px 4px rgba(0,0,0,.06); transition: box-shadow .15s, opacity .45s ease, transform .45s ease;
+      opacity: 0; transform: translateY(28px);
     }
+    .card.visible { opacity: 1; transform: none; }
     .card:hover { box-shadow: 0 4px 16px rgba(0,0,0,.1); }
     .card-meta { display: flex; align-items: center; gap: .5rem; flex-wrap: wrap; }
     .tag-duree { background: var(--jaune); color: #1A1A1A; font-size: .65rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; padding: .2rem .55rem; }
@@ -112,18 +153,35 @@
       background: var(--fond-card); border: 1px solid var(--border-card);
       border-left: 3px solid var(--border); padding: .9rem 1rem;
       text-decoration: none; color: var(--texte);
-      transition: border-left-color .15s, box-shadow .15s;
+      transition: border-left-color .15s, box-shadow .15s, opacity .45s ease, transform .45s ease;
       box-shadow: 0 1px 3px rgba(0,0,0,.04);
+      opacity: 0; transform: translateY(28px);
     }
+    .ressource-item.visible { opacity: 1; transform: none; }
     .ressource-item:hover { border-left-color: var(--rouge); box-shadow: 0 2px 8px rgba(0,0,0,.09); }
     .ressource-icon { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; background: #F0EEE8; border: 1px solid var(--border); }
+    [data-theme="dark"] .ressource-icon { background: #2A2A2A; }
     .ressource-icon svg { color: var(--rouge); }
     .ressource-text { flex: 1; }
     .ressource-name { font-size: .875rem; font-weight: 600; color: var(--texte); display: block; line-height: 1.3; }
     .ressource-desc { font-size: .72rem; color: var(--texte-muted); margin-top: .1rem; }
 
-    footer { border-top: 1px solid var(--border); background: #EEECEA; padding: 1.1rem 1.5rem; text-align: center; font-size: .73rem; color: var(--texte-muted); }
+    footer { border-top: 1px solid var(--border); background: var(--fond-card); padding: 1.1rem 1.5rem; text-align: center; font-size: .73rem; color: var(--texte-muted); }
     footer strong { color: var(--rouge); }
+
+    /* ── BACK TO TOP ── */
+    #back-to-top {
+      position: fixed; bottom: 2rem; right: 2rem;
+      width: 44px; height: 44px; border-radius: 50%;
+      background: var(--rouge); border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,.25);
+      opacity: 0; pointer-events: none;
+      transition: opacity .25s, transform .25s;
+      z-index: 999;
+    }
+    #back-to-top.visible { opacity: 1; pointer-events: auto; }
+    #back-to-top:hover { background: var(--rouge-dark); transform: translateY(-2px); }
 
     @media (max-width: 520px) {
       header { padding: .85rem 1rem; gap: .85rem; }
@@ -136,6 +194,13 @@
   </style>
 </head>
 <body>
+<!-- Theme init: before auth check to avoid flash -->
+<script>
+  (function(){
+    var t = localStorage.getItem('cgt_theme');
+    if(t === 'dark') document.documentElement.setAttribute('data-theme','dark');
+  })();
+</script>
 <script>if(localStorage.getItem('cgt_stagiaire_auth')!=='ok'&&localStorage.getItem('cgt_auth')!=='ok'){location.replace('/login-stagiaire.html?from='+encodeURIComponent(location.pathname));}</script>
 
 <header>
@@ -148,6 +213,24 @@
     <span>CGT Occitanie — Comité Régional, secteur privé</span>
   </div>
   <div class="access-badge">Stagiaire</div>
+  <button class="theme-toggle" id="theme-toggle" aria-label="Basculer le thème sombre/clair">
+    <!-- Moon icon (shown in light mode) -->
+    <svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+    </svg>
+    <!-- Sun icon (shown in dark mode) -->
+    <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="5"/>
+      <line x1="12" y1="1" x2="12" y2="3"/>
+      <line x1="12" y1="21" x2="12" y2="23"/>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+      <line x1="1" y1="12" x2="3" y2="12"/>
+      <line x1="21" y1="12" x2="23" y2="12"/>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+    </svg>
+  </button>
 </header>
 <div class="stripe"></div>
 
@@ -189,6 +272,15 @@
       </div>
     </div>
   </a>
+
+  <!-- SEARCH BAR -->
+  <div class="search-wrap">
+    <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+    </svg>
+    <input id="search-modules" type="search" placeholder="Rechercher un module ou une ressource…" autocomplete="off">
+  </div>
+  <div class="no-results" id="no-results">Aucun module trouvé.</div>
 
   <div class="section-label">Supports de formation</div>
 
@@ -442,6 +534,86 @@
 <footer>
   <strong>CGT</strong> Comité Régional Occitanie — Formation AT/MP secteur privé
 </footer>
+
+<!-- Back to top button -->
+<button id="back-to-top" aria-label="Retour en haut de page">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <polyline points="18 15 12 9 6 15"/>
+  </svg>
+</button>
+
+<script>
+  // ── Dark mode toggle ──
+  var toggle = document.getElementById('theme-toggle');
+  toggle.addEventListener('click', function() {
+    var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    if (isDark) {
+      document.documentElement.removeAttribute('data-theme');
+      localStorage.setItem('cgt_theme', 'light');
+    } else {
+      document.documentElement.setAttribute('data-theme', 'dark');
+      localStorage.setItem('cgt_theme', 'dark');
+    }
+  });
+
+  // ── Scroll animations (IntersectionObserver) ──
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        // Find siblings in same grid, assign cascade delay
+        var el = entry.target;
+        var parent = el.parentElement;
+        var siblings = Array.from(parent.querySelectorAll('.card, .ressource-item'));
+        var idx = siblings.indexOf(el);
+        var delay = (idx % 3) * 80; // 0, 80, 160ms
+        el.style.transitionDelay = delay + 'ms';
+        el.classList.add('visible');
+        observer.unobserve(el);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.card, .ressource-item').forEach(function(el) {
+    observer.observe(el);
+  });
+
+  // ── Search ──
+  var searchInput = document.getElementById('search-modules');
+  var noResults = document.getElementById('no-results');
+
+  searchInput.addEventListener('input', function() {
+    var q = this.value.toLowerCase().trim();
+    var cards = document.querySelectorAll('.card');
+    var ressources = document.querySelectorAll('.ressource-item');
+    var found = 0;
+
+    cards.forEach(function(el) {
+      var match = !q || el.textContent.toLowerCase().indexOf(q) !== -1;
+      el.style.display = match ? '' : 'none';
+      if (match) found++;
+    });
+    ressources.forEach(function(el) {
+      var match = !q || el.textContent.toLowerCase().indexOf(q) !== -1;
+      el.style.display = match ? '' : 'none';
+      if (match) found++;
+    });
+
+    noResults.style.display = (q && found === 0) ? 'block' : 'none';
+  });
+
+  // ── Back to top ──
+  var backBtn = document.getElementById('back-to-top');
+  window.addEventListener('scroll', function() {
+    if (window.scrollY > 300) {
+      backBtn.classList.add('visible');
+    } else {
+      backBtn.classList.remove('visible');
+    }
+  });
+  backBtn.addEventListener('click', function() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+</script>
 
 </body>
 </html>
