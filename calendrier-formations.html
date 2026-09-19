@@ -4,6 +4,27 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Calendrier Formations AT/MP — CGT Occitanie</title>
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script>
+/* ═══════════════════════════════════════════════════════════
+   CONFIGURATION FIREBASE — à remplir avec tes propres valeurs
+   Projet > Paramètres > Général > Vos applications > SDK
+   ═══════════════════════════════════════════════════════════ */
+const FIREBASE_CONFIG = {
+  apiKey:            "REMPLACER_API_KEY",
+  authDomain:        "REMPLACER.firebaseapp.com",
+  projectId:         "REMPLACER_PROJECT_ID",
+  storageBucket:     "REMPLACER.appspot.com",
+  messagingSenderId: "REMPLACER",
+  appId:             "REMPLACER"
+};
+const FIREBASE_ENABLED = FIREBASE_CONFIG.apiKey !== "REMPLACER_API_KEY";
+if (FIREBASE_ENABLED) {
+  firebase.initializeApp(FIREBASE_CONFIG);
+}
+</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="/assets/style.css">
@@ -208,11 +229,13 @@ function addSession(ud, ville, j1, j2) {
   document.getElementById('f-ville').value = '';
   document.getElementById('f-j1').value = '';
   document.getElementById('f-j2').value = '';
+  saveSessions();
   render();
 }
 
 function deleteSession(id) {
   sessions = sessions.filter(s => s.id !== id);
+  saveSessions();
   render();
 }
 
@@ -517,6 +540,66 @@ function hexToRgb(hex) {
   return [r, g, b];
 }
 
+// ── PERSISTENCE FIREBASE / LOCALSTORAGE ──────────────────────────────────────
+
+const LS_KEY = 'cgt_cal_sessions';
+let db = null;
+let syncStatus = null;
+
+function showSyncStatus(msg, color) {
+  if (!syncStatus) return;
+  syncStatus.textContent = msg;
+  syncStatus.style.color = color || '#7FD47F';
+  clearTimeout(syncStatus._t);
+  if (msg) syncStatus._t = setTimeout(() => { syncStatus.textContent = ''; }, 4000);
+}
+
+function saveSessions() {
+  // Toujours sauvegarder localement (fallback hors ligne)
+  try { localStorage.setItem(LS_KEY, JSON.stringify(sessions)); } catch(e) {}
+  // Sync Firebase si disponible
+  if (db) {
+    db.collection('calendrier').doc('sessions').set({ data: JSON.stringify(sessions), updated: new Date().toISOString() })
+      .then(() => showSyncStatus('✓ Synchronisé'))
+      .catch(e => showSyncStatus('⚠ Sync échouée', '#D47F7F'));
+  }
+}
+
+function loadSessions(callback) {
+  if (db) {
+    db.collection('calendrier').doc('sessions').get()
+      .then(doc => {
+        if (doc.exists && doc.data().data) {
+          try {
+            const remote = JSON.parse(doc.data().data);
+            sessions = remote;
+            colorIdx = sessions.length;
+            // Mettre aussi à jour localStorage
+            try { localStorage.setItem(LS_KEY, JSON.stringify(sessions)); } catch(e) {}
+            showSyncStatus('✓ Données chargées depuis Firebase');
+          } catch(e) { loadFromLocal(); }
+        } else {
+          loadFromLocal(); // Pas encore de données Firebase → utiliser localStorage
+        }
+        callback();
+      })
+      .catch(() => { loadFromLocal(); callback(); });
+  } else {
+    loadFromLocal();
+    callback();
+  }
+}
+
+function loadFromLocal() {
+  try {
+    const raw = localStorage.getItem(LS_KEY);
+    if (raw) {
+      sessions = JSON.parse(raw);
+      colorIdx = sessions.length;
+    }
+  } catch(e) {}
+}
+
 // Period selectors → re-render
 ['sel-start-month','sel-start-year','sel-nb-months'].forEach(id => {
   document.getElementById(id).addEventListener('change', render);
@@ -536,8 +619,37 @@ let logoB64 = null;
   img.src = '/assets/logo-cgt-occitanie.jpg';
 })();
 
-// Init
-DEFAULT.forEach(d => addSession(d.ud, d.ville, d.j1, d.j2));
+// ── INDICATEUR DE SYNC ────────────────────────────────────────────────────────
+(function injectSyncBadge() {
+  const badge = document.createElement('div');
+  badge.style.cssText = 'font-size:.7rem;color:#7FD47F;min-height:1.2em;padding:.2rem 0;font-family:monospace';
+  badge.id = 'sync-status';
+  const sidebar = document.getElementById('sessions-list');
+  if (sidebar) sidebar.parentNode.insertBefore(badge, sidebar);
+  syncStatus = badge;
+  if (!FIREBASE_ENABLED) {
+    badge.style.color = '#D47F7F';
+    badge.textContent = '⚠ Firebase non configuré — sauvegarde locale uniquement';
+  } else {
+    badge.textContent = '⟳ Connexion Firebase…';
+  }
+})();
+
+// ── INIT ──────────────────────────────────────────────────────────────────────
+if (FIREBASE_ENABLED) {
+  db = firebase.firestore();
+  // Activer la persistance hors ligne
+  firebase.firestore().enablePersistence({ synchronizeTabs: true })
+    .catch(() => {}); // Ignoré si déjà activé ou en mode prive
+  loadSessions(() => {
+    if (!sessions.length) DEFAULT.forEach(d => addSession(d.ud, d.ville, d.j1, d.j2));
+    else render();
+  });
+} else {
+  loadFromLocal();
+  if (!sessions.length) DEFAULT.forEach(d => addSession(d.ud, d.ville, d.j1, d.j2));
+  else render();
+}
 </script>
 </body>
 </html>
