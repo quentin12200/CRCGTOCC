@@ -38,6 +38,21 @@
     }
     .stripe { height: 5px; background: var(--jaune); }
 
+    /* ── HERO ── */
+    .hero { position: relative; height: 280px; overflow: hidden; display: flex; align-items: flex-end; }
+    .hero img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 25%; }
+    .hero-overlay { position: absolute; inset: 0; background: linear-gradient(to right, rgba(10,10,10,.80) 35%, rgba(226,0,26,.4) 100%); }
+    .hero-content { position: relative; z-index: 2; padding: 2rem 2.5rem 2rem; max-width: 660px; }
+    .hero-kicker { font-size: .65rem; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: var(--jaune); margin-bottom: .5rem; }
+    .hero-title { font-family: 'Anton', sans-serif; font-size: clamp(1.6rem, 3.5vw, 2.6rem); color: #fff; line-height: 1.1; letter-spacing: .02em; margin-bottom: .6rem; }
+    .hero-sub { font-size: .85rem; color: rgba(255,255,255,.8); line-height: 1.6; max-width: 480px; }
+    .hero-stripe { height: 5px; background: var(--jaune); }
+
+    /* ── CARD IMG ── */
+    .card-img { width: calc(100% + 3rem); height: 120px; object-fit: cover; object-position: center; display: block; margin: -1.5rem -1.5rem .8rem -1.5rem; border-bottom: 3px solid var(--rouge); }
+
+    @media (max-width: 520px) { .hero { height: 220px; } .hero-content { padding: 1.25rem 1rem 1.5rem; } }
+
     main { flex: 1; max-width: 980px; width: 100%; margin: 0 auto; padding: 2.5rem 1.5rem 2rem; }
 
     .welcome-box {
@@ -121,6 +136,17 @@
 </header>
 <div class="stripe"></div>
 
+<div class="hero">
+  <img src="/assets/Hero banner — espace stagiaire.png" alt="Accompagnement CGT après un accident du travail">
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-kicker">Espace stagiaire — Formation AT/MP CGT Occitanie</div>
+    <div class="hero-title">Vos droits,<br>votre protection</div>
+    <p class="hero-sub">Un accident, une maladie professionnelle — vous n'êtes pas seul·e. Retrouvez ici les ressources pour comprendre, agir et défendre vos droits.</p>
+  </div>
+</div>
+<div class="hero-stripe"></div>
+
 <main>
 
   <div class="welcome-box">
@@ -154,6 +180,7 @@
   <div class="modules-grid">
 
     <div class="card">
+      <img class="card-img" src="/assets/AT-MPimg.png" alt="">
       <div class="card-meta">
         <span class="tag-duree">2 jours</span>
         <span class="tag-type">Présentation diaporama</span>
@@ -167,6 +194,7 @@
     </div>
 
     <div class="card">
+      <img class="card-img" src="/assets/Prévention-SST.png" alt="">
       <div class="card-meta">
         <span class="tag-duree">1 jour</span>
         <span class="tag-type">Présentation diaporama</span>
@@ -180,6 +208,7 @@
     </div>
 
     <div class="card">
+      <img class="card-img" src="/assets/Prévoyance-Invalidité.png" alt="">
       <div class="card-meta">
         <span class="tag-duree">Demi-journée</span>
         <span class="tag-type">Présentation diaporama</span>
@@ -193,6 +222,7 @@
     </div>
 
     <div class="card">
+      <img class="card-img" src="/assets/Bandeau-contextuel.png" alt="">
       <div class="card-meta">
         <span class="tag-duree">Nouveau · Scrollable</span>
         <span class="tag-type">Carnet de formation</span>
@@ -225,6 +255,7 @@
   <div class="modules-grid">
 
     <div class="card">
+      <img class="card-img" src="/assets/Handicap-AGEFIPH.png" alt="">
       <div class="card-meta">
         <span class="tag-duree">Demi-journée</span>
         <span class="tag-type">Présentation diaporama</span>
