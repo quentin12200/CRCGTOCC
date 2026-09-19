@@ -1060,15 +1060,16 @@ function openPresenter(){
   </style></head><body>
   <div id="pclock"></div>
   <div id="pt">Diapo 1</div><div id="pc">1 / ${SLIDES.length}</div>
-  <div id="pnotes"></div><div id="pnext"></div>
+  <div id="pnotes"></div><div id="pnext"></div><div id="pres-next"></div>
   <script>
   const clk=document.getElementById('pclock');
   setInterval(()=>{const n=new Date();clk.textContent=n.toLocaleTimeString('fr-FR');},1000);
-  window.updatePres=function(cur,total,notes,nextTitle){
+  window.updatePres=function(cur,total,notes,nextTitle,nextType){
     document.getElementById('pt').textContent='Diapo '+(cur+1);
     document.getElementById('pc').textContent=(cur+1)+' / '+total;
     document.getElementById('pnotes').innerHTML=notes||'';
-    document.getElementById('pnext').textContent=nextTitle?'Suivante : '+nextTitle:'';
+    document.getElementById('pnext').textContent=nextTitle?'▶ Suivante : '+nextTitle:'(dernière diapositive)';
+    document.getElementById('pres-next').textContent=nextType?'Type : '+nextType:'';
   };
   <\/script></body></html>`);
   pw.document.close();

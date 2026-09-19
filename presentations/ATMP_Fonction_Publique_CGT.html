@@ -700,15 +700,47 @@ const els = SLIDES.map((s,i)=>{ const e=mkSlide(s,i); deck.appendChild(e); retur
 
 function go(n){
   if(n<0||n>=TOTAL) return;
-  els[cur].classList.remove('active');
+  const dir = n>cur ? 1 : -1;
+  const oldSlide = els[cur];
+  const newSlide = els[n];
+  oldSlide.classList.add(dir>0?'leave-left':'leave-right');
+  newSlide.classList.add(dir>0?'enter-right':'enter-left');
+  newSlide.classList.add('active');
+  setTimeout(()=>{
+    oldSlide.classList.remove('active','leave-left','leave-right');
+    newSlide.classList.remove('enter-right','enter-left');
+  },300);
   cur=n;
-  els[cur].classList.add('active');
   document.getElementById('cur').textContent = cur+1;
   document.getElementById('progress').style.width = ((cur+1)/TOTAL*100)+'%';
+  const barNum = document.getElementById('bar-num');
+  if(barNum) barNum.textContent = (cur+1)+' / '+TOTAL;
   const np = document.getElementById('notes-text');
   np.innerHTML = els[cur].dataset.notes || '<em>—</em>';
+  // next slide info
+  const pni = document.getElementById('pres-next-info');
+  if(pni){
+    const nx = SLIDES[cur+1];
+    if(nx){ pni.innerHTML = 'Suivante &rarr; <span>['+nx.type+']</span> '+(nx.title||''); }
+    else { pni.textContent = ''; }
+  }
+  // animate stat-num elements
+  els[cur].querySelectorAll('.stat-num[data-val]:not([data-animated])').forEach(el=>{
+    el.dataset.animated='1';
+    const target=+el.dataset.val, suf=el.dataset.suf||'';
+    let start=null;
+    const step=ts=>{
+      if(!start)start=ts;
+      const p=Math.min((ts-start)/1200,1);
+      const val=Math.sqrt(p)*target;
+      el.textContent=(Number.isInteger(target)?Math.floor(val):val.toFixed(1)).toLocaleString('fr-FR')+suf;
+      if(p<1)requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  });
 }
 go(0);
+document.getElementById('bar-num').textContent = '1 / '+TOTAL;
 
 document.addEventListener('keydown', e=>{
   if(e.key==='ArrowRight'||e.key===' '||e.key==='ArrowDown') go(cur+1);
