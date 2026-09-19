@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Jurisprudence AT/MP — Formation CGT Occitanie</title>
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/style.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --rouge:       #E2001A;
+      --rouge-dark:  #C40017;
+      --jaune:       #FFD200;
+      --fond:        #F5F4F0;
+      --fond-card:   #FFFFFF;
+      --texte:       #1A1A1A;
+      --texte-muted: #6B6B6B;
+      --border:      #E0DED8;
+      --border-card: #E8E6E0;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --fond:        #1A1A1A;
+        --fond-card:   #242424;
+        --texte:       #F0EFEB;
+        --texte-muted: #9A9A9A;
+        --border:      #333333;
+        --border-card: #2E2E2E;
+      }
+    }
+    :root[data-theme="dark"] {
+      --fond:        #1A1A1A;
+      --fond-card:   #242424;
+      --texte:       #F0EFEB;
+      --texte-muted: #9A9A9A;
+      --border:      #333333;
+      --border-card: #2E2E2E;
+    }
+
+    body { background: var(--fond); color: var(--texte); font-family: 'Archivo', sans-serif; min-height: 100vh; display: flex; flex-direction: column; }
+
+    /* ── HEADER ── */
+    header { background: var(--rouge); padding: 1rem 2rem; display: flex; align-items: center; gap: 1.25rem; box-shadow: 0 2px 8px rgba(0,0,0,.18); }
+    .logo-wrap { flex-shrink: 0; height: 56px; display: flex; align-items: center; }
+    .logo-wrap img { height: 56px; width: auto; background: white; padding: 3px 5px; }
+    .header-divider { width: 2px; height: 42px; background: rgba(255,255,255,.3); flex-shrink: 0; }
+    .header-title h1 { font-family: 'Anton', sans-serif; font-size: 1.1rem; letter-spacing: .04em; color: #fff; line-height: 1.2; }
+    .header-title span { font-size: .75rem; color: rgba(255,255,255,.75); }
+    .header-actions { margin-left: auto; display: flex; align-items: center; gap: .75rem; }
+    .header-back a { font-size: .75rem; color: rgba(255,255,255,.8); text-decoration: none; border: 1px solid rgba(255,255,255,.3); padding: .3rem .7rem; letter-spacing: .04em; transition: background .15s; white-space: nowrap; }
+    .header-back a:hover { background: rgba(255,255,255,.1); color: #fff; }
+    .btn-print { font-family: 'Archivo', sans-serif; font-size: .75rem; font-weight: 600; letter-spacing: .04em; color: rgba(255,255,255,.8); background: none; border: 1px solid rgba(255,255,255,.3); padding: .3rem .7rem; cursor: pointer; transition: background .15s; display: flex; align-items: center; gap: .4rem; white-space: nowrap; }
+    .btn-print:hover { background: rgba(255,255,255,.1); color: #fff; }
+    .stripe { height: 5px; background: var(--jaune); }
+
+    /* ── MAIN ── */
+    main { flex: 1; max-width: 980px; width: 100%; margin: 0 auto; padding: 2rem 1rem 3rem; }
+
+    .page-intro { margin-bottom: 1.75rem; }
+    .page-intro h2 { font-family: 'Anton', sans-serif; font-size: 1.6rem; letter-spacing: .03em; color: var(--texte); margin-bottom: .5rem; line-height: 1.2; }
+    .page-intro p { font-size: .9rem; color: var(--texte-muted); max-width: 680px; }
+
+    /* ── BARRE RECHERCHE / FILTRES ── */
+    .toolbar { display: flex; flex-direction: column; gap: .75rem; margin-bottom: 1.75rem; }
+    .search-wrap { position: relative; }
+    .search-wrap input {
+      width: 100%; padding: .75rem 1rem .75rem 2.75rem;
+      border: 2px solid var(--border-card); background: var(--fond-card);
+      font-family: 'Archivo', sans-serif; font-size: .92rem; color: var(--texte);
+      outline: none; transition: border-color .15s;
+    }
+    .search-wrap input:focus { border-color: var(--rouge); }
+    .search-wrap input::placeholder { color: #AAAAAA; }
+    .search-wrap svg { position: absolute; left: .85rem; top: 50%; transform: translateY(-50%); color: var(--texte-muted); pointer-events: none; }
+
+    .filters { display: flex; gap: .4rem; flex-wrap: wrap; }
+    .filter-btn {
+      font-family: 'Archivo', sans-serif; font-size: .7rem; font-weight: 700;
+      letter-spacing: .08em; text-transform: uppercase;
+      padding: .35rem .75rem; border: 2px solid var(--border); background: var(--fond-card);
+      color: var(--texte-muted); cursor: pointer; transition: all .15s;
+    }
+    .filter-btn:hover { border-color: var(--rouge); color: var(--rouge); }
+    .filter-btn.active { background: var(--rouge); border-color: var(--rouge); color: #fff; }
+
+    /* ── CARDS ── */
+    .cards-list { display: flex; flex-direction: column; gap: 1.25rem; }
+
+    .arret-card {
+      background: var(--fond-card);
+      border: 1px solid var(--border-card);
+      border-left: 5px solid var(--rouge);
+      display: flex;
+      flex-direction: column;
+      transition: box-shadow .15s, opacity .2s;
+    }
+    .arret-card.hidden { display: none; }
+
+    .card-header {
+      padding: 1rem 1.25rem .75rem;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 1rem;
+      border-bottom: 1px solid var(--border-card);
+    }
+    .card-meta { flex: 1; }
+    .card-ref {
+      display: inline-block;
+      font-family: 'Archivo', sans-serif; font-size: .68rem; font-weight: 700;
+      letter-spacing: .07em; text-transform: uppercase;
+      background: var(--jaune); color: #1A1A1A;
+      padding: .18rem .55rem; margin-bottom: .5rem;
+    }
+    .card-title { font-family: 'Anton', sans-serif; font-size: 1.1rem; letter-spacing: .03em; color: var(--texte); line-height: 1.25; }
+    .card-subtitle { font-size: .78rem; color: var(--texte-muted); margin-top: .25rem; }
+    .card-theme-tag {
+      flex-shrink: 0;
+      font-size: .65rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase;
+      padding: .2rem .55rem; border: 1px solid var(--border);
+      color: var(--texte-muted); white-space: nowrap; align-self: flex-start;
+    }
+
+    .card-body { padding: .75rem 1.25rem 1.25rem; display: flex; flex-direction: column; gap: .75rem; }
+
+    .card-section { display: flex; flex-direction: column; gap: .3rem; }
+    .card-section-label {
+      font-size: .65rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+      color: var(--rouge);
+    }
+    .card-section p { font-size: .88rem; line-height: 1.6; color: var(--texte); }
+    .card-section .stat-callout {
+      display: inline-block; font-size: .8rem; font-weight: 600;
+      background: rgba(226,0,26,.08); color: var(--rouge);
+      padding: .2rem .55rem; margin-top: .2rem; border-left: 3px solid var(--rouge);
+    }
+
+    /* ── DISCLAIMER ── */
+    .disclaimer {
+      margin-top: 2rem;
+      padding: .9rem 1.1rem;
+      background: rgba(226,0,26,.05);
+      border-left: 4px solid var(--rouge);
+      font-size: .8rem;
+      color: var(--texte-muted);
+      line-height: 1.5;
+    }
+    .disclaimer strong { color: var(--texte); }
+
+    /* ── EMPTY STATE ── */
+    .empty-state { display: none; text-align: center; padding: 3rem 1rem; color: var(--texte-muted); font-size: .9rem; }
+    .empty-state.visible { display: block; }
+
+    /* ── FOOTER ── */
+    footer { background: var(--fond-card); border-top: 1px solid var(--border); padding: 1rem 2rem; font-size: .8rem; color: var(--texte-muted); }
+
+    /* ── PRINT ── */
+    @media print {
+      header, .toolbar, .disclaimer, footer, .btn-print { display: none !important; }
+      body { background: #fff !important; color: #000 !important; }
+      .arret-card { border: 1px solid #ccc !important; border-left: 5px solid #E2001A !important; page-break-inside: avoid; margin-bottom: 1rem; }
+      .card-ref { background: #FFD200 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .cards-list { gap: .75rem !important; }
+      main { padding: 0 !important; }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 600px) {
+      header { padding: .75rem 1rem; }
+      main { padding: 1.25rem .75rem 2rem; }
+      .card-header { flex-direction: column; gap: .5rem; }
+      .card-theme-tag { align-self: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo-wrap">
+    <img src="/assets/logo-cgt.svg" alt="CGT" onerror="this.style.display='none'">
+  </div>
+  <div class="header-divider"></div>
+  <div class="header-title">
+    <h1>Jurisprudence AT/MP</h1>
+    <span>Les arrêts qui comptent — CGT Occitanie</span>
+  </div>
+  <div class="header-actions">
+    <button class="btn-print" onclick="window.print()" aria-label="Imprimer">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+      Imprimer
+    </button>
+    <div class="header-back">
+      <a href="/index.html">← Accueil</a>
+    </div>
+  </div>
+</header>
+<div class="stripe"></div>
+
+<main>
+  <div class="page-intro">
+    <h2>6 arrêts fondamentaux AT/MP</h2>
+    <p>Résumés pédagogiques des décisions de référence en droit des accidents du travail et maladies professionnelles, commentés avec l'angle syndical CGT.</p>
+  </div>
+
+  <div class="toolbar">
+    <div class="search-wrap">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="search" id="search-input" placeholder="Rechercher un arrêt, un principe, un mot-clé…" autocomplete="off" spellcheck="false">
+    </div>
+    <div class="filters" role="group" aria-label="Filtrer par thème">
+      <button class="filter-btn active" data-filter="all">Tous</button>
+      <button class="filter-btn" data-filter="faute-inexcusable">Faute inexcusable</button>
+      <button class="filter-btn" data-filter="maladie-pro">Maladie pro</button>
+      <button class="filter-btn" data-filter="trajet">Trajet</button>
+      <button class="filter-btn" data-filter="droit-de-retrait">Droit de retrait</button>
+    </div>
+  </div>
+
+  <div class="cards-list" id="cards-list">
+
+    <!-- 1. Arrêts amiante -->
+    <article class="arret-card" data-theme="faute-inexcusable" data-search="faute inexcusable amiante obligation sécurité résultat conscience danger mesures nécessaires majoration rente préjudice anxiété">
+      <div class="card-header">
+        <div class="card-meta">
+          <span class="card-ref">Cass. soc., 28 fév. 2002</span>
+          <h3 class="card-title">Faute inexcusable — Arrêts amiante</h3>
+          <p class="card-subtitle">Chambre sociale · « Arrêts amiante » · TASS / Cour de cassation</p>
+        </div>
+        <span class="card-theme-tag">Faute inexcusable</span>
+      </div>
+      <div class="card-body">
+        <div class="card-section">
+          <span class="card-section-label">Le principe</span>
+          <p>L'employeur est tenu envers le salarié d'une <strong>obligation de sécurité de résultat</strong>. La faute inexcusable est caractérisée dès lors qu'il avait ou aurait dû avoir conscience du danger et n'a pas pris les mesures nécessaires pour l'en préserver.</p>
+        </div>
+        <div class="card-section">
+          <span class="card-section-label">L'impact pratique</span>
+          <p>Cet arrêt constitue le socle de milliers d'actions en faute inexcusable. Il ouvre droit à la <strong>majoration automatique de la rente</strong> et à l'indemnisation de l'ensemble des préjudices : douleurs physiques et morales, perte de qualité de vie, préjudice d'agrément, préjudice esthétique et préjudice d'anxiété.</p>
+        </div>
+        <div class="card-section">
+          <span class="card-section-label">Ce que dit la CGT</span>
+          <p>Cet arrêt a été obtenu suite aux luttes menées par la CGT contre l'amiante. Il transforme le rapport de preuve : dès lors que le danger était connu dans la profession, l'employeur ne peut se retrancher derrière l'ignorance. C'est une victoire collective qui bénéficie à toutes les victimes.</p>
+        </div>
+      </div>
+    </article>
+
+    <!-- 2. Maladie psychique -->
+    <article class="arret-card" data-theme="maladie-pro" data-search="maladie psychique harcèlement moral burn-out dépression CRRMP taux IPP hors tableau reconnaissance">
+      <div class="card-header">
+        <div class="card-meta">
+          <span class="card-ref">Cass. 2e civ., 8 nov. 2012</span>
+          <h3 class="card-title">Maladie psychique — Reconnaissance hors tableau</h3>
+          <p class="card-subtitle">2e Chambre civile · CRRMP · Maladies professionnelles</p>
+        </div>
+        <span class="card-theme-tag">Maladie pro</span>
+      </div>
+      <div class="card-body">
+        <div class="card-section">
+          <span class="card-section-label">Le principe</span>
+          <p>Une maladie professionnelle peut être reconnue <strong>hors tableau</strong> si elle est directement causée par le travail habituel de la victime et si elle a entraîné le décès de celle-ci ou une incapacité permanente d'un taux au moins égal à <strong>25 %</strong>. La décision est rendue par le Comité Régional de Reconnaissance des Maladies Professionnelles (CRRMP).</p>
+        </div>
+        <div class="card-section">
+          <span class="card-section-label">L'impact pratique</span>
+          <p>Cet arrêt ouvre la voie à la reconnaissance des burn-out, syndromes dépressifs et pathologies psychiques liées aux conditions de travail, via le CRRMP, même en l'absence de tableau spécifique.</p>
+          <span class="stat-callout">1 971 maladies psychiques reconnues en 2025 — un chiffre doublé en 5 ans</span>
+        </div>
+        <div class="card-section">
+          <span class="card-section-label">Ce que dit la CGT</span>
+          <p>La CGT milite pour que le seuil de 25 % d'IPP soit abaissé : il exclut de nombreuses victimes souffrant de pathologies sévères mais n'atteignant pas ce taux. Le harcèlement moral et les risques psychosociaux doivent être intégrés dans les tableaux de maladies professionnelles.</p>
+        </div>
+      </div>
+    </article>
+
+    <!-- 3. AT de trajet — Détour personnel -->
+    <article class="arret-card" data-theme="trajet" data-search="trajet détour personnel domicile travail présomption imputabilité itinéraire normal achats interruption">
+      <div class="card-header">
+        <div class="card-meta">
+          <span class="card-ref">Cass. 2e civ., 12 juil. 2007</span>
+          <h3 class="card-title">AT de trajet — Le détour personnel</h3>
+          <p class="card-subtitle">2e Chambre civile · Accident de trajet · Présomption d'imputabilité</p>
+        </div>
+        <span class="card-theme-tag">Trajet</span>
+      </div>
+      <div class="card-body">
+        <div class="card-section">
+          <span class="card-section-label">Le principe</span>
+          <p>L'accident de trajet couvre le parcours normal entre le domicile et le lieu de travail. Un <strong>détour effectué pour une raison personnelle</strong> (ex. courses, visite familiale) interrompt la protection, <strong>sauf</strong> si ce détour est bref et ne détourne pas significativement le salarié de son itinéraire normal.</p>
+        </div>
+        <div class="card-section">
+          <span class="card-section-label">L'impact pratique</span>
+          <p>Cet arrêt fixe les limites de la présomption d'imputabilité pour les accidents de trajet. Il oblige la caisse ou l'employeur à rapporter la preuve que le détour était significatif pour réfuter la qualification d'accident de trajet.</p>
+        </div>
+        <div class="card-section">
+          <span class="card-section-label">Ce que dit la CGT</span>
+          <p>En cas de litige, le salarié ou ses ayants droit doivent documenter leur itinéraire habituel. Un détour pour récupérer un enfant à la crèche, faire une pharmacie ou réaliser un achat courant reste généralement couvert si le détournement est limité. Le délégué doit toujours contester une décision de refus.</p>
+        </div>
+      </div>
+    </article>
+
+    <!-- 4. Rechute -->
+    <article class="arret-card" data-theme="maladie-pro" data-search="rechute présomption imputabilité complications pathologie psychique traumatisme continuité soins lien causal">
+      <div class="card-header">
+        <div class="card-meta">
+          <span class="card-ref">Cass. 2e civ., 9 mars 2017</span>
+          <h3 class="card-title">Présomption d'imputabilité — Rechute et complications</h3>
+          <p class="card-subtitle">2e Chambre civile · Rechute AT · Pathologies psychiques post-traumatiques</p>
+        </div>
+        <span class="card-theme-tag">Maladie pro</span>
+      </div>
+      <div class="card-body">
+        <div class="card-section">
+          <span class="card-section-label">Le principe</span>
+          <p>La présomption d'imputabilité s'étend aux <strong>rechutes et complications</strong> de l'accident du travail initial, y compris les pathologies psychiques (dépression, état de stress post-traumatique) développées à la suite du traumatisme. Le salarié n'a pas à prouver le lien causal si la <strong>continuité des soins</strong> est établie.</p>
+        </div>
+        <div class="card-section">
+          <span class="card-section-label">L'impact pratique</span>
+          <p>Toute aggravation ou nouvelle pathologie survenant dans la suite directe et certaine d'un AT reconnu bénéficie de la présomption, sans démarche de reconnaissance supplémentaire, à condition que les soins n'aient pas été interrompus sans motif légitime.</p>
+        </div>
+        <div class="card-section">
+          <span class="card-section-label">Ce que dit la CGT</span>
+          <p>Le délégué doit s'assurer que le médecin traitant mentionne explicitement le lien avec l'AT initial sur chaque arrêt de travail et sur les certificats médicaux. La rupture de soins, même brève, peut être invoquée par la caisse pour contester la prise en charge — anticiper et documenter.</p>
+        </div>
+      </div>
+    </article>
+
+    <!-- 5. Droit de retrait -->
+    <article class="arret-card" data-theme="droit-de-retrait" data-search="droit de retrait danger grave imminent sanction bonne foi appréciation raisonnable protection salarié">
+      <div class="card-header">
+        <div class="card-meta">
+          <span class="card-ref">Cass. soc., 28 janv. 2009</span>
+          <h3 class="card-title">Droit de retrait — Légitimité de l'exercice</h3>
+          <p class="card-subtitle">Chambre sociale · Droit de retrait · Article L. 4131-1 du Code du travail</p>
+        </div>
+        <span class="card-theme-tag">Droit de retrait</span>
+      </div>
+      <div class="card-body">
+        <div class="card-section">
+          <span class="card-section-label">Le principe</span>
+          <p>Un salarié qui exerce son droit de retrait face à un <strong>danger grave et imminent</strong> ne peut être sanctionné, même si ce danger ne s'est finalement pas matérialisé, <strong>dès lors que son appréciation du danger était raisonnable</strong> au moment où il a agi.</p>
+        </div>
+        <div class="card-section">
+          <span class="card-section-label">L'impact pratique</span>
+          <p>La protection s'applique à la bonne foi objective : le salarié n'a pas à démontrer que le danger était réel, mais que tout travailleur raisonnable placé dans la même situation aurait pu légitimement le percevoir comme grave et imminent. Aucune retenue sur salaire, aucune sanction disciplinaire ne peut s'ensuivre.</p>
+        </div>
+        <div class="card-section">
+          <span class="card-section-label">Ce que dit la CGT</span>
+          <p>Le droit de retrait doit être exercé après signalement à l'employeur. Le délégué accompagne le salarié en formalisant le signalement par écrit (registre des dangers, courriel) pour constituer la preuve de la bonne foi. En cas de sanction abusive, saisine immédiate de l'inspecteur du travail.</p>
+        </div>
+      </div>
+    </article>
+
+    <!-- 6. Faute inexcusable — Charge de la preuve -->
+    <article class="arret-card" data-theme="faute-inexcusable" data-search="faute inexcusable charge de la preuve alerte préalable DGI signalement CHSCT lettre recommandée présomption renversée">
+      <div class="card-header">
+        <div class="card-meta">
+          <span class="card-ref">Cass. 2e civ., 22 fév. 2007</span>
+          <h3 class="card-title">Faute inexcusable — Renversement de la charge de la preuve</h3>
+          <p class="card-subtitle">2e Chambre civile · Faute inexcusable · Alerte préalable</p>
+        </div>
+        <span class="card-theme-tag">Faute inexcusable</span>
+      </div>
+      <div class="card-body">
+        <div class="card-section">
+          <span class="card-section-label">Le principe</span>
+          <p>La <strong>charge de la preuve de l'absence de faute inexcusable incombe à l'employeur</strong> dès lors que le salarié a alerté de l'existence de risques avant l'accident — que ce soit par une demande de groupe d'intervention (DGI), un signalement au CHSCT, une lettre recommandée ou tout autre acte formalisé.</p>
+        </div>
+        <div class="card-section">
+          <span class="card-section-label">L'impact pratique</span>
+          <p>Toute alerte préalable — écrite ou même orale si elle peut être attestée — renverse la présomption en faveur du salarié. L'employeur doit alors démontrer qu'il avait pris les mesures adéquates. Cela place les outils syndicaux (registre des dangers, procès-verbaux CSSCT, courriers de signalement) au cœur de la stratégie de défense.</p>
+        </div>
+        <div class="card-section">
+          <span class="card-section-label">Ce que dit la CGT</span>
+          <p>Tenir un registre des dangers actualisé, utiliser le droit d'alerte CSSCT, envoyer des courriers recommandés à la direction dès qu'un risque est identifié : ces actes syndicaux quotidiens deviennent des preuves décisives en cas d'accident. Former les délégués à tracer systématiquement chaque alerte, c'est armer les salariés pour l'après.</p>
+        </div>
+      </div>
+    </article>
+
+  </div><!-- /cards-list -->
+
+  <div class="empty-state" id="empty-state" aria-live="polite">
+    Aucun arrêt ne correspond à votre recherche. Essayez un autre terme ou réinitialisez les filtres.
+  </div>
+
+  <div class="disclaimer">
+    <strong>Avertissement :</strong> Ces résumés sont à des fins <strong>pédagogiques</strong> uniquement. Ils ne constituent pas un avis juridique. Les situations individuelles peuvent différer. <strong>Consultez votre Union Départementale CGT</strong> pour toute situation concrète nécessitant un accompagnement juridique.
+  </div>
+</main>
+
+<footer>
+  <strong>CGT</strong> Comité Régional Occitanie — Formation syndicale secteur privé
+  &nbsp;·&nbsp; <a href="/stagiaires.html" style="color:var(--rouge);text-decoration:underline">Espace stagiaire →</a>
+</footer>
+
+<script src="/assets/cgt-ui.js"></script>
+<script>if(localStorage.getItem('cgt_auth')!=='ok'&&localStorage.getItem('cgt_stagiaire_auth')!=='ok'){location.replace('/login.html?from='+encodeURIComponent(location.pathname));}</script>
+<script>
+(function(){
+  var cards = Array.from(document.querySelectorAll('.arret-card'));
+  var searchInput = document.getElementById('search-input');
+  var filterBtns = Array.from(document.querySelectorAll('.filter-btn'));
+  var emptyState = document.getElementById('empty-state');
+  var activeFilter = 'all';
+
+  function normalize(str){ return str.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,''); }
+
+  function applyFilters(){
+    var q = normalize(searchInput.value.trim());
+    var visible = 0;
+    cards.forEach(function(card){
+      var matchFilter = activeFilter === 'all' || card.dataset.theme === activeFilter;
+      var matchSearch = !q || normalize(card.dataset.search + ' ' + card.textContent).indexOf(q) !== -1;
+      if(matchFilter && matchSearch){
+        card.classList.remove('hidden');
+        visible++;
+      } else {
+        card.classList.add('hidden');
+      }
+    });
+    emptyState.classList.toggle('visible', visible === 0);
+  }
+
+  searchInput.addEventListener('input', applyFilters);
+
+  filterBtns.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      filterBtns.forEach(function(b){ b.classList.remove('active'); });
+      btn.classList.add('active');
+      activeFilter = btn.dataset.filter;
+      applyFilters();
+    });
+  });
+})();
+</script>
+</body>
+</html>
