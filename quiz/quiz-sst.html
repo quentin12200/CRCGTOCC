@@ -271,6 +271,7 @@ function afficherResultats() {
     `<div class="recap-item"><span class="${r.correct ? 'ok' : 'ko'}">${r.correct ? '✓' : '✗'}</span><span>Q${i+1} : ${r.q.substring(0, 60)}…${r.correct ? '' : ` <em style="color:#FF9FAB">→ ${r.correctAnswer}</em>`}</span></div>`
   ).join('');
   document.getElementById('resultats').classList.remove('hidden');
+  try { localStorage.setItem('cgt_quiz_sst', JSON.stringify({ score: score, total: 10, date: new Date().toISOString().slice(0,10), pct: Math.round(score/10*100) })); } catch(e) {}
 }
 
 function refaire() {
