@@ -132,17 +132,57 @@ h1,h2{font-family:var(--disp);font-weight:400;line-height:.98;letter-spacing:.01
 #counter{position:fixed;bottom:1.5vh;left:2vw;font-family:var(--ui);font-size:clamp(11px,.9vw,14px);
   color:rgba(255,255,255,.5);z-index:200}
 #progress{position:fixed;top:0;left:0;height:3px;background:var(--yellow);z-index:300;transition:width .4s}
+/* ---- 3. Directional transitions ---- */
+@keyframes slideOutLeft{to{opacity:0;transform:translateX(-40px)}}
+@keyframes slideInRight{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:none}}
+@keyframes slideOutRight{to{opacity:0;transform:translateX(40px)}}
+@keyframes slideInLeft{from{opacity:0;transform:translateX(-40px)}to{opacity:1;transform:none}}
+.slide.leave-left{animation:slideOutLeft .28s ease forwards}
+.slide.enter-right{animation:slideInRight .28s ease forwards}
+.slide.leave-right{animation:slideOutRight .28s ease forwards}
+.slide.enter-left{animation:slideInLeft .28s ease forwards}
+/* ---- 4. Divider animated ---- */
+.s-divider{background:linear-gradient(135deg,#0a0a0a 0%,#1a0a0a 50%,#0a0a0a 100%)!important;background-size:400% 400%!important;animation:divPulse 6s ease infinite}
+@keyframes divPulse{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+.s-divider .title::after{content:'';display:block;height:3px;background:var(--red);width:0;margin-top:.5rem;animation:lineGrow 1s .3s ease forwards}
+@keyframes lineGrow{to{width:80px}}
+/* ---- 5. Spotlight ---- */
+#spotlight{position:fixed;inset:0;pointer-events:none;z-index:500;display:none}
+#spotlight.on{display:block;background:radial-gradient(circle 90px at var(--mx,50%) var(--my,50%),transparent 0%,rgba(0,0,0,.75) 100%)}
+/* ---- 6. Progress numbered badge ---- */
+#bar-num{position:fixed;top:8px;right:10px;z-index:301;background:var(--yellow);color:var(--ink);font-family:var(--ui);font-weight:800;font-size:12px;padding:2px 10px;border-radius:20px;cursor:pointer;letter-spacing:.04em}
+/* ---- 7. Next slide in notes panel ---- */
+#pres-next-info{font-size:12px;color:#888;margin-top:12px;padding:8px 12px;background:#1a1a1a;border-left:3px solid #444}
+#pres-next-info span{color:var(--yellow);font-weight:bold}
+/* ---- 8. Print ---- */
+@media print{
+  @page{size:landscape;margin:0}
+  html,body{height:auto!important;overflow:visible!important;background:#fff!important}
+  #progress,#bar-num,#nav,#counter,#notes-panel,#spotlight{display:none!important}
+  #deck{position:static!important}
+  .slide{position:relative!important;top:auto!important;left:auto!important;right:auto!important;bottom:auto!important;
+    opacity:1!important;visibility:visible!important;transform:none!important;height:100vh!important;
+    page-break-after:always;break-after:page}
+  .reveal{animation:none!important;opacity:1!important;transform:none!important}
+}
 </style>
 </head>
 <body>
 <div id="progress"></div>
+<span id="bar-num" onclick="document.getElementById('notes-panel').classList.toggle('visible')">1 / 1</span>
 <div id="deck"></div>
-<div id="notes-panel"><h4>Notes formateur</h4><div class="notes-body" id="notes-text"></div></div>
+<div id="spotlight"></div>
+<div id="notes-panel">
+  <h4>Notes formateur</h4>
+  <div class="notes-body" id="notes-text"></div>
+  <div id="pres-next-info"></div>
+</div>
 <div id="counter"><span id="cur">1</span> / <span id="tot">1</span></div>
 <div id="nav">
   <button id="btn-notes" title="N — notes">N</button>
   <button id="btn-prev" title="← Précédent">◀</button>
   <button id="btn-next" title="→ Suivant">▶</button>
+  <button onclick="window.print()" title="Exporter PDF">&#8659;</button>
 </div>
 
 <script>
@@ -576,11 +616,17 @@ function mkSlide(s, i){
       <ul class="bullets reveal">${lis}</ul>`;
   }
   else if(s.type === 'stat'){
-    const boxes = s.stats.map(st=>`
+    const boxes = s.stats.map(st=>{
+      const numMatch = st.num.match(/^([\d,.]+)/);
+      const numericVal = numMatch ? parseFloat(numMatch[1].replace(',','.')) : null;
+      const suffix = numMatch ? st.num.slice(numMatch[0].length) : st.num;
+      const dataAttr = numericVal!==null ? ` data-val="${numericVal}" data-suf="${suffix}"` : '';
+      return `
       <div class="stat-box reveal">
-        <div class="stat-num ${st.cls}">${st.num}</div>
+        <div class="stat-num ${st.cls}"${dataAttr}>${st.num}</div>
         <div class="stat-label">${st.label}</div>
-      </div>`).join('');
+      </div>`;
+    }).join('');
     el.innerHTML = `
       <div class="kicker reveal"><span class="dot"></span>${s.kicker}</div>
       <h2 class="title reveal">${s.title}</h2>
