@@ -278,10 +278,51 @@ h1,h2{font-family:var(--disp);font-weight:400;line-height:.98;letter-spacing:.01
   .steps.n3,.steps.n4{grid-template-columns:1fr 1fr} .opts{grid-template-columns:1fr}
   .slide{padding:8vh 8vw}
 }
+
+/* ---------- TIMER SVG ---------- */
+.timer-ring{width:clamp(80px,10vw,120px);height:clamp(80px,10vw,120px);flex-shrink:0}
+.timer-arc{transition:stroke-dashoffset 1s linear}
+
+/* ---------- SLIDE TRANSITIONS ---------- */
+.slide.leaving-left{animation:slideOutLeft .28s ease forwards}
+.slide.leaving-right{animation:slideOutRight .28s ease forwards}
+.slide.entering-right{animation:slideInRight .28s ease forwards}
+.slide.entering-left{animation:slideInLeft .28s ease forwards}
+@keyframes slideOutLeft{to{opacity:0;transform:translateX(-40px)}}
+@keyframes slideOutRight{to{opacity:0;transform:translateX(40px)}}
+@keyframes slideInRight{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:none}}
+@keyframes slideInLeft{from{opacity:0;transform:translateX(-40px)}to{opacity:1;transform:none}}
+
+/* ---------- DIVIDER ANIMÉ ---------- */
+.slide.s-divider{background:linear-gradient(135deg,#0a0a0a 0%,#1a0a0a 50%,#0a0a0a 100%)!important;background-size:400% 400%!important;animation:dividerPulse 6s ease infinite}
+@keyframes dividerPulse{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+.s-divider .title::after{content:'';display:block;height:3px;background:var(--red);width:0;margin-top:.5rem;animation:lineGrow 1s .3s ease forwards}
+@keyframes lineGrow{to{width:80px}}
+
+/* ---------- SPOTLIGHT ---------- */
+#spotlight{position:fixed;inset:0;pointer-events:none;z-index:500;background:radial-gradient(circle 90px at var(--mx,50%) var(--my,50%),transparent 0%,rgba(0,0,0,.75) 100%)}
+#spotlight.on{display:block!important}
+
+/* ---------- BARRE PROGRESSION ---------- */
+#bar-num{position:absolute;right:8px;top:50%;transform:translateY(-50%);font-size:11px;font-weight:700;color:#1a1a1a;cursor:pointer;font-family:var(--ui);background:rgba(255,210,0,.9);padding:2px 8px;border-radius:10px}
+
+/* ---------- PRES NEXT ---------- */
+#pres-next{background:#111;border:1px solid #333;border-left:4px solid var(--yellow);padding:12px 16px;font-family:var(--ui);margin-top:8px}
+.pn-label{font-size:10px;color:#555;letter-spacing:.15em;text-transform:uppercase;margin-bottom:6px}
+.pn-type{font-size:10px;color:var(--yellow);text-transform:uppercase;letter-spacing:.1em}
+.pn-title{font-size:15px;color:#ddd;font-weight:700;margin-top:4px;line-height:1.3}
+
+/* ---------- PRINT AMÉLIORÉ ---------- */
+@media print{
+  #bar,#ctrl,#brand,#count,#notes,#ov,#ovhead,#help,#spotlight,#back-top,#inktools,#pres,#btn-print-float{display:none!important}
+  .slide{display:block!important;position:relative!important;width:100vw!important;height:100vh!important;page-break-after:always;break-after:page;opacity:1!important;transform:none!important}
+  .slide:not(.active){display:block!important}
+}
 </style>
 </head>
 <body>
-<div id="bar"><i></i></div>
+<div id="bar"><i></i><span id="bar-num" title="Voir toutes les diapositives">1 / 1</span></div>
+<div id="spotlight" style="display:none"></div>
 <div id="deck"></div>
 <div id="brand">CGT</div>
 <div class="hud" id="count"><b>01</b> / 41</div>
@@ -294,6 +335,7 @@ h1,h2{font-family:var(--disp);font-weight:400;line-height:.98;letter-spacing:.01
   <button class="cb" id="bInk" title="Stylo / surligneur (A)">✎</button>
   <button class="cb" id="bPres" title="Mode présentateur (P)">⧉</button>
   <button class="cb" id="bHelp" title="Aide (?)">?</button>
+  <button class="cb" id="bPdf" title="Exporter en PDF (Ctrl+P)">⬇</button>
 </div>
 <div id="notes"><div id="notes-head"><span class="n-label">Notes du formateur</span><span class="n-slide" id="notes-slide-num"></span><button id="notes-close" onclick="toggleNotes()" title="Fermer (N)">✕</button></div><div id="notes-body"><div class="nbody"></div></div></div>
 <canvas id="ink"></canvas>
@@ -318,6 +360,7 @@ h1,h2{font-family:var(--disp);font-weight:400;line-height:.98;letter-spacing:.01
     <dt><kbd>F</kbd></dt><dd>Plein écran (projecteur)</dd>
     <dt><kbd>Début</kbd> <kbd>Fin</kbd></dt><dd>Première / dernière diapo</dd>
     <dt><kbd>Échap</kbd></dt><dd>Fermer un panneau</dd>
+    <dt><kbd>L</kbd></dt><dd>Spotlight / pointeur laser</dd>
   </dl>
   <div class="x">Astuce projecteur : appuyez sur <b>F</b> pour le plein écran. Fichier 100 % hors-ligne et privé.</div>
 </div></div>
@@ -912,10 +955,19 @@ function renderSlide(s,i){
     ${ctxHtml}
     <ul class="bullets case-q reveal">${qs}</ul>
     <div class="timer reveal" data-min="${s.minutes}">
-      <span class="tmr-display">${s.minutes}:00</span>
-      <button class="tbtn t-start">Démarrer ${s.minutes} min</button>
-      <button class="tbtn ghost t-reset">Réinitialiser</button>
-    </div>`;}
+  <svg class="timer-ring" viewBox="0 0 100 100">
+    <circle cx="50" cy="50" r="42" fill="none" stroke="#333" stroke-width="6"/>
+    <circle cx="50" cy="50" r="42" fill="none" stroke="var(--yellow)" stroke-width="6"
+      stroke-dasharray="264" stroke-dashoffset="0" stroke-linecap="round"
+      transform="rotate(-90 50 50)" class="timer-arc"/>
+    <text x="50" y="44" text-anchor="middle" fill="white" font-family="var(--disp)" font-size="22" font-weight="bold" class="timer-min">${s.minutes}</text>
+    <text x="50" y="60" text-anchor="middle" fill="#888" font-family="var(--ui)" font-size="10">min</text>
+  </svg>
+  <div style="display:flex;flex-direction:column;gap:.6rem">
+    <button class="tbtn t-start">▶ Démarrer ${s.minutes} min</button>
+    <button class="tbtn ghost t-reset">↺ Réinitialiser</button>
+  </div>
+</div>`;}
   else if(s.type==="quiz"){cls+=" s-quiz-slide";
     const opts=s.options.map((o,k)=>`<button class="opt" data-good="${o.correct?1:0}"><span class="k">${"ABCDE"[k]}</span>${o.t}</button>`).join("");
     inner=`${kicker("Quiz")}<h2 class="title reveal">${s.title}</h2>
@@ -943,22 +995,41 @@ let idx=0;
 /* counters */
 function runCounters(sl){
   sl.querySelectorAll(".num[data-v]").forEach(el=>{
+    if(el.dataset.animated==="1")return;
+    el.dataset.animated="1";
     const v=+el.dataset.v, p=el.dataset.p||"", suf=el.dataset.s||"";
-    const dur=900, t0=performance.now();
-    function step(t){let k=Math.min(1,(t-t0)/dur);k=1-Math.pow(1-k,3);
-      const val=Math.round(v*k);el.textContent=p+val.toLocaleString("fr-FR")+suf;
-      if(k<1)requestAnimationFrame(step);}
+    const dur=1200, t0=performance.now();
+    function step(t){
+      const elapsed=t-t0;
+      let k=Math.min(1,Math.sqrt(elapsed/dur));
+      const val=Math.round(v*k);
+      el.textContent=p+val.toLocaleString("fr-FR")+suf;
+      if(k<1)requestAnimationFrame(step);
+    }
     requestAnimationFrame(step);
   });
 }
 
 function setActive(n){
   n=Math.max(0,Math.min(TOT-1,n));
-  slides[idx].classList.remove("active");
+  const prevIdx=idx;
+  const prevSl=slides[idx];
+  const forward=n>prevIdx;
+  prevSl.classList.remove("active");
+  if(prevIdx!==n){
+    prevSl.classList.add(forward?"leaving-left":"leaving-right");
+    setTimeout(()=>prevSl.classList.remove("leaving-left","leaving-right"),300);
+  }
   idx=n;
-  const sl=slides[idx]; sl.classList.add("active");
+  const sl=slides[idx];
+  if(prevIdx!==n){
+    sl.classList.add(forward?"entering-right":"entering-left");
+    setTimeout(()=>sl.classList.remove("entering-right","entering-left"),300);
+  }
+  sl.classList.add("active");
   document.getElementById("count").innerHTML=`<b>${String(idx+1).padStart(2,"0")}</b> / ${TOT}`;
   document.querySelector("#bar i").style.width=((idx)/(TOT-1)*100)+"%";
+  const bn=document.getElementById("bar-num");if(bn)bn.textContent=(idx+1)+" / "+TOT;
   // dark UI count color
   document.getElementById("count").style.color = sl.classList.contains("dark") ? "#fff" : "";
   document.getElementById("brand").style.opacity = sl.classList.contains("s-closing")?".0":"1";
@@ -989,19 +1060,38 @@ function toggleOv(){ov.classList.toggle("show");}
 
 /* timer */
 let timerInt=null;
+const CIRC=264;
 function resetTimer(sl){
   if(timerInt){clearInterval(timerInt);timerInt=null;}
-  const tm=sl.querySelector(".timer");if(!tm)return;
-  const min=+tm.dataset.min;const d=tm.querySelector(".tmr-display");
-  d.textContent=min+":00";d.classList.remove("run","done");
+  const tm=sl?sl.querySelector(".timer"):null;if(!tm)return;
+  const min=+tm.dataset.min;
+  const arc=tm.querySelector(".timer-arc");
+  const minEl=tm.querySelector(".timer-min");
+  if(arc){arc.style.strokeDashoffset="0";arc.style.stroke="var(--yellow)";}
+  if(minEl){minEl.textContent=min;minEl.setAttribute("fill","white");}
 }
 deck.addEventListener("click",e=>{
   const start=e.target.closest(".t-start"), reset=e.target.closest(".t-reset");
   const opt=e.target.closest(".opt");
-  if(start){const tm=start.closest(".timer");const d=tm.querySelector(".tmr-display");
-    let sec=+tm.dataset.min*60;if(timerInt)clearInterval(timerInt);d.classList.add("run");d.classList.remove("done");
-    timerInt=setInterval(()=>{sec--;const m=Math.floor(sec/60),s=sec%60;d.textContent=m+":"+String(s).padStart(2,"0");
-      if(sec<=0){clearInterval(timerInt);timerInt=null;d.classList.remove("run");d.classList.add("done");d.textContent="Temps !";}},1000);}
+  if(start){
+    const tm=start.closest(".timer");
+    const arc=tm.querySelector(".timer-arc");
+    const minEl=tm.querySelector(".timer-min");
+    let sec=+tm.dataset.min*60;const total=sec;
+    if(timerInt)clearInterval(timerInt);
+    let elapsed=0;
+    timerInt=setInterval(()=>{
+      elapsed++;sec--;
+      const m=Math.floor(sec/60),s=sec%60;
+      if(minEl){minEl.textContent=m+":"+String(s).padStart(2,"0");minEl.setAttribute("fill",sec<60?"#E2001A":"white");}
+      if(arc){
+        const offset=CIRC*(1-elapsed/total);
+        arc.style.strokeDashoffset=offset;
+        arc.style.stroke=sec<60?"#E2001A":"var(--yellow)";
+      }
+      if(sec<=0){clearInterval(timerInt);timerInt=null;if(minEl){minEl.textContent="0:00";minEl.setAttribute("fill","#E2001A");}}
+    },1000);
+  }
   if(reset){const tm=reset.closest(".timer");resetTimer(tm.closest(".slide"));}
   if(opt){const wrap=opt.closest(".opts");wrap.querySelectorAll(".opt").forEach(o=>{o.classList.add(+o.dataset.good?"good":"bad");});
     const a=opt.closest(".slide").querySelector(".quiz-a");if(a)a.classList.add("show");}
@@ -1017,6 +1107,12 @@ document.getElementById("bOv").onclick=toggleOv;
 document.getElementById("bNotes").onclick=toggleNotes;
 document.getElementById("bFull").onclick=toggleFull;
 document.getElementById("bHelp").onclick=()=>document.getElementById("help").classList.toggle("show");
+document.getElementById("bPdf").onclick=()=>window.print();
+const barNum=document.getElementById("bar-num");if(barNum)barNum.onclick=toggleOv;
+
+/* spotlight */
+const spot=document.getElementById("spotlight");
+document.addEventListener("mousemove",e=>{if(spot&&spot.classList.contains("on")){spot.style.setProperty("--mx",e.clientX+"px");spot.style.setProperty("--my",e.clientY+"px");}});
 
 /* keyboard */
 addEventListener("keydown",e=>{
@@ -1029,6 +1125,7 @@ addEventListener("keydown",e=>{
   else if(k==="o"||k==="O"){toggleOv();}
   else if(k==="n"||k==="N"){toggleNotes();}
   else if(k==="?"){document.getElementById("help").classList.toggle("show");}
+  else if(k==="l"||k==="L"){if(spot)spot.classList.toggle("on");}
   else if(k==="Escape"){ov.classList.remove("show");notesEl.classList.remove("show");document.getElementById("help").classList.remove("show");}
 });
 
@@ -1140,10 +1237,10 @@ body{background:#0d0d0d;color:#e8e8e8;font-family:'Archivo',Arial,sans-serif;dis
  <div class="col-right">
   <div class="label">Notes du formateur</div>
   <div class="notes-area"><div class="nbody" id="pno">—</div></div>
-  <div class="next-box">
-   <div class="next-label">Diapo suivante</div>
-   <div class="next-title" id="pn">—</div>
-   <div class="next-type" id="pnt"></div>
+  <div id="pres-next" class="next-box">
+   <div class="pn-label next-label">DIAPO SUIVANTE</div>
+   <div class="pn-type next-type" id="pn-type"></div>
+   <div class="pn-title next-title" id="pn-title">—</div>
   </div>
  </div>
 </div>

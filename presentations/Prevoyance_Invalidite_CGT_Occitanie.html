@@ -224,10 +224,45 @@ h1,h2{font-family:var(--disp);font-weight:400;line-height:.98;letter-spacing:.01
   .steps.n3,.steps.n4{grid-template-columns:1fr 1fr} .opts{grid-template-columns:1fr}
   .slide{padding:8vh 8vw}
 }
+/* ---- 1. Circular timer ---- */
+.timer-ring{width:clamp(80px,10vw,120px);height:clamp(80px,10vw,120px);flex-shrink:0}
+.timer-arc{transition:stroke-dashoffset 1s linear}
+/* ---- 3. Directional transitions ---- */
+@keyframes slideOutLeft{to{opacity:0;transform:translateX(-40px)}}
+@keyframes slideInRight{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:none}}
+@keyframes slideOutRight{to{opacity:0;transform:translateX(40px)}}
+@keyframes slideInLeft{from{opacity:0;transform:translateX(-40px)}to{opacity:1;transform:none}}
+.slide.leave-left{animation:slideOutLeft .28s ease forwards}
+.slide.enter-right{animation:slideInRight .28s ease forwards}
+.slide.leave-right{animation:slideOutRight .28s ease forwards}
+.slide.enter-left{animation:slideInLeft .28s ease forwards}
+/* ---- 4. Divider animated ---- */
+.s-divider{background:linear-gradient(135deg,#0a0a0a 0%,#1a0a0a 50%,#0a0a0a 100%)!important;background-size:400% 400%!important;animation:divPulse 6s ease infinite}
+@keyframes divPulse{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+.s-divider .title::after{content:'';display:block;height:3px;background:var(--red);width:0;margin-top:.5rem;animation:lineGrow 1s .3s ease forwards}
+@keyframes lineGrow{to{width:80px}}
+/* ---- 5. Spotlight ---- */
+#spotlight{position:fixed;inset:0;pointer-events:none;z-index:500;display:none}
+#spotlight.on{display:block;background:radial-gradient(circle 90px at var(--mx,50%) var(--my,50%),transparent 0%,rgba(0,0,0,.75) 100%)}
+/* ---- 6. Bar num badge ---- */
+#bar-num{position:fixed;top:8px;right:10px;z-index:51;background:var(--yellow);color:var(--ink);font-family:var(--ui);font-weight:800;font-size:12px;padding:2px 10px;border-radius:20px;cursor:pointer;letter-spacing:.04em}
+/* ---- 8. Print ---- */
+@media print{
+  @page{size:landscape;margin:0}
+  html,body{height:auto!important;overflow:visible!important;background:#fff!important}
+  #bar,#bar-num,#ctrl,#brand,#count,#notes,#ov,#ovhead,#help,#inktools,#spotlight,#btn-print-float{display:none!important}
+  #deck{position:static!important}
+  .slide{position:relative!important;top:auto!important;left:auto!important;right:auto!important;bottom:auto!important;
+    opacity:1!important;visibility:visible!important;transform:none!important;height:100vh!important;
+    page-break-after:always;break-after:page}
+  .reveal{animation:none!important;opacity:1!important;transform:none!important}
+  .quiz-a{opacity:1!important}
+}
 </style>
 </head>
 <body>
 <div id="bar"><i></i></div>
+<span id="bar-num" onclick="buildOv();document.getElementById('ov').classList.toggle('show')">1 / 1</span>
 <div id="deck"></div>
 <div id="brand">CGT</div>
 <div class="hud" id="count"><b>01</b> / 30</div>
@@ -239,6 +274,7 @@ h1,h2{font-family:var(--disp);font-weight:400;line-height:.98;letter-spacing:.01
   <button class="cb" id="bFull" title="Plein écran (F)">&#9974;</button>
   <button class="cb" id="bInk" title="Stylo (A)">&#9998;</button>
   <button class="cb" id="bPres" title="Mode présentateur (P)">&#10697;</button>
+  <button class="cb" id="bPrint" title="Exporter PDF (Impr.)" onclick="window.print()">&#8659;</button>
   <button class="cb" id="bHelp" title="Aide (?)">?</button>
 </div>
 <div id="notes"><div id="notes-head"><span class="n-label">Notes du formateur</span><span class="n-slide" id="notes-slide-num"></span><button id="notes-close" onclick="toggleNotes()" title="Fermer (N)">✕</button></div><div id="notes-body"><div class="nbody"></div></div></div>
@@ -642,10 +678,19 @@ function buildSlide(s,i){
     const corrigeBlock=crItems?`
       <button class="btn-corrige" onclick="const c=this.nextElementSibling;c.classList.toggle('show');this.textContent=c.classList.contains('show')?'▲ Masquer le corrigé':'▼ Voir le corrigé'">▼ Voir le corrigé</button>
       <div class="case-corrige"><div class="cr-title">Corrigé détaillé</div><ol>${crItems}</ol></div>`:'';
-    const timerBlock=s.minutes>0?`<div class="timer">
-        <div class="tmr-display" id="tmr${i}">0:00</div>
-        <button class="tbtn" id="ts${i}">Démarrer</button>
-        <button class="tbtn ghost" id="tr${i}">Reset</button>
+    const timerBlock=s.minutes>0?`<div class="timer reveal" data-min="${s.minutes}">
+        <svg class="timer-ring" viewBox="0 0 100 100">
+          <circle cx="50" cy="50" r="42" fill="none" stroke="#333" stroke-width="6"/>
+          <circle cx="50" cy="50" r="42" fill="none" stroke="var(--yellow)" stroke-width="6"
+            stroke-dasharray="264" stroke-dashoffset="0" stroke-linecap="round"
+            transform="rotate(-90 50 50)" class="timer-arc" id="tarc${i}"/>
+          <text x="50" y="44" text-anchor="middle" fill="white" font-family="var(--disp,Anton)" font-size="22" font-weight="bold" class="timer-min" id="tmin${i}">${s.minutes}</text>
+          <text x="50" y="60" text-anchor="middle" fill="#888" font-family="var(--ui,sans-serif)" font-size="10">min</text>
+        </svg>
+        <div style="display:flex;flex-direction:column;gap:.6rem">
+          <button class="tbtn t-start" id="ts${i}">▶ Démarrer ${s.minutes} min</button>
+          <button class="tbtn ghost t-reset" id="tr${i}">↺ Réinitialiser</button>
+        </div>
       </div>`:'';
     div.innerHTML=`
       <div class="kicker reveal"><span class="dot"></span>Cas pratique · ${s.minutes>0?s.minutes+' min':''}</div>
@@ -654,18 +699,34 @@ function buildSlide(s,i){
       <ul class="case-q bullets reveal" style="margin-top:1.2vh">${qs}</ul>
       ${corrigeBlock}${timerBlock}`;
     if(s.minutes>0) setTimeout(()=>{
-      const disp=div.querySelector(`#tmr${i}`);
+      const arc=div.querySelector(`#tarc${i}`);
+      const minTxt=div.querySelector(`#tmin${i}`);
       const startBtn=div.querySelector(`#ts${i}`);
       const resetBtn=div.querySelector(`#tr${i}`);
-      let sec=s.minutes*60, running=false, intv=null;
+      const total=s.minutes*60;
+      let sec=total, running=false, intv=null;
       const fmt=t=>`${Math.floor(t/60)}:${String(t%60).padStart(2,'0')}`;
-      disp.textContent=fmt(sec);
+      const updateArc=()=>{
+        const offset=264*(1-sec/total);
+        arc.style.strokeDashoffset=offset;
+        arc.style.stroke=sec<=60?'var(--red)':'var(--yellow)';
+        minTxt.textContent=sec>0?fmt(sec):'0:00';
+        minTxt.setAttribute('fill',sec<=60?'var(--red)':'white');
+      };
+      updateArc();
       startBtn.addEventListener('click',()=>{
-        if(!running){running=true;startBtn.textContent='Pause';disp.classList.add('run');
-          intv=setInterval(()=>{if(sec>0){sec--;disp.textContent=fmt(sec);}else{clearInterval(intv);disp.classList.remove('run');disp.classList.add('done');startBtn.textContent='Terminé';}},1000);
-        } else {clearInterval(intv);running=false;startBtn.textContent='Reprendre';disp.classList.remove('run');}
+        if(!running){
+          running=true;startBtn.textContent='⏸ Pause';
+          intv=setInterval(()=>{
+            if(sec>0){sec--;updateArc();}
+            else{clearInterval(intv);running=false;startBtn.textContent='✓ Terminé';}
+          },1000);
+        } else {clearInterval(intv);running=false;startBtn.textContent='▶ Reprendre';}
       });
-      resetBtn.addEventListener('click',()=>{clearInterval(intv);running=false;sec=s.minutes*60;disp.textContent=fmt(sec);disp.classList.remove('run','done');startBtn.textContent='Démarrer';});
+      resetBtn.addEventListener('click',()=>{
+        clearInterval(intv);running=false;sec=total;updateArc();
+        startBtn.textContent=`▶ Démarrer ${s.minutes} min`;
+      });
     },100);
   } else if(s.type==='closing'){
     div.innerHTML=`
@@ -681,25 +742,48 @@ SLIDES.forEach((s,i)=>deck.appendChild(buildSlide(s,i)));
 const allSlides=deck.querySelectorAll('.slide');
 
 function goTo(n){
-  allSlides[cur].classList.remove('active');
-  cur=Math.max(0,Math.min(n,SLIDES.length-1));
-  allSlides[cur].classList.add('active');
+  const newIdx=Math.max(0,Math.min(n,SLIDES.length-1));
+  if(newIdx===cur) return;
+  const dir=newIdx>cur?1:-1;
+  const oldSlide=allSlides[cur];
+  const newSlide=allSlides[newIdx];
+  // directional transitions
+  oldSlide.classList.add(dir>0?'leave-left':'leave-right');
+  newSlide.classList.add(dir>0?'enter-right':'enter-left');
+  newSlide.classList.add('active');
+  setTimeout(()=>{
+    oldSlide.classList.remove('active','leave-left','leave-right');
+    newSlide.classList.remove('enter-right','enter-left');
+  },300);
+  cur=newIdx;
   countEl.innerHTML=`<b>${String(cur+1).padStart(2,'0')}</b> / ${SLIDES.length}`;
   barFill.style.width=`${((cur+1)/SLIDES.length)*100}%`;
+  const barNum=document.getElementById('bar-num');
+  if(barNum) barNum.textContent=`${cur+1} / ${SLIDES.length}`;
   notesBody.innerHTML=(SLIDES[cur].notes||'<em>Aucune note pour cette diapositive.</em>').replace(/\n/g,'<br>');
-  // counter anim
-  allSlides[cur].querySelectorAll('[data-val]').forEach(el=>{
+  document.getElementById('notes-slide-num').textContent=`Diapo ${cur+1}`;
+  // counter anim (stats)
+  allSlides[cur].querySelectorAll('[data-val]:not([data-animated])').forEach(el=>{
+    el.dataset.animated='1';
     const target=+el.dataset.val, pre=el.dataset.pre||'', suf=el.dataset.suf||'';
     let start=null;
-    function step(ts){if(!start)start=ts;const p=Math.min((ts-start)/900,1);el.textContent=pre+Math.floor(p*target)+suf;if(p<1)requestAnimationFrame(step);}
+    function step(ts){
+      if(!start)start=ts;
+      const p=Math.min((ts-start)/1200,1);
+      const val=Math.floor(Math.sqrt(p)*target);
+      el.textContent=pre+val.toLocaleString('fr-FR')+suf;
+      if(p<1)requestAnimationFrame(step);
+    }
     requestAnimationFrame(step);
   });
   // localStorage
   try{localStorage.setItem('cgt-prev-slide',cur);}catch(e){}
 }
 
+// init bar-num
+(()=>{const bn=document.getElementById('bar-num');if(bn)bn.textContent=`1 / ${SLIDES.length}`;})();
 // resume
-try{const saved=localStorage.getItem('cgt-prev-slide');if(saved!==null)goTo(+saved);else goTo(0);}catch(e){goTo(0);}
+try{const saved=localStorage.getItem('cgt-prev-slide');if(saved!==null&&+saved>0)goTo(+saved);else{allSlides[0].classList.add('active');countEl.innerHTML=`<b>01</b> / ${SLIDES.length}`;barFill.style.width=`${(1/SLIDES.length)*100}%`;notesBody.innerHTML=(SLIDES[0].notes||'').replace(/\n/g,'<br>');}}catch(e){allSlides[0].classList.add('active');}
 
 // Overview
 function buildOv(){
@@ -727,6 +811,7 @@ document.addEventListener('keydown',e=>{
   else if(e.key.toLowerCase()==='n'){notesEl.classList.toggle('show');}
   else if(e.key.toLowerCase()==='f'){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen();}
   else if(e.key.toLowerCase()==='a'){toggleInk();}
+  else if(e.key.toLowerCase()==='l'){document.getElementById('spotlight').classList.toggle('on');}
   else if(e.key.toLowerCase()==='p'){openPresenter();}
   else if(e.key==='Escape'){ovEl.classList.remove('show');notesEl.classList.remove('show');document.getElementById('help').classList.remove('show');if(inkOn)toggleInk();}
   else if(e.key==='?'){document.getElementById('help').classList.toggle('show');}
