@@ -81,7 +81,7 @@
     style.textContent = [
       '.ticker-wrap{background:#E2001A;color:#fff;height:32px;overflow:hidden;',
       'display:flex;align-items:center;font-size:.78rem;font-family:"Inter",sans-serif;',
-      'position:relative;z-index:100;flex-shrink:0}',
+      'position:fixed;bottom:0;left:0;right:0;z-index:9000;}',
       '.ticker-label{background:#FFD200;color:#0F0F0F;font-weight:700;',
       'padding:0 12px;height:100%;display:flex;align-items:center;',
       'white-space:nowrap;font-size:.72rem;letter-spacing:.5px;text-transform:uppercase;flex-shrink:0}',
@@ -110,19 +110,13 @@
     var el = document.createElement('div');
     el.className = 'ticker-wrap';
     el.innerHTML = [
-      '<div class="ticker-label">CGT 2025</div>',
+      '<div class="ticker-label">CGT 2026</div>',
       '<div class="ticker-track">',
       '  <div class="ticker-inner">' + items + '</div>',
       '</div>'
     ].join('');
 
-    // Insérer avant le premier élément du body (après le loader)
-    var ref = document.querySelector('.cgt-loader');
-    if (ref && ref.nextSibling) {
-      document.body.insertBefore(el, ref.nextSibling);
-    } else {
-      document.body.insertBefore(el, document.body.firstChild);
-    }
+    document.body.appendChild(el);
   }
 
   /* ── 4. Footer commun ──────────────────────────────────── */
