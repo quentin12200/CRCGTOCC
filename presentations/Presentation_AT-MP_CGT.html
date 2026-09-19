@@ -1272,14 +1272,19 @@ function updatePresenter(){
   d.getElementById("pb").innerHTML=cur.body;
   d.getElementById("pno").innerHTML=SLIDES[idx].notes||"<i style='color:#555'>Aucune note pour cette diapo.</i>";
   d.getElementById("pc").textContent=String(idx+1).padStart(2,"0")+" / "+TOT;
+  const typeLabels={content:"Contenu",stats:"Chiffres",steps:"Étapes",two:"Comparaison",callout:"Point clé",def:"Définition",case:"Atelier",quiz:"Quiz",divider:"Séquence",svg:"Schéma",closing:"Clôture",title:"Titre"};
   if(idx<TOT-1){
-    const nx=plain(SLIDES[idx+1]);
-    d.getElementById("pn").textContent=nx.T;
-    const typeLabels={content:"Contenu",stats:"Statistiques",steps:"Étapes",two:"Comparatif",callout:"Point clé",def:"Définition",case:"Atelier pratique",quiz:"Quiz",divider:"Séparateur de séquence",svg:"Schéma",closing:"Clôture",title:"Titre"};
-    d.getElementById("pnt").textContent=typeLabels[SLIDES[idx+1].type]||SLIDES[idx+1].type;
+    const ns=SLIDES[idx+1];
+    const nx=plain(ns);
+    const pnTitle=d.getElementById("pn-title");
+    const pnType=d.getElementById("pn-type");
+    if(pnTitle)pnTitle.textContent=nx.T;
+    if(pnType)pnType.textContent=typeLabels[ns.type]||ns.type;
   } else {
-    d.getElementById("pn").textContent="— Fin de la présentation —";
-    d.getElementById("pnt").textContent="";
+    const pnTitle=d.getElementById("pn-title");
+    const pnType=d.getElementById("pn-type");
+    if(pnTitle)pnTitle.textContent="— Fin de la présentation —";
+    if(pnType)pnType.textContent="";
   }
 }
 document.getElementById("bPres").onclick=openPresenter;
