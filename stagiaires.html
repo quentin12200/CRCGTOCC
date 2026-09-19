@@ -42,17 +42,17 @@
       animation: bgShift 18s ease infinite;
       pointer-events: none;
     }
-    /* Light : dégradé chaud crème/blanc/rose pâle */
+    /* Light : taches rouge/jaune CGT bien visibles */
     :root:not([data-theme="dark"]) body::before {
-      background-image: radial-gradient(ellipse at 20% 20%, #FFF0E8 0%, transparent 55%),
-        radial-gradient(ellipse at 80% 80%, #FFE8E8 0%, transparent 55%),
-        radial-gradient(ellipse at 50% 50%, #F5F4F0 0%, #FAFAF7 100%);
+      background-image: radial-gradient(ellipse at 20% 20%, rgba(226,0,26,.18) 0%, transparent 45%),
+        radial-gradient(ellipse at 80% 80%, rgba(255,210,0,.22) 0%, transparent 45%),
+        radial-gradient(ellipse at 50% 50%, rgba(245,235,230,.9) 0%, rgba(255,252,248,.95) 100%);
     }
-    /* Dark : dégradé profond charbon/rouge sombre */
+    /* Dark : rouge profond lumineux */
     :root[data-theme="dark"] body::before {
-      background-image: radial-gradient(ellipse at 15% 25%, rgba(226,0,26,.18) 0%, transparent 50%),
-        radial-gradient(ellipse at 85% 75%, rgba(100,0,10,.25) 0%, transparent 50%),
-        radial-gradient(ellipse at 50% 50%, #0A0A0A 0%, #111010 100%);
+      background-image: radial-gradient(ellipse at 15% 25%, rgba(226,0,26,.45) 0%, transparent 45%),
+        radial-gradient(ellipse at 85% 75%, rgba(180,0,20,.35) 0%, transparent 45%),
+        radial-gradient(ellipse at 50% 50%, #0A0A0A 0%, #0F0F0F 100%);
     }
     @keyframes bgShift {
       0%,100% { background-position: 0% 50%; }
