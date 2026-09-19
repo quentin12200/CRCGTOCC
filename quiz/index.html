@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Quiz de formation — CGT Occitanie</title>
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/style.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --rouge: #E2001A; --rouge-dark: #C40017; --jaune: #FFD200; --fond: #0F0F0F; --texte: #FBFAF6; --texte-muted: #9A9A9A; --card-bg: #1A1A1A; --border: #2A2A2A; }
+    body { background: var(--fond); color: var(--texte); font-family: 'Inter', sans-serif; min-height: 100vh; display: flex; flex-direction: column; }
+    .topbar { background: var(--rouge); padding: .75rem 1.5rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+    .topbar-title { font-family: 'Anton', sans-serif; font-size: 1rem; letter-spacing: .05em; color: #fff; }
+    .topbar a { font-size: .72rem; color: rgba(255,255,255,.8); text-decoration: none; border: 1px solid rgba(255,255,255,.3); padding: .25rem .6rem; transition: background .15s; }
+    .topbar a:hover { background: rgba(255,255,255,.1); }
+    .stripe { height: 5px; background: var(--jaune); }
+
+    .hero { padding: 3rem 1.5rem 2rem; text-align: center; max-width: 700px; margin: 0 auto; }
+    .hero-badge { background: var(--rouge); color: var(--jaune); font-family: 'Anton', sans-serif; font-size: 1.8rem; padding: .6rem 1.2rem; display: inline-block; letter-spacing: .1em; margin-bottom: 1.5rem; }
+    .hero h1 { font-family: 'Anton', sans-serif; font-size: clamp(1.6rem, 4vw, 2.2rem); letter-spacing: .04em; margin-bottom: .75rem; }
+    .hero p { font-size: .95rem; color: var(--texte-muted); line-height: 1.7; max-width: 520px; margin: 0 auto; }
+
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem; max-width: 960px; margin: 2rem auto 3rem; padding: 0 1.5rem; }
+
+    .quiz-card { background: var(--card-bg); border: 1px solid var(--border); padding: 1.5rem; display: flex; flex-direction: column; gap: .75rem; transition: border-color .15s, transform .15s; text-decoration: none; color: inherit; }
+    .quiz-card:hover { border-color: var(--rouge); transform: translateY(-2px); }
+    .card-tag { font-size: .65rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--texte-muted); }
+    .card-num { font-family: 'Anton', sans-serif; font-size: 3rem; color: var(--rouge); line-height: 1; opacity: .25; position: absolute; top: 1rem; right: 1.25rem; }
+    .quiz-card { position: relative; overflow: hidden; }
+    .card-title { font-family: 'Anton', sans-serif; font-size: 1.15rem; letter-spacing: .03em; line-height: 1.3; padding-right: 2rem; }
+    .card-desc { font-size: .82rem; color: var(--texte-muted); line-height: 1.6; }
+    .card-meta { display: flex; gap: .5rem; flex-wrap: wrap; }
+    .card-meta span { font-size: .7rem; border: 1px solid var(--border); padding: .2rem .55rem; color: var(--texte-muted); }
+    .card-cta { margin-top: auto; display: flex; align-items: center; gap: .4rem; font-size: .8rem; font-weight: 700; color: var(--rouge); letter-spacing: .06em; text-transform: uppercase; }
+    .card-cta svg { transition: transform .15s; }
+    .quiz-card:hover .card-cta svg { transform: translateX(3px); }
+
+    .back-link { text-align: center; padding: 0 0 2.5rem; }
+    .back-link a { font-size: .8rem; color: var(--texte-muted); text-decoration: none; border: 1px solid var(--border); padding: .6rem 1.25rem; transition: border-color .15s; }
+    .back-link a:hover { border-color: var(--rouge); color: var(--texte); }
+
+    @media (max-width: 480px) { .hero { padding: 2rem 1rem 1.5rem; } .grid { padding: 0 1rem; } }
+  </style>
+</head>
+<body>
+<script src="/assets/cgt-ui.js"></script>
+<script>if(localStorage.getItem('cgt_stagiaire_auth')!=='ok'&&localStorage.getItem('cgt_auth')!=='ok'){location.replace('/login-stagiaire.html?from='+encodeURIComponent(location.pathname));}</script>
+
+<div class="topbar">
+  <span class="topbar-title">Quiz de formation — CGT Occitanie</span>
+  <a href="/stagiaires.html">← Espace stagiaire</a>
+</div>
+<div class="stripe"></div>
+
+<div class="hero">
+  <div class="hero-badge">CGT</div>
+  <h1>Quiz interactifs<br>par module</h1>
+  <p>Testez vos connaissances sur chaque thème de la formation. 10 questions QCM par module, correction immédiate et explication après chaque réponse.</p>
+</div>
+
+<div class="grid">
+
+  <a class="quiz-card" href="/quiz/quiz-atmp.html">
+    <span class="card-num">1</span>
+    <div class="card-tag">Module 1</div>
+    <div class="card-title">AT/MP — Droits &amp; Réparation</div>
+    <div class="card-desc">Déclaration, IJ, rente, faute inexcusable, délais de prescription. Les fondamentaux du régime AT/MP du secteur privé.</div>
+    <div class="card-meta">
+      <span>10 questions</span>
+      <span>~7 min</span>
+      <span>Secteur privé</span>
+    </div>
+    <div class="card-cta">
+      Démarrer
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H4M10 2V8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+  </a>
+
+  <a class="quiz-card" href="/quiz/quiz-sst.html">
+    <span class="card-num">2</span>
+    <div class="card-tag">Module 2</div>
+    <div class="card-title">Prévention SST</div>
+    <div class="card-desc">DUER, droit de retrait, obligation de résultat, CSSCT, TMS, plan de prévention. Tout sur la santé et sécurité au travail.</div>
+    <div class="card-meta">
+      <span>10 questions</span>
+      <span>~7 min</span>
+      <span>Prévention</span>
+    </div>
+    <div class="card-cta">
+      Démarrer
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H4M10 2V8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+  </a>
+
+  <a class="quiz-card" href="/quiz/quiz-prevoyance.html">
+    <span class="card-num">3</span>
+    <div class="card-tag">Module 3</div>
+    <div class="card-title">Prévoyance &amp; Invalidité</div>
+    <div class="card-desc">Catégories d'invalidité, pensions, portabilité, maintien de salaire, IPP et prévoyance complémentaire collective.</div>
+    <div class="card-meta">
+      <span>10 questions</span>
+      <span>~7 min</span>
+      <span>Prévoyance</span>
+    </div>
+    <div class="card-cta">
+      Démarrer
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H4M10 2V8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+  </a>
+
+  <a class="quiz-card" href="/quiz/quiz-handicap.html">
+    <span class="card-num">4</span>
+    <div class="card-tag">Module 4</div>
+    <div class="card-title">Handicap &amp; Agefiph</div>
+    <div class="card-desc">RQTH, obligation d'emploi, Agefiph, MDPH, Cap Emploi, AAH et aménagements raisonnables. Les droits des travailleurs handicapés.</div>
+    <div class="card-meta">
+      <span>10 questions</span>
+      <span>~7 min</span>
+      <span>Handicap</span>
+    </div>
+    <div class="card-cta">
+      Démarrer
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H4M10 2V8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+  </a>
+
+  <a class="quiz-card" href="/quiz/quiz-fp.html">
+    <span class="card-num">5</span>
+    <div class="card-tag">Module 5</div>
+    <div class="card-title">AT/MP Fonction Publique</div>
+    <div class="card-desc">CAS, CITIS, CLM, ATI, comité médical, CNRACL. Les spécificités AT/MP des 3 versants de la fonction publique.</div>
+    <div class="card-meta">
+      <span>10 questions</span>
+      <span>~7 min</span>
+      <span>Fonction Publique</span>
+    </div>
+    <div class="card-cta">
+      Démarrer
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H4M10 2V8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+  </a>
+
+</div>
+
+<div class="back-link">
+  <a href="/stagiaires.html">← Retour à l'espace stagiaire</a>
+</div>
+
+</body>
+</html>
