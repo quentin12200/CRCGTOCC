@@ -824,6 +824,8 @@
 
 </div>
 
+<button id="back-top" aria-label="Retour en haut">↑</button>
+
 <script>
   // Highlight active sidebar link on scroll
   var sections = document.querySelectorAll('section.carnet-section');
@@ -848,6 +850,98 @@
 
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
+
+  // 1. BARRE DE PROGRESSION
+  var progressBar = document.getElementById('read-progress');
+  window.addEventListener('scroll', function() {
+    var pct = window.scrollY / (document.body.scrollHeight - window.innerHeight) * 100;
+    progressBar.style.width = Math.min(100, pct) + '%';
+  }, { passive: true });
+
+  // 2. COMPTEURS ANIMÉS
+  function animateCounter(el) {
+    var original = el.textContent.trim();
+    var numStr = original.replace(/\s/g, '').replace(/,/g, '');
+    var num = parseFloat(numStr);
+    if (isNaN(num) || el.dataset.counted === '1') return;
+    // Only animate pure numbers (with spaces/commas as thousand separators)
+    if (!/^[\d\s,]+$/.test(original)) return;
+    el.dataset.counted = '1';
+    var duration = 1500;
+    var start = null;
+    var isSpaced = /\s/.test(original); // uses space separators like "1 331"
+    function format(v) {
+      var rounded = Math.round(v);
+      if (isSpaced) {
+        return rounded.toLocaleString('fr-FR').replace(/ /g, ' ');
+      }
+      return rounded.toLocaleString('fr-FR');
+    }
+    function step(ts) {
+      if (!start) start = ts;
+      var elapsed = ts - start;
+      var progress = Math.min(1, Math.sqrt(elapsed / duration));
+      el.textContent = format(num * progress);
+      if (elapsed < duration) requestAnimationFrame(step);
+      else el.textContent = original;
+    }
+    requestAnimationFrame(step);
+  }
+
+  var counterObserver = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        animateCounter(entry.target);
+        counterObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.3 });
+
+  document.querySelectorAll('.mf-chiffre').forEach(function(el) {
+    var txt = el.textContent.trim();
+    if (/^[\d\s,]+$/.test(txt)) counterObserver.observe(el);
+  });
+
+  // 3. ANIMATIONS D'ENTRÉE AU SCROLL
+  var scrollEls = document.querySelectorAll('.developpement, .cas-pratique, .point-syndical');
+  var entryObserver = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        entryObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  scrollEls.forEach(function(el) { entryObserver.observe(el); });
+
+  // 4. DARK MODE TOGGLE
+  var darkBtn = document.getElementById('dark-toggle');
+  function applyTheme(dark) {
+    if (dark) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+      darkBtn.textContent = '☀️';
+    } else {
+      document.documentElement.removeAttribute('data-theme');
+      darkBtn.textContent = '🌙';
+    }
+  }
+  // Init icon
+  applyTheme(document.documentElement.getAttribute('data-theme') === 'dark');
+
+  darkBtn.addEventListener('click', function() {
+    var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    try { localStorage.setItem('cgt_theme', isDark ? '' : 'dark'); } catch(e) {}
+    applyTheme(!isDark);
+  });
+
+  // 5. BOUTON RETOUR EN HAUT
+  var backTop = document.getElementById('back-top');
+  window.addEventListener('scroll', function() {
+    backTop.classList.toggle('visible', window.scrollY > 400);
+  }, { passive: true });
+  backTop.addEventListener('click', function() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
 </script>
 
 </body>
