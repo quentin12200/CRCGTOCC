@@ -14,14 +14,51 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
       --rouge: #E2001A; --rouge-dark: #C40017; --jaune: #FFD200;
-      --fond: #F5F4F0; --fond-card: #FFFFFF; --texte: #1A1A1A;
+      --fond: #F0EFEB; --fond-card: #FFFFFF; --texte: #1A1A1A;
       --texte-muted: #6B6B6B; --border: #E0DED8; --border-card: #E8E6E0;
     }
     :root[data-theme="dark"] {
-      --fond: #0F0F0F; --fond-card: #1A1A1A; --texte: #E8E6E0;
-      --texte-muted: #999; --border: #2C2C2C; --border-card: #2A2A2A;
+      --fond: #0A0A0A; --fond-card: #161616; --texte: #E8E6E0;
+      --texte-muted: #999; --border: #2C2C2C; --border-card: #242424;
     }
-    body { background: var(--fond); color: var(--texte); font-family: 'Archivo', sans-serif; min-height: 100vh; display: flex; flex-direction: column; transition: background .3s, color .3s; }
+
+    /* ── Fond dynamique animé ── */
+    body {
+      color: var(--texte);
+      font-family: 'Archivo', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      transition: color .3s;
+      position: relative;
+      background: var(--fond);
+    }
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      background-size: 300% 300%;
+      animation: bgShift 18s ease infinite;
+      pointer-events: none;
+    }
+    /* Light : dégradé chaud crème/blanc/rose pâle */
+    :root:not([data-theme="dark"]) body::before {
+      background-image: radial-gradient(ellipse at 20% 20%, #FFF0E8 0%, transparent 55%),
+        radial-gradient(ellipse at 80% 80%, #FFE8E8 0%, transparent 55%),
+        radial-gradient(ellipse at 50% 50%, #F5F4F0 0%, #FAFAF7 100%);
+    }
+    /* Dark : dégradé profond charbon/rouge sombre */
+    :root[data-theme="dark"] body::before {
+      background-image: radial-gradient(ellipse at 15% 25%, rgba(226,0,26,.18) 0%, transparent 50%),
+        radial-gradient(ellipse at 85% 75%, rgba(100,0,10,.25) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 50%, #0A0A0A 0%, #111010 100%);
+    }
+    @keyframes bgShift {
+      0%,100% { background-position: 0% 50%; }
+      33%      { background-position: 100% 0%; }
+      66%      { background-position: 50% 100%; }
+    }
 
     header {
       background: var(--rouge);
@@ -203,6 +240,9 @@
   (function(){
     var t = localStorage.getItem('cgt_theme');
     if(t === 'dark') document.documentElement.setAttribute('data-theme','dark');
+    else if(t === 'light') document.documentElement.setAttribute('data-theme','light');
+    else if(window.matchMedia('(prefers-color-scheme: dark)').matches)
+      document.documentElement.setAttribute('data-theme','dark');
   })();
 </script>
 <script>if(localStorage.getItem('cgt_stagiaire_auth')!=='ok'&&localStorage.getItem('cgt_auth')!=='ok'){location.replace('/login-stagiaire.html?from='+encodeURIComponent(location.pathname));}</script>
@@ -618,7 +658,7 @@
   toggle.addEventListener('click', function() {
     var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
     if (isDark) {
-      document.documentElement.removeAttribute('data-theme');
+      document.documentElement.setAttribute('data-theme', 'light');
       localStorage.setItem('cgt_theme', 'light');
     } else {
       document.documentElement.setAttribute('data-theme', 'dark');
