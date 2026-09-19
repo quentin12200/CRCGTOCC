@@ -143,64 +143,99 @@
 <script>
 const QUESTIONS = [
   {
-    q: "Le taux d'emploi obligatoire de travailleurs handicapés dans les entreprises est de :",
-    choices: ["4 %", "6 %", "8 %", "10 %"],
-    correct: 1,
-    explication: "La loi impose un taux d'emploi de <strong>6 %</strong> de travailleurs handicapés (BOETH) dans tout établissement d'au moins 20 salariés (art. L.5212-2 C. trav.). À défaut, l'employeur verse une contribution à l'Agefiph."
+    q: "Selon la vision moderne, quand une situation de handicap apparaît-elle pour une personne ?",
+    choices: [
+      "Quand la personne refuse d'utiliser des aides techniques.",
+      "Uniquement lors de la naissance ou suite à un accident grave.",
+      "Lorsque l'environnement n'est pas adapté aux capacités de la personne.",
+      "Dès qu'un diagnostic médical est posé par un spécialiste."
+    ],
+    correct: 2,
+    explication: "<strong>✓ Bonne réponse.</strong> La vision moderne (modèle social) considère le handicap comme le résultat de l'interaction entre les capacités d'un individu et les <strong>obstacles de son environnement</strong>. Le handicap n'est pas une propriété de la personne mais une situation : si l'environnement est adapté, la situation de handicap disparaît. Le diagnostic médical et l'origine (naissance ou accident) ne définissent pas à eux seuls le handicap."
   },
   {
-    q: "RQTH signifie :",
-    choices: ["Reconnaissance de la Qualité de Travailleur Handicapé", "Registre Qualifié Travail Handicap", "Réseau Qualité Travail Humain", "Règlement Qualité Travail Hygiène"],
+    q: "Quel pourcentage des handicaps est considéré comme « invisible » ?",
+    choices: ["80 %", "50 %", "95 %", "20 %"],
     correct: 0,
-    explication: "RQTH = <strong>Reconnaissance de la Qualité de Travailleur Handicapé</strong>. Elle est attribuée par la MDPH et ouvre droit à des aides à l'emploi, des aménagements de poste et des dispositifs de formation spécifiques."
+    explication: "<strong>✓ 80 % des handicaps sont invisibles.</strong> La grande majorité des situations de handicap — maladies invalidantes, troubles psychiques, maladies chroniques, troubles cognitifs — ne sont pas détectables au premier regard. C'est un enjeu fort en milieu de travail : un salarié sur cinq peut être concerné sans que cela soit visible. La discrétion médicale reste un droit fondamental."
   },
   {
-    q: "L'Agefiph finance des aides pour :",
-    choices: ["Les entreprises privées uniquement", "Les travailleurs handicapés uniquement", "Les entreprises et les travailleurs handicapés", "Uniquement le secteur public"],
+    q: "Quel est l'objectif principal de la « conception universelle » ?",
+    choices: [
+      "Réserver des espaces exclusifs aux personnes en situation de handicap.",
+      "Remplacer l'humain par des machines automatiques.",
+      "Créer des produits spécifiques pour chaque type de déficience.",
+      "Rendre un environnement accessible au plus grand nombre dès le départ."
+    ],
+    correct: 3,
+    explication: "<strong>✓ Bonne réponse.</strong> La conception universelle (<em>universal design</em>) anticipe la diversité des besoins humains pour concevoir des environnements, produits et services utilisables par tous, sans adaptation ultérieure coûteuse. Elle bénéficie à tout le monde : parents avec poussette, seniors, personnes temporairement blessées… C'est l'opposé de l'adaptation individuelle après-coup."
+  },
+  {
+    q: "À partir de quel seuil d'effectif une entreprise est-elle légalement tenue de désigner un référent handicap ?",
+    choices: ["50 salariés", "500 salariés", "20 salariés", "250 salariés"],
+    correct: 3,
+    explication: "<strong>✓ 250 salariés.</strong> La loi du 5 septembre 2018 pour la liberté de choisir son avenir professionnel impose la désignation d'un <strong>référent handicap</strong> dans toute entreprise d'au moins <strong>250 salariés</strong>. Ce référent oriente, informe et accompagne les salariés en situation de handicap. Le seuil de 20 salariés déclenche l'obligation d'emploi (OETH) mais pas le référent."
+  },
+  {
+    q: "Lors d'une demande de RQTH auprès de la MDPH, quel élément est crucial dans la rédaction du « projet de vie » ?",
+    choices: [
+      "Fournir une liste de tous les médicaments consommés.",
+      "Promettre de ne jamais s'absenter pour raison de santé.",
+      "Décrire les conséquences du handicap sur le travail et la vie quotidienne.",
+      "Nommer précisément toutes les pathologies médicales."
+    ],
     correct: 2,
-    explication: "L'Agefiph accompagne à la fois <strong>les travailleurs handicapés</strong> (formation, bilan, accompagnement) et <strong>les entreprises privées</strong> (aides à l'embauche, aménagements de poste, sensibilisation). Le FIPHFP est l'équivalent pour la fonction publique."
+    explication: "<strong>✓ Bonne réponse.</strong> La MDPH évalue les <strong>limitations d'activité</strong> et les <strong>restrictions de participation sociale</strong>, pas le nom des maladies. Le projet de vie doit décrire concrètement : ce que la personne ne peut plus faire, les difficultés au poste de travail, les besoins de compensation. C'est cet impact fonctionnel — et non le diagnostic — qui détermine les droits accordés."
   },
   {
-    q: "L'obligation d'emploi de travailleurs handicapés s'applique aux entreprises de :",
-    choices: ["Plus de 20 salariés", "Plus de 50 salariés", "Plus de 100 salariés", "Toutes les entreprises sans seuil"],
-    correct: 0,
-    explication: "L'obligation s'applique à tout établissement d'au moins <strong>20 salariés</strong> (art. L.5212-1 C. trav.). Chaque établissement est traité séparément pour les entreprises multi-sites. En dessous du seuil, l'employeur n'est pas soumis à la contribution Agefiph."
-  },
-  {
-    q: "La MDPH traite principalement les dossiers de :",
-    choices: ["Retraite anticipée", "RQTH et AAH", "Accidents du travail", "Demandes de chômage"],
-    correct: 1,
-    explication: "La <strong>MDPH</strong> (Maison Départementale des Personnes Handicapées) instruit notamment les demandes de <strong>RQTH</strong> et d'<strong>AAH</strong> (Allocation Adulte Handicapé). Elle peut aussi valider des cartes d'invalidité, des PCH et orienter vers des ESAT."
-  },
-  {
-    q: "Cap Emploi accompagne en priorité :",
-    choices: ["Les chômeurs de longue durée", "Les travailleurs handicapés dans leur parcours emploi", "Les salariés seniors de + 55 ans", "Les apprentis en difficulté"],
-    correct: 1,
-    explication: "<strong>Cap Emploi</strong> est un réseau de proximité spécialisé dans l'insertion et le maintien dans l'emploi des <strong>travailleurs handicapés</strong>. Il travaille en lien avec Pôle emploi et les MDPH pour accompagner les projets professionnels et les aménagements de poste."
-  },
-  {
-    q: "L'AAH (Allocation Adulte Handicapé) est attribuée si le taux d'incapacité est ≥ :",
-    choices: ["50 %", "60 %", "80 %", "100 %"],
+    q: "Quelle est la principale différence de rôle entre l'AGEFIPH et Cap Emploi ?",
+    choices: [
+      "Cap Emploi est un syndicat alors que l'AGEFIPH est une association d'employeurs.",
+      "L'AGEFIPH s'occupe du secteur public et Cap Emploi du secteur privé.",
+      "L'AGEFIPH finance les dispositifs tandis que Cap Emploi accompagne les personnes.",
+      "Il n'y a aucune différence, ce sont deux noms pour le même organisme."
+    ],
     correct: 2,
-    explication: "L'AAH est accordée dès <strong>80 % de taux d'incapacité</strong>. Elle peut aussi être attribuée entre <strong>50 % et 79 %</strong> si la restriction substantielle et durable d'accès à l'emploi (RSDAE) est reconnue par la CDAPH. Les deux AAH 1 et 2 sont désormais déconjugalisées."
+    explication: "<strong>✓ Bonne réponse.</strong> <strong>L'Agefiph</strong> est un organisme collecteur des contributions des entreprises non-conformes à l'OETH : elle finance des aides, des programmes et des recherches. <strong>Cap Emploi</strong> assure l'accompagnement opérationnel sur le terrain : placement, maintien dans l'emploi, aménagements de poste. Le secteur public dépend du <strong>FIPHFP</strong>, pas de l'Agefiph."
   },
   {
-    q: "Un employeur qui ne respecte pas l'obligation d'emploi des travailleurs handicapés est soumis à :",
-    choices: ["Aucune sanction légale", "Une contribution financière versée à l'Agefiph", "Une amende pénale", "Une suspension d'activité immédiate"],
-    correct: 1,
-    explication: "L'employeur en dessous du quota de 6 % doit verser une <strong>contribution annuelle à l'Agefiph</strong>, dont le montant est calculé par unité manquante et selon la taille de l'entreprise. Cette contribution peut atteindre plusieurs milliers d'euros par unité bénéficiaire manquante."
-  },
-  {
-    q: "Un travailleur handicapé qui demande du télétravail ou un aménagement de poste a droit à :",
-    choices: ["Télétravail obligatoire si demandé formellement", "Une réponse à la discrétion totale de l'employeur", "Des aménagements raisonnables que l'employeur est obligé de mettre en place", "Une priorité codécidée avec le CSE uniquement"],
+    q: "Dans le calcul de l'OETH, comment est comptabilisé un bénéficiaire (BOETH) âgé de 50 ans ou plus ?",
+    choices: [
+      "Il compte pour 1 unité, comme tout autre salarié.",
+      "Il permet une exonération totale de la contribution financière.",
+      "Il est multiplié par un coefficient de 1,5.",
+      "Il n'est plus comptabilisé car proche de la retraite."
+    ],
     correct: 2,
-    explication: "L'employeur a l'obligation de mettre en place des <strong>aménagements raisonnables</strong> (art. L.5213-6 C. trav.) pour permettre à un travailleur handicapé d'exercer son emploi. Le refus sans justification peut constituer une discrimination. Le médecin du travail joue un rôle clé dans les préconisations."
+    explication: "<strong>✓ Coefficient 1,5.</strong> Pour encourager le <strong>maintien et le recrutement des travailleurs handicapés seniors</strong>, chaque BOETH de 50 ans et plus pèse 1,5 unité dans le calcul de l'effectif OETH. C'est une mesure d'incitation : l'employeur qui garde ou embauche un senior handicapé progresse plus vite vers le quota de 6 %. Le système protège ainsi leur employabilité jusqu'à la retraite."
   },
   {
-    q: "La durée maximale de validité d'une RQTH est de :",
-    choices: ["1 an", "5 ans (renouvelable)", "10 ans", "Illimitée une fois accordée"],
-    correct: 1,
-    explication: "La RQTH est accordée pour une durée de <strong>1 à 5 ans</strong>, renouvelable. La MDPH peut dans certains cas l'accorder sans limitation de durée si le handicap est définitif et documenté. Pensez à anticiper le renouvellement 6 mois avant l'expiration."
+    q: "Quelle est la durée de validité maximale requise pour le certificat médical joint à un dossier MDPH ?",
+    choices: [
+      "Pas de limite si la pathologie est chronique.",
+      "Moins de 3 mois",
+      "Moins de 6 mois",
+      "Moins d'un an"
+    ],
+    correct: 2,
+    explication: "<strong>✓ Moins de 6 mois.</strong> Le certificat médical doit dater de <strong>moins de 6 mois</strong> au moment du dépôt du dossier MDPH, même pour les maladies chroniques. Cette exigence garantit que l'évaluation reflète l'état de santé <em>actuel</em> de la personne. Anticiper : prévoir le rendez-vous médical en amont du dépôt, surtout pour les renouvellements."
+  },
+  {
+    q: "Un salarié possédant une pension d'invalidité de l'Assurance Maladie est-il considéré comme BOETH ?",
+    choices: [
+      "Non, seule la RQTH délivrée par la MDPH donne cette qualité.",
+      "Uniquement s'il a également fait une demande de RQTH en plus.",
+      "Seulement s'il travaille à temps partiel thérapeutique.",
+      "Oui, car la pension d'invalidité ouvre automatiquement le statut de bénéficiaire."
+    ],
+    correct: 3,
+    explication: "<strong>✓ Oui, automatiquement.</strong> La <strong>pension d'invalidité</strong> (catégorie 1, 2 ou 3 réduisant la capacité de travail d'au moins deux tiers) fait partie des titres reconnus pour l'OETH au même titre que la RQTH. Il existe plusieurs voies vers le statut de BOETH : RQTH, AAH, rente AT-MP ≥ 10 %, pension d'invalidité, carte mobilité inclusion… La RQTH n'est pas la seule porte d'entrée."
+  },
+  {
+    q: "Quel est le taux légal d'emploi de travailleurs handicapés imposé aux entreprises d'au moins 20 salariés ?",
+    choices: ["2 %", "10 %", "6 %", "4 %"],
+    correct: 2,
+    explication: "<strong>✓ 6 %.</strong> L'<strong>OETH</strong> (Obligation d'Emploi des Travailleurs Handicapés) fixe le taux à <strong>6 % de l'effectif</strong> depuis la loi du 10 juillet 1987, confirmée et renforcée en 2018. En dessous de ce seuil, l'employeur verse une contribution à l'Agefiph. En 2023, seulement 3,5 % des salariés du privé sont reconnus BOETH — la CGT exige un meilleur respect de cette obligation."
   }
 ];
 
