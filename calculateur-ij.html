@@ -693,6 +693,74 @@ function calculate(){
   el.classList.add('show');
   el.scrollIntoView({behavior:'smooth',block:'start'});
 }
+
+// ── CALCULATEUR RENTE IPP ──────────────────────────────────────────
+const PASS_2026 = 46368;
+const PLAFOND_SAL = 2 * PASS_2026;   // 92 736 €
+const PLANCHER_SAL = 0.5 * PASS_2026; // 23 184 €
+
+function calculerIPP() {
+  const ipp = parseFloat(document.getElementById('ipp-taux').value) || 0;
+  const salBrut = parseFloat(document.getElementById('ipp-salaire').value) || 0;
+
+  if (ipp <= 0 || ipp >= 100) { alert('Veuillez saisir un taux IPP entre 1 et 99 %.'); return; }
+  if (salBrut <= 0) { alert('Veuillez saisir un salaire annuel brut.'); return; }
+
+  // Salaire de référence : plafonné puis plancher
+  const salRef = Math.max(Math.min(salBrut, PLAFOND_SAL), PLANCHER_SAL);
+
+  // Taux réduit
+  let tauxReduit, formule;
+  if (ipp <= 50) {
+    tauxReduit = ipp / 2;
+    formule = `${fmt(ipp, 1)} % ÷ 2 (fraction ≤ 50 %)`;
+  } else {
+    tauxReduit = ipp - (100 - ipp) / 2;
+    formule = `${fmt(ipp, 1)} % − (100 − ${fmt(ipp, 1)}) ÷ 2 (fraction > 50 %)`;
+  }
+
+  const renteAnnuelle = salRef * (tauxReduit / 100);
+  const renteMensuelle = renteAnnuelle / 12;
+
+  // Affichage
+  const eligible = ipp >= 10;
+
+  document.getElementById('ipp-tag').textContent = `IPP ${fmt(ipp, 1)} %`;
+  document.getElementById('ipp-rente-annuelle').textContent = fmtE(renteAnnuelle);
+  document.getElementById('ipp-rente-mensuelle').textContent = fmtE(renteMensuelle);
+  document.getElementById('ipp-taux-reduit').textContent = fmt(tauxReduit, 2) + ' %';
+
+  document.getElementById('ipp-d-taux').textContent = fmt(ipp, 1) + ' %';
+  document.getElementById('ipp-d-formule').textContent = formule;
+  document.getElementById('ipp-d-taux-reduit').textContent = fmt(tauxReduit, 2) + ' %';
+
+  let salNote = '';
+  if (salBrut > PLAFOND_SAL) salNote = `Plafonné à 2×PASS (${fmt(salBrut, 0)} € → ${fmt(PLAFOND_SAL, 0)} €)`;
+  else if (salBrut < PLANCHER_SAL) salNote = `Relevé au plancher ½×PASS (${fmt(salBrut, 0)} € → ${fmt(PLANCHER_SAL, 0)} €)`;
+  else salNote = 'Dans les limites plancher/plafond';
+  document.getElementById('ipp-d-salaire-note').textContent = salNote;
+  document.getElementById('ipp-d-salaire-ref').textContent = fmtE(salRef);
+
+  document.getElementById('ipp-d-annuelle').textContent = fmtE(renteAnnuelle);
+  document.getElementById('ipp-d-mensuelle').textContent = fmtE(renteMensuelle);
+
+  const eligEl = document.getElementById('ipp-eligibilite');
+  if (eligible) {
+    eligEl.textContent = 'Éligible à la rente ✓';
+    eligEl.className = 'metric-val green';
+    document.getElementById('ipp-capital-row').style.display = 'none';
+  } else {
+    eligEl.textContent = 'IPP < 10 % → Capital unique';
+    eligEl.className = 'metric-val red';
+    const capital = salBrut * (ipp / 100) * 0.5;
+    document.getElementById('ipp-capital').textContent = fmtE(capital);
+    document.getElementById('ipp-capital-row').style.display = '';
+  }
+
+  const res = document.getElementById('ipp-results');
+  res.style.display = 'block';
+  res.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
 </script>
 </body>
 </html>
