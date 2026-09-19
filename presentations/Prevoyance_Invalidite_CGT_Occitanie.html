@@ -873,28 +873,34 @@ function openPresenter(){
   #pt{font-size:32px;font-weight:bold;color:#FFD200;margin-bottom:12px}
   #pc{font-size:16px;color:#aaa;margin-bottom:20px}
   #pnotes{font-size:18px;line-height:1.5;background:#1a1a1a;padding:16px;border-left:4px solid #FFD200}
-  #pnext{font-size:13px;color:#888;margin-top:16px}
+  #pres-next{font-size:13px;color:#888;margin-top:16px;background:#1a1a1a;padding:10px 14px;border-left:3px solid #444}
+  #pres-next span{color:#FFD200;font-weight:bold}
   #pclock{position:fixed;top:14px;right:20px;font-size:15px;color:#aaa;font-family:monospace}
   </style></head><body>
   <div id="pclock"></div>
   <div id="pt">Diapo 1</div><div id="pc">1 / ${SLIDES.length}</div>
-  <div id="pnotes"></div><div id="pnext"></div>
+  <div id="pnotes"></div>
+  <div id="pres-next"></div>
   <script>
   const clk=document.getElementById('pclock');
   setInterval(()=>{const n=new Date();clk.textContent=n.toLocaleTimeString('fr-FR');},1000);
-  window.updatePres=function(cur,total,notes,nextTitle){
+  window.updatePres=function(cur,total,notes,nextType,nextTitle){
     document.getElementById('pt').textContent='Diapo '+(cur+1);
     document.getElementById('pc').textContent=(cur+1)+' / '+total;
     document.getElementById('pnotes').innerHTML=notes||'';
-    document.getElementById('pnext').textContent=nextTitle?'Suivante : '+nextTitle:'';
+    const pn=document.getElementById('pres-next');
+    if(nextTitle){pn.innerHTML='Suivante &rarr; <span>['+nextType+']</span> '+nextTitle;}
+    else{pn.textContent='';}
   };
   <\/script></body></html>`);
   pw.document.close();
   function syncPres(){
     if(!pw.closed){
       const n=SLIDES[cur].notes||'';
-      const nextT=SLIDES[cur+1]?`${Array.isArray(SLIDES[cur+1].title)?SLIDES[cur+1].title[0]:SLIDES[cur+1].title||''}`:null;
-      pw.updatePres&&pw.updatePres(cur,SLIDES.length,n,nextT);
+      const nx=SLIDES[cur+1];
+      const nextT=nx?(Array.isArray(nx.title)?nx.title[0]:nx.title||''):null;
+      const nextType=nx?nx.type:'';
+      pw.updatePres&&pw.updatePres(cur,SLIDES.length,n,nextType,nextT);
     }
   }
   const origGoTo=goTo;
@@ -904,6 +910,15 @@ function openPresenter(){
 document.getElementById('bPres').addEventListener('click',openPresenter);
 </script>
 
+<!-- Spotlight laser -->
+<div id="spotlight"></div>
+<script>
+document.addEventListener('mousemove',e=>{
+  const sp=document.getElementById('spotlight');
+  sp.style.setProperty('--mx',e.clientX+'px');
+  sp.style.setProperty('--my',e.clientY+'px');
+});
+</script>
 <!-- Bouton impression -->
 <style>
 #btn-print-float{position:fixed;bottom:1.25rem;right:1.25rem;z-index:9999;background:#E2001A;color:#fff;border:none;border-radius:0;padding:.55rem .9rem;font-family:sans-serif;font-size:.75rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;display:flex;align-items:center;gap:.4rem;box-shadow:0 2px 8px rgba(0,0,0,.35);transition:background .15s;}
