@@ -5,10 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex, nofollow">
   <title>Espace Stagiaire — Formation AT/MP CGT Occitanie</title>
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%23E2001A'/%3E%3Ctext x='16' y='23' text-anchor='middle' font-family='sans-serif' font-weight='bold' font-size='16' fill='%23FFD200'%3ECGT%3C/text%3E%3C/svg%3E">
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/style.css">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
@@ -194,6 +195,7 @@
   </style>
 </head>
 <body>
+<script src="/assets/cgt-ui.js"></script>
 <!-- Theme init: before auth check to avoid flash -->
 <script>
   (function(){
@@ -213,6 +215,10 @@
     <span>CGT Occitanie — Comité Régional, secteur privé</span>
   </div>
   <div class="access-badge">Stagiaire</div>
+  <a href="/recherche.html" style="color:#fff;text-decoration:none;font-family:'Anton',sans-serif;font-size:.88rem;letter-spacing:.05em;padding:.3rem .75rem;border:1px solid rgba(255,255,255,.35);border-radius:4px;display:flex;align-items:center;gap:.4rem;white-space:nowrap" title="Recherche globale">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    Recherche
+  </a>
   <button class="theme-toggle" id="theme-toggle" aria-label="Basculer le thème sombre/clair">
     <!-- Moon icon (shown in light mode) -->
     <svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -482,6 +488,29 @@
       <p>17 questions posées en formation avec réponses complètes et références légales. Filtres par thème, recherche plein texte.</p>
       <a class="btn-ouvrir" href="/faq-atmp.html">
         Consulter
+        <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H4M10 2V8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+
+    <div class="card">
+      <div class="card-icon" style="background:linear-gradient(135deg,#E2001A 0%,#FFD200 100%);">
+        <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+          <rect width="48" height="48" fill="none"/>
+          <rect x="10" y="8" width="28" height="34" rx="2" fill="rgba(255,255,255,0.15)" stroke="white" stroke-width="2"/>
+          <line x1="16" y1="16" x2="32" y2="16" stroke="white" stroke-width="2" stroke-linecap="round"/>
+          <line x1="16" y1="22" x2="32" y2="22" stroke="white" stroke-width="2" stroke-linecap="round"/>
+          <line x1="16" y1="28" x2="24" y2="28" stroke="white" stroke-width="2" stroke-linecap="round"/>
+          <path d="M28 32l3 3 5-5" stroke="#FFD200" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="card-meta">
+        <span class="tag-duree">5 fiches</span>
+        <span class="tag-type">Imprimable A4</span>
+      </div>
+      <h2>Fiches mémo PDF</h2>
+      <p>Une fiche recto par module (AT/MP, SST, Prévoyance, Handicap, Fonction Publique). Format A4 optimisé impression, avec chiffres clés 2025, droits essentiels et contacts utiles.</p>
+      <a class="btn-ouvrir" href="/fiches-memo/">
+        Accéder
         <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H4M10 2V8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </a>
     </div>

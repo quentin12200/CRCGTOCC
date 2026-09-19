@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>404 — Page introuvable · CGT Occitanie</title>
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/assets/style.css">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;600&display=swap');
+
+  :root {
+    --rouge:#E2001A; --jaune:#FFD200; --noir:#0F0F0F; --blanc:#FAFAFA;
+    --gris:#1A1A1A; --texte-muted:#999;
+  }
+
+  *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+
+  body {
+    font-family:'Inter',sans-serif;
+    background:var(--noir);
+    color:var(--blanc);
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    padding:2rem 1rem;
+    text-align:center;
+  }
+
+  .logo-band {
+    display:flex;
+    align-items:center;
+    gap:.75rem;
+    margin-bottom:3rem;
+  }
+  .logo-sq {
+    width:52px; height:52px;
+    background:var(--rouge);
+    border-radius:6px;
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Anton',sans-serif;
+    font-size:1.5rem;
+    color:var(--jaune);
+    letter-spacing:1px;
+  }
+  .logo-txt { text-align:left; }
+  .logo-txt strong { display:block; font-family:'Anton',sans-serif; font-size:1.1rem; letter-spacing:.5px; }
+  .logo-txt span { font-size:.8rem; color:var(--texte-muted); }
+
+  .num404 {
+    font-family:'Anton',sans-serif;
+    font-size:clamp(6rem,20vw,12rem);
+    line-height:1;
+    color:var(--rouge);
+    text-shadow:0 0 60px rgba(226,0,26,.4);
+    position:relative;
+  }
+  .num404::after {
+    content:'';
+    display:block;
+    height:4px;
+    background:linear-gradient(90deg, transparent, var(--jaune), transparent);
+    margin:.5rem auto 0;
+    width:80%;
+    animation:lineGrow 1s ease-out forwards;
+    transform:scaleX(0);
+    transform-origin:center;
+  }
+  @keyframes lineGrow { to { transform:scaleX(1); } }
+
+  h1 {
+    font-family:'Anton',sans-serif;
+    font-size:clamp(1.4rem,4vw,2.2rem);
+    letter-spacing:.5px;
+    margin:1.5rem 0 .75rem;
+  }
+  p { color:var(--texte-muted); font-size:.95rem; max-width:420px; line-height:1.6; }
+
+  .actions {
+    display:flex;
+    flex-wrap:wrap;
+    gap:.75rem;
+    justify-content:center;
+    margin-top:2.5rem;
+  }
+  .btn {
+    display:inline-flex;
+    align-items:center;
+    gap:.5rem;
+    padding:.75rem 1.5rem;
+    border-radius:6px;
+    font-family:'Anton',sans-serif;
+    font-size:1rem;
+    letter-spacing:.5px;
+    text-decoration:none;
+    transition:transform .15s, box-shadow .15s;
+  }
+  .btn:hover { transform:translateY(-2px); box-shadow:0 6px 20px rgba(0,0,0,.4); }
+  .btn-primary { background:var(--rouge); color:var(--blanc); }
+  .btn-secondary { background:var(--gris); color:var(--blanc); border:1px solid #333; }
+
+  .links-list {
+    margin-top:2rem;
+    display:flex;
+    flex-direction:column;
+    gap:.5rem;
+  }
+  .links-list a {
+    color:var(--texte-muted);
+    text-decoration:none;
+    font-size:.9rem;
+    transition:color .15s;
+  }
+  .links-list a:hover { color:var(--jaune); }
+
+  .card {
+    background:var(--gris);
+    border:1px solid #2C2C2C;
+    border-radius:12px;
+    padding:2.5rem 2rem;
+    max-width:480px;
+    width:100%;
+    margin-top:2rem;
+    animation:fadeUp .5s ease-out both;
+  }
+  @keyframes fadeUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:none; } }
+</style>
+</head>
+<body>
+<script src="/assets/cgt-ui.js"></script>
+
+<div class="logo-band">
+  <div class="logo-sq">CGT</div>
+  <div class="logo-txt">
+    <strong>CGT Occitanie</strong>
+    <span>Centre de ressources — AT/MP</span>
+  </div>
+</div>
+
+<div class="card">
+  <div class="num404">404</div>
+  <h1>Page introuvable</h1>
+  <p>Cette page n'existe pas ou a été déplacée. Retournez à l'accueil pour trouver ce que vous cherchez.</p>
+
+  <div class="actions">
+    <a href="/index.html" class="btn btn-primary">↩ Accueil formateur</a>
+    <a href="/stagiaires.html" class="btn btn-secondary">Espace stagiaire</a>
+  </div>
+
+  <div class="links-list">
+    <a href="/carnet-atmp.html">Carnet AT/MP</a>
+    <a href="/fiche-delegue.html">Fiche délégué·e</a>
+    <a href="/lexique.html">Lexique</a>
+    <a href="/faq-atmp.html">FAQ AT/MP</a>
+  </div>
+</div>
+
+</body>
+</html>

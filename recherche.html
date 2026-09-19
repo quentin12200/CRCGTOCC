@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Recherche — Formation AT/MP CGT Occitanie</title>
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/style.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --rouge: #E2001A;
+      --jaune: #FFD200;
+      --fond: #0F0F0F;
+      --fond-card: #1A1A1A;
+      --fond-input: #141414;
+      --texte: #FAFAFA;
+      --muted: #888;
+      --border: #2A2A2A;
+      --border-light: #333;
+      --vert: #2DCA72;
+      --bleu: #5B9BF8;
+      --orange: #F5A623;
+      --violet: #B06DFF;
+    }
+    :root[data-theme="light"] {
+      --fond: #F4F3EF;
+      --fond-card: #FFFFFF;
+      --fond-input: #FFFFFF;
+      --texte: #1A1A1A;
+      --muted: #666;
+      --border: #E0DED8;
+      --border-light: #CCC;
+    }
+    body {
+      background: var(--fond);
+      color: var(--texte);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      transition: background .3s, color .3s;
+    }
+
+    /* Header */
+    header {
+      background: var(--rouge);
+      padding: 1rem 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      flex-wrap: wrap;
+    }
+    .logo-wrap img { height: 44px; width: auto; display: block; }
+    .header-divider { width: 2px; height: 44px; background: rgba(255,255,255,.3); flex-shrink: 0; }
+    .header-title { flex: 1; min-width: 160px; }
+    .header-title h1 { font-family: 'Anton', sans-serif; font-size: 1.15rem; letter-spacing: .04em; color: #fff; line-height: 1.2; }
+    .header-title span { font-size: .78rem; color: rgba(255,255,255,.75); }
+    .header-nav { display: flex; gap: .75rem; align-items: center; }
+    .header-nav a {
+      color: rgba(255,255,255,.85);
+      text-decoration: none;
+      font-size: .82rem;
+      font-weight: 500;
+      padding: .35rem .75rem;
+      border: 1px solid rgba(255,255,255,.3);
+      border-radius: 4px;
+      transition: background .2s;
+      white-space: nowrap;
+    }
+    .header-nav a:hover { background: rgba(255,255,255,.15); }
+    #theme-toggle {
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      padding: .35rem;
+      display: flex;
+      align-items: center;
+    }
+    :root[data-theme="light"] .icon-moon { display: none; }
+    :root:not([data-theme="light"]) .icon-sun { display: none; }
+
+    .stripe { height: 4px; background: linear-gradient(90deg, var(--rouge) 0%, var(--jaune) 100%); }
+
+    /* Main layout */
+    main { flex: 1; max-width: 860px; margin: 0 auto; padding: 2rem 1rem 4rem; width: 100%; }
+
+    /* Hero search */
+    .search-hero { text-align: center; margin-bottom: 2rem; }
+    .search-hero h2 { font-family: 'Anton', sans-serif; font-size: clamp(1.6rem, 4vw, 2.4rem); letter-spacing: .03em; color: var(--texte); margin-bottom: .5rem; }
+    .search-hero p { color: var(--muted); font-size: .9rem; margin-bottom: 1.5rem; }
+    .search-wrap {
+      position: relative;
+      max-width: 640px;
+      margin: 0 auto;
+    }
+    .search-icon {
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--muted);
+      pointer-events: none;
+    }
+    #search-input {
+      width: 100%;
+      padding: 1rem 1rem 1rem 3rem;
+      background: var(--fond-input);
+      border: 2px solid var(--border-light);
+      border-radius: 8px;
+      color: var(--texte);
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+      outline: none;
+      transition: border-color .2s;
+    }
+    #search-input:focus { border-color: var(--rouge); }
+    #search-input::placeholder { color: var(--muted); }
+    .search-clear {
+      position: absolute;
+      right: .75rem;
+      top: 50%;
+      transform: translateY(-50%);
+      background: transparent;
+      border: none;
+      color: var(--muted);
+      cursor: pointer;
+      padding: .25rem;
+      display: none;
+      font-size: 1.1rem;
+      line-height: 1;
+    }
+    .search-clear.visible { display: block; }
+
+    /* Filters */
+    .filters {
+      display: flex;
+      gap: .5rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.5rem;
+      align-items: center;
+    }
+    .filter-label { font-size: .78rem; color: var(--muted); font-weight: 500; margin-right: .25rem; }
+    .filter-btn {
+      padding: .35rem .85rem;
+      border: 1px solid var(--border-light);
+      border-radius: 20px;
+      background: transparent;
+      color: var(--texte);
+      font-family: 'Inter', sans-serif;
+      font-size: .8rem;
+      cursor: pointer;
+      transition: all .2s;
+    }
+    .filter-btn:hover { border-color: var(--rouge); color: var(--rouge); }
+    .filter-btn.active { background: var(--rouge); border-color: var(--rouge); color: #fff; font-weight: 600; }
+
+    /* Results meta */
+    .results-meta { font-size: .82rem; color: var(--muted); margin-bottom: 1rem; min-height: 1.5rem; }
+    .results-meta strong { color: var(--texte); }
+
+    /* Result cards */
+    .results-list { display: flex; flex-direction: column; gap: .75rem; }
+    .result-card {
+      background: var(--fond-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem 1.25rem;
+      cursor: pointer;
+      transition: border-color .2s, transform .15s;
+      text-decoration: none;
+      display: block;
+      color: inherit;
+    }
+    .result-card:hover { border-color: var(--rouge); transform: translateX(2px); }
+    .card-top { display: flex; align-items: flex-start; gap: .75rem; margin-bottom: .4rem; flex-wrap: wrap; }
+    .card-title { font-weight: 600; font-size: .97rem; color: var(--texte); flex: 1; min-width: 150px; line-height: 1.35; }
+    .card-title mark {
+      background: rgba(226,0,26,.2);
+      color: var(--rouge);
+      border-radius: 2px;
+      padding: 0 1px;
+    }
+    .badge {
+      font-size: .7rem;
+      font-weight: 600;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+      padding: .2rem .55rem;
+      border-radius: 4px;
+      flex-shrink: 0;
+      white-space: nowrap;
+    }
+    .badge-droits    { background: rgba(226,0,26,.15);  color: var(--rouge); }
+    .badge-demarches { background: rgba(91,155,248,.15); color: var(--bleu); }
+    .badge-calculs   { background: rgba(45,202,114,.15); color: var(--vert); }
+    .badge-lexique   { background: rgba(176,109,255,.15);color: var(--violet); }
+    .badge-formation { background: rgba(245,166,35,.15); color: var(--orange); }
+
+    .card-meta { font-size: .75rem; color: var(--muted); margin-bottom: .4rem; display: flex; align-items: center; gap: .4rem; }
+    .card-page { color: var(--jaune); font-weight: 500; }
+    .card-excerpt { font-size: .85rem; color: #AAA; line-height: 1.55; }
+    :root[data-theme="light"] .card-excerpt { color: #555; }
+    .card-excerpt mark {
+      background: rgba(255,210,0,.3);
+      color: inherit;
+      border-radius: 2px;
+    }
+
+    /* No results */
+    .no-results { text-align: center; padding: 3rem 1rem; display: none; }
+    .no-results.visible { display: block; }
+    .no-results svg { color: var(--muted); margin-bottom: 1rem; }
+    .no-results p { color: var(--muted); font-size: .95rem; }
+    .no-results strong { color: var(--texte); }
+
+    /* Footer */
+    footer { background: #0A0A0A; border-top: 1px solid var(--border); padding: 1.25rem 1rem; text-align: center; font-size: .78rem; color: var(--muted); }
+    :root[data-theme="light"] footer { background: #E8E7E3; }
+    footer a { color: var(--rouge); text-decoration: none; }
+
+    @media (max-width: 560px) {
+      header { padding: .75rem 1rem; gap: .75rem; }
+      .header-divider { display: none; }
+      main { padding: 1.5rem 1rem 3rem; }
+    }
+  </style>
+</head>
+<body>
+<script src="/assets/cgt-ui.js"></script>
+<script>
+  (function(){
+    if(localStorage.getItem('cgt_stagiaire_auth')!=='ok' && localStorage.getItem('cgt_auth')!=='ok'){
+      location.replace('/login.html?from='+encodeURIComponent(location.pathname));
+    }
+    var t=localStorage.getItem('cgt_theme')||'dark';
+    document.documentElement.setAttribute('data-theme',t);
+  })();
+</script>
+
+<header>
+  <div class="logo-wrap">
+    <img src="/assets/logo-cgt-occitanie.jpg" alt="CGT Comité Régional Occitanie">
+  </div>
+  <div class="header-divider"></div>
+  <div class="header-title">
+    <h1>Recherche globale</h1>
+    <span>CGT Occitanie — Formation AT/MP</span>
+  </div>
+  <nav class="header-nav">
+    <a href="/index.html">← Accueil formateur</a>
+    <a href="/stagiaires.html">Espace stagiaire</a>
+  </nav>
+  <button id="theme-toggle" aria-label="Basculer thème sombre/clair" onclick="(function(){var html=document.documentElement;var next=html.getAttribute('data-theme')==='dark'?'light':'dark';html.setAttribute('data-theme',next);localStorage.setItem('cgt_theme',next);})()">
+    <svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+  </button>
+</header>
+<div class="stripe"></div>
+
+<main>
+  <section class="search-hero">
+    <h2>Rechercher dans la formation</h2>
+    <p>Droits, définitions, démarches, calculs — tout le contenu du site en une recherche.</p>
+    <div class="search-wrap">
+      <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="search" id="search-input" placeholder="Ex. : faute inexcusable, IJ, délai déclaration…" autocomplete="off" autocorrect="off" spellcheck="false">
+      <button class="search-clear" id="search-clear" aria-label="Effacer">✕</button>
+    </div>
+  </section>
+
+  <div class="filters">
+    <span class="filter-label">Filtrer :</span>
+    <button class="filter-btn active" data-cat="tous">Tous</button>
+    <button class="filter-btn" data-cat="droits">Droits</button>
+    <button class="filter-btn" data-cat="demarches">Démarches</button>
+    <button class="filter-btn" data-cat="calculs">Calculs</button>
+    <button class="filter-btn" data-cat="lexique">Lexique</button>
+    <button class="filter-btn" data-cat="formation">Formation</button>
+  </div>
+
+  <div class="results-meta" id="results-meta">Entrez un terme pour rechercher dans les <strong>55 entrées</strong> de l'index.</div>
+
+  <div class="results-list" id="results-list"></div>
+
+  <div class="no-results" id="no-results">
+    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <p><strong id="no-results-term"></strong></p>
+    <p style="margin-top:.5rem">Aucun résultat. Essayez un autre terme ou changez de filtre.</p>
+  </div>
+</main>
+
+<footer>
+  <a href="/index.html">CGT Occitanie</a> · Formation AT/MP · <a href="/lexique.html">Lexique</a> · <a href="/faq-atmp.html">FAQ</a>
+</footer>
+
+<script>
+const SEARCH_INDEX = [
+  // ── INDEX.HTML — Espace formateur ────────────────────────────────────────
+  {
+    title: "Espace formateur AT/MP — Présentation",
+    page: "index.html",
+    section: "Accueil",
+    excerpt: "Espace réservé aux formateurs CGT Occitanie. Chaque droit individuel est un levier collectif, chaque obligation de l'employeur est assortie de sa sanction.",
+    cat: "formation",
+    tags: ["formateur","CGT","Occitanie","formation","présentation"]
+  },
+  {
+    title: "Carnet de formation AT/MP",
+    page: "index.html",
+    section: "Ressources formateur",
+    excerpt: "Version scrollable de la formation — projetez et scrollez librement selon votre groupe. Moment fort, développement, cas pratique, point syndical CGT.",
+    cat: "formation",
+    tags: ["carnet","formation","projection","cas pratique"]
+  },
+  {
+    title: "Présentation AT/MP CGT — Support diapositives",
+    page: "index.html",
+    section: "Ressources formateur",
+    excerpt: "Régime AT/MP, reconnaissance, réparation, droits des accidentés et malades. Module complet pour militants et élus du CSE.",
+    cat: "formation",
+    tags: ["présentation","AT/MP","CSE","militants","diapositives"]
+  },
+  {
+    title: "Prévention des risques — Diagnostic SST",
+    page: "index.html",
+    section: "Ressources formateur",
+    excerpt: "Analyse des AT, DUER, plan de prévention, droits du CSE, droit d'alerte. Angle syndical CGT renforcé.",
+    cat: "droits",
+    tags: ["SST","DUER","prévention","CSE","droit d'alerte","plan de prévention"]
+  },
+  {
+    title: "Prévoyance & Invalidité — Module formation",
+    page: "index.html",
+    section: "Ressources formateur",
+    excerpt: "Garanties de prévoyance collective, régimes d'invalidité, incapacité de travail et complémentaires santé en entreprise.",
+    cat: "droits",
+    tags: ["prévoyance","invalidité","incapacité","complémentaire santé"]
+  },
+  {
+    title: "AT/MP dans la Fonction Publique — Module",
+    page: "index.html",
+    section: "Ressources formateur",
+    excerpt: "FPE, FPT, FPH : accident de service, maladie professionnelle, droits, indemnisations, F3SCT, CNRACL. Angle militant CGT.",
+    cat: "droits",
+    tags: ["fonction publique","accident de service","F3SCT","CNRACL","FPE","FPT","FPH"]
+  },
+
+  // ── STAGIAIRES.HTML ───────────────────────────────────────────────────────
+  {
+    title: "Espace stagiaire — Formation AT/MP",
+    page: "stagiaires.html",
+    section: "Bienvenue",
+    excerpt: "Supports de formation réservés aux stagiaires : présentations, tableaux MP, lexique, modèles de courriers. Formation syndicale CGT Occitanie.",
+    cat: "formation",
+    tags: ["stagiaire","supports","formation","courriers","tableaux MP"]
+  },
+  {
+    title: "Quiz AT/MP — Testez vos connaissances",
+    page: "stagiaires.html",
+    section: "Modules stagiaire",
+    excerpt: "12 questions sur les accidents du travail et maladies professionnelles. Correction immédiate et explications après chaque réponse.",
+    cat: "formation",
+    tags: ["quiz","questions","test","connaissances","correction"]
+  },
+
+  // ── CARNET-ATMP.HTML ──────────────────────────────────────────────────────
+  {
+    title: "Sinistralité AT/MP en France — Bilan 2025",
+    page: "carnet-atmp.html",
+    section: "L'ampleur du problème",
+    excerpt: "693 718 sinistres professionnels en 2025, 84 millions de journées d'arrêt, 5,4 milliards d'euros d'IJ. La sous-déclaration touche les précaires.",
+    cat: "droits",
+    tags: ["sinistralité","statistiques","2025","sous-déclaration","IJ","arrêt"]
+  },
+  {
+    title: "Explosion des maladies psychiques au travail",
+    page: "carnet-atmp.html",
+    section: "L'ampleur du problème",
+    excerpt: "1 971 maladies psychiques reconnues en 2025, contre 840 en 2020. +24 % d'AT en contexte de stress ou harcèlement. 65 % de victimes féminines.",
+    cat: "droits",
+    tags: ["RPS","psychique","harcèlement","épuisement","souffrance","burnout"]
+  },
+  {
+    title: "Définition légale de l'accident du travail — L.411-1 CSS",
+    page: "carnet-atmp.html",
+    section: "Définitions fondamentales",
+    excerpt: "AT : accident survenu par le fait ou à l'occasion du travail, quelle qu'en soit la cause. Trois éléments : soudaineté, lésion, lien avec le travail.",
+    cat: "lexique",
+    tags: ["AT","accident du travail","définition","L.411-1","CSS","lésion"]
+  },
+  {
+    title: "Accident de trajet — L.411-2 CSS",
+    page: "carnet-atmp.html",
+    section: "Définitions fondamentales",
+    excerpt: "Accident aller-retour domicile↔travail assimilé à AT. Même régime de prise en charge pour soins. Périmètre élargi : domicile-crèche, domicile-restaurant.",
+    cat: "lexique",
+    tags: ["trajet","domicile","accident de trajet","L.411-2","prise en charge"]
+  },
+  {
+    title: "Maladie professionnelle — reconnaissance et tableaux",
+    page: "carnet-atmp.html",
+    section: "Définitions fondamentales",
+    excerpt: "Deux voies : présomption d'imputabilité via les tableaux MP, ou voie complémentaire par le CRRMP. La CGT accompagne chaque déclaration.",
+    cat: "demarches",
+    tags: ["maladie professionnelle","MP","CRRMP","tableaux","présomption d'imputabilité"]
+  },
+  {
+    title: "Présomption d'imputabilité — droit absolu du salarié",
+    page: "carnet-atmp.html",
+    section: "Définitions fondamentales",
+    excerpt: "Dès qu'un accident survient au temps et lieu du travail, il est présumé d'origine professionnelle. C'est à l'employeur de renverser la présomption.",
+    cat: "droits",
+    tags: ["présomption d'imputabilité","charge de la preuve","temps de travail","lieu de travail"]
+  },
+  {
+    title: "Déclaration d'accident du travail (DAT) — Délai 48h",
+    page: "carnet-atmp.html",
+    section: "La déclaration d'accident",
+    excerpt: "L'employeur DOIT déclarer tout AT en 48h (L.441-2 CSS). Depuis le 1er juillet 2025, déclaration obligatoirement via cerfa sécurisé (net-entreprises.fr).",
+    cat: "demarches",
+    tags: ["DAT","déclaration","48h","cerfa","net-entreprises","L.441-2","obligation"]
+  },
+  {
+    title: "Réserves de l'employeur sur la DAT",
+    page: "carnet-atmp.html",
+    section: "La déclaration d'accident",
+    excerpt: "Réserves motivées dans les 10 jours ouvrables après la DAT. Déclenchent automatiquement une enquête CPAM (délai 70 jours au lieu de 30).",
+    cat: "demarches",
+    tags: ["réserves","DAT","enquête","CPAM","70 jours","10 jours","employeur"]
+  },
+  {
+    title: "Instruction CPAM — Délais de 30 et 70 jours",
+    page: "carnet-atmp.html",
+    section: "L'instruction CPAM",
+    excerpt: "Sans réserves : 30 jours francs (délai dépassé = acceptation tacite). Avec réserves : 70 jours + phase contradictoire (10+10 jours). Recours CRA sous 2 mois.",
+    cat: "demarches",
+    tags: ["CPAM","instruction","30 jours","70 jours","acceptation tacite","CRA","recours"]
+  },
+  {
+    title: "Calcul des indemnités journalières AT/MP",
+    page: "carnet-atmp.html",
+    section: "Les indemnités journalières",
+    excerpt: "Salaire journalier de base = salaire brut du mois précédent ÷ 30,42. IJ : 60 % jours 1–28, puis 80 % à partir du 29e jour. Pas de délai de carence.",
+    cat: "calculs",
+    tags: ["IJ","indemnités journalières","60%","80%","carence","SDJB","calcul"]
+  },
+  {
+    title: "Maintien de salaire AT — L.1226-1 CT",
+    page: "carnet-atmp.html",
+    section: "Les indemnités journalières",
+    excerpt: "L'employeur complète les IJ selon l'ancienneté. < 1 an : 0. 1–5 ans : 30j à 90% + 30j à 2/3. 6–10 ans : 40j à 90% + 40j à 2/3. CCN souvent plus favorable.",
+    cat: "calculs",
+    tags: ["maintien salaire","ancienneté","L.1226-1","90%","2/3","complément"]
+  },
+  {
+    title: "Incapacité permanente partielle (IPP) — Taux et capital",
+    page: "carnet-atmp.html",
+    section: "L'incapacité permanente",
+    excerpt: "< 10 % : capital forfaitaire (483 à 4 833 €). ≥ 10 % : rente viagère. IPP ≥ 20 % → retraite anticipée à 60 ans. IPP ≥ 66,66 % → soins 100 %.",
+    cat: "droits",
+    tags: ["IPP","incapacité permanente","capital","rente","taux","10%","20%","retraite anticipée"]
+  },
+  {
+    title: "Calcul de la rente AT/MP — Taux utile",
+    page: "carnet-atmp.html",
+    section: "L'incapacité permanente",
+    excerpt: "Rente annuelle = salaire annuel × taux utile. Taux utile = IPP/2 si taux ≤ 50 %, ×1,5 si taux > 50 %. Plancher salaire : 21 498,47 €/an (avril 2026).",
+    cat: "calculs",
+    tags: ["rente","taux utile","IPP","calcul","plancher","salaire annuel"]
+  },
+  {
+    title: "Faute inexcusable de l'employeur (FIE)",
+    page: "carnet-atmp.html",
+    section: "La faute inexcusable",
+    excerpt: "L'employeur avait conscience du danger et n'a pas pris les mesures nécessaires (Cass. soc. 28 fév. 2002 — arrêts Amiante). Majoration de rente + réparation complémentaire.",
+    cat: "droits",
+    tags: ["FIE","faute inexcusable","Amiante","rente majorée","préjudice","Cass. soc.","employeur"]
+  },
+  {
+    title: "FIE — Preuves et prescription",
+    page: "carnet-atmp.html",
+    section: "La faute inexcusable",
+    excerpt: "Preuves : PV CSE, DUERP, courriers non suivis d'effets. Prescription : 2 ans à compter de la consolidation. Recours amiable CPAM puis Pôle social du TJ.",
+    cat: "demarches",
+    tags: ["FIE","DUERP","prescription","2 ans","consolidation","tribunal judiciaire"]
+  },
+
+  // ── FICHE-DELEGUE.HTML ────────────────────────────────────────────────────
+  {
+    title: "Fiche délégué·e — Que faire après un AT ?",
+    page: "fiche-delegue.html",
+    section: "Guide d'action rapide",
+    excerpt: "Chronologie J0→2 mois pour accompagner un collègue victime d'AT/MP. Checklist interactive, script d'appel, délais critiques.",
+    cat: "demarches",
+    tags: ["délégué","checklist","AT","accompagnement","j0","action rapide"]
+  },
+  {
+    title: "Script d'appel au collègue accidenté",
+    page: "fiche-delegue.html",
+    section: "Script d'appel",
+    excerpt: "Script pour le premier contact dans les 24–48h : vérifier la déclaration, rappeler les droits (pas de carence, frais 100 %, protection contre licenciement).",
+    cat: "demarches",
+    tags: ["appel","collègue","délégué","droits","protection","licenciement","24h","48h"]
+  },
+  {
+    title: "Droits AT/MP à mémoriser — Protections clés",
+    page: "fiche-delegue.html",
+    section: "Droits AT/MP",
+    excerpt: "Pas de délai de carence. Frais médicaux 100 % sans avance. Protection contre le licenciement pendant l'arrêt. Obligation de reclassement à la reprise.",
+    cat: "droits",
+    tags: ["carence","soins","100%","licenciement","protection","reclassement","feuille d'accident"]
+  },
+
+  // ── ARGUMENTAIRE.HTML ─────────────────────────────────────────────────────
+  {
+    title: "Argumentaire syndical CGT — 65 diapositives formateur",
+    page: "argumentaire.html",
+    section: "Introduction",
+    excerpt: "Pour chaque diapositive : message clé, points à développer, angle syndical CGT. Programme sur 2 jours. La CGT défend les salariés AT/MP depuis 1898.",
+    cat: "formation",
+    tags: ["argumentaire","formateur","CGT","diapositive","2 jours","1898"]
+  },
+  {
+    title: "Histoire du droit AT/MP — De 1898 à aujourd'hui",
+    page: "argumentaire.html",
+    section: "Histoire",
+    excerpt: "1898 : inversion de la charge de la preuve, présomption d'imputabilité. 1945 : Sécurité sociale portée par la CGT et Ambroise Croizat. 5 branches depuis 1967.",
+    cat: "droits",
+    tags: ["histoire","1898","Croizat","Sécurité sociale","loi","charge de la preuve"]
+  },
+  {
+    title: "Sous-déclaration AT/MP — Fraude sociale organisée",
+    page: "argumentaire.html",
+    section: "Argumentaire",
+    excerpt: "Rapport Diricq : 1,3 Md€/an transférés de la branche AT/MP vers la branche maladie. Fraude économique patronale. Rôle du délégué : détecter et déclarer.",
+    cat: "droits",
+    tags: ["sous-déclaration","Diricq","fraude","cotisations","branche AT/MP","rapport"]
+  },
+  {
+    title: "Cotisation AT/MP — Tarification selon la sinistralité",
+    page: "argumentaire.html",
+    section: "Financement",
+    excerpt: "La branche AT/MP est financée exclusivement par les cotisations patronales proportionnelles à la sinistralité. Plus d'AT reconnus = cotisation plus élevée.",
+    cat: "calculs",
+    tags: ["cotisation","tarification","CARSAT","sinistralité","employeur","financement"]
+  },
+
+  // ── LEXIQUE.HTML ──────────────────────────────────────────────────────────
+  {
+    title: "AT — Accident du travail (définition)",
+    page: "lexique.html",
+    section: "Lexique",
+    excerpt: "Tout accident survenu par le fait ou à l'occasion du travail, quelle qu'en soit la cause, à toute personne salariée (art. L. 411-1 CSS). Soudain, lésion, lien professionnel.",
+    cat: "lexique",
+    tags: ["AT","accident du travail","L.411-1","définition","salarié","lésion"]
+  },
+  {
+    title: "IJ — Indemnités journalières AT/MP (définition)",
+    page: "lexique.html",
+    section: "Lexique",
+    excerpt: "60 % du salaire journalier jours 1–28, 80 % à partir du 29e jour. Pas de délai de carence. Plafonnées au PMSS (4 005 €/mois en 2026).",
+    cat: "lexique",
+    tags: ["IJ","indemnités journalières","60%","80%","PMSS","carence","définition"]
+  },
+  {
+    title: "IPP — Incapacité permanente partielle (définition)",
+    page: "lexique.html",
+    section: "Lexique",
+    excerpt: "Séquelle définitive évaluée en % après consolidation. < 10 % : capital (483–4 833 €). ≥ 10 % : rente. ≥ 20 % : retraite anticipée 60 ans. ≥ 66,66 % : soins 100 %.",
+    cat: "lexique",
+    tags: ["IPP","incapacité permanente","capital","rente","retraite anticipée","taux","définition"]
+  },
+  {
+    title: "FIE — Faute inexcusable de l'employeur (définition)",
+    page: "lexique.html",
+    section: "Lexique",
+    excerpt: "Employeur avait ou aurait dû avoir conscience du danger et n'a pas pris les mesures nécessaires. Majoration de rente + réparation complémentaire de tous les préjudices.",
+    cat: "lexique",
+    tags: ["FIE","faute inexcusable","majoration","rente","préjudice","employeur","définition"]
+  },
+  {
+    title: "DAT — Déclaration d'accident du travail (définition)",
+    page: "lexique.html",
+    section: "Lexique",
+    excerpt: "Obligation employeur : déclarer à la CPAM dans les 48h (hors dimanches et fériés). La victime peut déclarer elle-même jusqu'à 2 ans après l'accident.",
+    cat: "lexique",
+    tags: ["DAT","déclaration","48h","CPAM","2 ans","employeur","victime","définition"]
+  },
+  {
+    title: "MP — Maladie professionnelle (définition)",
+    page: "lexique.html",
+    section: "Lexique",
+    excerpt: "Affection reconnue par les tableaux MP (présomption d'imputabilité) ou par le CRRMP hors tableaux. Seul 1 cancer pro sur 10 est reconnu : sous-déclaration massive.",
+    cat: "lexique",
+    tags: ["MP","maladie professionnelle","tableaux","CRRMP","cancer","sous-déclaration","définition"]
+  },
+  {
+    title: "Consolidation (définition)",
+    page: "lexique.html",
+    section: "Lexique",
+    excerpt: "Date à laquelle l'état de santé est stabilisé et les lésions fixées. Marque la fin des IJ. Fixée par le médecin-conseil CPAM, contestable dans les 2 mois.",
+    cat: "lexique",
+    tags: ["consolidation","médecin-conseil","CPAM","séquelles","IJ","définition","2 mois"]
+  },
+  {
+    title: "Rente AT — Indemnisation viagère (définition)",
+    page: "lexique.html",
+    section: "Lexique",
+    excerpt: "Rente viagère si IPP ≥ 10 %. Plancher : 21 498,47 € depuis avril 2026. Exonérée CSG/CRDS et impôt. Réévaluée annuellement. Taux utile = IPP/2 si ≤ 50 %.",
+    cat: "lexique",
+    tags: ["rente","rente AT","IPP","plancher","CSG","exonération","définition"]
+  },
+  {
+    title: "CRRMP — Comité régional de reconnaissance des MP",
+    page: "lexique.html",
+    section: "Lexique",
+    excerpt: "Instance pluridisciplinaire qui instruit les demandes de reconnaissance de MP hors tableaux. Évalue le lien direct et essentiel entre la maladie et l'activité.",
+    cat: "lexique",
+    tags: ["CRRMP","comité régional","MP","hors tableaux","reconnaissance","définition"]
+  },
+  {
+    title: "Rechute AT/MP (définition)",
+    page: "lexique.html",
+    section: "Lexique",
+    excerpt: "Aggravation des lésions après consolidation. Nouvelle prise en charge au titre de l'AT/MP initial. Peut aboutir à révision du taux d'IPP à la hausse.",
+    cat: "lexique",
+    tags: ["rechute","aggravation","consolidation","IPP","révision","définition"]
+  },
+
+  // ── FAQ-ATMP.HTML ─────────────────────────────────────────────────────────
+  {
+    title: "FAQ — Mon employeur refuse de déclarer l'AT",
+    page: "faq-atmp.html",
+    section: "Déclaration",
+    excerpt: "La victime peut déclarer elle-même l'AT à la CPAM dans les 2 ans. Signaler le refus à l'inspection du travail. Amende administrative L.441-2 CSS.",
+    cat: "demarches",
+    tags: ["refus déclaration","employeur","2 ans","inspection du travail","amende","CPAM"]
+  },
+  {
+    title: "FAQ — Délai de carence en AT/MP",
+    page: "faq-atmp.html",
+    section: "IJ",
+    excerpt: "Aucun délai de carence en AT/MP : les IJ sont versées dès le premier jour d'arrêt, contrairement à la maladie ordinaire (3 jours de carence CPAM).",
+    cat: "droits",
+    tags: ["carence","délai","IJ","premier jour","arrêt","maladie ordinaire","différence"]
+  },
+  {
+    title: "FAQ — Contestation du taux d'IPP",
+    page: "faq-atmp.html",
+    section: "Droits",
+    excerpt: "Contester le taux IPP dans les 2 mois (LRAR). CMRA pour les AT, TCI pour les MP. Demander une expertise médicale contradictoire pour tout taux ≥ 10 %.",
+    cat: "demarches",
+    tags: ["contestation","IPP","2 mois","CMRA","TCI","expertise médicale","LRAR"]
+  },
+  {
+    title: "FAQ — Protection contre le licenciement en AT",
+    page: "faq-atmp.html",
+    section: "Droits",
+    excerpt: "Pendant l'arrêt AT, l'employeur ne peut pas licencier le salarié pour ce motif (L.1226-9 CT). Seule faute grave non liée à l'AT ou impossibilité maintien possible.",
+    cat: "droits",
+    tags: ["licenciement","protection","arrêt","L.1226-9","faute grave","maintien"]
+  },
+  {
+    title: "FAQ — Recours en cas de refus de la CPAM",
+    page: "faq-atmp.html",
+    section: "Recours",
+    excerpt: "Recours amiable auprès de la CRA dans les 2 mois, gratuit et sans avocat. Puis Pôle social du Tribunal Judiciaire. La CGT accompagne toute la procédure.",
+    cat: "demarches",
+    tags: ["recours","CRA","refus","CPAM","tribunal judiciaire","pôle social","2 mois"]
+  },
+  {
+    title: "FAQ — Visite de reprise après AT/MP",
+    page: "faq-atmp.html",
+    section: "Reprise",
+    excerpt: "Visite médicale de reprise obligatoire après tout arrêt AT/MP. Le médecin du travail peut déclarer inaptitude et déclencher l'obligation de reclassement.",
+    cat: "demarches",
+    tags: ["reprise","visite médicale","médecin du travail","inaptitude","reclassement","R.4624-31"]
+  },
+  {
+    title: "FAQ — Retraite anticipée avec IPP",
+    page: "faq-atmp.html",
+    section: "Droits",
+    excerpt: "IPP ≥ 20 % → retraite anticipée à 60 ans. IPP 10–19 % → départ 2 ans avant l'âge légal sous conditions (17 ans d'exposition + 68 trimestres validés pour MP).",
+    cat: "droits",
+    tags: ["retraite anticipée","60 ans","IPP","exposition","trimestres","conditions"]
+  },
+
+  // ── CALCULATEUR-IJ.HTML ───────────────────────────────────────────────────
+  {
+    title: "Calculateur IJ & Maintien de salaire",
+    page: "calculateur-ij.html",
+    section: "Calculateur",
+    excerpt: "Estimez la part CPAM et la part employeur en arrêt maladie ou AT/MP. Plafonds 2026 intégrés (42,97 €/j maladie · 240,49/320,66 €/j AT). Résultats au minimum légal.",
+    cat: "calculs",
+    tags: ["calculateur","IJ","CPAM","maintien","employeur","plafonds 2026","salaire"]
+  },
+  {
+    title: "Maintien légal selon l'ancienneté — tableau",
+    page: "calculateur-ij.html",
+    section: "Hypothèses calcul",
+    excerpt: "< 1 an : 0. 1–5 ans : 30j 90% + 30j 2/3. 6–10 ans : 40j 90% + 40j 2/3. La CCN peut prévoir mieux — vérifier systématiquement.",
+    cat: "calculs",
+    tags: ["ancienneté","maintien","90%","2/3","loi mensualisation","L.1226-1","CCN"]
+  },
+
+  // ── FICHES.HTML ───────────────────────────────────────────────────────────
+  {
+    title: "Fiches mémo AT/MP & Prévoyance",
+    page: "fiches.html",
+    section: "Fiches pratiques",
+    excerpt: "Collection de fiches mémo synthétiques sur les droits AT/MP, la prévoyance et l'invalidité. Téléchargeables et imprimables.",
+    cat: "droits",
+    tags: ["fiches","mémo","synthèse","prévoyance","invalidité","AT/MP","téléchargement"]
+  },
+
+  // ── GUIDE-ATMP-FP.HTML ────────────────────────────────────────────────────
+  {
+    title: "Guide AT/MP Fonction Publique — Présentation générale",
+    page: "guide-atmp-fp.html",
+    section: "Introduction",
+    excerpt: "10 % des agents de la FP ont eu au moins un AT dans l'année. Différences fondamentales avec le privé : régime statutaire, accident de service, pas de CSS.",
+    cat: "droits",
+    tags: ["fonction publique","FP","accident de service","statutaire","régime","différences"]
+  },
+  {
+    title: "FPE — Fonction Publique d'État : droits AT/MP",
+    page: "guide-atmp-fp.html",
+    section: "FPE",
+    excerpt: "Ministères, enseignants, policiers, douaniers. Gestion directe par les budgets des ministères. Maintien de traitement intégral pendant l'arrêt.",
+    cat: "droits",
+    tags: ["FPE","État","ministère","enseignant","policier","traitement","arrêt"]
+  },
+  {
+    title: "FPT — Fonction Publique Territoriale : droits AT/MP",
+    page: "guide-atmp-fp.html",
+    section: "FPT",
+    excerpt: "Communes, départements, régions. CNRACL gestionnaire. Nettoyage, voirie, espaces verts, animation. Taux d'accidentalité élevé.",
+    cat: "droits",
+    tags: ["FPT","territoriale","CNRACL","commune","département","accidentalité"]
+  },
+  {
+    title: "FPH — Fonction Publique Hospitalière : droits AT/MP",
+    page: "guide-atmp-fp.html",
+    section: "FPH",
+    excerpt: "Hôpitaux et établissements de santé publics. CNRACL gestionnaire. Taux d'accidentalité le plus élevé des 3 versants. Risques TMS et agressions.",
+    cat: "droits",
+    tags: ["FPH","hospitalière","hôpital","CNRACL","TMS","agression","risques"]
+  },
+  {
+    title: "Accident de service — Définition juridique (FP)",
+    page: "guide-atmp-fp.html",
+    section: "Définitions",
+    excerpt: "Événement soudain susceptible de produire une lésion corporelle survenant à l'occasion ou en raison du travail. Le lien de causalité avec le service doit être établi.",
+    cat: "lexique",
+    tags: ["accident de service","FP","définition","lésion","causalité","service","soudain"]
+  },
+  {
+    title: "Principes FP : maintien de traitement et prise en charge intégrale",
+    page: "guide-atmp-fp.html",
+    section: "Droits et procédures",
+    excerpt: "Protection statutaire : maintien de traitement, prise en charge intégrale des frais médicaux, rente ou capital en cas d'IPP, allocation veuvage en cas de décès.",
+    cat: "droits",
+    tags: ["traitement","frais médicaux","IPP","rente","veuvage","protection","statut"]
+  },
+  {
+    title: "F3SCT — Rôle dans la prévention AT/MP (FP)",
+    page: "guide-atmp-fp.html",
+    section: "Rôle du syndicat",
+    excerpt: "La Formation Spécialisée en Santé, Sécurité et Conditions de Travail : équivalent du CSE dans la FP. Enquête après chaque AT grave, droit d'alerte.",
+    cat: "droits",
+    tags: ["F3SCT","formation spécialisée","CSE","fonction publique","alerte","enquête","SST"]
+  }
+];
+
+// ─── Normalisation unicode/accents ───────────────────────────────────────────
+function normalize(str) {
+  return (str || '')
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[̀-ͯ]/g, '');
+}
+
+// ─── Surlignage des occurrences du terme dans le texte ───────────────────────
+function highlight(text, terms) {
+  if (!terms || !terms.length) return escHtml(text);
+  const escaped = text;
+  let result = escHtml(escaped);
+  terms.forEach(function(term) {
+    if (!term) return;
+    const re = new RegExp('(' + escRe(escHtml(term)) + ')', 'gi');
+    result = result.replace(re, '<mark>$1</mark>');
+  });
+  return result;
+}
+
+function escHtml(s) {
+  return (s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function escRe(s) {
+  return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+// ─── Correspondance insensible aux accents ───────────────────────────────────
+function matchesQuery(item, terms) {
+  if (!terms.length) return true;
+  const haystack = normalize([item.title, item.excerpt, (item.tags||[]).join(' ')].join(' '));
+  return terms.every(function(t) { return haystack.includes(t); });
+}
+
+// ─── Badge HTML ───────────────────────────────────────────────────────────────
+const CAT_LABELS = {
+  droits:    'Droits',
+  demarches: 'Démarches',
+  calculs:   'Calculs',
+  lexique:   'Lexique',
+  formation: 'Formation'
+};
+function badgeHtml(cat) {
+  return '<span class="badge badge-' + cat + '">' + (CAT_LABELS[cat] || cat) + '</span>';
+}
+
+// ─── Page label ───────────────────────────────────────────────────────────────
+const PAGE_LABELS = {
+  'index.html':         'Espace formateur',
+  'stagiaires.html':    'Espace stagiaire',
+  'carnet-atmp.html':   'Carnet AT/MP',
+  'fiche-delegue.html': 'Fiche délégué·e',
+  'argumentaire.html':  'Argumentaire',
+  'lexique.html':       'Lexique',
+  'faq-atmp.html':      'FAQ AT/MP',
+  'calculateur-ij.html':'Calculateur IJ',
+  'fiches.html':        'Fiches pratiques',
+  'guide-atmp-fp.html': 'Guide FP'
+};
+
+// ─── Rendu des résultats ──────────────────────────────────────────────────────
+var currentCat = 'tous';
+var currentQuery = '';
+var debounceTimer = null;
+
+function renderResults(query, cat) {
+  var terms = normalize(query).split(/\s+/).filter(Boolean);
+  var list = document.getElementById('results-list');
+  var meta = document.getElementById('results-meta');
+  var noRes = document.getElementById('no-results');
+
+  var filtered = SEARCH_INDEX.filter(function(item) {
+    if (cat !== 'tous' && item.cat !== cat) return false;
+    return matchesQuery(item, terms);
+  });
+
+  list.innerHTML = '';
+  noRes.classList.remove('visible');
+
+  if (filtered.length === 0 && (query || cat !== 'tous')) {
+    document.getElementById('no-results-term').textContent =
+      query ? '"' + query + '"' : 'Aucun résultat pour ce filtre.';
+    noRes.classList.add('visible');
+    meta.innerHTML = '';
+    return;
+  }
+
+  if (!query && cat === 'tous') {
+    meta.innerHTML = 'Entrez un terme pour rechercher dans les <strong>' + SEARCH_INDEX.length + ' entrées</strong> de l\'index.';
+    return;
+  }
+
+  meta.innerHTML = '<strong>' + filtered.length + ' résultat' + (filtered.length > 1 ? 's' : '') + '</strong>' +
+    (query ? ' pour « ' + escHtml(query) + ' »' : '') +
+    (cat !== 'tous' ? ' dans ' + CAT_LABELS[cat] : '');
+
+  filtered.forEach(function(item) {
+    var card = document.createElement('a');
+    card.className = 'result-card';
+    card.href = '/' + item.page;
+    card.innerHTML =
+      '<div class="card-top">' +
+        '<span class="card-title">' + highlight(item.title, terms.map(function(t){return t;})) + '</span>' +
+        badgeHtml(item.cat) +
+      '</div>' +
+      '<div class="card-meta">' +
+        '<span class="card-page">' + escHtml(PAGE_LABELS[item.page] || item.page) + '</span>' +
+        (item.section ? '<span>·</span><span>' + escHtml(item.section) + '</span>' : '') +
+      '</div>' +
+      '<div class="card-excerpt">' + highlight(item.excerpt, terms) + '</div>';
+    list.appendChild(card);
+  });
+}
+
+// ─── Init ─────────────────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', function() {
+  var input = document.getElementById('search-input');
+  var clearBtn = document.getElementById('search-clear');
+
+  // Focus on load
+  input.focus();
+
+  input.addEventListener('input', function() {
+    currentQuery = input.value.trim();
+    clearBtn.classList.toggle('visible', currentQuery.length > 0);
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(function() {
+      renderResults(currentQuery, currentCat);
+    }, 200);
+  });
+
+  clearBtn.addEventListener('click', function() {
+    input.value = '';
+    currentQuery = '';
+    clearBtn.classList.remove('visible');
+    renderResults('', currentCat);
+    input.focus();
+  });
+
+  document.querySelectorAll('.filter-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.filter-btn').forEach(function(b){ b.classList.remove('active'); });
+      btn.classList.add('active');
+      currentCat = btn.getAttribute('data-cat');
+      renderResults(currentQuery, currentCat);
+    });
+  });
+
+  // URL param support ?q=
+  var params = new URLSearchParams(location.search);
+  var q = params.get('q');
+  if (q) {
+    input.value = q;
+    currentQuery = q;
+    clearBtn.classList.add('visible');
+    renderResults(currentQuery, currentCat);
+  }
+});
+</script>
+</body>
+</html>
