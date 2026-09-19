@@ -1,20 +1,15 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-  <style>
-    @keyframes pulse {
-      0%,100% { transform:scale(1); opacity:1; }
-      50%      { transform:scale(.96); opacity:.85; }
-    }
-    @keyframes shine {
-      0%   { opacity:0; }
-      40%  { opacity:.35; }
-      100% { opacity:0; }
-    }
-    .bg  { animation: pulse 2.4s ease-in-out infinite; transform-origin:16px 16px; }
-    .ray { animation: shine 2.4s ease-in-out infinite; }
-  </style>
-  <rect class="bg" width="32" height="32" rx="5" fill="#E2001A"/>
-  <rect class="ray" x="0" y="26" width="32" height="4" rx="0 0 5 5" fill="#FFD200" opacity="0"/>
-  <text x="16" y="22" text-anchor="middle"
-        font-family="Arial Black,sans-serif" font-weight="900"
-        font-size="13" letter-spacing="-.5" fill="#FFD200">CGT</text>
+  <!-- Fond rouge CGT -->
+  <rect width="32" height="32" fill="#E2001A"/>
+  <!-- Bande jaune bas -->
+  <rect x="0" y="26" width="32" height="6" fill="#FFD200"/>
+  <!-- CGT en blanc, gras, bien lisible à petite taille -->
+  <text x="16" y="21"
+        text-anchor="middle"
+        dominant-baseline="auto"
+        font-family="Arial Black, Arial, sans-serif"
+        font-weight="900"
+        font-size="15"
+        letter-spacing="-0.5"
+        fill="#FFFFFF">CGT</text>
 </svg>
