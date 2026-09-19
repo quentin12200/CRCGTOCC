@@ -206,14 +206,20 @@ h1,h2{font-family:var(--disp);font-weight:400;line-height:.98;letter-spacing:.01
 .slide.s-divider.active~#brand,.slide.s-closing.active~#brand{}
 
 /* notes */
-#notes{position:fixed;left:0;right:0;bottom:0;z-index:60;background:rgba(15,15,15,.96);color:#f4f4f4;
-  padding:22px 28px 26px;transform:translateY(102%);transition:.35s;max-height:46vh;overflow:auto;
-  border-top:5px solid var(--yellow);font-family:var(--ui)}
+#notes{position:fixed;left:0;right:0;bottom:0;z-index:60;background:rgba(10,10,10,.97);color:#f4f4f4;
+  transform:translateY(102%);transition:.35s;max-height:52vh;overflow:hidden;display:flex;flex-direction:column;
+  border-top:4px solid var(--yellow);font-family:var(--ui);box-shadow:0 -4px 32px rgba(0,0,0,.5)}
 #notes.show{transform:none}
-#notes h4{color:var(--yellow);font-size:14px;letter-spacing:.18em;text-transform:uppercase;margin-bottom:10px;font-weight:800}
-#notes .nbody{font-family:var(--body);font-size:clamp(15px,1.5vw,21px);line-height:1.5;max-width:120ch}
-#notes .nbody b{color:#fff} #notes .nbody .cgt{color:var(--yellow);font-weight:700}
-#notes .nbody .ref{color:#9fbfff;font-style:italic;font-size:.92em}
+#notes-head{display:flex;align-items:center;gap:12px;padding:14px 22px 12px;border-bottom:1px solid rgba(255,255,255,.08);flex-shrink:0}
+#notes-head .n-label{color:var(--yellow);font-size:11px;letter-spacing:.2em;text-transform:uppercase;font-weight:800;flex:1}
+#notes-head .n-slide{color:#888;font-size:11px;font-weight:600;letter-spacing:.05em}
+#notes-close{background:none;border:2px solid #444;color:#ccc;width:30px;height:30px;border-radius:50%;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.15s;flex-shrink:0;padding:0;line-height:1}
+#notes-close:hover{background:var(--red,#E2001A);border-color:var(--red,#E2001A);color:#fff}
+#notes-body{overflow-y:auto;padding:18px 22px 22px;flex:1}
+#notes .nbody{font-family:var(--body,'Georgia',serif);font-size:clamp(14px,1.4vw,18px);line-height:1.7;max-width:110ch;color:#ddd}
+#notes .nbody b{color:#fff;font-weight:700}
+#notes .nbody .cgt{color:var(--yellow);font-weight:700;display:block;margin-top:.6em;padding:.5em .8em;background:rgba(255,210,0,.07);border-left:3px solid var(--yellow);border-radius:0 4px 4px 0}
+#notes .nbody .ref{color:#9fbfff;font-style:italic;font-size:.88em}
 
 /* overview */
 #ov{position:fixed;top:0;right:0;bottom:0;left:0;z-index:70;background:rgba(12,12,12,.97);overflow:auto;padding:70px 5vw 60px;
@@ -286,7 +292,7 @@ h1,h2{font-family:var(--disp);font-weight:400;line-height:.98;letter-spacing:.01
   <button class="cb" id="bPres" title="Mode présentateur (P)">⧉</button>
   <button class="cb" id="bHelp" title="Aide (?)">?</button>
 </div>
-<div id="notes"><h4>Notes du formateur — argumentaire</h4><div class="nbody"></div></div>
+<div id="notes"><div id="notes-head"><span class="n-label">Notes du formateur</span><span class="n-slide" id="notes-slide-num"></span><button id="notes-close" onclick="toggleNotes()" title="Fermer (N)">✕</button></div><div id="notes-body"><div class="nbody"></div></div></div>
 <canvas id="ink"></canvas>
 <div id="inktools">
   <button class="it pen act" data-tool="pen" title="Stylo rouge">✎</button>
@@ -348,13 +354,13 @@ const SLIDES = [
  {type:"divider", kicker:"Jour 1", title:["Comprendre,","déclarer,","faire reconnaître"],
   notes:"<b>Annoncer le fil de J1 — de l'accident à la reconnaissance.</b> Tout commence par un bon réflexe de déclaration : un dossier mal engagé se rattrape difficilement, voire pas du tout. <span class='cgt'>Accroche concrète : demander aux stagiaires si quelqu'un a déjà vu un accident mal déclaré ou pas déclaré du tout dans son entreprise — recueillir 1-2 témoignages pour lancer la journée.</span> Plan du jour : définition AT → présomption → délais → documents → procédure CPAM → MP → mise en situation."},
 
- {type:"stats", title:"Les AT/MP en France",
-  items:[{p:"",v:759,s:"",l:"décès liés à un accident du travail"},
-   {p:"≈ ",v:90,s:" %",l:"des maladies pro = troubles musculo-squelettiques"},
-   {p:"",v:74,s:" M",l:"journées de travail perdues (≈ 315 000 emplois)"},
-   {p:"",v:1287,s:"",l:"décès liés au travail (AT + trajet + MP)"}],
-  source:"Source : Assurance Maladie – Risques professionnels, données 2023 (à actualiser).",
-  notes:"<b>Mesurer l’ampleur — et l’ampleur de ce qu’on ne voit pas.</b> Près de la moitié des AT sont liés aux manutentions ; les MP augmentent régulièrement. Ces chiffres SOUS-estiment la réalité : experts estiment que seul 1 AT sur 3 lié aux RPS est déclaré, et beaucoup de MP ne sont jamais reconnues. <span class=’cgt’>Insister : la sous-déclaration est un transfert de coûts vers la Sécu (donc vers tous les cotisants) et prive les victimes de leurs droits. La combattre est un acte syndical concret.</span> Question au groupe : dans vos entreprises, avez-vous vu des AT non déclarés ? Pourquoi ?"},
+ {type:"stats", title:"Les AT/MP en France — bilan 2025",
+  items:[{p:"",v:1331,s:"",l:"morts du travail en 2025 (AT + trajet + MP) — +34 vs 2024"},
+   {p:"",v:551225,s:"",l:"accidents du travail avec arrêt (+0,3 % : la baisse s\’arrête)"},
+   {p:"",v:84,s:" M",l:"journées d\’arrêt générées · IJ versées : 5,4 Md€ (+10,5 %)"},
+   {p:"",v:1971,s:"",l:"maladies psychiques reconnues en 2025 — doublé en 5 ans"}],
+  source:"Source : Assurance Maladie – Risques professionnels 2025, communiqué CGT 10 sept. 2026.",
+  notes:"<b>Mesurer l\’ampleur — et l\’ampleur de ce qu\’on ne voit pas.</b> En 2025 : 693 718 sinistres reconnus dont 551 225 AT avec arrêt, 96 306 accidents de trajet, 52 187 MP. 1 331 décès. Les maladies psychiques ont DOUBLÉ en 5 ans (840 cas en 2020 → 1 971 en 2025). Les accidents liés au stress/harcèlement bondissent de +24 % en un an (35 500 cas). Les jeunes (<25 ans) ont un risque 40 % supérieur (IF 36/1000 vs 26,4 moyenne). Ces chiffres SOUS-estiment la réalité : la sous-déclaration est massive dans les TPE, l\’intérim et les secteurs à pression managériale. <span class=’cgt’>Insister : chaque AT non déclaré profite à l\’employeur (moins de cotisation) et prive la victime de ses droits. La sous-déclaration est un acte politique du patronat — la combattre est un acte militant concret.</span> Question au groupe : dans vos entreprises, avez-vous vu des AT non déclarés ? Pourquoi ?"},
 
  {type:"content", title:"Un enjeu syndical majeur",
   bullets:["La sous-déclaration prive les victimes de leurs droits (soins 100 %, IJ majorées, rente).",
@@ -958,7 +964,7 @@ const next=()=>setActive(idx+1), prev=()=>setActive(idx-1);
 
 /* notes */
 const notesEl=document.getElementById("notes");
-function updateNotes(){notesEl.querySelector(".nbody").innerHTML=SLIDES[idx].notes||"<i>—</i>";}
+function updateNotes(){notesEl.querySelector(".nbody").innerHTML=SLIDES[idx].notes||"<i style='color:#555'>Aucune note pour cette diapo.</i>";var ns=document.getElementById("notes-slide-num");if(ns)ns.textContent="Diapo "+(idx+1)+" / "+SLIDES.length;}
 function toggleNotes(){notesEl.classList.toggle("show");}
 
 /* overview */
