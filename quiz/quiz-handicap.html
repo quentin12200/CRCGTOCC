@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Quiz Handicap &amp; Agefiph — CGT Occitanie</title>
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/style.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --rouge: #E2001A; --rouge-dark: #C40017; --jaune: #FFD200; --fond: #0F0F0F; --texte: #FBFAF6; --texte-muted: #9A9A9A; --vert: #2ECC71; --vert-bg: #0F3320; --rouge-bg: #3A0008; }
+    body { background: var(--fond); color: var(--texte); font-family: 'Inter', sans-serif; min-height: 100vh; display: flex; flex-direction: column; }
+    .topbar { background: var(--rouge); padding: .75rem 1.5rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+    .topbar-title { font-family: 'Anton', sans-serif; font-size: 1rem; letter-spacing: .05em; color: #fff; }
+    .topbar a { font-size: .72rem; color: rgba(255,255,255,.8); text-decoration: none; border: 1px solid rgba(255,255,255,.3); padding: .25rem .6rem; }
+    .stripe { height: 5px; background: var(--jaune); }
+    .progress-bar-wrap { background: #1A1A1A; padding: .6rem 1.5rem; display: flex; align-items: center; gap: 1rem; }
+    .progress-track { flex: 1; height: 6px; background: #2E2E2E; border-radius: 3px; }
+    .progress-fill { height: 100%; background: var(--rouge); border-radius: 3px; transition: width .4s ease; }
+    .progress-label { font-size: .75rem; color: var(--texte-muted); white-space: nowrap; }
+    .scene { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 2rem 1.25rem; }
+    #intro { text-align: center; max-width: 520px; }
+    #intro .big-badge { background: var(--rouge); color: var(--jaune); font-family: 'Anton', sans-serif; font-size: 2.5rem; padding: 1rem 1.5rem; display: inline-block; letter-spacing: .1em; margin-bottom: 1.5rem; }
+    #intro h1 { font-family: 'Anton', sans-serif; font-size: 1.6rem; letter-spacing: .04em; margin-bottom: .75rem; }
+    #intro p { font-size: .9rem; color: var(--texte-muted); line-height: 1.6; margin-bottom: 1.5rem; }
+    #intro .meta { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-bottom: 2rem; }
+    #intro .meta span { font-size: .75rem; color: var(--texte-muted); border: 1px solid #2E2E2E; padding: .3rem .75rem; }
+    #question-wrap { width: 100%; max-width: 680px; animation: fadeIn .3s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+    .q-num { font-size: .7rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--texte-muted); margin-bottom: .6rem; }
+    .q-text { font-family: 'Anton', sans-serif; font-size: clamp(1.2rem, 3vw, 1.7rem); line-height: 1.3; letter-spacing: .02em; margin-bottom: 1.5rem; }
+    .choices { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; }
+    .choice { background: #1A1A1A; border: 2px solid #2A2A2A; color: var(--texte); font-family: 'Inter', sans-serif; font-size: clamp(.85rem, 2.2vw, 1rem); padding: 1rem 1.1rem; text-align: left; cursor: pointer; line-height: 1.45; transition: border-color .12s, background .12s; display: flex; gap: .6rem; align-items: flex-start; }
+    .choice:hover:not(:disabled) { border-color: var(--rouge); background: #2A1010; }
+    .choice.correct { border-color: var(--vert); background: var(--vert-bg); color: #fff; }
+    .choice.wrong { border-color: var(--rouge); background: var(--rouge-bg); color: #fff; }
+    .choice.reveal-correct { border-color: var(--vert); background: var(--vert-bg); }
+    .choice:disabled { cursor: default; }
+    .choice-letter { font-family: 'Anton', sans-serif; font-size: .9rem; color: var(--texte-muted); flex-shrink: 0; margin-top: 1px; }
+    .choice.correct .choice-letter, .choice.reveal-correct .choice-letter { color: var(--vert); }
+    .choice.wrong .choice-letter { color: var(--rouge); }
+    .explication { margin-top: 1.25rem; padding: .85rem 1rem; font-size: .875rem; line-height: 1.6; border-left: 4px solid; display: none; }
+    .explication.show { display: block; }
+    .explication.ok { border-color: var(--vert); background: var(--vert-bg); color: #A8F0C4; }
+    .explication.ko { border-color: var(--rouge); background: var(--rouge-bg); color: #FF9FAB; }
+    .explication strong { color: #fff; }
+    .btn-suivant { margin-top: 1.5rem; background: var(--rouge); color: #fff; border: none; padding: .85rem 2rem; font-family: 'Inter', sans-serif; font-size: .9rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; cursor: pointer; display: none; transition: background .15s; }
+    .btn-suivant:hover { background: var(--rouge-dark); }
+    .btn-suivant.show { display: inline-block; }
+    #resultats { text-align: center; max-width: 560px; }
+    .score-circle { width: 130px; height: 130px; border-radius: 50%; border: 6px solid var(--rouge); display: flex; flex-direction: column; align-items: center; justify-content: center; margin: 0 auto 1.5rem; }
+    .score-circle .score-num { font-family: 'Anton', sans-serif; font-size: 2.2rem; line-height: 1; }
+    .score-circle .score-total { font-size: .75rem; color: var(--texte-muted); }
+    .score-badge { display: inline-block; font-family: 'Anton', sans-serif; font-size: .8rem; letter-spacing: .1em; padding: .3rem .9rem; margin-bottom: .75rem; }
+    .badge-excellent { background: var(--vert); color: #000; }
+    .badge-bien { background: var(--jaune); color: #000; }
+    .badge-retrav { background: #444; color: #fff; }
+    .score-msg { font-family: 'Anton', sans-serif; font-size: 1.4rem; margin-bottom: .5rem; }
+    .score-sub { font-size: .875rem; color: var(--texte-muted); margin-bottom: 1.5rem; line-height: 1.6; }
+    .retenir { text-align: left; background: #1A1A1A; border: 1px solid #2A2A2A; border-left: 4px solid var(--jaune); padding: 1rem 1.25rem; margin-bottom: 1.5rem; }
+    .retenir h3 { font-family: 'Anton', sans-serif; font-size: .85rem; letter-spacing: .1em; color: var(--jaune); margin-bottom: .75rem; }
+    .retenir ul { list-style: none; }
+    .retenir ul li { font-size: .85rem; color: #ccc; line-height: 1.6; padding: .2rem 0 .2rem 1.2rem; position: relative; }
+    .retenir ul li::before { content: '→'; position: absolute; left: 0; color: var(--jaune); }
+    .recap { text-align: left; background: #1A1A1A; border: 1px solid #2A2A2A; padding: 1rem 1.25rem; margin-bottom: 1.5rem; font-size: .82rem; line-height: 1.7; }
+    .recap-item { display: flex; gap: .5rem; margin-bottom: .3rem; }
+    .recap-item .ok { color: var(--vert); font-weight: 700; }
+    .recap-item .ko { color: #FF6B7A; font-weight: 700; }
+    .result-actions { display: flex; gap: .75rem; flex-wrap: wrap; justify-content: center; }
+    .btn-refaire { background: var(--rouge); color: #fff; border: none; padding: .85rem 2rem; font-family: 'Inter', sans-serif; font-size: .9rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; cursor: pointer; transition: background .15s; }
+    .btn-refaire:hover { background: var(--rouge-dark); }
+    .btn-modules { font-size: .8rem; color: var(--texte-muted); text-decoration: none; border: 1px solid #2A2A2A; padding: .75rem 1.25rem; }
+    .hidden { display: none !important; }
+    @media (max-width: 560px) { .choices { grid-template-columns: 1fr; } .topbar { padding: .65rem 1rem; } }
+  </style>
+</head>
+<body>
+<script src="/assets/cgt-ui.js"></script>
+<script>if(localStorage.getItem('cgt_stagiaire_auth')!=='ok'&&localStorage.getItem('cgt_auth')!=='ok'){location.replace('/login-stagiaire.html?from='+encodeURIComponent(location.pathname));}</script>
+
+<div class="topbar">
+  <span class="topbar-title">Quiz — Handicap &amp; Agefiph</span>
+  <a href="/quiz/">← Modules quiz</a>
+</div>
+<div class="stripe"></div>
+
+<div class="progress-bar-wrap" id="progress-wrap" style="display:none">
+  <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+  <span class="progress-label" id="progress-label">1 / 10</span>
+</div>
+
+<div class="scene">
+
+  <div id="intro">
+    <div class="big-badge">CGT</div>
+    <h1>Quiz Handicap<br>&amp; Agefiph</h1>
+    <p>10 questions sur le handicap au travail, la RQTH, l'Agefiph et les obligations de l'employeur.<br>Correction immédiate après chaque réponse.</p>
+    <div class="meta">
+      <span>⏱ ~7 minutes</span>
+      <span>10 questions</span>
+      <span>Correction immédiate</span>
+    </div>
+    <button class="btn-suivant show" onclick="demarrer()" style="display:inline-block">Commencer le quiz</button>
+  </div>
+
+  <div id="question-wrap" class="hidden">
+    <div class="q-num" id="q-num">Question 1 / 10</div>
+    <div class="q-text" id="q-text"></div>
+    <div class="choices" id="choices"></div>
+    <div class="explication" id="explication"></div>
+    <button class="btn-suivant" id="btn-suivant" onclick="suivant()">Question suivante →</button>
+  </div>
+
+  <div id="resultats" class="hidden">
+    <div class="score-circle">
+      <span class="score-num" id="score-num">0</span>
+      <span class="score-total">/ 10</span>
+    </div>
+    <div class="score-badge" id="score-badge"></div>
+    <div class="score-msg" id="score-msg"></div>
+    <div class="score-sub" id="score-sub"></div>
+    <div class="retenir">
+      <h3>À RETENIR</h3>
+      <ul>
+        <li>L'obligation d'emploi de <strong>6 % de travailleurs handicapés</strong> s'applique à toute entreprise d'au moins <strong>20 salariés</strong>.</li>
+        <li>La <strong>MDPH</strong> instruit les demandes de RQTH et d'AAH — la RQTH est valable <strong>5 ans renouvelables</strong>.</li>
+        <li>L'employeur doit mettre en place des <strong>aménagements raisonnables</strong> pour maintenir le travailleur handicapé dans l'emploi.</li>
+      </ul>
+    </div>
+    <div class="recap" id="recap"></div>
+    <div class="result-actions">
+      <button class="btn-refaire" onclick="refaire()">Recommencer</button>
+      <a class="btn-modules" href="/quiz/">Retour modules</a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const QUESTIONS = [
+  {
+    q: "Le taux d'emploi obligatoire de travailleurs handicapés dans les entreprises est de :",
+    choices: ["4 %", "6 %", "8 %", "10 %"],
+    correct: 1,
+    explication: "La loi impose un taux d'emploi de <strong>6 %</strong> de travailleurs handicapés (BOETH) dans tout établissement d'au moins 20 salariés (art. L.5212-2 C. trav.). À défaut, l'employeur verse une contribution à l'Agefiph."
+  },
+  {
+    q: "RQTH signifie :",
+    choices: ["Reconnaissance de la Qualité de Travailleur Handicapé", "Registre Qualifié Travail Handicap", "Réseau Qualité Travail Humain", "Règlement Qualité Travail Hygiène"],
+    correct: 0,
+    explication: "RQTH = <strong>Reconnaissance de la Qualité de Travailleur Handicapé</strong>. Elle est attribuée par la MDPH et ouvre droit à des aides à l'emploi, des aménagements de poste et des dispositifs de formation spécifiques."
+  },
+  {
+    q: "L'Agefiph finance des aides pour :",
+    choices: ["Les entreprises privées uniquement", "Les travailleurs handicapés uniquement", "Les entreprises et les travailleurs handicapés", "Uniquement le secteur public"],
+    correct: 2,
+    explication: "L'Agefiph accompagne à la fois <strong>les travailleurs handicapés</strong> (formation, bilan, accompagnement) et <strong>les entreprises privées</strong> (aides à l'embauche, aménagements de poste, sensibilisation). Le FIPHFP est l'équivalent pour la fonction publique."
+  },
+  {
+    q: "L'obligation d'emploi de travailleurs handicapés s'applique aux entreprises de :",
+    choices: ["Plus de 20 salariés", "Plus de 50 salariés", "Plus de 100 salariés", "Toutes les entreprises sans seuil"],
+    correct: 0,
+    explication: "L'obligation s'applique à tout établissement d'au moins <strong>20 salariés</strong> (art. L.5212-1 C. trav.). Chaque établissement est traité séparément pour les entreprises multi-sites. En dessous du seuil, l'employeur n'est pas soumis à la contribution Agefiph."
+  },
+  {
+    q: "La MDPH traite principalement les dossiers de :",
+    choices: ["Retraite anticipée", "RQTH et AAH", "Accidents du travail", "Demandes de chômage"],
+    correct: 1,
+    explication: "La <strong>MDPH</strong> (Maison Départementale des Personnes Handicapées) instruit notamment les demandes de <strong>RQTH</strong> et d'<strong>AAH</strong> (Allocation Adulte Handicapé). Elle peut aussi valider des cartes d'invalidité, des PCH et orienter vers des ESAT."
+  },
+  {
+    q: "Cap Emploi accompagne en priorité :",
+    choices: ["Les chômeurs de longue durée", "Les travailleurs handicapés dans leur parcours emploi", "Les salariés seniors de + 55 ans", "Les apprentis en difficulté"],
+    correct: 1,
+    explication: "<strong>Cap Emploi</strong> est un réseau de proximité spécialisé dans l'insertion et le maintien dans l'emploi des <strong>travailleurs handicapés</strong>. Il travaille en lien avec Pôle emploi et les MDPH pour accompagner les projets professionnels et les aménagements de poste."
+  },
+  {
+    q: "L'AAH (Allocation Adulte Handicapé) est attribuée si le taux d'incapacité est ≥ :",
+    choices: ["50 %", "60 %", "80 %", "100 %"],
+    correct: 2,
+    explication: "L'AAH est accordée dès <strong>80 % de taux d'incapacité</strong>. Elle peut aussi être attribuée entre <strong>50 % et 79 %</strong> si la restriction substantielle et durable d'accès à l'emploi (RSDAE) est reconnue par la CDAPH. Les deux AAH 1 et 2 sont désormais déconjugalisées."
+  },
+  {
+    q: "Un employeur qui ne respecte pas l'obligation d'emploi des travailleurs handicapés est soumis à :",
+    choices: ["Aucune sanction légale", "Une contribution financière versée à l'Agefiph", "Une amende pénale", "Une suspension d'activité immédiate"],
+    correct: 1,
+    explication: "L'employeur en dessous du quota de 6 % doit verser une <strong>contribution annuelle à l'Agefiph</strong>, dont le montant est calculé par unité manquante et selon la taille de l'entreprise. Cette contribution peut atteindre plusieurs milliers d'euros par unité bénéficiaire manquante."
+  },
+  {
+    q: "Un travailleur handicapé qui demande du télétravail ou un aménagement de poste a droit à :",
+    choices: ["Télétravail obligatoire si demandé formellement", "Une réponse à la discrétion totale de l'employeur", "Des aménagements raisonnables que l'employeur est obligé de mettre en place", "Une priorité codécidée avec le CSE uniquement"],
+    correct: 2,
+    explication: "L'employeur a l'obligation de mettre en place des <strong>aménagements raisonnables</strong> (art. L.5213-6 C. trav.) pour permettre à un travailleur handicapé d'exercer son emploi. Le refus sans justification peut constituer une discrimination. Le médecin du travail joue un rôle clé dans les préconisations."
+  },
+  {
+    q: "La durée maximale de validité d'une RQTH est de :",
+    choices: ["1 an", "5 ans (renouvelable)", "10 ans", "Illimitée une fois accordée"],
+    correct: 1,
+    explication: "La RQTH est accordée pour une durée de <strong>1 à 5 ans</strong>, renouvelable. La MDPH peut dans certains cas l'accorder sans limitation de durée si le handicap est définitif et documenté. Pensez à anticiper le renouvellement 6 mois avant l'expiration."
+  }
+];
+
+let current = 0, score = 0, reponses = [];
+
+function demarrer() {
+  document.getElementById('intro').classList.add('hidden');
+  document.getElementById('progress-wrap').style.display = 'flex';
+  document.getElementById('question-wrap').classList.remove('hidden');
+  afficherQuestion();
+}
+
+function afficherQuestion() {
+  const q = QUESTIONS[current];
+  document.getElementById('q-num').textContent = `Question ${current + 1} / ${QUESTIONS.length}`;
+  document.getElementById('q-text').textContent = q.q;
+  const letters = ['A', 'B', 'C', 'D'];
+  document.getElementById('choices').innerHTML = q.choices.map((c, i) =>
+    `<button class="choice" onclick="repondre(${i})"><span class="choice-letter">${letters[i]}</span><span>${c}</span></button>`
+  ).join('');
+  document.getElementById('explication').className = 'explication';
+  document.getElementById('explication').innerHTML = '';
+  document.getElementById('btn-suivant').className = 'btn-suivant';
+  document.getElementById('progress-fill').style.width = (current / QUESTIONS.length * 100) + '%';
+  document.getElementById('progress-label').textContent = `${current + 1} / ${QUESTIONS.length}`;
+  document.getElementById('question-wrap').style.animation = 'none';
+  void document.getElementById('question-wrap').offsetWidth;
+  document.getElementById('question-wrap').style.animation = '';
+}
+
+function repondre(idx) {
+  const q = QUESTIONS[current];
+  const buttons = document.querySelectorAll('.choice');
+  buttons.forEach(b => b.disabled = true);
+  const isCorrect = idx === q.correct;
+  if (isCorrect) score++;
+  reponses.push({ q: q.q, correct: isCorrect, correctAnswer: q.choices[q.correct] });
+  buttons[idx].classList.add(isCorrect ? 'correct' : 'wrong');
+  if (!isCorrect) buttons[q.correct].classList.add('reveal-correct');
+  const expl = document.getElementById('explication');
+  expl.innerHTML = (isCorrect ? '✓ Bonne réponse ! ' : '✗ Incorrect. ') + q.explication;
+  expl.className = `explication show ${isCorrect ? 'ok' : 'ko'}`;
+  const btnS = document.getElementById('btn-suivant');
+  btnS.className = 'btn-suivant show';
+  btnS.textContent = current < QUESTIONS.length - 1 ? 'Question suivante →' : 'Voir les résultats →';
+}
+
+function suivant() {
+  current++;
+  if (current >= QUESTIONS.length) afficherResultats();
+  else afficherQuestion();
+}
+
+function afficherResultats() {
+  document.getElementById('question-wrap').classList.add('hidden');
+  document.getElementById('progress-fill').style.width = '100%';
+  document.getElementById('score-num').textContent = score;
+  const badge = document.getElementById('score-badge');
+  let msg, sub, badgeClass, badgeText;
+  if (score >= 8) { msg = 'Excellent !'; sub = 'Vous connaissez bien les droits des travailleurs handicapés. Un atout pour votre action syndicale.'; badgeClass = 'badge-excellent'; badgeText = 'EXCELLENT'; }
+  else if (score >= 6) { msg = 'Bien !'; sub = 'Bonne base. Approfondissez les dispositifs Agefiph et MDPH avec la fiche mémo Handicap.'; badgeClass = 'badge-bien'; badgeText = 'BIEN'; }
+  else { msg = 'À retravailler.'; sub = 'Le droit du handicap est riche — relisez le module et les 3 points clés ci-dessous.'; badgeClass = 'badge-retrav'; badgeText = 'À RETRAVAILLER'; }
+  badge.className = `score-badge ${badgeClass}`;
+  badge.textContent = badgeText;
+  document.getElementById('score-msg').textContent = msg;
+  document.getElementById('score-sub').textContent = sub;
+  document.getElementById('recap').innerHTML = reponses.map((r, i) =>
+    `<div class="recap-item"><span class="${r.correct ? 'ok' : 'ko'}">${r.correct ? '✓' : '✗'}</span><span>Q${i+1} : ${r.q.substring(0, 60)}…${r.correct ? '' : ` <em style="color:#FF9FAB">→ ${r.correctAnswer}</em>`}</span></div>`
+  ).join('');
+  document.getElementById('resultats').classList.remove('hidden');
+}
+
+function refaire() {
+  current = 0; score = 0; reponses = [];
+  document.getElementById('resultats').classList.add('hidden');
+  document.getElementById('question-wrap').classList.remove('hidden');
+  afficherQuestion();
+}
+</script>
+</body>
+</html>

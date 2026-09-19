@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Quiz AT/MP Fonction Publique — CGT Occitanie</title>
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/style.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --rouge: #E2001A; --rouge-dark: #C40017; --jaune: #FFD200; --fond: #0F0F0F; --texte: #FBFAF6; --texte-muted: #9A9A9A; --vert: #2ECC71; --vert-bg: #0F3320; --rouge-bg: #3A0008; }
+    body { background: var(--fond); color: var(--texte); font-family: 'Inter', sans-serif; min-height: 100vh; display: flex; flex-direction: column; }
+    .topbar { background: var(--rouge); padding: .75rem 1.5rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+    .topbar-title { font-family: 'Anton', sans-serif; font-size: 1rem; letter-spacing: .05em; color: #fff; }
+    .topbar a { font-size: .72rem; color: rgba(255,255,255,.8); text-decoration: none; border: 1px solid rgba(255,255,255,.3); padding: .25rem .6rem; }
+    .stripe { height: 5px; background: var(--jaune); }
+    .progress-bar-wrap { background: #1A1A1A; padding: .6rem 1.5rem; display: flex; align-items: center; gap: 1rem; }
+    .progress-track { flex: 1; height: 6px; background: #2E2E2E; border-radius: 3px; }
+    .progress-fill { height: 100%; background: var(--rouge); border-radius: 3px; transition: width .4s ease; }
+    .progress-label { font-size: .75rem; color: var(--texte-muted); white-space: nowrap; }
+    .scene { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 2rem 1.25rem; }
+    #intro { text-align: center; max-width: 520px; }
+    #intro .big-badge { background: var(--rouge); color: var(--jaune); font-family: 'Anton', sans-serif; font-size: 2.5rem; padding: 1rem 1.5rem; display: inline-block; letter-spacing: .1em; margin-bottom: 1.5rem; }
+    #intro h1 { font-family: 'Anton', sans-serif; font-size: 1.6rem; letter-spacing: .04em; margin-bottom: .75rem; }
+    #intro p { font-size: .9rem; color: var(--texte-muted); line-height: 1.6; margin-bottom: 1.5rem; }
+    #intro .meta { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-bottom: 2rem; }
+    #intro .meta span { font-size: .75rem; color: var(--texte-muted); border: 1px solid #2E2E2E; padding: .3rem .75rem; }
+    #question-wrap { width: 100%; max-width: 680px; animation: fadeIn .3s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+    .q-num { font-size: .7rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--texte-muted); margin-bottom: .6rem; }
+    .q-text { font-family: 'Anton', sans-serif; font-size: clamp(1.2rem, 3vw, 1.7rem); line-height: 1.3; letter-spacing: .02em; margin-bottom: 1.5rem; }
+    .choices { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; }
+    .choice { background: #1A1A1A; border: 2px solid #2A2A2A; color: var(--texte); font-family: 'Inter', sans-serif; font-size: clamp(.85rem, 2.2vw, 1rem); padding: 1rem 1.1rem; text-align: left; cursor: pointer; line-height: 1.45; transition: border-color .12s, background .12s; display: flex; gap: .6rem; align-items: flex-start; }
+    .choice:hover:not(:disabled) { border-color: var(--rouge); background: #2A1010; }
+    .choice.correct { border-color: var(--vert); background: var(--vert-bg); color: #fff; }
+    .choice.wrong { border-color: var(--rouge); background: var(--rouge-bg); color: #fff; }
+    .choice.reveal-correct { border-color: var(--vert); background: var(--vert-bg); }
+    .choice:disabled { cursor: default; }
+    .choice-letter { font-family: 'Anton', sans-serif; font-size: .9rem; color: var(--texte-muted); flex-shrink: 0; margin-top: 1px; }
+    .choice.correct .choice-letter, .choice.reveal-correct .choice-letter { color: var(--vert); }
+    .choice.wrong .choice-letter { color: var(--rouge); }
+    .explication { margin-top: 1.25rem; padding: .85rem 1rem; font-size: .875rem; line-height: 1.6; border-left: 4px solid; display: none; }
+    .explication.show { display: block; }
+    .explication.ok { border-color: var(--vert); background: var(--vert-bg); color: #A8F0C4; }
+    .explication.ko { border-color: var(--rouge); background: var(--rouge-bg); color: #FF9FAB; }
+    .explication strong { color: #fff; }
+    .btn-suivant { margin-top: 1.5rem; background: var(--rouge); color: #fff; border: none; padding: .85rem 2rem; font-family: 'Inter', sans-serif; font-size: .9rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; cursor: pointer; display: none; transition: background .15s; }
+    .btn-suivant:hover { background: var(--rouge-dark); }
+    .btn-suivant.show { display: inline-block; }
+    #resultats { text-align: center; max-width: 560px; }
+    .score-circle { width: 130px; height: 130px; border-radius: 50%; border: 6px solid var(--rouge); display: flex; flex-direction: column; align-items: center; justify-content: center; margin: 0 auto 1.5rem; }
+    .score-circle .score-num { font-family: 'Anton', sans-serif; font-size: 2.2rem; line-height: 1; }
+    .score-circle .score-total { font-size: .75rem; color: var(--texte-muted); }
+    .score-badge { display: inline-block; font-family: 'Anton', sans-serif; font-size: .8rem; letter-spacing: .1em; padding: .3rem .9rem; margin-bottom: .75rem; }
+    .badge-excellent { background: var(--vert); color: #000; }
+    .badge-bien { background: var(--jaune); color: #000; }
+    .badge-retrav { background: #444; color: #fff; }
+    .score-msg { font-family: 'Anton', sans-serif; font-size: 1.4rem; margin-bottom: .5rem; }
+    .score-sub { font-size: .875rem; color: var(--texte-muted); margin-bottom: 1.5rem; line-height: 1.6; }
+    .retenir { text-align: left; background: #1A1A1A; border: 1px solid #2A2A2A; border-left: 4px solid var(--jaune); padding: 1rem 1.25rem; margin-bottom: 1.5rem; }
+    .retenir h3 { font-family: 'Anton', sans-serif; font-size: .85rem; letter-spacing: .1em; color: var(--jaune); margin-bottom: .75rem; }
+    .retenir ul { list-style: none; }
+    .retenir ul li { font-size: .85rem; color: #ccc; line-height: 1.6; padding: .2rem 0 .2rem 1.2rem; position: relative; }
+    .retenir ul li::before { content: '→'; position: absolute; left: 0; color: var(--jaune); }
+    .recap { text-align: left; background: #1A1A1A; border: 1px solid #2A2A2A; padding: 1rem 1.25rem; margin-bottom: 1.5rem; font-size: .82rem; line-height: 1.7; }
+    .recap-item { display: flex; gap: .5rem; margin-bottom: .3rem; }
+    .recap-item .ok { color: var(--vert); font-weight: 700; }
+    .recap-item .ko { color: #FF6B7A; font-weight: 700; }
+    .result-actions { display: flex; gap: .75rem; flex-wrap: wrap; justify-content: center; }
+    .btn-refaire { background: var(--rouge); color: #fff; border: none; padding: .85rem 2rem; font-family: 'Inter', sans-serif; font-size: .9rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; cursor: pointer; transition: background .15s; }
+    .btn-refaire:hover { background: var(--rouge-dark); }
+    .btn-modules { font-size: .8rem; color: var(--texte-muted); text-decoration: none; border: 1px solid #2A2A2A; padding: .75rem 1.25rem; }
+    .hidden { display: none !important; }
+    @media (max-width: 560px) { .choices { grid-template-columns: 1fr; } .topbar { padding: .65rem 1rem; } }
+  </style>
+</head>
+<body>
+<script src="/assets/cgt-ui.js"></script>
+<script>if(localStorage.getItem('cgt_stagiaire_auth')!=='ok'&&localStorage.getItem('cgt_auth')!=='ok'){location.replace('/login-stagiaire.html?from='+encodeURIComponent(location.pathname));}</script>
+
+<div class="topbar">
+  <span class="topbar-title">Quiz — AT/MP Fonction Publique</span>
+  <a href="/quiz/">← Modules quiz</a>
+</div>
+<div class="stripe"></div>
+
+<div class="progress-bar-wrap" id="progress-wrap" style="display:none">
+  <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+  <span class="progress-label" id="progress-label">1 / 10</span>
+</div>
+
+<div class="scene">
+
+  <div id="intro">
+    <div class="big-badge">CGT</div>
+    <h1>Quiz AT/MP<br>Fonction Publique</h1>
+    <p>10 questions sur les accidents de service, les congés maladie et les droits spécifiques aux 3 versants de la fonction publique.<br>Correction immédiate après chaque réponse.</p>
+    <div class="meta">
+      <span>⏱ ~7 minutes</span>
+      <span>10 questions</span>
+      <span>Correction immédiate</span>
+    </div>
+    <button class="btn-suivant show" onclick="demarrer()" style="display:inline-block">Commencer le quiz</button>
+  </div>
+
+  <div id="question-wrap" class="hidden">
+    <div class="q-num" id="q-num">Question 1 / 10</div>
+    <div class="q-text" id="q-text"></div>
+    <div class="choices" id="choices"></div>
+    <div class="explication" id="explication"></div>
+    <button class="btn-suivant" id="btn-suivant" onclick="suivant()">Question suivante →</button>
+  </div>
+
+  <div id="resultats" class="hidden">
+    <div class="score-circle">
+      <span class="score-num" id="score-num">0</span>
+      <span class="score-total">/ 10</span>
+    </div>
+    <div class="score-badge" id="score-badge"></div>
+    <div class="score-msg" id="score-msg"></div>
+    <div class="score-sub" id="score-sub"></div>
+    <div class="retenir">
+      <h3>À RETENIR</h3>
+      <ul>
+        <li>Le <strong>CAS (Congé pour Accident de Service)</strong> maintient le salaire à <strong>100 %</strong> — contrairement au régime général.</li>
+        <li>L'<strong>ATI (Allocation Temporaire d'Invalidité)</strong> est réservée aux <strong>fonctionnaires titulaires</strong> — les contractuels relèvent du régime général.</li>
+        <li>Le <strong>comité médical</strong> est l'instance clé en FP pour les longues maladies (CLM, CLD) et l'expertise médicale en cas de litige.</li>
+      </ul>
+    </div>
+    <div class="recap" id="recap"></div>
+    <div class="result-actions">
+      <button class="btn-refaire" onclick="refaire()">Recommencer</button>
+      <a class="btn-modules" href="/quiz/">Retour modules</a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const QUESTIONS = [
+  {
+    q: "Dans la fonction publique, l'accident de service doit être déclaré dans un délai de :",
+    choices: ["24 heures", "48 heures", "15 jours", "1 mois"],
+    correct: 2,
+    explication: "Dans la FP, le fonctionnaire dispose d'un délai de <strong>15 jours</strong> pour déclarer l'accident de service (art. 47 du décret du 14/03/1986). Ce délai est plus long que dans le secteur privé (24h) mais doit être respecté — tout retard peut compliquer la reconnaissance."
+  },
+  {
+    q: "Le CLM (Congé de Longue Maladie) d'un fonctionnaire peut durer au maximum :",
+    choices: ["1 an", "3 ans", "5 ans", "Illimité"],
+    correct: 1,
+    explication: "Le CLM dure au maximum <strong>3 ans</strong> : 1 an à plein traitement, puis 2 ans à demi-traitement. Il concerne des maladies graves nécessitant un traitement prolongé. Le fonctionnaire peut ensuite basculer en CLD (Congé de Longue Durée) pour certaines pathologies."
+  },
+  {
+    q: "L'ATI (Allocation Temporaire d'Invalidité) est réservée aux :",
+    choices: ["Agents contractuels de la FP", "Fonctionnaires titulaires", "CDD et intérimaires du public", "Tous les agents quel que soit leur statut"],
+    correct: 1,
+    explication: "L'ATI est un droit exclusif des <strong>fonctionnaires titulaires</strong>. Elle est attribuée en cas d'invalidité permanente résultant d'un accident de service ou d'une maladie professionnelle. Les contractuels relèvent du régime général de la Sécurité sociale."
+  },
+  {
+    q: "Le CAS (Congé pour Accident de Service) maintient le traitement du fonctionnaire à :",
+    choices: ["60 %", "80 %", "100 %", "50 %"],
+    correct: 2,
+    explication: "Le CAS maintient le traitement à <strong>100 %</strong> pendant toute la durée de l'arrêt imputable au service. C'est un avantage important par rapport au régime général qui débute à 60 % les 28 premiers jours. Il couvre aussi les frais médicaux directement liés à l'accident."
+  },
+  {
+    q: "La CNRACL gère les retraites de :",
+    choices: ["Les agents de l'État (FPE)", "Les fonctionnaires hospitaliers et territoriaux (FPH + FPT)", "Tous les fonctionnaires des 3 versants", "Les salariés du secteur privé"],
+    correct: 1,
+    explication: "La <strong>CNRACL</strong> (Caisse Nationale de Retraites des Agents des Collectivités Locales) gère les retraites des fonctionnaires <strong>hospitaliers (FPH) et territoriaux (FPT)</strong>. Les fonctionnaires de l'État (FPE) relèvent du régime des pensions civiles de l'État (service des retraites de l'État)."
+  },
+  {
+    q: "Pour bénéficier d'un CLM, le fonctionnaire doit obtenir l'avis de :",
+    choices: ["Sa hiérarchie directe", "Le comité médical", "Le médecin du travail uniquement", "Le DRH de la collectivité"],
+    correct: 1,
+    explication: "Le CLM est accordé sur avis du <strong>comité médical</strong> (instance paritaire composée de médecins agréés). Ce comité examine le dossier médical et émet un avis sur la mise en CLM, sa durée et le renouvellement. Son avis lie l'administration pour la durée du congé."
+  },
+  {
+    q: "Le CITIS (Congé pour Invalidité Temporaire Imputable au Service) concerne :",
+    choices: ["Les congés d'invalidité hors service", "L'imputabilité au service d'un accident ou d'une maladie", "Les congés maternité en FP", "Le télétravail pour raison médicale"],
+    correct: 1,
+    explication: "Le <strong>CITIS</strong> (loi du 6/08/2019) est le nouveau congé qui remplace et unifie les anciens régimes AT/MP dans la FP. Il couvre les arrêts liés à un <strong>accident de service ou une maladie reconnue imputable au service</strong>. Il maintient le traitement à 100 % et prend en charge les frais médicaux afférents."
+  },
+  {
+    q: "Un fonctionnaire placé en disponibilité conserve-t-il ses droits à la couverture AT ?",
+    choices: ["Oui, pleinement", "Non, il relève alors du régime général", "Partiellement selon le motif de disponibilité", "Oui, selon la décision de la collectivité"],
+    correct: 1,
+    explication: "<strong>Non</strong>. Le fonctionnaire en disponibilité (hors disponibilité d'office pour raison de santé) sort du statut de la FP et n'est plus couvert par le régime de protection statutaire. Il relève du régime général de la Sécurité sociale ou doit souscrire une assurance volontaire."
+  },
+  {
+    q: "L'expertise médicale en cas de litige sur l'imputabilité d'un accident de service est organisée par :",
+    choices: ["L'employeur public", "L'agent lui-même", "Le comité médical ou la commission de réforme", "La CPAM"],
+    correct: 2,
+    explication: "En FP, les litiges sur l'imputabilité au service sont tranchés par le <strong>comité médical</strong> (ou la commission de réforme selon les cas). Ces instances permettent une contre-expertise médicale. La CPAM n'intervient pas dans le régime statutaire des titulaires."
+  },
+  {
+    q: "Le taux d'IPP pour bénéficier d'une ATI dans la fonction publique est ≥ :",
+    choices: ["5 %", "10 %", "15 %", "20 %"],
+    correct: 1,
+    explication: "Le seuil est de <strong>10 % d'IPP</strong> pour l'attribution de l'ATI (art. L.27 du Code des pensions civiles et militaires). Ce taux est évalué par la commission de réforme. En dessous : versement d'un capital. À partir de 10 % : ATI servie annuellement jusqu'à la retraite ou jusqu'à la mise en retraite pour invalidité."
+  }
+];
+
+let current = 0, score = 0, reponses = [];
+
+function demarrer() {
+  document.getElementById('intro').classList.add('hidden');
+  document.getElementById('progress-wrap').style.display = 'flex';
+  document.getElementById('question-wrap').classList.remove('hidden');
+  afficherQuestion();
+}
+
+function afficherQuestion() {
+  const q = QUESTIONS[current];
+  document.getElementById('q-num').textContent = `Question ${current + 1} / ${QUESTIONS.length}`;
+  document.getElementById('q-text').textContent = q.q;
+  const letters = ['A', 'B', 'C', 'D'];
+  document.getElementById('choices').innerHTML = q.choices.map((c, i) =>
+    `<button class="choice" onclick="repondre(${i})"><span class="choice-letter">${letters[i]}</span><span>${c}</span></button>`
+  ).join('');
+  document.getElementById('explication').className = 'explication';
+  document.getElementById('explication').innerHTML = '';
+  document.getElementById('btn-suivant').className = 'btn-suivant';
+  document.getElementById('progress-fill').style.width = (current / QUESTIONS.length * 100) + '%';
+  document.getElementById('progress-label').textContent = `${current + 1} / ${QUESTIONS.length}`;
+  document.getElementById('question-wrap').style.animation = 'none';
+  void document.getElementById('question-wrap').offsetWidth;
+  document.getElementById('question-wrap').style.animation = '';
+}
+
+function repondre(idx) {
+  const q = QUESTIONS[current];
+  const buttons = document.querySelectorAll('.choice');
+  buttons.forEach(b => b.disabled = true);
+  const isCorrect = idx === q.correct;
+  if (isCorrect) score++;
+  reponses.push({ q: q.q, correct: isCorrect, correctAnswer: q.choices[q.correct] });
+  buttons[idx].classList.add(isCorrect ? 'correct' : 'wrong');
+  if (!isCorrect) buttons[q.correct].classList.add('reveal-correct');
+  const expl = document.getElementById('explication');
+  expl.innerHTML = (isCorrect ? '✓ Bonne réponse ! ' : '✗ Incorrect. ') + q.explication;
+  expl.className = `explication show ${isCorrect ? 'ok' : 'ko'}`;
+  const btnS = document.getElementById('btn-suivant');
+  btnS.className = 'btn-suivant show';
+  btnS.textContent = current < QUESTIONS.length - 1 ? 'Question suivante →' : 'Voir les résultats →';
+}
+
+function suivant() {
+  current++;
+  if (current >= QUESTIONS.length) afficherResultats();
+  else afficherQuestion();
+}
+
+function afficherResultats() {
+  document.getElementById('question-wrap').classList.add('hidden');
+  document.getElementById('progress-fill').style.width = '100%';
+  document.getElementById('score-num').textContent = score;
+  const badge = document.getElementById('score-badge');
+  let msg, sub, badgeClass, badgeText;
+  if (score >= 8) { msg = 'Excellent !'; sub = 'Vous maîtrisez les spécificités AT/MP de la fonction publique. Indispensable pour accompagner les agents.'; badgeClass = 'badge-excellent'; badgeText = 'EXCELLENT'; }
+  else if (score >= 6) { msg = 'Bien !'; sub = 'Bon niveau FP. Consultez le guide AT/MP Fonction Publique pour approfondir les nuances.'; badgeClass = 'badge-bien'; badgeText = 'BIEN'; }
+  else { msg = 'À retravailler.'; sub = 'La FP a ses propres règles — relisez le module et les 3 points clés ci-dessous.'; badgeClass = 'badge-retrav'; badgeText = 'À RETRAVAILLER'; }
+  badge.className = `score-badge ${badgeClass}`;
+  badge.textContent = badgeText;
+  document.getElementById('score-msg').textContent = msg;
+  document.getElementById('score-sub').textContent = sub;
+  document.getElementById('recap').innerHTML = reponses.map((r, i) =>
+    `<div class="recap-item"><span class="${r.correct ? 'ok' : 'ko'}">${r.correct ? '✓' : '✗'}</span><span>Q${i+1} : ${r.q.substring(0, 60)}…${r.correct ? '' : ` <em style="color:#FF9FAB">→ ${r.correctAnswer}</em>`}</span></div>`
+  ).join('');
+  document.getElementById('resultats').classList.remove('hidden');
+}
+
+function refaire() {
+  current = 0; score = 0; reponses = [];
+  document.getElementById('resultats').classList.add('hidden');
+  document.getElementById('question-wrap').classList.remove('hidden');
+  afficherQuestion();
+}
+</script>
+</body>
+</html>

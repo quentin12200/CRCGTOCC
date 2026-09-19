@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Quiz Prévention SST — CGT Occitanie</title>
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/style.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --rouge: #E2001A; --rouge-dark: #C40017; --jaune: #FFD200; --fond: #0F0F0F; --texte: #FBFAF6; --texte-muted: #9A9A9A; --vert: #2ECC71; --vert-bg: #0F3320; --rouge-bg: #3A0008; }
+    body { background: var(--fond); color: var(--texte); font-family: 'Inter', sans-serif; min-height: 100vh; display: flex; flex-direction: column; }
+    .topbar { background: var(--rouge); padding: .75rem 1.5rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+    .topbar-title { font-family: 'Anton', sans-serif; font-size: 1rem; letter-spacing: .05em; color: #fff; }
+    .topbar a { font-size: .72rem; color: rgba(255,255,255,.8); text-decoration: none; border: 1px solid rgba(255,255,255,.3); padding: .25rem .6rem; }
+    .stripe { height: 5px; background: var(--jaune); }
+    .progress-bar-wrap { background: #1A1A1A; padding: .6rem 1.5rem; display: flex; align-items: center; gap: 1rem; }
+    .progress-track { flex: 1; height: 6px; background: #2E2E2E; border-radius: 3px; }
+    .progress-fill { height: 100%; background: var(--rouge); border-radius: 3px; transition: width .4s ease; }
+    .progress-label { font-size: .75rem; color: var(--texte-muted); white-space: nowrap; }
+    .scene { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 2rem 1.25rem; }
+    #intro { text-align: center; max-width: 520px; }
+    #intro .big-badge { background: var(--rouge); color: var(--jaune); font-family: 'Anton', sans-serif; font-size: 2.5rem; padding: 1rem 1.5rem; display: inline-block; letter-spacing: .1em; margin-bottom: 1.5rem; }
+    #intro h1 { font-family: 'Anton', sans-serif; font-size: 1.6rem; letter-spacing: .04em; margin-bottom: .75rem; }
+    #intro p { font-size: .9rem; color: var(--texte-muted); line-height: 1.6; margin-bottom: 1.5rem; }
+    #intro .meta { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-bottom: 2rem; }
+    #intro .meta span { font-size: .75rem; color: var(--texte-muted); border: 1px solid #2E2E2E; padding: .3rem .75rem; }
+    #question-wrap { width: 100%; max-width: 680px; animation: fadeIn .3s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+    .q-num { font-size: .7rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--texte-muted); margin-bottom: .6rem; }
+    .q-text { font-family: 'Anton', sans-serif; font-size: clamp(1.2rem, 3vw, 1.7rem); line-height: 1.3; letter-spacing: .02em; margin-bottom: 1.5rem; }
+    .choices { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; }
+    .choice { background: #1A1A1A; border: 2px solid #2A2A2A; color: var(--texte); font-family: 'Inter', sans-serif; font-size: clamp(.85rem, 2.2vw, 1rem); padding: 1rem 1.1rem; text-align: left; cursor: pointer; line-height: 1.45; transition: border-color .12s, background .12s; display: flex; gap: .6rem; align-items: flex-start; }
+    .choice:hover:not(:disabled) { border-color: var(--rouge); background: #2A1010; }
+    .choice.correct { border-color: var(--vert); background: var(--vert-bg); color: #fff; }
+    .choice.wrong { border-color: var(--rouge); background: var(--rouge-bg); color: #fff; }
+    .choice.reveal-correct { border-color: var(--vert); background: var(--vert-bg); }
+    .choice:disabled { cursor: default; }
+    .choice-letter { font-family: 'Anton', sans-serif; font-size: .9rem; color: var(--texte-muted); flex-shrink: 0; margin-top: 1px; }
+    .choice.correct .choice-letter, .choice.reveal-correct .choice-letter { color: var(--vert); }
+    .choice.wrong .choice-letter { color: var(--rouge); }
+    .explication { margin-top: 1.25rem; padding: .85rem 1rem; font-size: .875rem; line-height: 1.6; border-left: 4px solid; display: none; }
+    .explication.show { display: block; }
+    .explication.ok { border-color: var(--vert); background: var(--vert-bg); color: #A8F0C4; }
+    .explication.ko { border-color: var(--rouge); background: var(--rouge-bg); color: #FF9FAB; }
+    .explication strong { color: #fff; }
+    .btn-suivant { margin-top: 1.5rem; background: var(--rouge); color: #fff; border: none; padding: .85rem 2rem; font-family: 'Inter', sans-serif; font-size: .9rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; cursor: pointer; display: none; transition: background .15s; }
+    .btn-suivant:hover { background: var(--rouge-dark); }
+    .btn-suivant.show { display: inline-block; }
+    #resultats { text-align: center; max-width: 560px; }
+    .score-circle { width: 130px; height: 130px; border-radius: 50%; border: 6px solid var(--rouge); display: flex; flex-direction: column; align-items: center; justify-content: center; margin: 0 auto 1.5rem; }
+    .score-circle .score-num { font-family: 'Anton', sans-serif; font-size: 2.2rem; line-height: 1; }
+    .score-circle .score-total { font-size: .75rem; color: var(--texte-muted); }
+    .score-badge { display: inline-block; font-family: 'Anton', sans-serif; font-size: .8rem; letter-spacing: .1em; padding: .3rem .9rem; margin-bottom: .75rem; }
+    .badge-excellent { background: var(--vert); color: #000; }
+    .badge-bien { background: var(--jaune); color: #000; }
+    .badge-retrav { background: #444; color: #fff; }
+    .score-msg { font-family: 'Anton', sans-serif; font-size: 1.4rem; margin-bottom: .5rem; }
+    .score-sub { font-size: .875rem; color: var(--texte-muted); margin-bottom: 1.5rem; line-height: 1.6; }
+    .retenir { text-align: left; background: #1A1A1A; border: 1px solid #2A2A2A; border-left: 4px solid var(--jaune); padding: 1rem 1.25rem; margin-bottom: 1.5rem; }
+    .retenir h3 { font-family: 'Anton', sans-serif; font-size: .85rem; letter-spacing: .1em; color: var(--jaune); margin-bottom: .75rem; }
+    .retenir ul { list-style: none; }
+    .retenir ul li { font-size: .85rem; color: #ccc; line-height: 1.6; padding: .2rem 0 .2rem 1.2rem; position: relative; }
+    .retenir ul li::before { content: '→'; position: absolute; left: 0; color: var(--jaune); }
+    .recap { text-align: left; background: #1A1A1A; border: 1px solid #2A2A2A; padding: 1rem 1.25rem; margin-bottom: 1.5rem; font-size: .82rem; line-height: 1.7; }
+    .recap-item { display: flex; gap: .5rem; margin-bottom: .3rem; }
+    .recap-item .ok { color: var(--vert); font-weight: 700; }
+    .recap-item .ko { color: #FF6B7A; font-weight: 700; }
+    .result-actions { display: flex; gap: .75rem; flex-wrap: wrap; justify-content: center; }
+    .btn-refaire { background: var(--rouge); color: #fff; border: none; padding: .85rem 2rem; font-family: 'Inter', sans-serif; font-size: .9rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; cursor: pointer; transition: background .15s; }
+    .btn-refaire:hover { background: var(--rouge-dark); }
+    .btn-modules { font-size: .8rem; color: var(--texte-muted); text-decoration: none; border: 1px solid #2A2A2A; padding: .75rem 1.25rem; }
+    .hidden { display: none !important; }
+    @media (max-width: 560px) { .choices { grid-template-columns: 1fr; } .topbar { padding: .65rem 1rem; } }
+  </style>
+</head>
+<body>
+<script src="/assets/cgt-ui.js"></script>
+<script>if(localStorage.getItem('cgt_stagiaire_auth')!=='ok'&&localStorage.getItem('cgt_auth')!=='ok'){location.replace('/login-stagiaire.html?from='+encodeURIComponent(location.pathname));}</script>
+
+<div class="topbar">
+  <span class="topbar-title">Quiz — Prévention SST</span>
+  <a href="/quiz/">← Modules quiz</a>
+</div>
+<div class="stripe"></div>
+
+<div class="progress-bar-wrap" id="progress-wrap" style="display:none">
+  <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+  <span class="progress-label" id="progress-label">1 / 10</span>
+</div>
+
+<div class="scene">
+
+  <div id="intro">
+    <div class="big-badge">CGT</div>
+    <h1>Quiz Prévention<br>Santé Sécurité au Travail</h1>
+    <p>10 questions sur la prévention SST, le DUER, le droit de retrait et les obligations de l'employeur.<br>Correction immédiate après chaque réponse.</p>
+    <div class="meta">
+      <span>⏱ ~7 minutes</span>
+      <span>10 questions</span>
+      <span>Correction immédiate</span>
+    </div>
+    <button class="btn-suivant show" onclick="demarrer()" style="display:inline-block">Commencer le quiz</button>
+  </div>
+
+  <div id="question-wrap" class="hidden">
+    <div class="q-num" id="q-num">Question 1 / 10</div>
+    <div class="q-text" id="q-text"></div>
+    <div class="choices" id="choices"></div>
+    <div class="explication" id="explication"></div>
+    <button class="btn-suivant" id="btn-suivant" onclick="suivant()">Question suivante →</button>
+  </div>
+
+  <div id="resultats" class="hidden">
+    <div class="score-circle">
+      <span class="score-num" id="score-num">0</span>
+      <span class="score-total">/ 10</span>
+    </div>
+    <div class="score-badge" id="score-badge"></div>
+    <div class="score-msg" id="score-msg"></div>
+    <div class="score-sub" id="score-sub"></div>
+    <div class="retenir">
+      <h3>À RETENIR</h3>
+      <ul>
+        <li>L'employeur a une <strong>obligation de résultat</strong> en matière de sécurité — pas seulement de moyens.</li>
+        <li>Le <strong>DUER</strong> doit être mis à jour <strong>chaque année</strong> et après tout accident grave ou modification des conditions de travail.</li>
+        <li>Le droit de retrait s'exerce en cas de <strong>danger grave et imminent</strong> — le salarié ne peut être sanctionné ni perdre sa rémunération.</li>
+      </ul>
+    </div>
+    <div class="recap" id="recap"></div>
+    <div class="result-actions">
+      <button class="btn-refaire" onclick="refaire()">Recommencer</button>
+      <a class="btn-modules" href="/quiz/">Retour modules</a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const QUESTIONS = [
+  {
+    q: "Le Document Unique d'Évaluation des Risques (DUER) doit être mis à jour au minimum :",
+    choices: ["Tous les 3 ans", "Chaque année", "Tous les 5 ans", "Uniquement après un accident grave"],
+    correct: 1,
+    explication: "Le DUER doit être mis à jour <strong>au minimum chaque année</strong>, ainsi qu'après tout accident grave ou modification importante des conditions de travail (art. R.4121-1 C. trav.). Le CSE est consulté à chaque mise à jour."
+  },
+  {
+    q: "Le droit de retrait s'exerce en cas de :",
+    choices: ["Fatigue excessive", "Danger grave et imminent", "Désaccord avec la hiérarchie", "Maladie en cours"],
+    correct: 1,
+    explication: "Le droit de retrait (art. L.4131-1 C. trav.) s'exerce face à une situation de <strong>danger grave et imminent</strong>. Le salarié doit alerter immédiatement l'employeur et ne peut être sanctionné ni voir sa rémunération réduite."
+  },
+  {
+    q: "À partir de quel niveau sonore l'exposition quotidienne constitue-t-elle un danger immédiat pour l'audition ?",
+    choices: ["80 dB(A)", "85 dB(A)", "110 dB(A)", "140 dB(A)"],
+    correct: 1,
+    explication: "Le seuil de <strong>85 dB(A)</strong> déclenche l'obligation de protection (port de protections obligatoire). À partir de <strong>140 dB(C)</strong> en valeur crête, l'exposition est interdite sans protection. Les 80 dB(A) constituent la valeur d'action inférieure."
+  },
+  {
+    q: "En matière de sécurité au travail, l'obligation de l'employeur est une obligation :",
+    choices: ["De moyens", "De résultat", "Morale", "Déclarative uniquement"],
+    correct: 1,
+    explication: "Depuis l'arrêt Amiante (Cass. soc. 28/02/2002), l'employeur est soumis à une <strong>obligation de sécurité de résultat</strong>. Tout manquement peut constituer une faute inexcusable, même sans conscience du danger."
+  },
+  {
+    q: "La visite médicale de reprise est obligatoire après un arrêt AT d'au moins :",
+    choices: ["15 jours", "21 jours", "30 jours", "3 mois"],
+    correct: 2,
+    explication: "La visite de reprise est obligatoire après <strong>30 jours</strong> d'arrêt pour AT/MP (art. R.4624-22 C. trav.). Elle permet au médecin du travail d'émettre un avis d'aptitude ou d'inaptitude, et de préconiser des aménagements de poste."
+  },
+  {
+    q: "Qui préside le CSSCT (Commission Santé Sécurité et Conditions de Travail) ?",
+    choices: ["Le délégué CGT désigné", "L'employeur ou son représentant", "L'inspecteur du travail", "Le médecin du travail"],
+    correct: 1,
+    explication: "Le CSSCT est présidé par <strong>l'employeur ou son représentant</strong> (art. L.2315-39 C. trav.). En revanche, le secrétaire est un élu du personnel. L'inspection du travail et le médecin du travail peuvent y participer en tant qu'invités."
+  },
+  {
+    q: "TMS signifie :",
+    choices: ["Troubles Musculo-Squelettiques", "Taux Minimum de Sécurité", "Travail en Mode Simplifié", "Tension Musculaire Sévère"],
+    correct: 0,
+    explication: "TMS = <strong>Troubles Musculo-Squelettiques</strong>. Ils représentent la première cause de maladie professionnelle en France. Ils touchent les muscles, tendons et nerfs, notamment lors de gestes répétitifs, de postures contraignantes ou de port de charges."
+  },
+  {
+    q: "Le plan de prévention entre entreprises (EEE) est obligatoire dès :",
+    choices: ["400 heures de travail annuel ou travaux dangereux", "100 heures de travail", "5 salariés extérieurs", "Toujours, quelle que soit la durée"],
+    correct: 0,
+    explication: "Le plan de prévention est obligatoire dès <strong>400 heures de travail annuel</strong> ou dès la première heure si les travaux sont dangereux (art. R.4512-6 C. trav.). Il organise la coordination entre l'entreprise utilisatrice et l'entreprise extérieure."
+  },
+  {
+    q: "L'exposition professionnelle à des agents chimiques dangereux génère pour le salarié :",
+    choices: ["Une prime de risque automatique", "Un suivi médical renforcé", "Un droit de retrait automatique", "Aucune obligation particulière"],
+    correct: 1,
+    explication: "L'exposition à des agents chimiques dangereux impose un <strong>suivi médical renforcé</strong> par le médecin du travail (art. R.4412-44 C. trav.), avec des visites périodiques plus fréquentes et un suivi post-exposition si nécessaire."
+  },
+  {
+    q: "Le registre des accidents du travail bénins (non déclarés à la CPAM) est :",
+    choices: ["Obligatoire sous conditions", "Facultatif", "Interdit par la loi", "Remplacé par le DUER"],
+    correct: 0,
+    explication: "Le registre des AT bénins est <strong>obligatoire</strong> dès lors que l'entreprise a obtenu l'autorisation du médecin du travail et de l'inspection du travail (art. D.441-1 CSS). Il permet de tracer les petits accidents sans déclaration CPAM."
+  }
+];
+
+let current = 0, score = 0, reponses = [];
+
+function demarrer() {
+  document.getElementById('intro').classList.add('hidden');
+  document.getElementById('progress-wrap').style.display = 'flex';
+  document.getElementById('question-wrap').classList.remove('hidden');
+  afficherQuestion();
+}
+
+function afficherQuestion() {
+  const q = QUESTIONS[current];
+  document.getElementById('q-num').textContent = `Question ${current + 1} / ${QUESTIONS.length}`;
+  document.getElementById('q-text').textContent = q.q;
+  const letters = ['A', 'B', 'C', 'D'];
+  document.getElementById('choices').innerHTML = q.choices.map((c, i) =>
+    `<button class="choice" onclick="repondre(${i})"><span class="choice-letter">${letters[i]}</span><span>${c}</span></button>`
+  ).join('');
+  document.getElementById('explication').className = 'explication';
+  document.getElementById('explication').innerHTML = '';
+  document.getElementById('btn-suivant').className = 'btn-suivant';
+  document.getElementById('progress-fill').style.width = (current / QUESTIONS.length * 100) + '%';
+  document.getElementById('progress-label').textContent = `${current + 1} / ${QUESTIONS.length}`;
+  document.getElementById('question-wrap').style.animation = 'none';
+  void document.getElementById('question-wrap').offsetWidth;
+  document.getElementById('question-wrap').style.animation = '';
+}
+
+function repondre(idx) {
+  const q = QUESTIONS[current];
+  const buttons = document.querySelectorAll('.choice');
+  buttons.forEach(b => b.disabled = true);
+  const isCorrect = idx === q.correct;
+  if (isCorrect) score++;
+  reponses.push({ q: q.q, correct: isCorrect, correctAnswer: q.choices[q.correct] });
+  buttons[idx].classList.add(isCorrect ? 'correct' : 'wrong');
+  if (!isCorrect) buttons[q.correct].classList.add('reveal-correct');
+  const expl = document.getElementById('explication');
+  expl.innerHTML = (isCorrect ? '✓ Bonne réponse ! ' : '✗ Incorrect. ') + q.explication;
+  expl.className = `explication show ${isCorrect ? 'ok' : 'ko'}`;
+  const btnS = document.getElementById('btn-suivant');
+  btnS.className = 'btn-suivant show';
+  btnS.textContent = current < QUESTIONS.length - 1 ? 'Question suivante →' : 'Voir les résultats →';
+}
+
+function suivant() {
+  current++;
+  if (current >= QUESTIONS.length) afficherResultats();
+  else afficherQuestion();
+}
+
+function afficherResultats() {
+  document.getElementById('question-wrap').classList.add('hidden');
+  document.getElementById('progress-fill').style.width = '100%';
+  document.getElementById('score-num').textContent = score;
+  const badge = document.getElementById('score-badge');
+  let msg, sub, badgeClass, badgeText;
+  if (score >= 8) { msg = 'Excellent !'; sub = 'Vous maîtrisez la prévention SST. Vous pouvez être un relais efficace sur votre lieu de travail.'; badgeClass = 'badge-excellent'; badgeText = 'EXCELLENT'; }
+  else if (score >= 6) { msg = 'Bien !'; sub = 'Bonne base SST. Consolidez les points manquants avec les fiches mémo prévention.'; badgeClass = 'badge-bien'; badgeText = 'BIEN'; }
+  else { msg = 'À retravailler.'; sub = 'Relisez le module SST et la section "À retenir" ci-dessous. La prévention s\'apprend !'; badgeClass = 'badge-retrav'; badgeText = 'À RETRAVAILLER'; }
+  badge.className = `score-badge ${badgeClass}`;
+  badge.textContent = badgeText;
+  document.getElementById('score-msg').textContent = msg;
+  document.getElementById('score-sub').textContent = sub;
+  document.getElementById('recap').innerHTML = reponses.map((r, i) =>
+    `<div class="recap-item"><span class="${r.correct ? 'ok' : 'ko'}">${r.correct ? '✓' : '✗'}</span><span>Q${i+1} : ${r.q.substring(0, 60)}…${r.correct ? '' : ` <em style="color:#FF9FAB">→ ${r.correctAnswer}</em>`}</span></div>`
+  ).join('');
+  document.getElementById('resultats').classList.remove('hidden');
+}
+
+function refaire() {
+  current = 0; score = 0; reponses = [];
+  document.getElementById('resultats').classList.add('hidden');
+  document.getElementById('question-wrap').classList.remove('hidden');
+  afficherQuestion();
+}
+</script>
+</body>
+</html>

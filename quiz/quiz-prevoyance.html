@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Quiz Prévoyance &amp; Invalidité — CGT Occitanie</title>
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/style.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --rouge: #E2001A; --rouge-dark: #C40017; --jaune: #FFD200; --fond: #0F0F0F; --texte: #FBFAF6; --texte-muted: #9A9A9A; --vert: #2ECC71; --vert-bg: #0F3320; --rouge-bg: #3A0008; }
+    body { background: var(--fond); color: var(--texte); font-family: 'Inter', sans-serif; min-height: 100vh; display: flex; flex-direction: column; }
+    .topbar { background: var(--rouge); padding: .75rem 1.5rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+    .topbar-title { font-family: 'Anton', sans-serif; font-size: 1rem; letter-spacing: .05em; color: #fff; }
+    .topbar a { font-size: .72rem; color: rgba(255,255,255,.8); text-decoration: none; border: 1px solid rgba(255,255,255,.3); padding: .25rem .6rem; }
+    .stripe { height: 5px; background: var(--jaune); }
+    .progress-bar-wrap { background: #1A1A1A; padding: .6rem 1.5rem; display: flex; align-items: center; gap: 1rem; }
+    .progress-track { flex: 1; height: 6px; background: #2E2E2E; border-radius: 3px; }
+    .progress-fill { height: 100%; background: var(--rouge); border-radius: 3px; transition: width .4s ease; }
+    .progress-label { font-size: .75rem; color: var(--texte-muted); white-space: nowrap; }
+    .scene { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 2rem 1.25rem; }
+    #intro { text-align: center; max-width: 520px; }
+    #intro .big-badge { background: var(--rouge); color: var(--jaune); font-family: 'Anton', sans-serif; font-size: 2.5rem; padding: 1rem 1.5rem; display: inline-block; letter-spacing: .1em; margin-bottom: 1.5rem; }
+    #intro h1 { font-family: 'Anton', sans-serif; font-size: 1.6rem; letter-spacing: .04em; margin-bottom: .75rem; }
+    #intro p { font-size: .9rem; color: var(--texte-muted); line-height: 1.6; margin-bottom: 1.5rem; }
+    #intro .meta { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-bottom: 2rem; }
+    #intro .meta span { font-size: .75rem; color: var(--texte-muted); border: 1px solid #2E2E2E; padding: .3rem .75rem; }
+    #question-wrap { width: 100%; max-width: 680px; animation: fadeIn .3s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+    .q-num { font-size: .7rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--texte-muted); margin-bottom: .6rem; }
+    .q-text { font-family: 'Anton', sans-serif; font-size: clamp(1.2rem, 3vw, 1.7rem); line-height: 1.3; letter-spacing: .02em; margin-bottom: 1.5rem; }
+    .choices { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; }
+    .choice { background: #1A1A1A; border: 2px solid #2A2A2A; color: var(--texte); font-family: 'Inter', sans-serif; font-size: clamp(.85rem, 2.2vw, 1rem); padding: 1rem 1.1rem; text-align: left; cursor: pointer; line-height: 1.45; transition: border-color .12s, background .12s; display: flex; gap: .6rem; align-items: flex-start; }
+    .choice:hover:not(:disabled) { border-color: var(--rouge); background: #2A1010; }
+    .choice.correct { border-color: var(--vert); background: var(--vert-bg); color: #fff; }
+    .choice.wrong { border-color: var(--rouge); background: var(--rouge-bg); color: #fff; }
+    .choice.reveal-correct { border-color: var(--vert); background: var(--vert-bg); }
+    .choice:disabled { cursor: default; }
+    .choice-letter { font-family: 'Anton', sans-serif; font-size: .9rem; color: var(--texte-muted); flex-shrink: 0; margin-top: 1px; }
+    .choice.correct .choice-letter, .choice.reveal-correct .choice-letter { color: var(--vert); }
+    .choice.wrong .choice-letter { color: var(--rouge); }
+    .explication { margin-top: 1.25rem; padding: .85rem 1rem; font-size: .875rem; line-height: 1.6; border-left: 4px solid; display: none; }
+    .explication.show { display: block; }
+    .explication.ok { border-color: var(--vert); background: var(--vert-bg); color: #A8F0C4; }
+    .explication.ko { border-color: var(--rouge); background: var(--rouge-bg); color: #FF9FAB; }
+    .explication strong { color: #fff; }
+    .btn-suivant { margin-top: 1.5rem; background: var(--rouge); color: #fff; border: none; padding: .85rem 2rem; font-family: 'Inter', sans-serif; font-size: .9rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; cursor: pointer; display: none; transition: background .15s; }
+    .btn-suivant:hover { background: var(--rouge-dark); }
+    .btn-suivant.show { display: inline-block; }
+    #resultats { text-align: center; max-width: 560px; }
+    .score-circle { width: 130px; height: 130px; border-radius: 50%; border: 6px solid var(--rouge); display: flex; flex-direction: column; align-items: center; justify-content: center; margin: 0 auto 1.5rem; }
+    .score-circle .score-num { font-family: 'Anton', sans-serif; font-size: 2.2rem; line-height: 1; }
+    .score-circle .score-total { font-size: .75rem; color: var(--texte-muted); }
+    .score-badge { display: inline-block; font-family: 'Anton', sans-serif; font-size: .8rem; letter-spacing: .1em; padding: .3rem .9rem; margin-bottom: .75rem; }
+    .badge-excellent { background: var(--vert); color: #000; }
+    .badge-bien { background: var(--jaune); color: #000; }
+    .badge-retrav { background: #444; color: #fff; }
+    .score-msg { font-family: 'Anton', sans-serif; font-size: 1.4rem; margin-bottom: .5rem; }
+    .score-sub { font-size: .875rem; color: var(--texte-muted); margin-bottom: 1.5rem; line-height: 1.6; }
+    .retenir { text-align: left; background: #1A1A1A; border: 1px solid #2A2A2A; border-left: 4px solid var(--jaune); padding: 1rem 1.25rem; margin-bottom: 1.5rem; }
+    .retenir h3 { font-family: 'Anton', sans-serif; font-size: .85rem; letter-spacing: .1em; color: var(--jaune); margin-bottom: .75rem; }
+    .retenir ul { list-style: none; }
+    .retenir ul li { font-size: .85rem; color: #ccc; line-height: 1.6; padding: .2rem 0 .2rem 1.2rem; position: relative; }
+    .retenir ul li::before { content: '→'; position: absolute; left: 0; color: var(--jaune); }
+    .recap { text-align: left; background: #1A1A1A; border: 1px solid #2A2A2A; padding: 1rem 1.25rem; margin-bottom: 1.5rem; font-size: .82rem; line-height: 1.7; }
+    .recap-item { display: flex; gap: .5rem; margin-bottom: .3rem; }
+    .recap-item .ok { color: var(--vert); font-weight: 700; }
+    .recap-item .ko { color: #FF6B7A; font-weight: 700; }
+    .result-actions { display: flex; gap: .75rem; flex-wrap: wrap; justify-content: center; }
+    .btn-refaire { background: var(--rouge); color: #fff; border: none; padding: .85rem 2rem; font-family: 'Inter', sans-serif; font-size: .9rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; cursor: pointer; transition: background .15s; }
+    .btn-refaire:hover { background: var(--rouge-dark); }
+    .btn-modules { font-size: .8rem; color: var(--texte-muted); text-decoration: none; border: 1px solid #2A2A2A; padding: .75rem 1.25rem; }
+    .hidden { display: none !important; }
+    @media (max-width: 560px) { .choices { grid-template-columns: 1fr; } .topbar { padding: .65rem 1rem; } }
+  </style>
+</head>
+<body>
+<script src="/assets/cgt-ui.js"></script>
+<script>if(localStorage.getItem('cgt_stagiaire_auth')!=='ok'&&localStorage.getItem('cgt_auth')!=='ok'){location.replace('/login-stagiaire.html?from='+encodeURIComponent(location.pathname));}</script>
+
+<div class="topbar">
+  <span class="topbar-title">Quiz — Prévoyance &amp; Invalidité</span>
+  <a href="/quiz/">← Modules quiz</a>
+</div>
+<div class="stripe"></div>
+
+<div class="progress-bar-wrap" id="progress-wrap" style="display:none">
+  <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+  <span class="progress-label" id="progress-label">1 / 10</span>
+</div>
+
+<div class="scene">
+
+  <div id="intro">
+    <div class="big-badge">CGT</div>
+    <h1>Quiz Prévoyance<br>&amp; Invalidité</h1>
+    <p>10 questions sur la prévoyance collective, les pensions d'invalidité, l'IPP et le maintien de salaire.<br>Correction immédiate après chaque réponse.</p>
+    <div class="meta">
+      <span>⏱ ~7 minutes</span>
+      <span>10 questions</span>
+      <span>Correction immédiate</span>
+    </div>
+    <button class="btn-suivant show" onclick="demarrer()" style="display:inline-block">Commencer le quiz</button>
+  </div>
+
+  <div id="question-wrap" class="hidden">
+    <div class="q-num" id="q-num">Question 1 / 10</div>
+    <div class="q-text" id="q-text"></div>
+    <div class="choices" id="choices"></div>
+    <div class="explication" id="explication"></div>
+    <button class="btn-suivant" id="btn-suivant" onclick="suivant()">Question suivante →</button>
+  </div>
+
+  <div id="resultats" class="hidden">
+    <div class="score-circle">
+      <span class="score-num" id="score-num">0</span>
+      <span class="score-total">/ 10</span>
+    </div>
+    <div class="score-badge" id="score-badge"></div>
+    <div class="score-msg" id="score-msg"></div>
+    <div class="score-sub" id="score-sub"></div>
+    <div class="retenir">
+      <h3>À RETENIR</h3>
+      <ul>
+        <li>Invalidité cat. 1 = <strong>30 % du SAM</strong> (activité à temps réduit possible) ; cat. 2 = <strong>50 % du SAM</strong> (inapte à toute activité normale).</li>
+        <li>La <strong>portabilité</strong> de la prévoyance complémentaire dure <strong>12 mois</strong> après la fin du contrat de travail.</li>
+        <li>Le maintien de salaire légal (loi de mensualisation) s'applique à partir d'<strong>1 an d'ancienneté</strong> — vérifiez la convention collective pour des dispositions plus favorables.</li>
+      </ul>
+    </div>
+    <div class="recap" id="recap"></div>
+    <div class="result-actions">
+      <button class="btn-refaire" onclick="refaire()">Recommencer</button>
+      <a class="btn-modules" href="/quiz/">Retour modules</a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const QUESTIONS = [
+  {
+    q: "L'invalidité de catégorie 2 correspond à :",
+    choices: ["Inapte à tout travail rémunéré", "Capable d'un travail léger mais avec capacité de gain réduite", "Inapte uniquement à son poste habituel", "Victime d'un accident grave uniquement"],
+    correct: 1,
+    explication: "La catégorie 2 désigne les assurés <strong>capables d'exercer une activité professionnelle</strong>, mais avec une capacité de gain réduite aux 2/3 du gain normal. La pension est de <strong>50 % du salaire annuel moyen</strong> (SAM)."
+  },
+  {
+    q: "La pension d'invalidité de catégorie 1 représente quel pourcentage du salaire annuel moyen ?",
+    choices: ["30 %", "50 %", "75 %", "100 %"],
+    correct: 0,
+    explication: "La pension d'invalidité cat. 1 est fixée à <strong>30 % du SAM</strong> (salaire annuel moyen des 10 meilleures années). Elle concerne les assurés pouvant exercer une activité à temps réduit. La cat. 2 donne droit à <strong>50 %</strong>."
+  },
+  {
+    q: "La prévoyance collective complémentaire est obligatoire pour :",
+    choices: ["Les cadres depuis la loi de mensualisation", "Tous les salariés sans exception", "Les PME de moins de 50 salariés uniquement", "Les agents du secteur public"],
+    correct: 0,
+    explication: "La prévoyance complémentaire est obligatoire pour les <strong>cadres et assimilés</strong> depuis la convention collective de 1947 (AGIRC). Pour les non-cadres, une obligation conventionnelle ou d'entreprise peut s'ajouter. La complémentaire santé est, elle, obligatoire pour tous les salariés depuis 2016."
+  },
+  {
+    q: "Le délai de carence habituel pour les prestations d'incapacité en prévoyance complémentaire est :",
+    choices: ["3 jours (souvent aligné sur le délai légal de carence maladie)", "7 jours", "30 jours", "Aucun délai de carence"],
+    correct: 0,
+    explication: "Le délai de carence en prévoyance est souvent de <strong>3 jours</strong>, aligné sur le délai légal de carence en maladie ordinaire. Ce délai varie selon les contrats — certains le suppriment en cas d'AT ou de longue maladie. Vérifiez votre régime de prévoyance."
+  },
+  {
+    q: "La portabilité de la prévoyance complémentaire après perte d'emploi dure au maximum :",
+    choices: ["6 mois", "12 mois", "18 mois", "24 mois"],
+    correct: 1,
+    explication: "La portabilité des garanties de prévoyance (santé et prévoyance) dure <strong>12 mois maximum</strong> après la fin du contrat de travail (art. L.911-8 CSS), dans la limite de la durée du dernier contrat de travail. Elle est financée par mutualisation."
+  },
+  {
+    q: "La rente d'incapacité permanente issue d'un AT est :",
+    choices: ["Entièrement imposable", "Non imposable", "Partiellement imposable au-delà d'un seuil", "Au choix de l'employeur"],
+    correct: 1,
+    explication: "La rente AT/MP est <strong>non imposable</strong> sur le revenu. Elle est également exonérée de CSG/CRDS pour la fraction correspondant au taux d'IPP inférieur à 50 %, et partiellement soumise au-delà. C'est un avantage majeur par rapport à d'autres indemnités."
+  },
+  {
+    q: "L'évaluation du taux d'IPP (Incapacité Permanente Partielle) après un AT est réalisée par :",
+    choices: ["Le médecin du travail de l'entreprise", "La CPAM (médecin-conseil)", "L'inspecteur du travail", "L'employeur avec son médecin"],
+    correct: 1,
+    explication: "Le taux d'IPP est fixé par le <strong>médecin-conseil de la CPAM</strong>, selon le barème indicatif des maladies, déficiences et incapacités (art. L.434-2 CSS). Le salarié peut contester cette évaluation auprès du Tribunal du Contentieux de l'Incapacité."
+  },
+  {
+    q: "Une rente AT/MP viagère est versée lorsque le taux d'IPP est ≥ :",
+    choices: ["5 %", "10 %", "15 %", "20 %"],
+    correct: 1,
+    explication: "Le seuil est <strong>10 % d'IPP</strong>. En dessous : versement d'un capital forfaitaire en une fois. À partir de 10 % : rente viagère trimestrielle calculée sur le salaire annuel et le taux d'IPP."
+  },
+  {
+    q: "La prévoyance complémentaire d'entreprise est financée :",
+    choices: ["Uniquement par l'employeur", "Uniquement par le salarié", "Par l'employeur et le salarié", "Par l'État via la Sécurité sociale"],
+    correct: 2,
+    explication: "La prévoyance complémentaire est généralement financée par <strong>l'employeur et le salarié</strong>. La loi impose un minimum de cotisation patronale. Les modalités de partage sont fixées par accord collectif, DUE ou contrat d'entreprise. L'employeur doit financer au minimum 50 % de la cotisation santé."
+  },
+  {
+    q: "Le maintien de salaire légal (loi de mensualisation) s'applique à partir de :",
+    choices: ["1 an d'ancienneté", "6 mois d'ancienneté", "3 ans d'ancienneté", "Dès le 1er jour de travail"],
+    correct: 0,
+    explication: "Le maintien de salaire légal (art. L.1226-1 C. trav.) est conditionné à <strong>1 an d'ancienneté</strong> dans l'entreprise, à la justification dans les 48h, à l'envoi en France et à la prise en charge par la Sécu. De nombreuses conventions collectives prévoient des conditions plus favorables (ancienneté réduite, taux amélioré)."
+  }
+];
+
+let current = 0, score = 0, reponses = [];
+
+function demarrer() {
+  document.getElementById('intro').classList.add('hidden');
+  document.getElementById('progress-wrap').style.display = 'flex';
+  document.getElementById('question-wrap').classList.remove('hidden');
+  afficherQuestion();
+}
+
+function afficherQuestion() {
+  const q = QUESTIONS[current];
+  document.getElementById('q-num').textContent = `Question ${current + 1} / ${QUESTIONS.length}`;
+  document.getElementById('q-text').textContent = q.q;
+  const letters = ['A', 'B', 'C', 'D'];
+  document.getElementById('choices').innerHTML = q.choices.map((c, i) =>
+    `<button class="choice" onclick="repondre(${i})"><span class="choice-letter">${letters[i]}</span><span>${c}</span></button>`
+  ).join('');
+  document.getElementById('explication').className = 'explication';
+  document.getElementById('explication').innerHTML = '';
+  document.getElementById('btn-suivant').className = 'btn-suivant';
+  document.getElementById('progress-fill').style.width = (current / QUESTIONS.length * 100) + '%';
+  document.getElementById('progress-label').textContent = `${current + 1} / ${QUESTIONS.length}`;
+  document.getElementById('question-wrap').style.animation = 'none';
+  void document.getElementById('question-wrap').offsetWidth;
+  document.getElementById('question-wrap').style.animation = '';
+}
+
+function repondre(idx) {
+  const q = QUESTIONS[current];
+  const buttons = document.querySelectorAll('.choice');
+  buttons.forEach(b => b.disabled = true);
+  const isCorrect = idx === q.correct;
+  if (isCorrect) score++;
+  reponses.push({ q: q.q, correct: isCorrect, correctAnswer: q.choices[q.correct] });
+  buttons[idx].classList.add(isCorrect ? 'correct' : 'wrong');
+  if (!isCorrect) buttons[q.correct].classList.add('reveal-correct');
+  const expl = document.getElementById('explication');
+  expl.innerHTML = (isCorrect ? '✓ Bonne réponse ! ' : '✗ Incorrect. ') + q.explication;
+  expl.className = `explication show ${isCorrect ? 'ok' : 'ko'}`;
+  const btnS = document.getElementById('btn-suivant');
+  btnS.className = 'btn-suivant show';
+  btnS.textContent = current < QUESTIONS.length - 1 ? 'Question suivante →' : 'Voir les résultats →';
+}
+
+function suivant() {
+  current++;
+  if (current >= QUESTIONS.length) afficherResultats();
+  else afficherQuestion();
+}
+
+function afficherResultats() {
+  document.getElementById('question-wrap').classList.add('hidden');
+  document.getElementById('progress-fill').style.width = '100%';
+  document.getElementById('score-num').textContent = score;
+  const badge = document.getElementById('score-badge');
+  let msg, sub, badgeClass, badgeText;
+  if (score >= 8) { msg = 'Excellent !'; sub = 'Vous maîtrisez les mécanismes de prévoyance et d\'invalidité. Un atout pour défendre vos collègues.'; badgeClass = 'badge-excellent'; badgeText = 'EXCELLENT'; }
+  else if (score >= 6) { msg = 'Bien !'; sub = 'Bonne connaissance de base. Approfondissez avec la fiche mémo Prévoyance.'; badgeClass = 'badge-bien'; badgeText = 'BIEN'; }
+  else { msg = 'À retravailler.'; sub = 'La prévoyance est complexe — relisez le module et les points clés ci-dessous.'; badgeClass = 'badge-retrav'; badgeText = 'À RETRAVAILLER'; }
+  badge.className = `score-badge ${badgeClass}`;
+  badge.textContent = badgeText;
+  document.getElementById('score-msg').textContent = msg;
+  document.getElementById('score-sub').textContent = sub;
+  document.getElementById('recap').innerHTML = reponses.map((r, i) =>
+    `<div class="recap-item"><span class="${r.correct ? 'ok' : 'ko'}">${r.correct ? '✓' : '✗'}</span><span>Q${i+1} : ${r.q.substring(0, 60)}…${r.correct ? '' : ` <em style="color:#FF9FAB">→ ${r.correctAnswer}</em>`}</span></div>`
+  ).join('');
+  document.getElementById('resultats').classList.remove('hidden');
+}
+
+function refaire() {
+  current = 0; score = 0; reponses = [];
+  document.getElementById('resultats').classList.add('hidden');
+  document.getElementById('question-wrap').classList.remove('hidden');
+  afficherQuestion();
+}
+</script>
+</body>
+</html>
