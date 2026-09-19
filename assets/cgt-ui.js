@@ -186,8 +186,90 @@
     document.querySelectorAll('.reveal').forEach(function (el) { obs.observe(el); });
   }
 
+  /* ── 6. Raccourcis clavier globaux ─────────────────────── */
+  function initKeyboard() {
+    var path = window.location.pathname;
+    if (path.indexOf('/presentations/') !== -1) return;
+    document.addEventListener('keydown', function (e) {
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable) return;
+      if (e.altKey || e.ctrlKey || e.metaKey) return;
+      var d = (path.match(/\//g) || []).length - 1;
+      var base = d > 0 ? Array(d).fill('..').join('/') : '.';
+      switch (e.key.toLowerCase()) {
+        case 'h': window.location.href = base + '/index.html'; break;
+        case 'g': window.location.href = base + '/recherche.html'; break;
+        case 'escape': var t = document.getElementById('cgt-kb-tip'); if (t) t.remove(); break;
+        case '?': showKbHelp(base); break;
+      }
+    });
+  }
+
+  function showKbHelp() {
+    if (document.getElementById('cgt-kb-tip')) return;
+    var el = document.createElement('div');
+    el.id = 'cgt-kb-tip';
+    el.style.cssText = 'position:fixed;bottom:40px;right:16px;z-index:9500;background:#1A1A1A;border:1px solid #333;border-radius:10px;padding:1rem 1.25rem;font-family:"Inter",sans-serif;font-size:.82rem;color:#FAFAFA;box-shadow:0 8px 32px rgba(0,0,0,.6)';
+    el.innerHTML = '<div style="font-family:Anton,sans-serif;color:#FFD200;margin-bottom:.6rem">RACCOURCIS</div>' +
+      [['H','Accueil'],['G','Recherche'],['?','Cette aide'],['Esc','Fermer']].map(function(k){
+        return '<div style="display:flex;gap:.6rem;align-items:center;margin:.25rem 0">' +
+          '<kbd style="background:#333;border:1px solid #555;border-radius:4px;padding:.1em .4em;font-family:monospace;color:#FFD200">' + k[0] + '</kbd>' +
+          '<span style="color:#999">' + k[1] + '</span></div>';
+      }).join('');
+    el.addEventListener('click', function(){ el.remove(); });
+    document.body.appendChild(el);
+    setTimeout(function(){ if(el.parentNode) el.remove(); }, 5000);
+  }
+
+  /* ── 7. Breadcrumb ──────────────────────────────────────── */
+  function injectBreadcrumb() {
+    var path = window.location.pathname;
+    if (path.indexOf('/presentations/') !== -1 || path.indexOf('login') !== -1) return;
+    var parts = path.split('/').filter(Boolean);
+    if (parts.length < 2) return;
+    var depth = parts.length;
+    var base = Array(depth).fill('..').join('/');
+    var crumbs = [{ label: 'Accueil', href: base + '/index.html' }];
+    if (parts[0] === 'fiches-memo') crumbs.push({ label: 'Fiches mémo', href: base + '/fiches-memo/index.html' });
+    if (parts[0] === 'quiz') crumbs.push({ label: 'Quiz', href: base + '/quiz/index.html' });
+    var style = document.createElement('style');
+    style.textContent = '.cgt-breadcrumb{padding:.4rem 1.5rem;font-size:.78rem;font-family:"Inter",sans-serif;color:#666;border-bottom:1px solid #1A1A1A;background:#0F0F0F}.cgt-breadcrumb a{color:#666;text-decoration:none;transition:color .15s}.cgt-breadcrumb a:hover{color:#FFD200}.cgt-breadcrumb span{margin:0 .35rem;opacity:.4}@media print{.cgt-breadcrumb{display:none}}';
+    document.head.appendChild(style);
+    var html = crumbs.map(function(c){ return '<a href="'+c.href+'">'+c.label+'</a><span>›</span>'; }).join('') +
+      '<span style="color:#999">' + document.title.split('·')[0].trim() + '</span>';
+    var el = document.createElement('nav');
+    el.className = 'cgt-breadcrumb';
+    el.innerHTML = html;
+    var ref = document.body.children[1];
+    document.body.insertBefore(el, ref || null);
+  }
+
+  /* ── 8. Badge "Mis à jour" ──────────────────────────────── */
+  function initUpdateBadges() {
+    var MODS = {
+      '/index.html':{'key':'idx','date':'2026-09-19'},
+      '/stagiaires.html':{'key':'sta','date':'2026-09-19'},
+      '/carnet-atmp.html':{'key':'crnt','date':'2026-09-19'},
+      '/lexique.html':{'key':'lex','date':'2026-09-01'},
+      '/faq-atmp.html':{'key':'faq','date':'2026-09-01'},
+    };
+    var visited = {};
+    try { visited = JSON.parse(localStorage.getItem('cgt_last_visit') || '{}'); } catch(e) {}
+    document.querySelectorAll('a[href]').forEach(function(a) {
+      var mod = MODS[a.getAttribute('href')];
+      if (!mod || (visited[mod.key] && visited[mod.key] >= mod.date)) return;
+      var b = document.createElement('span');
+      b.style.cssText = 'display:inline-block;margin-left:.35rem;background:#E2001A;color:#fff;font-size:.6rem;font-weight:700;font-family:"Inter",sans-serif;padding:.1em .4em;border-radius:3px;vertical-align:middle;letter-spacing:.5px;text-transform:uppercase';
+      b.textContent = 'MÀJ';
+      a.appendChild(b);
+    });
+    var cur = MODS[window.location.pathname];
+    if (cur) {
+      visited[cur.key] = new Date().toISOString().slice(0,10);
+      try { localStorage.setItem('cgt_last_visit', JSON.stringify(visited)); } catch(e) {}
+    }
+  }
+
   /* ── Init ──────────────────────────────────────────────── */
-  // Loader en synchrone (avant DOMContentLoaded pour apparaître immédiatement)
   injectLoader();
 
   document.addEventListener('DOMContentLoaded', function () {
@@ -195,6 +277,15 @@
     injectTicker();
     injectFooter();
     initReveal();
+    initKeyboard();
+    injectBreadcrumb();
+    initUpdateBadges();
   });
+
+  if ('serviceWorker' in navigator) {
+    var _d = (window.location.pathname.match(/\//g) || []).length - 1;
+    var _sw = _d > 0 ? Array(_d).fill('..').join('/') + '/sw.js' : '/sw.js';
+    navigator.serviceWorker.register(_sw).catch(function(){});
+  }
 
 })();

@@ -1,0 +1,12 @@
+{
+  "name": "CGT Occitanie — AT/MP",
+  "short_name": "CGT AT/MP",
+  "description": "Centre de ressources formations AT/MP CGT Occitanie",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#0F0F0F",
+  "theme_color": "#E2001A",
+  "icons": [
+    { "src": "/assets/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}

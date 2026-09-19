@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Calendrier Formations AT/MP — CGT Occitanie</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/assets/style.css">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
@@ -116,6 +118,7 @@ body { font-family: Arial, sans-serif; background: #F0F0F0; color: var(--noir); 
 </style>
 </head>
 <body>
+<script src="/assets/cgt-ui.js"></script>
 <script>if(localStorage.getItem('cgt_auth')!=='ok'){location.replace('/login.html?from='+encodeURIComponent(location.pathname));}</script>
 
 <!-- ── SIDEBAR ── -->
