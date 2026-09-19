@@ -1,0 +1,170 @@
+/* ============================================================
+   CGT Occitanie — Design System partagé
+   Importer dans chaque page : <link rel="stylesheet" href="/assets/style.css">
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&display=swap');
+
+/* ── Tokens ───────────────────────────────────────────────── */
+:root {
+  --rouge:       #E2001A;
+  --rouge-dark:  #B8001A;
+  --jaune:       #FFD200;
+  --noir:        #0F0F0F;
+  --fond:        #0F0F0F;
+  --fond-card:   #1A1A1A;
+  --fond-hover:  #222;
+  --texte:       #FAFAFA;
+  --texte-muted: #999;
+  --border:      #2C2C2C;
+  --border-card: #2A2A2A;
+  --radius:      10px;
+  --radius-sm:   6px;
+  --shadow:      0 4px 20px rgba(0,0,0,.5);
+  --trans:       .18s ease;
+}
+
+/* ── Light mode overrides (si data-theme="light") ────────── */
+:root[data-theme="light"] {
+  --fond:        #F5F4F0;
+  --fond-card:   #FFFFFF;
+  --fond-hover:  #F0EFEB;
+  --texte:       #111;
+  --texte-muted: #555;
+  --border:      #DDD;
+  --border-card: #E0E0E0;
+}
+
+/* ── Dark mode auto ───────────────────────────────────────── */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --fond:        #0F0F0F;
+    --fond-card:   #1A1A1A;
+    --fond-hover:  #222;
+    --texte:       #FAFAFA;
+    --texte-muted: #999;
+    --border:      #2C2C2C;
+    --border-card: #2A2A2A;
+  }
+}
+
+/* ── Reset léger ──────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+
+/* ── Typographie Anton systématique ──────────────────────── */
+h1, h2, h3,
+.title-anton,
+[data-anton] {
+  font-family: 'Anton', sans-serif !important;
+  letter-spacing: .5px;
+  line-height: 1.15;
+}
+
+/* ── Micro-animations boutons ────────────────────────────── */
+button,
+a.btn,
+.btn,
+input[type="submit"],
+input[type="button"] {
+  transition: transform var(--trans), box-shadow var(--trans), background var(--trans), color var(--trans);
+  cursor: pointer;
+}
+
+button:hover,
+a.btn:hover,
+.btn:hover,
+input[type="submit"]:hover,
+input[type="button"]:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0,0,0,.35);
+}
+
+button:active,
+a.btn:active,
+.btn:active,
+input[type="submit"]:active,
+input[type="button"]:active {
+  transform: scale(.96) translateY(0);
+  box-shadow: none;
+}
+
+/* ── Liens ────────────────────────────────────────────────── */
+a { transition: color var(--trans); }
+
+/* ── Cards communes ───────────────────────────────────────── */
+.card,
+.module-card,
+.fiche-card {
+  background: var(--fond-card);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius);
+  transition: transform var(--trans), box-shadow var(--trans), border-color var(--trans);
+}
+.card:hover,
+.module-card:hover,
+.fiche-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow);
+  border-color: var(--rouge);
+}
+
+/* ── Badges ───────────────────────────────────────────────── */
+.badge {
+  display: inline-block;
+  padding: .2em .6em;
+  border-radius: 4px;
+  font-size: .75rem;
+  font-weight: 700;
+  letter-spacing: .5px;
+  text-transform: uppercase;
+}
+.badge-rouge  { background: var(--rouge); color: #fff; }
+.badge-jaune  { background: var(--jaune); color: var(--noir); }
+.badge-dark   { background: #222; color: var(--texte-muted); border: 1px solid var(--border); }
+
+/* ── Barre de progression ─────────────────────────────────── */
+.progress-bar {
+  height: 4px;
+  background: var(--border);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--rouge), var(--jaune));
+  border-radius: 2px;
+  transition: width .4s ease;
+}
+
+/* ── Scroll reveal ────────────────────────────────────────── */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity .5s ease, transform .5s ease;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* ── Impression globale ───────────────────────────────────── */
+@media print {
+  @page { margin: 15mm; }
+
+  body { background: #fff !important; color: #000 !important; font-size: 10pt; }
+
+  /* Masquer nav/header/footer/boutons sauf contenu principal */
+  nav, header, footer,
+  .ticker-wrap,
+  .cgt-loader,
+  .back-to-top,
+  .dark-toggle,
+  button:not(.print-keep),
+  .no-print { display: none !important; }
+
+  /* Éviter les coupures de page au milieu d'un bloc */
+  h2, h3, .card, .module-card { page-break-inside: avoid; break-inside: avoid; }
+
+  a[href]::after { content: " (" attr(href) ")"; font-size: 8pt; color: #555; }
+  a[href^="/"]:after, a[href^="#"]:after { content: ""; }
+}
