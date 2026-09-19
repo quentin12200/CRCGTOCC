@@ -149,8 +149,10 @@ h1,h2{font-family:var(--disp);font-weight:400;line-height:.98;letter-spacing:.01
 .s-case-slide .title{font-size:clamp(16px,2.2vw,34px);text-transform:uppercase;letter-spacing:.04em;line-height:1.15}
 .case-sc{background:var(--card);border-left:6px solid var(--yellow);padding:1.6vh 2vw;
   font-size:clamp(14px,1.55vw,22px);margin-top:1.2vh;max-width:90ch;line-height:1.3}
-.case-q{margin-top:1.5vh}
-.case-q li{font-size:clamp(13px,1.5vw,21px) !important}
+.case-ctx{font-size:clamp(11px,1.1vw,15px);color:#888;font-style:italic;margin-top:.8vh;padding:.5vh 1vw;border-left:3px solid #444;max-width:90ch;line-height:1.4}
+.case-q{margin-top:1.5vh;counter-reset:none}
+.case-q li{font-size:clamp(13px,1.5vw,21px) !important;list-style:none;padding-left:0;margin-bottom:.5vh}
+.case-q li::before{content:none}
 .timer{display:flex;align-items:center;gap:1.2vw;margin-top:auto;padding-top:1.5vh}
 .tmr-display{font-family:var(--disp);font-size:clamp(34px,5vw,80px);color:var(--ink);line-height:.9;min-width:3.4ch}
 .tmr-display.run{color:var(--red)} .tmr-display.done{color:var(--red);animation:flash 1s steps(2) infinite}
@@ -449,10 +451,11 @@ const SLIDES = [
   notes:"<b>Les MP d’aujourd’hui.</b> TMS = 90 % des MP : lombalgies, syndromes canal carpien, épaules — sous-évalués car souvent attribués à « l’âge ». <b>Amiante :</b> encore 1 000 décès/an par mésothéliome, avec une latence de 20-40 ans — les victimes de la période 1950-1990 décèdent encore aujourd’hui. <b>Affections psychiques :</b> le burn-out reste hors tableaux ; seule voie = CRRMP avec IPP ≥ 25 % OU lien direct et essentiel — difficile, donc sous-déclaré. <span class=’cgt’>La CGT revendique un tableau pour les affections psychiques liées au surmenage, et l’extension du C2P à davantage de facteurs de pénibilité.</span> Insister : les expositions chimiques (cancers professionnels) sont massivement sous-déclarées — seul 1 cancer sur 10 d’origine pro serait reconnu. C’est un enjeu de santé publique autant que syndical. Question au groupe : avez-vous des collègues avec TMS non reconnus ?"},
 
  {type:"case", title:"Mise en situation — « Le premier réflexe »",
-  scenario:"Karim se blesse au dos en manutention. Son chef minimise et lui dit « d’aller voir le médecin sur son temps libre ». Il vient vous voir le lendemain.",
-  questions:["Quels sont les bons réflexes et les délais ?","Que faire si l’employeur refuse de déclarer ?","Quels documents réunir, et qui alerter dans la CGT ?"],
-  minutes:15,
-  notes:"<b>Animation en 3 groupes de 3-4 (10 min) + restitution plénière (5 min).</b> Chaque groupe traite les 3 questions mais restitue surtout sa question prioritaire (répartir si le formateur le souhaite). Avec 11 stagiaires : groupes de 4 / 4 / 3. Corrigé : (1) informer l’employeur le jour même par écrit (SMS/mail) → preuve du délai 24 h ; (2) accompagner chez le médecin pour un CMI détaillé (lésions physiques ET psychiques — le stress post-traumatique aussi) ; (3) récupérer la feuille d’accident AT — tiers payant immédiat ; (4) si l’employeur refuse de déclarer : lettre recommandée à la CPAM dans les 2 ans + réunion des preuves (témoins, écrits, SMS) ; (5) alerter le CSE et l’UD CGT. <span class=’cgt’>Point de vigilance pédagogique clé : beaucoup de stagiaires confondent les 24 h (salarié → employeur) et les 48 h (employeur → CPAM). C’est la confusion la plus fréquente. Écrire les deux délais au tableau et les laisser visibles pour la restitution.</span>"},
+  scenario:"Karim se blesse au dos en soulevant des colis. Son chef lui dit : « C’est juste un tour de reins, ça va passer — va voir ton médecin sur ton temps libre. » Karim ne déclare rien ce jour-là. Il vient vous voir le lendemain matin, encore douloureux et inquiet.",
+  context:"Les 3 questions suivent l’ordre chronologique d’une intervention syndicale réelle : d’abord agir vite (délais), puis faire face au blocage de l’employeur, enfin constituer le dossier et activer le réseau CGT. Chaque question s’appuie sur ce que vous venez de voir.",
+  questions:["① Bons réflexes et délais — Il s’est passé 24 h. Qu’est-ce qui est encore possible ? Qu’est-ce qui est déjà compromis ? Dans quel ordre agit-on ?","② L’employeur refuse de déclarer — Quels sont les droits de Karim ? Quels actes écrits réaliser, avec quels délais maximum ?","③ Documents et réseau CGT — Quels éléments réunir pour solider le dossier ? Qui contacter dans la CGT et à quel moment ?"],
+  minutes:20,
+  notes:"<b>Logique pédagogique de ce cas.</b> Ce scénario illustre la situation la plus fréquente sur le terrain : un accident banalisé par l’encadrement, une victime hésitante, 24 h déjà perdues. Les 3 questions suivent l’ordre d’intervention réel du délégué — elles ne sont pas interchangeables. Faire percevoir cet ordre est l’objectif central.\n\n<b>Animation proposée — 20 min :</b> 3 groupes de 3-4 (13 min de travail) + restitution plénière par question (7 min). Chaque groupe prépare les 3 questions mais présente surtout la sienne. Le formateur complète au fil des restitutions.\n\n<b>Corrigé question par question :</b>\n\n<b>① Délais — ce qu’il reste possible de faire</b>\nLe délai salarié → employeur (24 h) est dépassé mais PAS fatal : Karim peut encore informer l’employeur par écrit aujourd’hui (SMS/mail horodaté = preuve). L’employeur a 48 h à compter de la connaissance de l’accident pour déclarer à la CPAM — ce délai n’est pas encore expiré. Action immédiate : (1) Karim informe l’employeur par écrit maintenant ; (2) va chez le médecin aujourd’hui pour un CMI détaillé (lésions physiques ET état psychique — le stress post-accident est indemnisable) ; (3) récupère la feuille d’accident AT remise par l’employeur → tiers payant immédiat chez le médecin.\n\n<b>② Si l’employeur refuse de déclarer</b>\nDroit absolu : Karim peut déclarer lui-même l’AT à la CPAM dans un délai de <b>2 ans à compter de l’accident</b> (L.441-2 CSS). Démarche : lettre recommandée avec AR à la CPAM décrivant les faits, accompagnée du CMI. Preuves à réunir dès maintenant : témoignages écrits de collègues, SMS avec le chef, éventuels soins déjà engagés. Sanction employeur : refus de déclarer = contravention de 5e classe (amende) + risque de faute inexcusable majorée si accident grave.\n\n<b>③ Documents et réseau CGT</b>\nDocuments clés : CMI (à conserver absolument), feuille d’accident AT (si obtenue), tout écrit avec l’employeur, témoignages datés, photos si lésion visible, arrêt de travail. Réseau CGT : alerter le CSE/CSSCT pour déclenchement de l’enquête obligatoire (L.4131-2) ; contacter l’UD CGT pour accompagnement juridique si l’employeur persiste dans le refus ; signaler à la CARSAT si suspicion de sous-déclaration systématique.\n\n<span class=’cgt’>Confusion la plus fréquente à désamorcer : les 24 h (salarié → employeur) vs les 48 h (employeur → CPAM). Ce sont deux délais distincts — les écrire au tableau avant la restitution et les laisser visibles. Insister aussi : le délai de 2 ans pour la déclaration directe par la victime est une soupape militante essentielle. Beaucoup de salariés ne savent pas qu’ils peuvent se substituer à l’employeur.</span>"},
 
  {type:"content", title:"Bilan du jour 1",
   bullets:["Ce que je retiens et ce que je réutiliserai.","Les points à clarifier pour le jour 2."],
@@ -899,8 +902,10 @@ function renderSlide(s,i){
     ${s.extra?`<div class="defextra reveal">${s.extra}</div>`:""}`;}
   else if(s.type==="case"){cls+=" s-case-slide";
     const qs=s.questions.map(q=>`<li>${q}</li>`).join("");
+    const ctxHtml=s.context?`<div class="case-ctx reveal">${s.context}</div>`:"";
     inner=`${kicker("Atelier")}<h2 class="title reveal">${s.title}</h2>
     <div class="case-sc reveal">${s.scenario}</div>
+    ${ctxHtml}
     <ul class="bullets case-q reveal">${qs}</ul>
     <div class="timer reveal" data-min="${s.minutes}">
       <span class="tmr-display">${s.minutes}:00</span>
