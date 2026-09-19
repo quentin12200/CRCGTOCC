@@ -269,6 +269,72 @@
 
     footer strong { color: var(--rouge); }
 
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      height: 320px;
+      overflow: hidden;
+      display: flex;
+      align-items: flex-end;
+    }
+    .hero img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 30%;
+    }
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to right, rgba(10,10,10,.82) 40%, rgba(226,0,26,.45) 100%);
+    }
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      padding: 2.5rem 2.5rem 2.2rem;
+      max-width: 700px;
+    }
+    .hero-kicker {
+      font-size: .65rem;
+      font-weight: 700;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--jaune);
+      margin-bottom: .6rem;
+    }
+    .hero-title {
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      color: #fff;
+      line-height: 1.1;
+      letter-spacing: .02em;
+      margin-bottom: .75rem;
+    }
+    .hero-sub {
+      font-size: .9rem;
+      color: rgba(255,255,255,.8);
+      line-height: 1.6;
+      max-width: 520px;
+    }
+    .hero-stripe {
+      height: 5px;
+      background: var(--jaune);
+    }
+
+    /* ── CARD VISUAL ── */
+    .card-img {
+      width: 100%;
+      height: 130px;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+      margin: -1.5rem -1.5rem 0.8rem -1.5rem;
+      width: calc(100% + 3rem);
+      border-bottom: 3px solid var(--rouge);
+    }
+
     /* ── RESPONSIVE ── */
     @media (max-width: 520px) {
       header { padding: 0.85rem 1rem; gap: 0.85rem; }
@@ -277,6 +343,8 @@
       .access-badge { display: none; }
       main { padding: 1.75rem 1rem 1.5rem; }
       .card { padding: 1.25rem; }
+      .hero { height: 240px; }
+      .hero-content { padding: 1.5rem 1.25rem 1.5rem; }
     }
   </style>
 </head>
@@ -296,6 +364,17 @@
 </header>
 <div class="stripe"></div>
 
+<div class="hero">
+  <img src="/assets/Hero banner — page d'accueil formateur.png" alt="Formateurs CGT Occitanie">
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-kicker">Formation syndicale CGT Occitanie</div>
+    <div class="hero-title">Armer les militants,<br>défendre les salarié·es</div>
+    <p class="hero-sub">Chaque droit individuel est un levier collectif. Chaque obligation de l'employeur est assortie de sa sanction. Formez, exigez, agissez.</p>
+  </div>
+</div>
+<div class="hero-stripe"></div>
+
 <main>
 
   <div style="background:#fff;border-left:5px solid #E2001A;padding:1.1rem 1.4rem;margin-bottom:2rem">
@@ -308,6 +387,7 @@
   <div class="modules-grid">
 
     <div class="card">
+      <img class="card-img" src="/assets/Bandeau-contextuel.png" alt="">
       <div class="card-meta">
         <span class="tag-duree">Nouveau · Scrollable</span>
         <span class="tag-type">Carnet de formation</span>
@@ -323,6 +403,7 @@
     </div>
 
     <div class="card">
+      <img class="card-img" src="/assets/AT-MPimg.png" alt="">
       <div class="card-meta">
         <span class="tag-duree">2 jours</span>
         <span class="tag-type">Présentation diaporama</span>
@@ -338,6 +419,7 @@
     </div>
 
     <div class="card">
+      <img class="card-img" src="/assets/Prévention-SST.png" alt="">
       <div class="card-meta">
         <span class="tag-duree">1 jour</span>
         <span class="tag-type">Présentation diaporama</span>
@@ -353,6 +435,7 @@
     </div>
 
     <div class="card">
+      <img class="card-img" src="/assets/Prévoyance-Invalidité.png" alt="">
       <div class="card-meta">
         <span class="tag-duree">Demi-journée</span>
         <span class="tag-type">Présentation diaporama</span>
