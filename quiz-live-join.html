@@ -81,14 +81,20 @@
       document.getElementById('question-screen').classList.remove('hidden');
 
       document.getElementById('q-num-join').textContent = `Question ${data.currentQ + 1} / ${totalQ}`;
+
+      // Barre de progression
+      const pct = Math.round((data.currentQ / totalQ) * 100);
+      document.getElementById('q-prog-fill').style.width = pct + '%';
+
       document.getElementById('interim-score').classList.add('hidden');
+      document.getElementById('live-podium').classList.add('hidden');
       document.getElementById('q-text-join').textContent = data.questionText;
 
       const letters = ['A', 'B', 'C', 'D'];
       document.getElementById('choices-join').innerHTML = (data.choices || []).map((c, i) =>
         `<button class="choice-btn" id="choice-${i}" onclick="choisir(${i})">
           <span class="cl">${letters[i]}</span>
-          <span>${c}</span>
+          <span class="cl-text">${c}</span>
         </button>`
       ).join('');
       document.getElementById('wait-answer').classList.add('hidden');
@@ -101,8 +107,22 @@
       btns.forEach((b, i) => {
         if (b.classList.contains('selected')) myChoice = i;
         b.disabled = true;
-        if (i === correctIndex) b.classList.add('correct');
-        else b.classList.add('wrong');
+        if (i === correctIndex) {
+          b.classList.add('correct');
+          // Ajouter une icône checkmark
+          const icon = document.createElement('span');
+          icon.className = 'feedback-icon';
+          icon.textContent = '✓';
+          b.appendChild(icon);
+        } else {
+          b.classList.add('wrong');
+          if (b.classList.contains('selected')) {
+            const icon = document.createElement('span');
+            icon.className = 'feedback-icon wrong-icon';
+            icon.textContent = '✗';
+            b.appendChild(icon);
+          }
+        }
       });
       document.getElementById('wait-answer').classList.add('hidden');
 
@@ -112,9 +132,14 @@
       const interimEl = document.getElementById('interim-score');
       if (interimEl) {
         interimEl.classList.remove('hidden');
+        interimEl.className = myLastCorrect
+          ? 'interim-score-bar interim-ok'
+          : 'interim-score-bar interim-ko';
         interimEl.innerHTML = myLastCorrect
-          ? `<span class="interim-correct">+1 ✓</span> Score : <strong>${myScore}</strong> / ${totalQ}`
-          : `<span class="interim-wrong">✗</span> Score : <strong>${myScore}</strong> / ${totalQ}`;
+          ? `<span class="interim-icon">✓</span> <strong>Bonne réponse !</strong> Score : <strong>${myScore}</strong> / ${totalQ}`
+          : (myChoice === -1
+              ? `<span class="interim-icon ko">—</span> Pas de réponse. Score : <strong>${myScore}</strong> / ${totalQ}`
+              : `<span class="interim-icon ko">✗</span> Mauvaise réponse. Score : <strong>${myScore}</strong> / ${totalQ}`);
       }
 
       // Podium live
@@ -127,7 +152,7 @@
         const podiumEl = document.getElementById('live-podium');
         if (podiumEl && sorted.length > 0) {
           podiumEl.classList.remove('hidden');
-          podiumEl.innerHTML = '<div class="podium-live-title">Classement</div>' +
+          podiumEl.innerHTML = '<div class="podium-live-title">Classement en cours</div>' +
             sorted.map((p, i) =>
               `<div class="podium-live-row">${medals[i]} <span>${p.name}</span><strong>${p.score}</strong></div>`
             ).join('');
@@ -154,6 +179,11 @@
       document.getElementById('my-score').textContent = myS;
       document.getElementById('my-total').textContent = totalQ;
       document.getElementById('my-wrong').textContent = wrong;
+
+      // Taux de réussite
+      const pct = Math.round(myS / totalQ * 100);
+      document.getElementById('score-pct').textContent = pct + ' %';
+      document.getElementById('score-arc-fill').style.strokeDashoffset = 220 - (220 * pct / 100);
     }
 
     window.rejoindre = rejoindre;
@@ -169,13 +199,37 @@
   </script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
     :root {
-      --rouge: #E2001A; --jaune: #FFD200;
-      --fond: #141414; --card: #1E1E1E;
-      --texte: #FBFAF6; --muted: #9A9A9A;
-      --vert: #2ECC71; --vert-bg: #0F3320;
-      --rouge-bg: #3A0008;
+      --rouge: #E2001A; --rouge-dark: #B8001A; --jaune: #FFD200;
+      --accent: #1A5FAD; --accent-dark: #144D8E; --accent-muted: #E8F0FB;
+      --fond: #101620; --fond-card: #172033; --fond-hover: #1E2D47;
+      --texte: #E6ECF5; --texte-muted: #7D8FA8; --border: #253047; --border-card: #1E2D47;
+      --vert: #2ECC71; --vert-bg: #0D2B1D; --vert-border: #1E6B3E;
+      --rouge-bg: #2B0A10; --rouge-border: #6B1E26;
     }
+    :root[data-theme="light"] {
+      --accent: #1A5FAD; --accent-dark: #144D8E; --accent-muted: #E8F0FB;
+      --fond: #F4F6FA; --fond-card: #FFFFFF; --fond-hover: #EEF2F8;
+      --texte: #1A2540; --texte-muted: #5A6A84; --border: #D8DEE8; --border-card: #E4E9F2;
+      --vert-bg: #D4F0E0; --vert-border: #5DAF84;
+      --rouge-bg: #FDEAEC; --rouge-border: #E57080;
+    }
+    @media (prefers-color-scheme: light) {
+      :root:not([data-theme="dark"]) {
+        --accent: #1A5FAD; --fond: #F4F6FA; --fond-card: #FFFFFF; --fond-hover: #EEF2F8;
+        --texte: #1A2540; --texte-muted: #5A6A84; --border: #D8DEE8; --border-card: #E4E9F2;
+        --vert-bg: #D4F0E0; --vert-border: #5DAF84;
+        --rouge-bg: #FDEAEC; --rouge-border: #E57080;
+      }
+    }
+    :root[data-theme="dark"] {
+      --accent: #4A8FD4; --fond: #101620; --fond-card: #172033; --fond-hover: #1E2D47;
+      --texte: #E6ECF5; --texte-muted: #7D8FA8; --border: #253047; --border-card: #1E2D47;
+      --vert-bg: #0D2B1D; --vert-border: #1E6B3E;
+      --rouge-bg: #2B0A10; --rouge-border: #6B1E26;
+    }
+
     body {
       background: var(--fond);
       color: var(--texte);
@@ -187,71 +241,128 @@
       justify-content: center;
       padding: 1.25rem;
     }
-    .box { width: 100%; max-width: 420px; display: flex; flex-direction: column; gap: 0; }
+    .box { width: 100%; max-width: 440px; display: flex; flex-direction: column; gap: 0; border-radius: 6px; overflow: hidden; box-shadow: 0 4px 24px rgba(0,0,0,.25); }
+
+    /* Header — rouge conservé */
     .box-header { background: var(--rouge); padding: 1.1rem 1.25rem; display: flex; align-items: center; gap: .75rem; }
     .cgt-badge { font-family: 'Anton', sans-serif; font-size: 1.1rem; letter-spacing: .08em; color: var(--jaune); }
     .box-header h1 { font-family: 'Anton', sans-serif; font-size: .95rem; letter-spacing: .04em; color: #fff; line-height: 1.2; }
-    .stripe { height: 5px; background: var(--jaune); }
-    .box-body { background: var(--card); padding: 1.5rem 1.25rem; display: flex; flex-direction: column; gap: 1rem; }
+    .stripe { height: 5px; background: var(--jaune); flex-shrink: 0; }
+    .box-body { background: var(--fond-card); padding: 1.5rem 1.25rem; display: flex; flex-direction: column; gap: 1.1rem; }
 
     .hidden { display: none !important; }
 
     /* JOIN */
-    label { font-size: .7rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); display: block; margin-bottom: .4rem; }
-    input[type=text] { width: 100%; background: var(--fond); border: 2px solid #2E2E2E; color: var(--texte); font-family: 'Archivo', sans-serif; font-size: 1.1rem; padding: .75rem 1rem; outline: none; transition: border-color .15s; }
-    input[type=text]:focus { border-color: var(--rouge); }
-    .btn-join { background: var(--rouge); color: #fff; border: none; width: 100%; padding: .85rem; font-family: 'Archivo', sans-serif; font-size: .9rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; cursor: pointer; transition: background .15s; }
-    .btn-join:hover { background: #C40017; }
-    .join-error { color: #FF6B7A; font-size: .8rem; }
+    label { font-size: .7rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--texte-muted); display: block; margin-bottom: .4rem; }
+    input[type=text] {
+      width: 100%; background: var(--fond); border: 2px solid var(--border);
+      color: var(--texte); font-family: 'Archivo', sans-serif; font-size: 1.1rem;
+      padding: .8rem 1rem; outline: none; border-radius: 3px;
+      transition: border-color .15s;
+    }
+    input[type=text]:focus { border-color: var(--accent); }
+    .btn-join {
+      background: var(--accent); color: #fff; border: none; width: 100%;
+      padding: .9rem; font-family: 'Archivo', sans-serif; font-size: .95rem;
+      font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+      cursor: pointer; border-radius: 3px; transition: background .15s;
+    }
+    .btn-join:hover { background: var(--accent-dark); }
+    .join-error { color: #FF7B8A; font-size: .8rem; min-height: 1em; }
 
     /* WAIT */
     .wait-icon { font-size: 2.5rem; text-align: center; }
-    .wait-msg { text-align: center; font-size: .9rem; color: var(--muted); line-height: 1.6; }
-    .wait-msg strong { color: var(--texte); display: block; font-size: 1.1rem; margin-bottom: .25rem; }
-    .dots { display: inline-block; animation: dots 1.4s infinite; }
-    @keyframes dots { 0%, 20% { content: '.'; } 40% { content: '..'; } 60%, 100% { content: '...'; } }
+    .wait-msg { text-align: center; font-size: .9rem; color: var(--texte-muted); line-height: 1.6; }
+    .wait-msg strong { color: var(--texte); display: block; font-size: 1.15rem; margin-bottom: .25rem; }
+    .dots::after { content: ''; animation: dots 1.4s steps(3, end) infinite; }
+    @keyframes dots { 0% { content: '.'; } 33% { content: '..'; } 66%, 100% { content: '...'; } }
 
-    /* QUESTION */
-    .q-num-join { font-size: .7rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin-bottom: .5rem; }
-    .q-text-join { font-family: 'Anton', sans-serif; font-size: clamp(1rem, 4vw, 1.3rem); line-height: 1.3; margin-bottom: 1rem; }
+    /* QUESTION - barre de progression */
+    .q-prog-wrap { height: 5px; background: var(--border); border-radius: 3px; overflow: hidden; margin-bottom: .1rem; }
+    .q-prog-fill { height: 100%; background: var(--accent); border-radius: 3px; transition: width .4s; }
+    .q-num-join {
+      font-size: .7rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+      color: var(--texte-muted);
+    }
+    .q-text-join {
+      font-family: 'Anton', sans-serif; font-size: clamp(1.05rem, 4.5vw, 1.35rem);
+      line-height: 1.35; padding: .85rem 1rem; background: var(--fond);
+      border: 1px solid var(--border); border-radius: 4px;
+    }
+
+    /* CHOIX — plus grands, feedback clair */
     .choices-join { display: flex; flex-direction: column; gap: .6rem; }
     .choice-btn {
-      background: #1E1E1E; border: 2px solid #2E2E2E;
+      background: var(--fond); border: 2px solid var(--border);
       color: var(--texte); font-family: 'Archivo', sans-serif;
-      font-size: clamp(.9rem, 3.5vw, 1rem);
-      padding: .9rem 1rem; text-align: left; cursor: pointer;
-      display: flex; gap: .6rem; align-items: flex-start;
-      line-height: 1.4; transition: border-color .12s, background .12s;
-      width: 100%;
+      font-size: clamp(.95rem, 3.8vw, 1.05rem);
+      padding: 1rem 1.1rem; text-align: left; cursor: pointer;
+      display: flex; gap: .75rem; align-items: center;
+      line-height: 1.4; border-radius: 4px;
+      transition: border-color .12s, background .12s, transform .1s;
+      width: 100%; min-height: 3.25rem;
+      position: relative;
     }
-    .choice-btn:hover:not(:disabled) { border-color: var(--rouge); background: #2A1010; }
-    .choice-btn.selected { border-color: var(--jaune); background: #2A2500; }
+    .choice-btn:hover:not(:disabled) { border-color: var(--accent); background: var(--fond-hover); transform: translateX(2px); }
+    .choice-btn:active:not(:disabled) { transform: translateX(0); }
+    .choice-btn.selected { border-color: var(--accent); background: var(--fond-hover); }
     .choice-btn.correct { border-color: var(--vert); background: var(--vert-bg); }
-    .choice-btn.wrong { border-color: #333; opacity: .5; }
-    .choice-btn:disabled { cursor: default; }
-    .cl { font-family: 'Anton', sans-serif; font-size: .85rem; color: var(--muted); flex-shrink: 0; margin-top: 1px; }
-    .choice-btn.selected .cl { color: var(--jaune); }
-    .choice-btn.correct .cl { color: var(--vert); }
-    #wait-answer { font-size: .78rem; color: var(--muted); text-align: center; padding: .5rem; }
+    .choice-btn.wrong { border-color: var(--border); opacity: .45; }
+    .choice-btn.selected.wrong { border-color: var(--rouge-border); background: var(--rouge-bg); opacity: 1; }
+    .choice-btn:disabled { cursor: default; transform: none !important; }
+    .cl {
+      font-family: 'Anton', sans-serif; font-size: .9rem; color: var(--texte-muted);
+      flex-shrink: 0; width: 26px; height: 26px; display: flex; align-items: center;
+      justify-content: center; background: var(--fond-hover); border-radius: 3px;
+    }
+    .choice-btn.selected .cl { background: var(--accent); color: #fff; }
+    .choice-btn.correct .cl { background: var(--vert); color: #fff; }
+    .choice-btn.selected.wrong .cl { background: var(--rouge); color: #fff; }
+    .cl-text { flex: 1; }
+    .feedback-icon {
+      font-size: 1.1rem; font-weight: 700; color: var(--vert); flex-shrink: 0;
+      width: 24px; text-align: center;
+    }
+    .feedback-icon.wrong-icon { color: var(--rouge); }
+
+    #wait-answer {
+      font-size: .8rem; color: var(--texte-muted); text-align: center;
+      padding: .6rem .75rem; background: var(--fond); border: 1px solid var(--border);
+      border-radius: 3px; display: flex; align-items: center; justify-content: center; gap: .5rem;
+    }
+    .wait-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); display: inline-block; animation: pulse 1s ease-in-out infinite; }
+    @keyframes pulse { 0%, 100% { opacity: .3; } 50% { opacity: 1; } }
 
     /* SCORE INTERMÉDIAIRE */
-    .interim-score-bar { font-size: .9rem; color: var(--texte); text-align: center; padding: .65rem .85rem; background: #1A1A2E; border: 1px solid #2E2E4E; margin-top: .75rem; }
-    .interim-correct { color: var(--vert); font-weight: 700; font-size: 1rem; }
-    .interim-wrong { color: #FF6B7A; font-weight: 700; font-size: 1rem; }
+    .interim-score-bar {
+      font-size: .92rem; text-align: center; padding: .7rem 1rem; border-radius: 4px;
+      border: 1px solid; display: flex; align-items: center; justify-content: center; gap: .5rem;
+    }
+    .interim-ok { background: var(--vert-bg); border-color: var(--vert-border); color: var(--texte); }
+    .interim-ko { background: var(--rouge-bg); border-color: var(--rouge-border); color: var(--texte); }
+    .interim-icon { font-size: 1.1rem; font-weight: 700; color: var(--vert); }
+    .interim-icon.ko { color: var(--rouge); }
 
     /* PODIUM LIVE */
-    .live-podium { background: var(--card); border: 1px solid var(--border); padding: .65rem .85rem; margin-top: .5rem; }
-    .podium-live-title { font-size: .65rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin-bottom: .4rem; }
-    .podium-live-row { display: flex; align-items: center; gap: .5rem; padding: .25rem 0; font-size: .85rem; border-bottom: 1px solid #252525; }
+    .live-podium { background: var(--fond); border: 1px solid var(--border); padding: .7rem .9rem; border-radius: 4px; }
+    .podium-live-title { font-size: .65rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--texte-muted); margin-bottom: .5rem; }
+    .podium-live-row { display: flex; align-items: center; gap: .5rem; padding: .3rem 0; font-size: .88rem; border-bottom: 1px solid var(--border-card); }
     .podium-live-row:last-child { border-bottom: none; }
     .podium-live-row span { flex: 1; }
     .podium-live-row strong { color: var(--jaune); font-family: 'Anton', sans-serif; }
 
-    /* SCORE */
-    .score-wrap { text-align: center; padding: 1rem 0; }
-    .score-num { font-family: 'Anton', sans-serif; font-size: 3.5rem; color: var(--jaune); display: block; }
-    .score-label { font-size: .85rem; color: var(--muted); margin-top: .25rem; }
-    .score-wrong { font-size: .85rem; color: var(--muted); margin-top: .25rem; }
+    /* SCORE FINAL */
+    .score-wrap { text-align: center; padding: .75rem 0; }
+    .score-arc-wrap { position: relative; width: 120px; height: 120px; margin: 0 auto .75rem; }
+    .score-arc-wrap svg { transform: rotate(-90deg); }
+    .score-arc-bg { fill: none; stroke: var(--border); stroke-width: 10; }
+    .score-arc-fill { fill: none; stroke: var(--accent); stroke-width: 10; stroke-linecap: round; stroke-dasharray: 220; stroke-dashoffset: 220; transition: stroke-dashoffset .8s ease; }
+    .score-arc-text { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    .score-num { font-family: 'Anton', sans-serif; font-size: 2.2rem; color: var(--texte); line-height: 1; }
+    .score-denom { font-size: .72rem; color: var(--texte-muted); }
+    .score-pct { font-family: 'Anton', sans-serif; font-size: 1.5rem; color: var(--accent); margin: .25rem 0; }
+    .score-label { font-size: .85rem; color: var(--texte-muted); }
+    .score-wrong { font-size: .82rem; color: var(--texte-muted); margin-top: .25rem; }
     .score-bravo { font-family: 'Anton', sans-serif; font-size: 1.2rem; margin-top: 1rem; color: var(--texte); }
   </style>
 </head>
@@ -280,16 +391,17 @@
         <div class="wait-icon">⏳</div>
         <div class="wait-msg">
           <strong id="wait-name"></strong>
-          Le formateur va lancer le quiz<span class="dots">...</span>
+          Le formateur va lancer le quiz<span class="dots"></span>
         </div>
       </div>
 
       <!-- QUESTION -->
       <div id="question-screen" class="hidden">
+        <div class="q-prog-wrap"><div class="q-prog-fill" id="q-prog-fill" style="width:0%"></div></div>
         <div class="q-num-join" id="q-num-join">Question 1 / —</div>
         <div class="q-text-join" id="q-text-join"></div>
         <div class="choices-join" id="choices-join"></div>
-        <div id="wait-answer" class="hidden">Réponse envoyée — attendez la correction…</div>
+        <div id="wait-answer" class="hidden"><span class="wait-dot"></span> Réponse envoyée — attendez la correction…</div>
         <div id="interim-score" class="hidden interim-score-bar"></div>
         <div id="live-podium" class="hidden live-podium"></div>
       </div>
@@ -297,8 +409,18 @@
       <!-- SCORE FINAL -->
       <div id="result-screen" class="hidden">
         <div class="score-wrap">
-          <span class="score-num" id="my-score">0</span>
-          <div class="score-label">bonne(s) réponse(s) sur <span id="my-total">12</span></div>
+          <div class="score-arc-wrap">
+            <svg viewBox="0 0 80 80" width="120" height="120">
+              <circle class="score-arc-bg" cx="40" cy="40" r="35"/>
+              <circle class="score-arc-fill" id="score-arc-fill" cx="40" cy="40" r="35"/>
+            </svg>
+            <div class="score-arc-text">
+              <span class="score-num" id="my-score">0</span>
+              <span class="score-denom">/ <span id="my-total">12</span></span>
+            </div>
+          </div>
+          <div class="score-pct" id="score-pct">0 %</div>
+          <div class="score-label">bonne(s) réponse(s)</div>
           <div class="score-wrong"><span id="my-wrong">12</span> mauvaise(s) réponse(s)</div>
           <div class="score-bravo">Merci pour votre participation !</div>
         </div>
