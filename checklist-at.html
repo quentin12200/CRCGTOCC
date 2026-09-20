@@ -12,12 +12,27 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --rouge: #E2001A; --jaune: #FFD200;
-      --fond: #141414; --card: #1E1E1E;
-      --texte: #FBFAF6; --muted: #9A9A9A;
+      --rouge: #E2001A; --rouge-dark: #B8001A; --jaune: #FFD200;
+      --accent: #1A5FAD; --accent-dark: #144D8E; --accent-muted: #E8F0FB;
+      --fond: #101620; --fond-card: #172033; --fond-hover: #1E2D47;
+      --texte: #E6ECF5; --texte-muted: #7D8FA8; --border: #253047; --border-card: #1E2D47;
       --vert: #2ECC71; --vert-bg: #0D2B1A;
       --orange: #F57C00; --orange-bg: #1C1206;
-      --border: #2E2E2E;
+    }
+    :root[data-theme="light"] {
+      --accent: #1A5FAD; --accent-dark: #144D8E; --accent-muted: #E8F0FB;
+      --fond: #F4F6FA; --fond-card: #FFFFFF; --fond-hover: #EEF2F8;
+      --texte: #1A2540; --texte-muted: #5A6A84; --border: #D8DEE8; --border-card: #E4E9F2;
+    }
+    @media (prefers-color-scheme: light) {
+      :root:not([data-theme="dark"]) {
+        --accent: #1A5FAD; --fond: #F4F6FA; --fond-card: #FFFFFF; --fond-hover: #EEF2F8;
+        --texte: #1A2540; --texte-muted: #5A6A84; --border: #D8DEE8; --border-card: #E4E9F2;
+      }
+    }
+    :root[data-theme="dark"] {
+      --accent: #4A8FD4; --fond: #101620; --fond-card: #172033; --fond-hover: #1E2D47;
+      --texte: #E6ECF5; --texte-muted: #7D8FA8; --border: #253047; --border-card: #1E2D47;
     }
     body {
       background: var(--fond); color: var(--texte);
@@ -39,7 +54,7 @@
 
     /* HERO */
     .hero {
-      background: linear-gradient(135deg, #1A0005 0%, #2A0008 100%);
+      background: linear-gradient(135deg, var(--fond) 0%, var(--fond-card) 100%);
       border-bottom: 1px solid var(--border);
       padding: 2rem 1.5rem 1.5rem;
       text-align: center;
@@ -50,9 +65,9 @@
 
     /* URGENCE BANNER */
     .urgence-banner {
-      background: #3A0008; border-left: 4px solid var(--rouge);
+      background: var(--fond-card); border-left: 4px solid var(--rouge);
       margin: 1.5rem auto; max-width: 720px; padding: .85rem 1.25rem;
-      font-size: .85rem; line-height: 1.6; color: #FFAAB5;
+      font-size: .85rem; line-height: 1.6; color: var(--texte-muted);
     }
     .urgence-banner strong { color: #fff; }
 
@@ -65,7 +80,7 @@
       display: flex; align-items: center; gap: .75rem;
       padding: .65rem 1rem; margin-bottom: .75rem;
       border-left: 4px solid var(--rouge);
-      background: #1A0005;
+      background: var(--fond-card);
     }
     .phase-num {
       font-family: 'Anton', sans-serif; font-size: 1.4rem; color: var(--rouge);
@@ -83,15 +98,15 @@
     .check-list { display: flex; flex-direction: column; gap: .5rem; }
     .check-item {
       display: flex; align-items: flex-start; gap: .85rem;
-      background: var(--card); border: 1px solid var(--border);
-      padding: .9rem 1rem; cursor: pointer;
+      background: var(--fond-card); border: 1px solid var(--border-card);
+      border-radius: 10px; padding: .9rem 1rem; cursor: pointer;
       transition: border-color .15s, background .15s;
       user-select: none;
     }
-    .check-item:hover { border-color: #444; }
+    .check-item:hover { border-color: var(--accent); background: var(--fond-hover); }
     .check-item.done { background: var(--vert-bg); border-color: var(--vert); }
     .check-box {
-      width: 22px; height: 22px; border: 2px solid #444;
+      width: 22px; height: 22px; border: 2px solid var(--border);
       border-radius: 3px; flex-shrink: 0; margin-top: 1px;
       display: flex; align-items: center; justify-content: center;
       transition: border-color .15s, background .15s;
