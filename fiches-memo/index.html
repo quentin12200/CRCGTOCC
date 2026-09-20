@@ -11,38 +11,48 @@
   <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="../assets/style.css">
   <style>
-    :root { --rouge:#E2001A; --jaune:#FFD200; --noir:#1A1A1A; --gris:#555; --fond:#F5F4F0; --fond-card:#fff; --border:#E0DED8; }
+    :root { --rouge:#E2001A; --jaune:#FFD200; --accent:#1A5FAD; --fond:#F4F6FA; --fond-card:#FFFFFF; --texte:#1A2540; --texte-muted:#5A6A84; --border:#D8DEE8; }
+    @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --fond:#101620; --fond-card:#172033; --texte:#E6ECF5; --texte-muted:#7D8FA8; --border:#253047; } }
+    :root[data-theme="dark"] { --fond:#101620; --fond-card:#172033; --texte:#E6ECF5; --texte-muted:#7D8FA8; --border:#253047; }
     * { box-sizing:border-box; margin:0; padding:0; }
-    body { font-family:'Inter',sans-serif; background:var(--fond); color:var(--noir); min-height:100vh; }
-    header { background:var(--rouge); padding:1rem 2rem; display:flex; align-items:center; gap:1rem; }
-    .logo { width:48px; height:48px; background:var(--rouge); border:2px solid rgba(255,255,255,.3); display:flex; align-items:center; justify-content:center; }
+    body { font-family:'Inter',sans-serif; background:var(--fond); color:var(--texte); min-height:100vh; }
+    header { background:var(--rouge); padding:1rem 2rem; display:flex; align-items:center; gap:1rem; flex-wrap:wrap; }
+    .logo { width:48px; height:48px; background:var(--rouge); border:2px solid rgba(255,255,255,.3); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
     .logo span { font-family:'Anton',sans-serif; font-size:1rem; color:var(--jaune); }
     header h1 { font-family:'Anton',sans-serif; font-size:1.1rem; color:#fff; letter-spacing:.04em; }
     header p { font-size:.72rem; color:rgba(255,255,255,.75); }
     .stripe { height:5px; background:var(--jaune); }
     main { max-width:880px; margin:0 auto; padding:2rem 1.5rem; }
-    .intro { font-size:.9rem; color:var(--gris); margin-bottom:1.5rem; line-height:1.6; }
+    .intro { font-size:.9rem; color:var(--texte-muted); margin-bottom:1.5rem; line-height:1.6; }
     .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1rem; }
     .card {
       background:var(--fond-card); border:1.5px solid var(--border);
-      padding:1.25rem; transition:box-shadow .15s;
+      padding:1.25rem; transition:box-shadow .15s, border-color .15s;
       text-decoration:none; color:inherit; display:flex; flex-direction:column; gap:.5rem;
     }
-    .card:hover { box-shadow:0 4px 16px rgba(0,0,0,.1); }
-    .card-icon { width:40px; height:40px; background:var(--rouge); display:flex; align-items:center; justify-content:center; margin-bottom:.25rem; }
+    .card:hover { box-shadow:0 4px 16px rgba(0,0,0,.12); border-color:var(--accent); }
+    .card-icon { width:40px; height:40px; background:var(--accent); display:flex; align-items:center; justify-content:center; margin-bottom:.25rem; }
     .card-icon svg { color:#fff; }
-    .card h2 { font-family:'Anton',sans-serif; font-size:1rem; letter-spacing:.02em; color:var(--noir); line-height:1.2; }
-    .card p { font-size:.8rem; color:var(--gris); line-height:1.5; flex:1; }
+    .card h2 { font-family:'Anton',sans-serif; font-size:1rem; letter-spacing:.02em; color:var(--texte); line-height:1.2; }
+    .card p { font-size:.8rem; color:var(--texte-muted); line-height:1.5; flex:1; }
     .card .btn {
       display:inline-flex; align-items:center; gap:.4rem;
-      background:var(--rouge); color:#fff;
+      background:var(--accent); color:#fff;
       font-size:.75rem; font-weight:600;
       padding:.4rem .8rem; text-decoration:none;
       width:fit-content; margin-top:.25rem;
     }
-    .card .btn:hover { background:#C40017; }
-    footer { border-top:1px solid var(--border); background:var(--fond-card); padding:1rem 1.5rem; text-align:center; font-size:.72rem; color:var(--gris); margin-top:2rem; }
-    footer strong { color:var(--rouge); }
+    .card .btn:hover { background:#1550A0; }
+    footer { border-top:3px solid var(--rouge); background:#0C1220; padding:1rem 1.5rem; text-align:center; font-size:.72rem; color:#7D8FA8; margin-top:2rem; }
+    footer strong { color:#E6ECF5; }
+    footer a { color:var(--accent); text-decoration:none; }
+    footer a:hover { color:#4A8FD4; }
+    @media (max-width: 480px) {
+      header { padding:.75rem 1rem; gap:.75rem; }
+      main { padding:1.25rem 1rem; }
+      .grid { grid-template-columns:1fr; }
+      .card { padding:1rem; }
+    }
   </style>
 </head>
 <body>
@@ -126,7 +136,7 @@
 </main>
 
 <footer>
-  <strong>CGT Occitanie</strong> — Formation AT/MP 2025 · <a href="/stagiaires.html" style="color:var(--rouge);">Retour espace stagiaire</a>
+  <strong>CGT Occitanie</strong> — Formation AT/MP 2025 · <a href="/stagiaires.html">Retour espace stagiaire</a>
 </footer>
 
 <script>

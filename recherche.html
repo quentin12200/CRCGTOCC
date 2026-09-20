@@ -15,26 +15,27 @@
     :root {
       --rouge: #E2001A;
       --jaune: #FFD200;
-      --fond: #0F0F0F;
-      --fond-card: #1A1A1A;
-      --fond-input: #141414;
-      --texte: #FAFAFA;
-      --muted: #888;
-      --border: #2A2A2A;
-      --border-light: #333;
+      --accent: #1A5FAD;
+      --fond: #101620;
+      --fond-card: #172033;
+      --fond-input: #0E1520;
+      --texte: #E6ECF5;
+      --muted: #7D8FA8;
+      --border: #253047;
+      --border-light: #2E3D57;
       --vert: #2DCA72;
-      --bleu: #5B9BF8;
+      --bleu: #4A8FD4;
       --orange: #F5A623;
       --violet: #B06DFF;
     }
     :root[data-theme="light"] {
-      --fond: #F4F3EF;
+      --fond: #F4F6FA;
       --fond-card: #FFFFFF;
       --fond-input: #FFFFFF;
-      --texte: #1A1A1A;
-      --muted: #666;
-      --border: #E0DED8;
-      --border-light: #CCC;
+      --texte: #1A2540;
+      --muted: #5A6A84;
+      --border: #D8DEE8;
+      --border-light: #B8C4D4;
     }
     body {
       background: var(--fond);
@@ -118,7 +119,7 @@
       outline: none;
       transition: border-color .2s;
     }
-    #search-input:focus { border-color: var(--rouge); }
+    #search-input:focus { border-color: var(--accent); }
     #search-input::placeholder { color: var(--muted); }
     .search-clear {
       position: absolute;
@@ -137,27 +138,30 @@
     .search-clear.visible { display: block; }
 
     /* Filters */
+    .filters-group { margin-bottom: 1.5rem; display: flex; flex-direction: column; gap: .6rem; }
     .filters {
       display: flex;
       gap: .5rem;
       flex-wrap: wrap;
-      margin-bottom: 1.5rem;
       align-items: center;
     }
-    .filter-label { font-size: .78rem; color: var(--muted); font-weight: 500; margin-right: .25rem; }
+    .filter-label { font-size: .75rem; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: .04em; min-width: 52px; flex-shrink: 0; }
     .filter-btn {
-      padding: .35rem .85rem;
-      border: 1px solid var(--border-light);
+      padding: .3rem .8rem;
+      border: 1px solid var(--border);
       border-radius: 20px;
-      background: transparent;
-      color: var(--texte);
+      background: #1A2A45;
+      color: var(--bleu);
       font-family: 'Inter', sans-serif;
-      font-size: .8rem;
+      font-size: .78rem;
       cursor: pointer;
       transition: all .2s;
+      white-space: nowrap;
     }
-    .filter-btn:hover { border-color: var(--rouge); color: var(--rouge); }
-    .filter-btn.active { background: var(--rouge); border-color: var(--rouge); color: #fff; font-weight: 600; }
+    :root[data-theme="light"] .filter-btn { background: #EFF3F9; color: var(--accent); border-color: var(--border); }
+    .filter-btn:hover { border-color: var(--accent); color: #fff; background: #1A3A6A; }
+    :root[data-theme="light"] .filter-btn:hover { background: #D4E3F5; color: var(--accent); }
+    .filter-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 600; }
 
     /* Results meta */
     .results-meta { font-size: .82rem; color: var(--muted); margin-bottom: 1rem; min-height: 1.5rem; }
@@ -176,12 +180,12 @@
       display: block;
       color: inherit;
     }
-    .result-card:hover { border-color: var(--rouge); transform: translateX(2px); }
+    .result-card:hover { border-color: var(--accent); transform: translateX(2px); }
     .card-top { display: flex; align-items: flex-start; gap: .75rem; margin-bottom: .4rem; flex-wrap: wrap; }
     .card-title { font-weight: 600; font-size: .97rem; color: var(--texte); flex: 1; min-width: 150px; line-height: 1.35; }
     .card-title mark {
-      background: rgba(226,0,26,.2);
-      color: var(--rouge);
+      background: rgba(26,95,173,.25);
+      color: var(--bleu);
       border-radius: 2px;
       padding: 0 1px;
     }
@@ -195,7 +199,7 @@
       flex-shrink: 0;
       white-space: nowrap;
     }
-    .badge-droits    { background: rgba(226,0,26,.15);  color: var(--rouge); }
+    .badge-droits    { background: rgba(26,95,173,.2);   color: var(--bleu); }
     .badge-demarches { background: rgba(91,155,248,.15); color: var(--bleu); }
     .badge-calculs   { background: rgba(45,202,114,.15); color: var(--vert); }
     .badge-lexique   { background: rgba(176,109,255,.15);color: var(--violet); }
@@ -219,14 +223,25 @@
     .no-results strong { color: var(--texte); }
 
     /* Footer */
-    footer { background: #0A0A0A; border-top: 1px solid var(--border); padding: 1.25rem 1rem; text-align: center; font-size: .78rem; color: var(--muted); }
-    :root[data-theme="light"] footer { background: #E8E7E3; }
-    footer a { color: var(--rouge); text-decoration: none; }
+    footer { background: #0C1220; border-top: 3px solid var(--rouge); padding: 1.25rem 1rem; text-align: center; font-size: .78rem; color: var(--muted); }
+    :root[data-theme="light"] footer { background: #E8EDF5; border-top-color: var(--rouge); }
+    footer a { color: var(--accent); text-decoration: none; }
+    footer a:hover { color: var(--bleu); }
 
     @media (max-width: 560px) {
       header { padding: .75rem 1rem; gap: .75rem; }
       .header-divider { display: none; }
       main { padding: 1.5rem 1rem 3rem; }
+      .search-hero h2 { font-size: 1.4rem; }
+      #search-input { font-size: .9rem; padding: .85rem .85rem .85rem 2.75rem; }
+    }
+    @media (max-width: 480px) {
+      .header-nav { gap: .4rem; }
+      .header-nav a { font-size: .74rem; padding: .28rem .55rem; }
+      .filter-label { display: none; }
+      .filters { gap: .4rem; }
+      .filter-btn { font-size: .74rem; padding: .28rem .65rem; }
+      .result-card { padding: .85rem 1rem; }
     }
   </style>
 </head>
@@ -273,14 +288,24 @@
     </div>
   </section>
 
-  <div class="filters">
-    <span class="filter-label">Filtrer :</span>
-    <button class="filter-btn active" data-cat="tous">Tous</button>
-    <button class="filter-btn" data-cat="droits">Droits</button>
-    <button class="filter-btn" data-cat="demarches">Démarches</button>
-    <button class="filter-btn" data-cat="calculs">Calculs</button>
-    <button class="filter-btn" data-cat="lexique">Lexique</button>
-    <button class="filter-btn" data-cat="formation">Formation</button>
+  <div class="filters-group">
+    <div class="filters">
+      <span class="filter-label">Type :</span>
+      <button class="filter-btn type-btn active" data-type="tous">Tout</button>
+      <button class="filter-btn type-btn" data-type="presentations">Présentations</button>
+      <button class="filter-btn type-btn" data-type="quiz">Quiz</button>
+      <button class="filter-btn type-btn" data-type="fiches">Fiches</button>
+      <button class="filter-btn type-btn" data-type="ressources">Ressources</button>
+    </div>
+    <div class="filters">
+      <span class="filter-label">Thème :</span>
+      <button class="filter-btn cat-btn active" data-cat="tous">Tous</button>
+      <button class="filter-btn cat-btn" data-cat="droits">Droits</button>
+      <button class="filter-btn cat-btn" data-cat="demarches">Démarches</button>
+      <button class="filter-btn cat-btn" data-cat="calculs">Calculs</button>
+      <button class="filter-btn cat-btn" data-cat="lexique">Lexique</button>
+      <button class="filter-btn cat-btn" data-cat="formation">Formation</button>
+    </div>
   </div>
 
   <div class="results-meta" id="results-meta">Entrez un terme pour rechercher dans les <strong>85 entrées</strong> de l'index.</div>
@@ -1086,12 +1111,22 @@ const PAGE_LABELS = {
   'fiches-memo/fiche-atmp-fp.html':    'Fiche mémo FP'
 };
 
+// ─── Dérivation du type selon la page ────────────────────────────────────────
+var PRESENTATION_PAGES = ['argumentaire.html','carnet-atmp.html','index.html','stagiaires.html','guide-atmp-fp.html','fiche-delegue.html'];
+function pageType(page) {
+  if (page.indexOf('quiz/') === 0) return 'quiz';
+  if (page.indexOf('fiches-memo/') === 0) return 'fiches';
+  if (PRESENTATION_PAGES.indexOf(page) !== -1) return 'presentations';
+  return 'ressources';
+}
+
 // ─── Rendu des résultats ──────────────────────────────────────────────────────
 var currentCat = 'tous';
+var currentType = 'tous';
 var currentQuery = '';
 var debounceTimer = null;
 
-function renderResults(query, cat) {
+function renderResults(query, cat, type) {
   var terms = normalize(query).split(/\s+/).filter(Boolean);
   var list = document.getElementById('results-list');
   var meta = document.getElementById('results-meta');
@@ -1099,13 +1134,14 @@ function renderResults(query, cat) {
 
   var filtered = SEARCH_INDEX.filter(function(item) {
     if (cat !== 'tous' && item.cat !== cat) return false;
+    if (type !== 'tous' && pageType(item.page) !== type) return false;
     return matchesQuery(item, terms);
   });
 
   list.innerHTML = '';
   noRes.classList.remove('visible');
 
-  if (filtered.length === 0 && (query || cat !== 'tous')) {
+  if (filtered.length === 0 && (query || cat !== 'tous' || type !== 'tous')) {
     document.getElementById('no-results-term').textContent =
       query ? '"' + query + '"' : 'Aucun résultat pour ce filtre.';
     noRes.classList.add('visible');
@@ -1113,7 +1149,7 @@ function renderResults(query, cat) {
     return;
   }
 
-  if (!query && cat === 'tous') {
+  if (!query && cat === 'tous' && type === 'tous') {
     meta.innerHTML = 'Entrez un terme pour rechercher dans les <strong>' + SEARCH_INDEX.length + ' entrées</strong> de l\'index.';
     return;
   }
@@ -1153,7 +1189,7 @@ document.addEventListener('DOMContentLoaded', function() {
     clearBtn.classList.toggle('visible', currentQuery.length > 0);
     clearTimeout(debounceTimer);
     debounceTimer = setTimeout(function() {
-      renderResults(currentQuery, currentCat);
+      renderResults(currentQuery, currentCat, currentType);
     }, 200);
   });
 
@@ -1161,27 +1197,35 @@ document.addEventListener('DOMContentLoaded', function() {
     input.value = '';
     currentQuery = '';
     clearBtn.classList.remove('visible');
-    renderResults('', currentCat);
+    renderResults('', currentCat, currentType);
     input.focus();
   });
 
-  document.querySelectorAll('.filter-btn').forEach(function(btn) {
+  document.querySelectorAll('.cat-btn').forEach(function(btn) {
     btn.addEventListener('click', function() {
-      document.querySelectorAll('.filter-btn').forEach(function(b){ b.classList.remove('active'); });
+      document.querySelectorAll('.cat-btn').forEach(function(b){ b.classList.remove('active'); });
       btn.classList.add('active');
       currentCat = btn.getAttribute('data-cat');
-      renderResults(currentQuery, currentCat);
+      renderResults(currentQuery, currentCat, currentType);
     });
   });
 
-  // URL param support ?q=
+  document.querySelectorAll('.type-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.type-btn').forEach(function(b){ b.classList.remove('active'); });
+      btn.classList.add('active');
+      currentType = btn.getAttribute('data-type');
+      renderResults(currentQuery, currentCat, currentType);
+    });
+  });
+
   var params = new URLSearchParams(location.search);
   var q = params.get('q');
   if (q) {
     input.value = q;
     currentQuery = q;
     clearBtn.classList.add('visible');
-    renderResults(currentQuery, currentCat);
+    renderResults(currentQuery, currentCat, currentType);
   }
 });
 </script>
