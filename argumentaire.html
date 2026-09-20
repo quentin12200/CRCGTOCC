@@ -13,14 +13,28 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --rouge: #E2001A; --rouge-dark: #C40017;
-      --jaune: #FFD200;
-      --fond: #F5F4F0; --fond-card: #FFFFFF;
-      --texte: #1A1A1A; --texte-muted: #6B6B6B;
-      --border: #E0DED8; --border-card: #E8E6E0;
+      --rouge: #E2001A; --rouge-dark: #B8001A; --jaune: #FFD200;
+      --accent: #1A5FAD; --accent-dark: #144D8E; --accent-muted: #E8F0FB;
+      --fond: #101620; --fond-card: #172033; --fond-hover: #1E2D47;
+      --texte: #E6ECF5; --texte-muted: #7D8FA8; --border: #253047; --border-card: #1E2D47;
       --cgt-accent: #FFF3D0;
       --hist-accent: #E8F0FF;
       --fp-accent: #E8F5E9;
+    }
+    :root[data-theme="light"] {
+      --accent: #1A5FAD; --accent-dark: #144D8E; --accent-muted: #E8F0FB;
+      --fond: #F4F6FA; --fond-card: #FFFFFF; --fond-hover: #EEF2F8;
+      --texte: #1A2540; --texte-muted: #5A6A84; --border: #D8DEE8; --border-card: #E4E9F2;
+    }
+    @media (prefers-color-scheme: light) {
+      :root:not([data-theme="dark"]) {
+        --accent: #1A5FAD; --fond: #F4F6FA; --fond-card: #FFFFFF; --fond-hover: #EEF2F8;
+        --texte: #1A2540; --texte-muted: #5A6A84; --border: #D8DEE8; --border-card: #E4E9F2;
+      }
+    }
+    :root[data-theme="dark"] {
+      --accent: #4A8FD4; --fond: #101620; --fond-card: #172033; --fond-hover: #1E2D47;
+      --texte: #E6ECF5; --texte-muted: #7D8FA8; --border: #253047; --border-card: #1E2D47;
     }
     body { background: var(--fond); color: var(--texte); font-family: 'Archivo', sans-serif; min-height: 100vh; display: flex; flex-direction: column; }
     header { background: var(--rouge); padding: 1rem 2rem; display: flex; align-items: center; gap: 1.25rem; box-shadow: 0 2px 8px rgba(0,0,0,.18); }
@@ -35,18 +49,18 @@
     .header-back a:hover { background: rgba(255,255,255,.1); color: #fff; }
     .stripe { height: 5px; background: var(--jaune); }
     main { flex: 1; max-width: 860px; width: 100%; margin: 0 auto; padding: 2rem 1.5rem 3rem; }
-    .page-intro { background: var(--fond-card); border: 1px solid var(--border-card); border-left: 4px solid var(--rouge); padding: 1rem 1.25rem; margin-bottom: 2rem; font-size: .875rem; color: var(--texte-muted); line-height: 1.6; }
+    .page-intro { background: var(--fond-card); border: 1px solid var(--border-card); border-left: 4px solid var(--accent); padding: 1rem 1.25rem; margin-bottom: 2rem; font-size: .875rem; color: var(--texte-muted); line-height: 1.6; }
     .print-bar { display: flex; justify-content: flex-end; margin-bottom: 1.75rem; }
-    .btn-print { background: var(--rouge); color: #fff; border: none; padding: .55rem 1rem; font-family: 'Archivo', sans-serif; font-size: .78rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; cursor: pointer; display: flex; align-items: center; gap: .4rem; transition: background .15s; }
-    .btn-print:hover { background: var(--rouge-dark); }
+    .btn-print { background: var(--accent); color: #fff; border: none; padding: .55rem 1rem; font-family: 'Archivo', sans-serif; font-size: .78rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; cursor: pointer; display: flex; align-items: center; gap: .4rem; transition: background .15s; }
+    .btn-print:hover { background: var(--accent-dark); }
     .nav-jours { display: flex; gap: .5rem; margin-bottom: 2rem; flex-wrap: wrap; }
     .nav-jour { font-size: .75rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; padding: .4rem .9rem; background: var(--fond-card); border: 2px solid var(--border); color: var(--texte-muted); text-decoration: none; transition: all .15s; cursor: pointer; }
-    .nav-jour:hover, .nav-jour.active { background: var(--rouge); border-color: var(--rouge); color: #fff; }
+    .nav-jour:hover, .nav-jour.active { background: var(--accent); border-color: var(--accent); color: #fff; }
     .chapitre { margin-bottom: 3rem; }
     .chapitre-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; padding-bottom: .6rem; border-bottom: 4px solid var(--jaune); }
-    .chapitre-badge { background: var(--rouge); color: #fff; font-family: 'Anton', sans-serif; font-size: .75rem; letter-spacing: .08em; padding: .3rem .75rem; text-transform: uppercase; white-space: nowrap; }
+    .chapitre-badge { background: var(--accent); color: #fff; font-family: 'Anton', sans-serif; font-size: .75rem; letter-spacing: .08em; padding: .3rem .75rem; text-transform: uppercase; white-space: nowrap; }
     .chapitre-title { font-family: 'Anton', sans-serif; font-size: 1.2rem; color: var(--texte); }
-    .section-label { font-size: .68rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--rouge); margin: 1.5rem 0 .75rem; display: flex; align-items: center; gap: .6rem; }
+    .section-label { font-size: .68rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); margin: 1.5rem 0 .75rem; display: flex; align-items: center; gap: .6rem; }
     .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
     .diapo { background: var(--fond-card); border: 1px solid var(--border-card); margin-bottom: .85rem; overflow: hidden; }
     .diapo.histoire { border-left: 4px solid #1565C0; }
@@ -54,7 +68,7 @@
     .diapo.fp { border-left: 4px solid #2E7D32; }
     .diapo.ressource { border-left: 4px solid #F57C00; opacity: .95; }
     .diapo-header { display: flex; align-items: baseline; gap: .75rem; padding: .85rem 1.1rem .5rem; flex-wrap: wrap; }
-    .diapo-num { font-family: 'Anton', sans-serif; font-size: .8rem; color: var(--rouge); letter-spacing: .06em; white-space: nowrap; }
+    .diapo-num { font-family: 'Anton', sans-serif; font-size: .8rem; color: var(--accent); letter-spacing: .06em; white-space: nowrap; }
     .diapo-title { font-family: 'Anton', sans-serif; font-size: 1rem; color: var(--texte); letter-spacing: .02em; }
     .badge-new { font-size: .65rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; background: #1565C0; color: #fff; padding: .15rem .45rem; margin-left: .3rem; vertical-align: middle; }
     .badge-fp { font-size: .65rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; background: #2E7D32; color: #fff; padding: .15rem .45rem; margin-left: .3rem; vertical-align: middle; }
@@ -85,16 +99,16 @@
     .angle-hist::before { content: '📖 Histoire — '; font-weight: 700; }
     .angle-fp { background: var(--fp-accent); border-left: 3px solid #2E7D32; padding: .5rem .75rem; margin-top: .6rem; font-size: .82rem; color: #1B5E20; line-height: 1.55; }
     .angle-fp::before { content: '🏛 FP — '; font-weight: 700; }
-    .retorts { background: #FFF8F8; border: 1px solid #FFCDD2; border-left: 3px solid var(--rouge); padding: .6rem .85rem; margin-top: .6rem; }
-    .retorts-title { font-size: .72rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--rouge); margin-bottom: .4rem; }
+    .retorts { background: var(--accent-muted); border: 1px solid var(--border-card); border-left: 3px solid var(--accent); padding: .6rem .85rem; margin-top: .6rem; }
+    .retorts-title { font-size: .72rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); margin-bottom: .4rem; }
     .retorts dl { display: grid; grid-template-columns: auto 1fr; gap: .15rem .75rem; font-size: .82rem; }
     .retorts dt { color: var(--texte-muted); font-style: italic; font-weight: 500; padding-top: .2rem; white-space: nowrap; }
     .retorts dd { color: var(--texte); line-height: 1.55; margin: 0; padding-top: .2rem; }
-    .retorts dd strong { color: var(--rouge-dark); }
+    .retorts dd strong { color: var(--accent-dark); }
     .chiffres { background: #F3F6FF; border-left: 3px solid #1565C0; padding: .5rem .75rem; margin-top: .6rem; font-size: .82rem; color: #0D3B8A; line-height: 1.6; }
     .chiffres::before { content: '📊 Chiffres — '; font-weight: 700; }
-    footer { border-top: 1px solid var(--border); background: #EEECEA; padding: 1.1rem 1.5rem; text-align: center; font-size: .73rem; color: var(--texte-muted); }
-    footer strong { color: var(--rouge); }
+    footer { border-top: 1px solid var(--border); background: var(--fond-card); padding: 1.1rem 1.5rem; text-align: center; font-size: .73rem; color: var(--texte-muted); }
+    footer strong { color: var(--accent); }
     @media print {
       header, .print-bar, .nav-jours { display: none !important; }
       .stripe { display: none; }

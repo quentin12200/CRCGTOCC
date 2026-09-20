@@ -37,13 +37,13 @@ h1,h2{font-family:var(--disp);font-weight:400;line-height:.98;letter-spacing:.01
 .lede{font-size:clamp(16px,2.1vw,30px);max-width:60ch;margin-top:2.4vh;color:#2b2b2b}
 .foot{font-family:var(--ui);font-weight:700;color:var(--red);margin-top:auto;font-size:clamp(14px,1.6vw,22px);
   text-transform:uppercase;letter-spacing:.12em}
-.slide.active .reveal{animation:rise .55s cubic-bezier(.2,.7,.2,1) both}
+.slide.active .reveal{animation:rise .5s cubic-bezier(.22,.61,.36,1) both}
 .slide.active .reveal:nth-child(2){animation-delay:.06s}
 .slide.active .reveal:nth-child(3){animation-delay:.12s}
 .slide.active .reveal:nth-child(4){animation-delay:.18s}
 .slide.active .reveal:nth-child(5){animation-delay:.24s}
 .slide.active .reveal:nth-child(6){animation-delay:.30s}
-@keyframes rise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+@keyframes rise{from{opacity:0;transform:translateY(28px) scale(.98)}to{opacity:1;transform:none}}
 .s-title .title{font-size:clamp(40px,7.4vw,128px)}
 .s-title .accent{height:14px;width:min(42vw,520px);background:var(--yellow);margin:3vh 0}
 .slide.s-divider{background:var(--ink);color:var(--white);
@@ -228,14 +228,14 @@ h1,h2{font-family:var(--disp);font-weight:400;line-height:.98;letter-spacing:.01
 .timer-ring{width:clamp(80px,10vw,120px);height:clamp(80px,10vw,120px);flex-shrink:0}
 .timer-arc{transition:stroke-dashoffset 1s linear}
 /* ---- 3. Directional transitions ---- */
-@keyframes slideOutLeft{to{opacity:0;transform:translateX(-40px)}}
-@keyframes slideInRight{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:none}}
-@keyframes slideOutRight{to{opacity:0;transform:translateX(40px)}}
-@keyframes slideInLeft{from{opacity:0;transform:translateX(-40px)}to{opacity:1;transform:none}}
-.slide.leave-left{animation:slideOutLeft .28s ease forwards}
-.slide.enter-right{animation:slideInRight .28s ease forwards}
-.slide.leave-right{animation:slideOutRight .28s ease forwards}
-.slide.enter-left{animation:slideInLeft .28s ease forwards}
+@keyframes slideOutLeft{to{opacity:0;transform:translateX(-60px) scale(.97)}}
+@keyframes slideInRight{from{opacity:0;transform:translateX(60px) scale(.97)}to{opacity:1;transform:none}}
+@keyframes slideOutRight{to{opacity:0;transform:translateX(60px) scale(.97)}}
+@keyframes slideInLeft{from{opacity:0;transform:translateX(-60px) scale(.97)}to{opacity:1;transform:none}}
+.slide.leave-left{animation:slideOutLeft .38s cubic-bezier(.4,0,.2,1) forwards}
+.slide.enter-right{animation:slideInRight .38s cubic-bezier(.4,0,.2,1) forwards}
+.slide.leave-right{animation:slideOutRight .38s cubic-bezier(.4,0,.2,1) forwards}
+.slide.enter-left{animation:slideInLeft .38s cubic-bezier(.4,0,.2,1) forwards}
 /* ---- 4. Divider animated ---- */
 .s-divider{background:linear-gradient(135deg,#0a0a0a 0%,#1a0a0a 50%,#0a0a0a 100%)!important;background-size:400% 400%!important;animation:divPulse 6s ease infinite}
 @keyframes divPulse{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
@@ -754,7 +754,7 @@ function goTo(n){
   setTimeout(()=>{
     oldSlide.classList.remove('active','leave-left','leave-right');
     newSlide.classList.remove('enter-right','enter-left');
-  },300);
+  },400);
   cur=newIdx;
   countEl.innerHTML=`<b>${String(cur+1).padStart(2,'0')}</b> / ${SLIDES.length}`;
   barFill.style.width=`${((cur+1)/SLIDES.length)*100}%`;

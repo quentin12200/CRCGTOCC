@@ -51,13 +51,13 @@ h1,h2{font-family:var(--disp);font-weight:400;line-height:.98;letter-spacing:.01
   text-transform:uppercase;letter-spacing:.12em}
 
 /* reveal animation for children */
-.slide.active .reveal{animation:rise .55s cubic-bezier(.2,.7,.2,1) both}
+.slide.active .reveal{animation:rise .5s cubic-bezier(.22,.61,.36,1) both}
 .slide.active .reveal:nth-child(2){animation-delay:.06s}
 .slide.active .reveal:nth-child(3){animation-delay:.12s}
 .slide.active .reveal:nth-child(4){animation-delay:.18s}
 .slide.active .reveal:nth-child(5){animation-delay:.24s}
 .slide.active .reveal:nth-child(6){animation-delay:.30s}
-@keyframes rise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+@keyframes rise{from{opacity:0;transform:translateY(28px) scale(.98)}to{opacity:1;transform:none}}
 
 /* ---------- TITLE ---------- */
 .s-title .title{font-size:clamp(40px,7.4vw,128px)}
@@ -284,14 +284,14 @@ h1,h2{font-family:var(--disp);font-weight:400;line-height:.98;letter-spacing:.01
 .timer-arc{transition:stroke-dashoffset 1s linear}
 
 /* ---------- SLIDE TRANSITIONS ---------- */
-.slide.leaving-left{animation:slideOutLeft .28s ease forwards}
-.slide.leaving-right{animation:slideOutRight .28s ease forwards}
-.slide.entering-right{animation:slideInRight .28s ease forwards}
-.slide.entering-left{animation:slideInLeft .28s ease forwards}
-@keyframes slideOutLeft{to{opacity:0;transform:translateX(-40px)}}
-@keyframes slideOutRight{to{opacity:0;transform:translateX(40px)}}
-@keyframes slideInRight{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:none}}
-@keyframes slideInLeft{from{opacity:0;transform:translateX(-40px)}to{opacity:1;transform:none}}
+.slide.leaving-left{animation:slideOutLeft .38s cubic-bezier(.4,0,.2,1) forwards}
+.slide.leaving-right{animation:slideOutRight .38s cubic-bezier(.4,0,.2,1) forwards}
+.slide.entering-right{animation:slideInRight .38s cubic-bezier(.4,0,.2,1) forwards}
+.slide.entering-left{animation:slideInLeft .38s cubic-bezier(.4,0,.2,1) forwards}
+@keyframes slideOutLeft{to{opacity:0;transform:translateX(-60px) scale(.97)}}
+@keyframes slideOutRight{to{opacity:0;transform:translateX(60px) scale(.97)}}
+@keyframes slideInRight{from{opacity:0;transform:translateX(60px) scale(.97)}to{opacity:1;transform:none}}
+@keyframes slideInLeft{from{opacity:0;transform:translateX(-60px) scale(.97)}to{opacity:1;transform:none}}
 
 /* ---------- DIVIDER ANIMÉ ---------- */
 .slide.s-divider{background:linear-gradient(135deg,#0a0a0a 0%,#1a0a0a 50%,#0a0a0a 100%)!important;background-size:400% 400%!important;animation:dividerPulse 6s ease infinite}
@@ -1018,13 +1018,13 @@ function setActive(n){
   prevSl.classList.remove("active");
   if(prevIdx!==n){
     prevSl.classList.add(forward?"leaving-left":"leaving-right");
-    setTimeout(()=>prevSl.classList.remove("leaving-left","leaving-right"),300);
+    setTimeout(()=>prevSl.classList.remove("leaving-left","leaving-right"),400);
   }
   idx=n;
   const sl=slides[idx];
   if(prevIdx!==n){
     sl.classList.add(forward?"entering-right":"entering-left");
-    setTimeout(()=>sl.classList.remove("entering-right","entering-left"),300);
+    setTimeout(()=>sl.classList.remove("entering-right","entering-left"),400);
   }
   sl.classList.add("active");
   document.getElementById("count").innerHTML=`<b>${String(idx+1).padStart(2,"0")}</b> / ${TOT}`;

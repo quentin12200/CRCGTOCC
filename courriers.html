@@ -16,9 +16,24 @@
     :root {
       --rouge: #E2001A; --rouge-dark: #C40017;
       --jaune: #FFD200;
-      --fond: #F5F4F0; --fond-card: #FFFFFF;
-      --texte: #1A1A1A; --texte-muted: #6B6B6B;
-      --border: #E0DED8;
+      --fond: #F4F6FA; --fond-card: #FFFFFF; --fond-hover: #EEF2F8;
+      --texte: #1A2540; --texte-muted: #5A6A84;
+      --border: #D8DEE8; --border-card: #E4E9F2;
+      --accent: #1A5FAD; --accent-dark: #144D8E;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --fond: #101620; --fond-card: #172033; --fond-hover: #1E2D47;
+        --texte: #E6ECF5; --texte-muted: #7D8FA8;
+        --border: #253047; --border-card: #1E2D47;
+        --accent: #4A8FD4; --accent-dark: #3A7BBF;
+      }
+    }
+    :root[data-theme="dark"] {
+      --fond: #101620; --fond-card: #172033; --fond-hover: #1E2D47;
+      --texte: #E6ECF5; --texte-muted: #7D8FA8;
+      --border: #253047; --border-card: #1E2D47;
+      --accent: #4A8FD4; --accent-dark: #3A7BBF;
     }
     body { background: var(--fond); color: var(--texte); font-family: 'Archivo', sans-serif; min-height: 100vh; display: flex; flex-direction: column; }
 
@@ -36,13 +51,13 @@
 
     main { flex: 1; max-width: 860px; width: 100%; margin: 0 auto; padding: 2rem 1.5rem 3rem; }
 
-    .page-intro { background: var(--fond-card); border: 1px solid #E8E6E0; border-left: 4px solid var(--rouge); padding: 1rem 1.25rem; margin-bottom: 2rem; font-size: .875rem; color: var(--texte-muted); line-height: 1.6; }
+    .page-intro { background: var(--fond-card); border: 1px solid var(--border-card); border-left: 4px solid var(--accent); padding: 1rem 1.25rem; margin-bottom: 2rem; font-size: .875rem; color: var(--texte-muted); line-height: 1.6; }
 
     /* COURRIER CARD */
-    .courrier { background: var(--fond-card); border: 1px solid #E8E6E0; margin-bottom: 1.75rem; }
+    .courrier { background: var(--fond-card); border: 1px solid var(--border-card); margin-bottom: 1.75rem; }
 
     .courrier-header { padding: 1rem 1.25rem .75rem; border-bottom: 1px solid var(--border); display: flex; align-items: flex-start; gap: .75rem; }
-    .courrier-num { background: var(--rouge); color: #fff; font-family: 'Anton', sans-serif; font-size: .85rem; padding: .25rem .6rem; flex-shrink: 0; line-height: 1; margin-top: 2px; }
+    .courrier-num { background: var(--accent); color: #fff; font-family: 'Anton', sans-serif; font-size: .85rem; padding: .25rem .6rem; flex-shrink: 0; line-height: 1; margin-top: 2px; }
     .courrier-meta { flex: 1; }
     .courrier-titre { font-family: 'Anton', sans-serif; font-size: 1.05rem; color: var(--texte); letter-spacing: .02em; margin-bottom: .2rem; }
     .courrier-desc { font-size: .78rem; color: var(--texte-muted); }
@@ -52,11 +67,11 @@
       padding: .35rem .7rem; border: none; cursor: pointer; display: flex; align-items: center; gap: .3rem;
       transition: background .15s;
     }
-    .btn-copier { background: #F0EEE8; color: var(--texte); border: 1px solid var(--border); }
+    .btn-copier { background: var(--fond-hover); color: var(--texte); border: 1px solid var(--border); }
     .btn-copier:hover { background: var(--border); }
     .btn-copier.copied { background: #E8F5E8; color: #2D7A2D; border-color: #C5E5C5; }
-    .btn-imprimer-1 { background: var(--rouge); color: #fff; }
-    .btn-imprimer-1:hover { background: var(--rouge-dark); }
+    .btn-imprimer-1 { background: var(--accent); color: #fff; }
+    .btn-imprimer-1:hover { background: var(--accent-dark); }
 
     /* LETTRE */
     .lettre {
@@ -78,7 +93,7 @@
     .avertissement { padding: .75rem 1.25rem; background: #FFF8D6; border-top: 1px solid #FFE870; font-size: .75rem; color: #7A5F00; line-height: 1.5; }
     .avertissement strong { color: #5A4000; }
 
-    footer { border-top: 1px solid var(--border); background: #EEECEA; padding: 1.1rem 1.5rem; text-align: center; font-size: .73rem; color: var(--texte-muted); }
+    footer { border-top: 1px solid var(--border); background: var(--fond-hover); padding: 1.1rem 1.5rem; text-align: center; font-size: .73rem; color: var(--texte-muted); }
     footer strong { color: var(--rouge); }
 
     @media print {

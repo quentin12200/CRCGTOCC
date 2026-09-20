@@ -17,12 +17,15 @@
       --rouge:       #E2001A;
       --rouge-dark:  #C40017;
       --jaune:       #FFD200;
-      --fond:        #F5F4F0;
+      --accent:      #1A5FAD;
+      --accent-dark: #144D8E;
+      --fond:        #F4F6FA;
       --fond-card:   #FFFFFF;
-      --texte:       #1A1A1A;
-      --texte-muted: #6B6B6B;
-      --border:      #E0DED8;
-      --border-card: #E8E6E0;
+      --fond-hover:  #EEF2F8;
+      --texte:       #1A2540;
+      --texte-muted: #5A6A84;
+      --border:      #D8DEE8;
+      --border-card: #E4E9F2;
     }
 
     body {
@@ -116,7 +119,7 @@
       font-weight: 700;
       letter-spacing: 0.14em;
       text-transform: uppercase;
-      color: var(--rouge);
+      color: var(--accent);
       margin-bottom: 1.25rem;
       display: flex;
       align-items: center;
@@ -133,7 +136,7 @@
     /* ── CARDS MODULES ── */
     .modules-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 1.25rem;
       margin-bottom: 2.5rem;
     }
@@ -141,16 +144,27 @@
     .card {
       background: var(--fond-card);
       border: 1px solid var(--border-card);
-      padding: 1.5rem;
+      border-radius: 12px;
+      padding: 0;
       display: flex;
       flex-direction: column;
-      gap: 0.8rem;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
-      transition: box-shadow 0.15s, border-color 0.15s;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(26,95,173,.07);
+      transition: box-shadow 0.2s, transform 0.2s, border-color 0.2s;
     }
 
     .card:hover {
-      box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+      box-shadow: 0 8px 28px rgba(26,95,173,.14);
+      transform: translateY(-3px);
+      border-color: var(--accent);
+    }
+
+    .card-body {
+      padding: 1.4rem 1.5rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      flex: 1;
     }
 
     .card-meta {
@@ -161,17 +175,18 @@
     }
 
     .tag-duree {
-      background: var(--jaune);
-      color: #1A1A1A;
-      font-size: 0.65rem;
+      background: #E8F0FB;
+      color: var(--accent);
+      font-size: 0.63rem;
       font-weight: 700;
       letter-spacing: 0.08em;
       text-transform: uppercase;
-      padding: 0.2rem 0.55rem;
+      padding: 0.22rem 0.6rem;
+      border-radius: 4px;
     }
 
     .tag-type {
-      font-size: 0.65rem;
+      font-size: 0.63rem;
       color: var(--texte-muted);
       letter-spacing: 0.05em;
       text-transform: uppercase;
@@ -179,7 +194,7 @@
 
     .card h2 {
       font-family: 'Anton', sans-serif;
-      font-size: 1.2rem;
+      font-size: 1.15rem;
       letter-spacing: 0.02em;
       color: var(--texte);
       line-height: 1.3;
@@ -196,20 +211,21 @@
       display: inline-flex;
       align-items: center;
       gap: 0.45rem;
-      background: var(--rouge);
+      background: var(--accent);
       color: #FFFFFF;
       font-family: 'Archivo', sans-serif;
       font-size: 0.8rem;
       font-weight: 600;
-      letter-spacing: 0.07em;
+      letter-spacing: 0.06em;
       text-transform: uppercase;
       text-decoration: none;
       padding: 0.65rem 1.1rem;
+      border-radius: 6px;
       align-self: flex-start;
-      transition: background 0.15s;
+      transition: background 0.15s, transform 0.15s;
     }
 
-    .btn-ouvrir:hover { background: var(--rouge-dark); }
+    .btn-ouvrir:hover { background: var(--accent-dark); transform: translateY(-1px); }
 
     .btn-ouvrir svg { flex-shrink: 0; }
 
@@ -227,7 +243,7 @@
       gap: 0.9rem;
       background: var(--fond-card);
       border: 1px solid var(--border-card);
-      border-left: 3px solid var(--border);
+      border-left: 3px solid var(--accent);
       padding: 0.9rem 1rem;
       text-decoration: none;
       color: var(--texte);
@@ -327,18 +343,26 @@
 
     /* ── CARD ICON ── */
     .card-icon {
-      width: calc(100% + 3rem);
-      height: 110px;
-      margin: -1.5rem -1.5rem 1rem -1.5rem;
+      width: 100%;
+      height: 120px;
       display: flex;
       align-items: center;
       justify-content: center;
-      border-bottom: 3px solid rgba(0,0,0,.15);
+      position: relative;
+      overflow: hidden;
+    }
+    .card-icon::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, transparent 40%, rgba(0,0,0,.18));
     }
     .card-icon svg {
-      width: 56px;
-      height: 56px;
-      filter: drop-shadow(0 2px 8px rgba(0,0,0,.3));
+      width: 60px;
+      height: 60px;
+      filter: drop-shadow(0 3px 10px rgba(0,0,0,.35));
+      position: relative;
+      z-index: 1;
     }
 
     /* ── Aurora canvas ── */
@@ -350,31 +374,37 @@
 
     /* ── DARK MODE ── */
     :root[data-theme="dark"] {
-      --fond:        #0A0A0A;
-      --fond-card:   #161616;
-      --texte:       #E8E6E0;
-      --texte-muted: #999;
-      --border:      #2C2C2C;
-      --border-card: #242424;
+      --fond:        #101620;
+      --fond-card:   #172033;
+      --fond-hover:  #1E2D47;
+      --texte:       #E6ECF5;
+      --texte-muted: #7D8FA8;
+      --border:      #253047;
+      --border-card: #1E2D47;
+      --accent:      #4A8FD4;
+      --accent-dark: #3A7DBF;
     }
-    :root[data-theme="dark"] footer {
-      background: #111;
-      border-color: #222;
+    :root[data-theme="dark"] .tag-duree {
+      background: #162035;
+      color: #4A8FD4;
+    }
+    :root[data-theme="dark"] .card {
+      box-shadow: 0 2px 12px rgba(0,0,0,.3);
     }
     :root[data-theme="dark"] .ressource-item {
-      background: #1A1A1A;
-      border-color: #2C2C2C;
+      background: #172033;
+      border-color: #253047;
     }
     :root[data-theme="dark"] .ressource-icon {
-      background: #222;
-      border-color: #333;
+      background: #1E2D47;
+      border-color: #253047;
     }
     :root[data-theme="dark"] main > div[style*="background:#fff"] {
-      background: #1A1A1A !important;
-      border-left-color: #E2001A;
+      background: #172033 !important;
+      border-left-color: #1A5FAD;
     }
     :root[data-theme="dark"] main > div[style*="background:#fff"] p {
-      color: #E8E6E0 !important;
+      color: #E6ECF5 !important;
     }
 
     /* ── DARK MODE TOGGLE BUTTON ── */
@@ -437,15 +467,24 @@
     #back-top:hover { background: var(--rouge-dark); }
 
     /* ── RESPONSIVE ── */
+    @media (max-width: 640px) {
+      .modules-grid { grid-template-columns: 1fr; }
+      .ressources-grid { grid-template-columns: 1fr; }
+    }
     @media (max-width: 520px) {
-      header { padding: 0.85rem 1rem; gap: 0.85rem; }
-      .logo-wrap img { height: 48px; }
-      .logo-wrap { height: 48px; }
+      header { padding: 0.75rem 1rem; gap: 0.75rem; }
+      .logo-wrap img { height: 44px; }
+      .logo-wrap { height: 44px; }
       .access-badge { display: none; }
-      main { padding: 1.75rem 1rem 1.5rem; }
-      .card { padding: 1.25rem; }
-      .hero { height: 240px; }
-      .hero-content { padding: 1.5rem 1.25rem 1.5rem; }
+      .header-divider { display: none; }
+      main { padding: 1.5rem 1rem 1.25rem; }
+      .card-icon { height: 100px; }
+      .card-body { padding: 1.1rem 1.2rem 1.25rem; }
+      .hero { height: 200px; }
+      .hero-content { padding: 1.25rem 1rem; }
+      .hero-content h2 { font-size: 1.5rem; }
+      .ressource-item { padding: 0.8rem; }
+      .section-label { font-size: 0.63rem; margin-bottom: 1rem; }
     }
   </style>
   <link rel="manifest" href="/manifest.json">
@@ -572,96 +611,83 @@
   <div class="modules-grid">
 
     <div class="card">
-      <div class="card-icon" style="background:linear-gradient(135deg,#1A1A1A 0%,#333 100%);">
-  <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <rect x="10" y="6" width="28" height="36" rx="3" stroke="white" stroke-width="2.5"/>
-    <line x1="16" y1="14" x2="32" y2="14" stroke="#FFD200" stroke-width="2.5" stroke-linecap="round"/>
-    <line x1="16" y1="21" x2="32" y2="21" stroke="white" stroke-width="2" stroke-linecap="round"/>
-    <line x1="16" y1="27" x2="26" y2="27" stroke="white" stroke-width="2" stroke-linecap="round"/>
-    <line x1="16" y1="33" x2="28" y2="33" stroke="white" stroke-width="2" stroke-linecap="round"/>
-    <rect x="6" y="10" width="5" height="28" rx="2" fill="#FFD200"/>
-  </svg>
-</div>
-      <div class="card-meta">
-        <span class="tag-duree">Nouveau · Scrollable</span>
-        <span class="tag-type">Carnet de formation</span>
-      </div>
-      <h2>Carnet de formation AT/MP</h2>
-      <p>Version scrollable de la formation — projetez et scrollez librement selon votre groupe. Chaque partie : moment fort, développement, cas pratique, point syndical CGT.</p>
-      <a class="btn-ouvrir" href="/carnet-atmp.html">
-        Ouvrir
-        <svg width="11" height="11" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M2 10L10 2M10 2H4M10 2V8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+      <div class="card-icon" style="background:linear-gradient(135deg,#1A3A6B 0%,#1A5FAD 100%);">
+        <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="10" y="6" width="28" height="36" rx="3" stroke="white" stroke-width="2.5"/>
+          <line x1="16" y1="14" x2="32" y2="14" stroke="#FFD200" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="16" y1="21" x2="32" y2="21" stroke="white" stroke-width="2" stroke-linecap="round"/>
+          <line x1="16" y1="27" x2="26" y2="27" stroke="white" stroke-width="2" stroke-linecap="round"/>
+          <line x1="16" y1="33" x2="28" y2="33" stroke="white" stroke-width="2" stroke-linecap="round"/>
+          <rect x="6" y="10" width="5" height="28" rx="2" fill="#FFD200"/>
         </svg>
-      </a>
+      </div>
+      <div class="card-body">
+        <div class="card-meta">
+          <span class="tag-duree">Nouveau · Scrollable</span>
+          <span class="tag-type">Carnet de formation</span>
+        </div>
+        <h2>Carnet de formation AT/MP</h2>
+        <p>Version scrollable de la formation — projetez et scrollez librement selon votre groupe. Chaque partie : moment fort, développement, cas pratique, point syndical CGT.</p>
+        <a class="btn-ouvrir" href="/carnet-atmp.html">Ouvrir <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H4M10 2V8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      </div>
     </div>
 
     <div class="card">
-      <div class="card-icon" style="background:linear-gradient(135deg,#C40017 0%,#E2001A 100%);">
-  <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M24 8C15.16 8 8 15.16 8 24s7.16 16 16 16 16-7.16 16-16S32.84 8 24 8z" stroke="white" stroke-width="2.5"/>
-    <path d="M24 15v9l6 3.5" stroke="#FFD200" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M18 8.5L14 5M30 8.5L34 5" stroke="white" stroke-width="2" stroke-linecap="round"/>
-    <rect x="20" y="30" width="8" height="3" rx="1.5" fill="white"/>
-    <path d="M21 36h6" stroke="white" stroke-width="2" stroke-linecap="round"/>
-  </svg>
-</div>
-      <div class="card-meta">
-        <span class="tag-duree">2 jours</span>
-        <span class="tag-type">Présentation diaporama</span>
-      </div>
-      <h2>Accidents du Travail &amp; Maladies Professionnelles</h2>
-      <p>Régime AT/MP, reconnaissance, réparation, droits des accidentés et malades. Module complet pour militants et élus du CSE.</p>
-      <a class="btn-ouvrir" href="/presentations/Presentation_AT-MP_CGT.html" target="_blank">
-        Ouvrir
-        <svg width="11" height="11" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M2 10L10 2M10 2H4M10 2V8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+      <div class="card-icon" style="background:linear-gradient(135deg,#8B0012 0%,#E2001A 100%);">
+        <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M24 8C15.16 8 8 15.16 8 24s7.16 16 16 16 16-7.16 16-16S32.84 8 24 8z" stroke="white" stroke-width="2.5"/>
+          <path d="M24 15v9l6 3.5" stroke="#FFD200" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <rect x="20" y="30" width="8" height="3" rx="1.5" fill="white"/>
+          <path d="M21 36h6" stroke="white" stroke-width="2" stroke-linecap="round"/>
         </svg>
-      </a>
+      </div>
+      <div class="card-body">
+        <div class="card-meta">
+          <span class="tag-duree">2 jours</span>
+          <span class="tag-type">Présentation diaporama</span>
+        </div>
+        <h2>Accidents du Travail &amp; Maladies Professionnelles</h2>
+        <p>Régime AT/MP, reconnaissance, réparation, droits des accidentés et malades. Module complet pour militants et élus du CSE.</p>
+        <a class="btn-ouvrir" href="/presentations/Presentation_AT-MP_CGT.html" target="_blank">Ouvrir <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H4M10 2V8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      </div>
     </div>
 
     <div class="card">
-      <div class="card-icon" style="background:linear-gradient(135deg,#1A1A1A 0%,#2d2d2d 100%);">
-  <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M24 6L8 14v10c0 9.5 6.8 18.4 16 20.8C33.2 42.4 40 33.5 40 24V14L24 6z" stroke="white" stroke-width="2.5" stroke-linejoin="round"/>
-    <path d="M24 6L8 14v10c0 9.5 6.8 18.4 16 20.8" stroke="#FFD200" stroke-width="2.5" stroke-linecap="round"/>
-    <path d="M17 24l5 5 9-9" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-  </svg>
-</div>
-      <div class="card-meta">
-        <span class="tag-duree">1 jour</span>
-        <span class="tag-type">Présentation diaporama</span>
-      </div>
-      <h2>Prévention des risques — Diagnostic SST</h2>
-      <p>Analyse des AT, DUER, plan de prévention, droits du CSE, droit d'alerte. Angle syndical CGT renforcé.</p>
-      <a class="btn-ouvrir" href="/presentations/Prevention_SST_CGT_Occitanie.html" target="_blank">
-        Ouvrir
-        <svg width="11" height="11" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M2 10L10 2M10 2H4M10 2V8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+      <div class="card-icon" style="background:linear-gradient(135deg,#0D5C2E 0%,#1A9B52 100%);">
+        <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M24 6L8 14v10c0 9.5 6.8 18.4 16 20.8C33.2 42.4 40 33.5 40 24V14L24 6z" stroke="white" stroke-width="2.5" stroke-linejoin="round"/>
+          <path d="M24 6L8 14v10c0 9.5 6.8 18.4 16 20.8" stroke="#FFD200" stroke-width="2.5" stroke-linecap="round"/>
+          <path d="M17 24l5 5 9-9" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
-      </a>
+      </div>
+      <div class="card-body">
+        <div class="card-meta">
+          <span class="tag-duree">1 jour</span>
+          <span class="tag-type">Présentation diaporama</span>
+        </div>
+        <h2>Prévention des risques — Diagnostic SST</h2>
+        <p>Analyse des AT, DUER, plan de prévention, droits du CSE, droit d'alerte. Angle syndical CGT renforcé.</p>
+        <a class="btn-ouvrir" href="/presentations/Prevention_SST_CGT_Occitanie.html" target="_blank">Ouvrir <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H4M10 2V8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      </div>
     </div>
 
     <div class="card">
-      <div class="card-icon" style="background:linear-gradient(135deg,#E2001A 0%,#8B0012 100%);">
-  <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="24" cy="16" r="7" stroke="white" stroke-width="2.5"/>
-    <path d="M10 40c0-7.73 6.27-14 14-14s14 6.27 14 14" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
-    <path d="M30 28l3 3 6-6" stroke="#FFD200" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-  </svg>
-</div>
-      <div class="card-meta">
-        <span class="tag-duree">Demi-journée</span>
-        <span class="tag-type">Présentation diaporama</span>
-      </div>
-      <h2>Prévoyance &amp; Invalidité</h2>
-      <p>Garanties de prévoyance collective, régimes d'invalidité, incapacité de travail et complémentaires santé en entreprise.</p>
-      <a class="btn-ouvrir" href="/presentations/Prevoyance_Invalidite_CGT_Occitanie.html" target="_blank">
-        Ouvrir
-        <svg width="11" height="11" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M2 10L10 2M10 2H4M10 2V8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+      <div class="card-icon" style="background:linear-gradient(135deg,#5C3A0D 0%,#C87020 100%);">
+        <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="24" cy="16" r="7" stroke="white" stroke-width="2.5"/>
+          <path d="M10 40c0-7.73 6.27-14 14-14s14 6.27 14 14" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+          <path d="M30 28l3 3 6-6" stroke="#FFD200" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
-      </a>
+      </div>
+      <div class="card-body">
+        <div class="card-meta">
+          <span class="tag-duree">Demi-journée</span>
+          <span class="tag-type">Présentation diaporama</span>
+        </div>
+        <h2>Prévoyance &amp; Invalidité</h2>
+        <p>Garanties de prévoyance collective, régimes d'invalidité, incapacité de travail et complémentaires santé en entreprise.</p>
+        <a class="btn-ouvrir" href="/presentations/Prevoyance_Invalidite_CGT_Occitanie.html" target="_blank">Ouvrir <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H4M10 2V8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      </div>
     </div>
 
     <!-- AGEFIPH module masqué temporairement
@@ -687,16 +713,23 @@
 
   <div class="modules-grid">
     <div class="card">
-      <div class="card-meta">
-        <span class="tag-duree">Demi-journée</span>
-        <span class="tag-type">Présentation diaporama</span>
+      <div class="card-icon" style="background:linear-gradient(135deg,#2D1A6B 0%,#5E35B1 100%);">
+        <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="8" y="20" width="32" height="22" rx="2" stroke="white" stroke-width="2.5"/>
+          <path d="M16 20V14a8 8 0 0 1 16 0v6" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+          <circle cx="24" cy="31" r="3" fill="#FFD200"/>
+          <line x1="24" y1="34" x2="24" y2="38" stroke="#FFD200" stroke-width="2.5" stroke-linecap="round"/>
+        </svg>
       </div>
-      <h2>AT/MP dans la Fonction Publique</h2>
-      <p>Présentation complète FPE, FPT, FPH : accident de service, maladie professionnelle, droits, indemnisations, F3SCT, CNRACL. Angle militant CGT avec notes formateur pour chaque diapo.</p>
-      <a class="btn-ouvrir" href="/presentations/ATMP_Fonction_Publique_CGT.html" target="_blank">
-        Ouvrir
-        <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H4M10 2V8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </a>
+      <div class="card-body">
+        <div class="card-meta">
+          <span class="tag-duree">Demi-journée</span>
+          <span class="tag-type">Présentation diaporama</span>
+        </div>
+        <h2>AT/MP dans la Fonction Publique</h2>
+        <p>Présentation complète FPE, FPT, FPH : accident de service, maladie professionnelle, droits, indemnisations, F3SCT, CNRACL. Angle militant CGT avec notes formateur pour chaque diapo.</p>
+        <a class="btn-ouvrir" href="/presentations/ATMP_Fonction_Publique_CGT.html" target="_blank">Ouvrir <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H4M10 2V8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      </div>
     </div>
   </div>
 

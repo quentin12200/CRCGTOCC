@@ -14,34 +14,25 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --rouge:       #E2001A;
-      --rouge-dark:  #C40017;
-      --jaune:       #FFD200;
-      --fond:        #F5F4F0;
-      --fond-card:   #FFFFFF;
-      --texte:       #1A1A1A;
-      --texte-muted: #6B6B6B;
-      --border:      #E0DED8;
-      --border-card: #E8E6E0;
+      --rouge: #E2001A; --rouge-dark: #B8001A; --jaune: #FFD200;
+      --accent: #1A5FAD; --accent-dark: #144D8E; --accent-muted: #E8F0FB;
+      --fond: #101620; --fond-card: #172033; --fond-hover: #1E2D47;
+      --texte: #E6ECF5; --texte-muted: #7D8FA8; --border: #253047; --border-card: #1E2D47;
     }
-
-    @media (prefers-color-scheme: dark) {
-      :root:not([data-theme="light"]) {
-        --fond:        #1A1A1A;
-        --fond-card:   #242424;
-        --texte:       #F0EFEB;
-        --texte-muted: #9A9A9A;
-        --border:      #333333;
-        --border-card: #2E2E2E;
+    :root[data-theme="light"] {
+      --accent: #1A5FAD; --accent-dark: #144D8E; --accent-muted: #E8F0FB;
+      --fond: #F4F6FA; --fond-card: #FFFFFF; --fond-hover: #EEF2F8;
+      --texte: #1A2540; --texte-muted: #5A6A84; --border: #D8DEE8; --border-card: #E4E9F2;
+    }
+    @media (prefers-color-scheme: light) {
+      :root:not([data-theme="dark"]) {
+        --accent: #1A5FAD; --fond: #F4F6FA; --fond-card: #FFFFFF; --fond-hover: #EEF2F8;
+        --texte: #1A2540; --texte-muted: #5A6A84; --border: #D8DEE8; --border-card: #E4E9F2;
       }
     }
     :root[data-theme="dark"] {
-      --fond:        #1A1A1A;
-      --fond-card:   #242424;
-      --texte:       #F0EFEB;
-      --texte-muted: #9A9A9A;
-      --border:      #333333;
-      --border-card: #2E2E2E;
+      --accent: #4A8FD4; --fond: #101620; --fond-card: #172033; --fond-hover: #1E2D47;
+      --texte: #E6ECF5; --texte-muted: #7D8FA8; --border: #253047; --border-card: #1E2D47;
     }
 
     body { background: var(--fond); color: var(--texte); font-family: 'Archivo', sans-serif; min-height: 100vh; display: flex; flex-direction: column; }
@@ -76,7 +67,7 @@
       font-family: 'Archivo', sans-serif; font-size: .92rem; color: var(--texte);
       outline: none; transition: border-color .15s;
     }
-    .search-wrap input:focus { border-color: var(--rouge); }
+    .search-wrap input:focus { border-color: var(--accent); }
     .search-wrap input::placeholder { color: #AAAAAA; }
     .search-wrap svg { position: absolute; left: .85rem; top: 50%; transform: translateY(-50%); color: var(--texte-muted); pointer-events: none; }
 
@@ -87,8 +78,8 @@
       padding: .35rem .75rem; border: 2px solid var(--border); background: var(--fond-card);
       color: var(--texte-muted); cursor: pointer; transition: all .15s;
     }
-    .filter-btn:hover { border-color: var(--rouge); color: var(--rouge); }
-    .filter-btn.active { background: var(--rouge); border-color: var(--rouge); color: #fff; }
+    .filter-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .filter-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; }
 
     /* ── CARDS ── */
     .cards-list { display: flex; flex-direction: column; gap: 1.25rem; }
@@ -96,7 +87,7 @@
     .arret-card {
       background: var(--fond-card);
       border: 1px solid var(--border-card);
-      border-left: 5px solid var(--rouge);
+      border-left: 5px solid var(--accent);
       display: flex;
       flex-direction: column;
       transition: box-shadow .15s, opacity .2s;
@@ -133,21 +124,21 @@
     .card-section { display: flex; flex-direction: column; gap: .3rem; }
     .card-section-label {
       font-size: .65rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
-      color: var(--rouge);
+      color: var(--accent);
     }
     .card-section p { font-size: .88rem; line-height: 1.6; color: var(--texte); }
     .card-section .stat-callout {
       display: inline-block; font-size: .8rem; font-weight: 600;
-      background: rgba(226,0,26,.08); color: var(--rouge);
-      padding: .2rem .55rem; margin-top: .2rem; border-left: 3px solid var(--rouge);
+      background: var(--accent-muted); color: var(--accent);
+      padding: .2rem .55rem; margin-top: .2rem; border-left: 3px solid var(--accent);
     }
 
     /* ── DISCLAIMER ── */
     .disclaimer {
       margin-top: 2rem;
       padding: .9rem 1.1rem;
-      background: rgba(226,0,26,.05);
-      border-left: 4px solid var(--rouge);
+      background: var(--accent-muted);
+      border-left: 4px solid var(--accent);
       font-size: .8rem;
       color: var(--texte-muted);
       line-height: 1.5;
@@ -395,7 +386,7 @@
 
 <footer>
   <strong>CGT</strong> Comité Régional Occitanie — Formation syndicale secteur privé
-  &nbsp;·&nbsp; <a href="/stagiaires.html" style="color:var(--rouge);text-decoration:underline">Espace stagiaire →</a>
+  &nbsp;·&nbsp; <a href="/stagiaires.html" style="color:var(--accent);text-decoration:underline">Espace stagiaire →</a>
 </footer>
 
 <script src="/assets/cgt-ui.js"></script>
