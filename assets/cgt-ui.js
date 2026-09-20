@@ -163,6 +163,7 @@
       '<div class="cgt-footer-links">',
       '  <a href="' + base + '/index.html">Accueil formateur</a>',
       '  <a href="' + base + '/stagiaires.html">Espace stagiaire</a>',
+      '  <a href="' + base + '/veille-juridique.html">Veille juridique</a>',
       '  <a href="' + base + '/carnet-atmp.html">Carnet AT/MP</a>',
       '  <a href="' + base + '/lexique.html">Lexique</a>',
       '  <a href="' + base + '/faq-atmp.html">FAQ</a>',
