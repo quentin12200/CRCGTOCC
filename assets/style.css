@@ -7,45 +7,78 @@
 
 /* ── Tokens ───────────────────────────────────────────────── */
 :root {
+  /* Marque CGT — rouge uniquement pour logo + éléments identitaires */
   --rouge:       #E2001A;
   --rouge-dark:  #B8001A;
   --jaune:       #FFD200;
   --noir:        #0F0F0F;
-  --fond:        #0F0F0F;
-  --fond-card:   #1A1A1A;
-  --fond-hover:  #222;
-  --texte:       #FAFAFA;
-  --texte-muted: #999;
-  --border:      #2C2C2C;
-  --border-card: #2A2A2A;
+
+  /* Accent principal interface — bleu marine professionnel */
+  --accent:      #1A5FAD;
+  --accent-dark: #144D8E;
+  --accent-muted:#E8F0FB;
+
+  /* Mode sombre (défaut) */
+  --fond:        #101620;
+  --fond-card:   #172033;
+  --fond-hover:  #1E2D47;
+  --texte:       #E6ECF5;
+  --texte-muted: #7D8FA8;
+  --border:      #253047;
+  --border-card: #1E2D47;
+
   --radius:      10px;
   --radius-sm:   6px;
   --shadow:      0 4px 20px rgba(0,0,0,.5);
   --trans:       .18s ease;
 }
 
-/* ── Light mode overrides (si data-theme="light") ────────── */
+/* ── Light mode (data-theme="light") ─────────────────────── */
 :root[data-theme="light"] {
-  --fond:        #F5F4F0;
+  --accent:      #1A5FAD;
+  --accent-dark: #144D8E;
+  --accent-muted:#E8F0FB;
+
+  --fond:        #F4F6FA;
   --fond-card:   #FFFFFF;
-  --fond-hover:  #F0EFEB;
-  --texte:       #111;
-  --texte-muted: #555;
-  --border:      #DDD;
-  --border-card: #E0E0E0;
+  --fond-hover:  #EEF2F8;
+  --texte:       #1A2540;
+  --texte-muted: #5A6A84;
+  --border:      #D8DEE8;
+  --border-card: #E4E9F2;
+  --shadow:      0 2px 12px rgba(26,95,173,.10);
 }
 
 /* ── Dark mode auto ───────────────────────────────────────── */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --fond:        #0F0F0F;
-    --fond-card:   #1A1A1A;
-    --fond-hover:  #222;
-    --texte:       #FAFAFA;
-    --texte-muted: #999;
-    --border:      #2C2C2C;
-    --border-card: #2A2A2A;
+    --accent:      #4A8FD4;
+    --accent-dark: #3A7DBF;
+    --accent-muted:#162035;
+
+    --fond:        #101620;
+    --fond-card:   #172033;
+    --fond-hover:  #1E2D47;
+    --texte:       #E6ECF5;
+    --texte-muted: #7D8FA8;
+    --border:      #253047;
+    --border-card: #1E2D47;
   }
+}
+
+/* Accentuation en dark mode (data-theme="dark") */
+:root[data-theme="dark"] {
+  --accent:      #4A8FD4;
+  --accent-dark: #3A7DBF;
+  --accent-muted:#162035;
+
+  --fond:        #101620;
+  --fond-card:   #172033;
+  --fond-hover:  #1E2D47;
+  --texte:       #E6ECF5;
+  --texte-muted: #7D8FA8;
+  --border:      #253047;
+  --border-card: #1E2D47;
 }
 
 /* ── Reset léger ──────────────────────────────────────────── */
@@ -105,7 +138,7 @@ a { transition: color var(--trans); }
 .fiche-card:hover {
   transform: translateY(-3px);
   box-shadow: var(--shadow);
-  border-color: var(--rouge);
+  border-color: var(--accent);
 }
 
 /* ── Badges ───────────────────────────────────────────────── */
@@ -131,7 +164,7 @@ a { transition: color var(--trans); }
 }
 .progress-bar-fill {
   height: 100%;
-  background: linear-gradient(90deg, var(--rouge), var(--jaune));
+  background: linear-gradient(90deg, var(--accent), #4AB4D4);
   border-radius: 2px;
   transition: width .4s ease;
 }
