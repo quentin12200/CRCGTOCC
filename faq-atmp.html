@@ -12,10 +12,25 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
       --rouge: #E2001A; --jaune: #FFD200;
-      --fond: #141414; --card: #1E1E1E;
-      --texte: #FBFAF6; --muted: #9A9A9A;
-      --vert: #2ECC71; --vert-bg: #0D2B1A;
-      --orange: #F57C00; --border: #2E2E2E;
+      --fond: #F4F6FA; --fond-card: #FFFFFF;
+      --texte: #1A2540; --texte-muted: #5A6A84;
+      --border: #D8DEE8; --accent: #1A5FAD;
+      --vert: #2ECC71; --vert-bg: #E8FAF0;
+      --orange: #F57C00;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --fond: #101620; --fond-card: #172033;
+        --texte: #E6ECF5; --texte-muted: #7D8FA8;
+        --border: #253047; --accent: #4A8FD4;
+        --vert-bg: #0D2B1A;
+      }
+    }
+    :root[data-theme="dark"] {
+      --fond: #101620; --fond-card: #172033;
+      --texte: #E6ECF5; --texte-muted: #7D8FA8;
+      --border: #253047; --accent: #4A8FD4;
+      --vert-bg: #0D2B1A;
     }
     body { background: var(--fond); color: var(--texte); font-family: 'Archivo', sans-serif; min-height: 100vh; padding: 0 0 4rem; }
 
@@ -26,92 +41,99 @@
     .topbar-back:hover { color: #fff; }
     .stripe { height: 4px; background: var(--jaune); }
 
-    .hero { background: linear-gradient(135deg, #0A0A1A 0%, #0D1525 100%); border-bottom: 1px solid var(--border); padding: 2rem 1.5rem 1.5rem; text-align: center; }
+    .hero { background: linear-gradient(135deg, #0D1A35 0%, #0A1525 100%); border-bottom: 1px solid var(--border); padding: 2rem 1.5rem 1.5rem; text-align: center; }
     .hero-icon { font-size: 2.5rem; margin-bottom: .75rem; }
     .hero h1 { font-family: 'Anton', sans-serif; font-size: clamp(1.4rem, 4vw, 2rem); color: var(--jaune); letter-spacing: .04em; margin-bottom: .5rem; }
-    .hero p { font-size: .9rem; color: var(--muted); max-width: 52ch; margin: 0 auto; line-height: 1.6; }
+    .hero p { font-size: .9rem; color: rgba(255,255,255,.7); max-width: 52ch; margin: 0 auto; line-height: 1.6; }
 
     .content { max-width: 740px; margin: 0 auto; padding: 1.5rem 1rem 0; }
 
-    /* FILTRES */
     .filters { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: 1.5rem; }
     .filter-btn {
-      background: var(--card); border: 1px solid var(--border); color: var(--muted);
+      background: var(--fond-card); border: 1px solid var(--border); color: var(--texte-muted);
       padding: .4rem .9rem; font-family: 'Archivo', sans-serif; font-size: .75rem;
       font-weight: 700; letter-spacing: .06em; text-transform: uppercase; cursor: pointer;
       transition: border-color .15s, color .15s, background .15s;
     }
-    .filter-btn:hover { border-color: #555; color: var(--texte); }
-    .filter-btn.active { border-color: var(--rouge); color: var(--rouge); background: #1A0005; }
-    .filter-btn[data-cat="declaration"].active { border-color: var(--orange); color: var(--orange); background: #1C1206; }
+    .filter-btn:hover { border-color: var(--accent); color: var(--texte); }
+    .filter-btn.active { border-color: var(--accent); color: var(--accent); background: color-mix(in srgb, var(--accent) 8%, var(--fond-card)); }
+    .filter-btn[data-cat="declaration"].active { border-color: var(--orange); color: var(--orange); background: color-mix(in srgb, var(--orange) 8%, var(--fond-card)); }
     .filter-btn[data-cat="ij"].active { border-color: var(--vert); color: var(--vert); background: var(--vert-bg); }
-    .filter-btn[data-cat="droits"].active { border-color: #7BB3FF; color: #7BB3FF; background: #0A1220; }
-    .filter-btn[data-cat="recours"].active { border-color: #D98FFF; color: #D98FFF; background: #1A0A1A; }
+    .filter-btn[data-cat="droits"].active { border-color: #7BB3FF; color: #7BB3FF; background: color-mix(in srgb, #7BB3FF 8%, var(--fond-card)); }
+    .filter-btn[data-cat="recours"].active { border-color: #D98FFF; color: #D98FFF; background: color-mix(in srgb, #D98FFF 8%, var(--fond-card)); }
 
-    /* SEARCH */
     .search-wrap { position: relative; margin-bottom: 1.25rem; }
-    .search-wrap svg { position: absolute; left: .85rem; top: 50%; transform: translateY(-50%); color: var(--muted); }
-    #search { width: 100%; background: var(--card); border: 1px solid var(--border); color: var(--texte); font-family: 'Archivo', sans-serif; font-size: .9rem; padding: .7rem 1rem .7rem 2.5rem; outline: none; transition: border-color .15s; }
-    #search:focus { border-color: var(--rouge); }
-    #search::placeholder { color: var(--muted); }
+    .search-wrap svg { position: absolute; left: .85rem; top: 50%; transform: translateY(-50%); color: var(--texte-muted); }
+    #search { width: 100%; background: var(--fond-card); border: 1px solid var(--border); color: var(--texte); font-family: 'Archivo', sans-serif; font-size: .9rem; padding: .7rem 1rem .7rem 2.5rem; outline: none; transition: border-color .15s; }
+    #search:focus { border-color: var(--accent); }
+    #search::placeholder { color: var(--texte-muted); }
 
-    /* FAQ ITEMS */
     .faq-list { display: flex; flex-direction: column; gap: .5rem; }
     .faq-item { border: 1px solid var(--border); overflow: hidden; }
     .faq-item[data-cat="declaration"] { border-left: 3px solid var(--orange); }
     .faq-item[data-cat="ij"] { border-left: 3px solid var(--vert); }
     .faq-item[data-cat="droits"] { border-left: 3px solid #7BB3FF; }
     .faq-item[data-cat="recours"] { border-left: 3px solid #D98FFF; }
-    .faq-item[data-cat="employeur"] { border-left: 3px solid var(--rouge); }
+    .faq-item[data-cat="employeur"] { border-left: 3px solid var(--accent); }
+    .faq-item:hover { border-color: var(--accent); }
 
     .faq-q {
-      width: 100%; background: var(--card); border: none; color: var(--texte);
+      width: 100%; background: var(--fond-card); border: none; color: var(--texte);
       font-family: 'Archivo', sans-serif; font-size: .9rem; font-weight: 600;
       padding: 1rem 3rem 1rem 1rem; text-align: left; cursor: pointer;
       display: flex; align-items: flex-start; gap: .75rem; line-height: 1.4;
       position: relative; transition: background .15s;
     }
-    .faq-q:hover { background: #252525; }
-    .faq-q.open { background: #1C1C1C; }
+    .faq-q:hover { background: color-mix(in srgb, var(--accent) 6%, var(--fond-card)); }
+    .faq-q.open { background: color-mix(in srgb, var(--accent) 9%, var(--fond-card)); }
     .faq-q::after {
       content: '+'; position: absolute; right: 1rem; top: 50%; transform: translateY(-50%);
-      font-size: 1.3rem; color: var(--muted); font-weight: 400; transition: transform .2s;
+      font-size: 1.3rem; color: var(--texte-muted); font-weight: 400; transition: transform .2s;
     }
-    .faq-q.open::after { content: '−'; }
+    .faq-q.open::after { content: '−'; color: var(--accent); }
     .faq-cat-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 5px; }
     .faq-item[data-cat="declaration"] .faq-cat-dot { background: var(--orange); }
     .faq-item[data-cat="ij"] .faq-cat-dot { background: var(--vert); }
     .faq-item[data-cat="droits"] .faq-cat-dot { background: #7BB3FF; }
     .faq-item[data-cat="recours"] .faq-cat-dot { background: #D98FFF; }
-    .faq-item[data-cat="employeur"] .faq-cat-dot { background: var(--rouge); }
+    .faq-item[data-cat="employeur"] .faq-cat-dot { background: var(--accent); }
 
     .faq-a {
       display: none; padding: 1rem 1.25rem 1.25rem;
-      background: #181818; border-top: 1px solid var(--border);
-      font-size: .87rem; line-height: 1.7; color: #C8C7C2;
+      background: var(--fond); border-top: 1px solid var(--border);
+      font-size: .87rem; line-height: 1.7; color: var(--texte-muted);
     }
     .faq-a.open { display: block; }
     .faq-a strong { color: var(--texte); }
-    .faq-a .highlight { background: #1A0005; border-left: 3px solid var(--rouge); padding: .6rem .85rem; margin: .75rem 0; font-size: .84rem; }
+    .faq-a .highlight { background: color-mix(in srgb, var(--accent) 7%, var(--fond-card)); border-left: 3px solid var(--accent); padding: .6rem .85rem; margin: .75rem 0; font-size: .84rem; }
     .faq-a .highlight.vert { background: var(--vert-bg); border-color: var(--vert); }
-    .faq-a .ref { font-size: .75rem; color: var(--muted); margin-top: .75rem; }
+    .faq-a .ref { font-size: .75rem; color: var(--texte-muted); margin-top: .75rem; }
 
-    /* NO RESULT */
-    .no-result { text-align: center; padding: 3rem 1rem; color: var(--muted); display: none; }
+    .no-result { text-align: center; padding: 3rem 1rem; color: var(--texte-muted); display: none; }
     .no-result.show { display: block; }
 
-    /* CATÉGORIE LABEL */
     .cat-label {
       font-size: .68rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
       padding: .15rem .5rem; border-radius: 2px; display: inline-block;
     }
-    .cat-declaration { background: #1C1206; color: var(--orange); }
+    .cat-declaration { background: color-mix(in srgb, var(--orange) 10%, var(--fond-card)); color: var(--orange); }
     .cat-ij { background: var(--vert-bg); color: var(--vert); }
-    .cat-droits { background: #0A1220; color: #7BB3FF; }
-    .cat-recours { background: #1A0A1A; color: #D98FFF; }
-    .cat-employeur { background: #1A0005; color: #FF8A95; }
+    .cat-droits { background: color-mix(in srgb, #7BB3FF 10%, var(--fond-card)); color: #7BB3FF; }
+    .cat-recours { background: color-mix(in srgb, #D98FFF 10%, var(--fond-card)); color: #D98FFF; }
+    .cat-employeur { background: color-mix(in srgb, var(--accent) 10%, var(--fond-card)); color: var(--accent); }
 
-    .count-label { font-size: .75rem; color: var(--muted); margin-bottom: 1rem; }
+    .count-label { font-size: .75rem; color: var(--texte-muted); margin-bottom: 1rem; }
+
+    @media (max-width: 480px) {
+      .topbar { padding: .75rem 1rem; gap: .6rem; }
+      .topbar-title { font-size: .82rem; }
+      .hero { padding: 1.25rem 1rem 1rem; }
+      .content { padding: 1rem .75rem 0; }
+      .filters { gap: .35rem; }
+      .filter-btn { padding: .35rem .65rem; font-size: .7rem; }
+      .faq-q { font-size: .84rem; padding: .85rem 2.75rem .85rem .85rem; }
+      .faq-a { padding: .85rem 1rem 1rem; font-size: .84rem; }
+    }
   </style>
 </head>
 <body>

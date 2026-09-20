@@ -14,12 +14,18 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
       --rouge: #E2001A; --rouge-dark: #C40017; --jaune: #FFD200;
-      --fond: #F5F4F0; --fond-card: #FFFFFF; --texte: #1A1A1A;
-      --texte-muted: #6B6B6B; --border: #E0DED8; --border-card: #E8E6E0;
+      --fond: #F4F6FA; --fond-card: #FFFFFF; --texte: #1A2540;
+      --texte-muted: #5A6A84; --border: #D8DEE8; --accent: #1A5FAD;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --fond: #101620; --fond-card: #172033; --texte: #E6ECF5;
+        --texte-muted: #7D8FA8; --border: #253047; --accent: #4A8FD4;
+      }
     }
     :root[data-theme="dark"] {
-      --fond: #0F0F0F; --fond-card: #1A1A1A; --texte: #E8E6E0;
-      --texte-muted: #999; --border: #2C2C2C; --border-card: #2A2A2A;
+      --fond: #101620; --fond-card: #172033; --texte: #E6ECF5;
+      --texte-muted: #7D8FA8; --border: #253047; --accent: #4A8FD4;
     }
     body { background: var(--fond); color: var(--texte); font-family: 'Archivo', sans-serif; min-height: 100vh; }
 
@@ -64,17 +70,19 @@
       content: ''; position: absolute; left: 1rem; top: 0; bottom: 0;
       width: 2px; background: var(--border);
     }
+    @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .timeline::before { background: var(--border); } }
     :root[data-theme="dark"] .timeline::before { background: var(--border); }
 
     .tl-item {
       position: relative; margin-bottom: 2rem; background: var(--fond-card);
-      border: 1px solid var(--border-card); padding: 1.25rem 1.4rem;
+      border: 1px solid var(--border); padding: 1.25rem 1.4rem;
     }
+    .tl-item:hover { border-color: var(--accent); }
     .tl-item:last-child { margin-bottom: 0; }
 
     .tl-num {
       position: absolute; left: -2.6rem; top: 1.1rem;
-      width: 2rem; height: 2rem; background: var(--rouge); color: #fff;
+      width: 2rem; height: 2rem; background: var(--accent); color: #fff;
       font-family: 'Anton', sans-serif; font-size: 1rem;
       display: flex; align-items: center; justify-content: center;
       border-radius: 50%; border: 2px solid var(--fond);
@@ -105,7 +113,7 @@
     .tl-body { font-size: .875rem; line-height: 1.7; color: var(--texte); }
     .tl-body ul { padding-left: 1.1rem; margin-top: .4rem; }
     .tl-body li { margin-bottom: .25rem; }
-    .tl-body strong { color: var(--rouge); }
+    .tl-body strong { color: var(--accent); }
 
     /* PRINT */
     @media print {
