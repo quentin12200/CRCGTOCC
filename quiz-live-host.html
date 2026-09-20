@@ -75,7 +75,7 @@
       new window.QRCode(qrContainer, {
         text: joinUrl,
         width: 200, height: 200,
-        colorDark: '#1A1A1A', colorLight: '#FFFFFF',
+        colorDark: '#1A2540', colorLight: '#FFFFFF',
         correctLevel: window.QRCode.CorrectLevel.M
       });
 
@@ -131,13 +131,18 @@
       document.getElementById('q-num-host').textContent = `Question ${currentQ + 1} / ${QUESTIONS.length}`;
       document.getElementById('q-text-host').textContent = q.q;
 
+      // Barre de progression questions
+      const pct = Math.round((currentQ / QUESTIONS.length) * 100);
+      document.getElementById('q-progress-fill').style.width = pct + '%';
+      document.getElementById('q-progress-label').textContent = `${currentQ + 1} / ${QUESTIONS.length}`;
+
       const letters = ['A', 'B', 'C', 'D'];
       document.getElementById('choices-host').innerHTML = q.choices.map((c, i) =>
         `<div class="choice-bar" id="bar-${i}">
           <span class="choice-letter">${letters[i]}</span>
           <span class="choice-label">${c}</span>
-          <span class="choice-count" id="count-${i}">0</span>
           <div class="bar-track"><div class="bar-fill" id="fill-${i}" style="width:0%"></div></div>
+          <span class="choice-count" id="count-${i}">0</span>
         </div>`
       ).join('');
 
@@ -179,13 +184,15 @@
       document.getElementById('btn-suivante').classList.remove('hidden');
       document.getElementById('btn-suivante').textContent =
         currentQ < QUESTIONS.length - 1 ? 'Question suivante →' : 'Voir le classement →';
+
+      // Tableau des scores en cours
+      renderScoreTableLive();
     }
 
     function renderReveal() {
       const q = QUESTIONS[currentQ];
       const total = Object.keys(participants).length || 1;
       const resps = Object.values(responses).filter(r => r.q === currentQ);
-      const letters = ['A', 'B', 'C', 'D'];
 
       q.choices.forEach((_, i) => {
         const cnt = resps.filter(r => r.choice === i).length;
@@ -202,6 +209,28 @@
           }
         }
       });
+    }
+
+    function renderScoreTableLive() {
+      const container = document.getElementById('score-table-live');
+      if (!container) return;
+      const sorted = Object.entries(scores)
+        .map(([uid, s]) => ({ name: participants[uid] || uid, score: s }))
+        .sort((a, b) => b.score - a.score);
+      if (sorted.length === 0) { container.innerHTML = ''; return; }
+      container.innerHTML = `
+        <div class="score-table-title">Classement intermédiaire</div>
+        <table class="score-table">
+          <thead><tr><th>#</th><th>Participant</th><th>Score</th></tr></thead>
+          <tbody>${sorted.map((p, i) => `
+            <tr class="${i < 3 ? 'top-row' : ''}">
+              <td class="rank-cell">${i + 1}</td>
+              <td>${p.name}</td>
+              <td class="score-cell">${p.score} / ${QUESTIONS.length}</td>
+            </tr>`).join('')}
+          </tbody>
+        </table>`;
+      container.classList.remove('hidden');
     }
 
     async function question_suivante() {
@@ -233,7 +262,7 @@
           <span class="rank-name">${p.name}</span>
           <span class="rank-score">${p.score} / ${QUESTIONS.length}</span>
         </div>
-      `).join('') || '<p style="color:#9A9A9A;text-align:center">Aucune réponse enregistrée.</p>';
+      `).join('') || '<p style="color:var(--texte-muted);text-align:center">Aucune réponse enregistrée.</p>';
     }
 
     // Exposer au HTML
@@ -244,79 +273,121 @@
   </script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
     :root {
-      --rouge: #E2001A; --jaune: #FFD200;
-      --fond: #141414; --card: #1E1E1E;
-      --texte: #FBFAF6; --muted: #9A9A9A;
-      --border: #2E2E2E;
-      --vert: #2ECC71; --vert-bg: #0F3320;
+      --rouge: #E2001A; --rouge-dark: #B8001A; --jaune: #FFD200;
+      --accent: #1A5FAD; --accent-dark: #144D8E; --accent-muted: #E8F0FB;
+      --fond: #101620; --fond-card: #172033; --fond-hover: #1E2D47;
+      --texte: #E6ECF5; --texte-muted: #7D8FA8; --border: #253047; --border-card: #1E2D47;
+      --vert: #2ECC71; --vert-bg: #0D2B1D;
     }
+    :root[data-theme="light"] {
+      --accent: #1A5FAD; --accent-dark: #144D8E; --accent-muted: #E8F0FB;
+      --fond: #F4F6FA; --fond-card: #FFFFFF; --fond-hover: #EEF2F8;
+      --texte: #1A2540; --texte-muted: #5A6A84; --border: #D8DEE8; --border-card: #E4E9F2;
+      --vert-bg: #D4F0E0;
+    }
+    @media (prefers-color-scheme: light) {
+      :root:not([data-theme="dark"]) {
+        --accent: #1A5FAD; --fond: #F4F6FA; --fond-card: #FFFFFF; --fond-hover: #EEF2F8;
+        --texte: #1A2540; --texte-muted: #5A6A84; --border: #D8DEE8; --border-card: #E4E9F2;
+        --vert-bg: #D4F0E0;
+      }
+    }
+    :root[data-theme="dark"] {
+      --accent: #4A8FD4; --fond: #101620; --fond-card: #172033; --fond-hover: #1E2D47;
+      --texte: #E6ECF5; --texte-muted: #7D8FA8; --border: #253047; --border-card: #1E2D47;
+      --vert-bg: #0D2B1D;
+    }
+
     body { background: var(--fond); color: var(--texte); font-family: 'Archivo', sans-serif; min-height: 100vh; }
 
+    /* TOPBAR — rouge conservé */
     .topbar { background: var(--rouge); padding: .75rem 1.5rem; display: flex; align-items: center; justify-content: space-between; }
-    .topbar-title { font-family: 'Anton', sans-serif; font-size: 1rem; letter-spacing: .05em; }
-    .topbar a { font-size: .72rem; color: rgba(255,255,255,.8); text-decoration: none; border: 1px solid rgba(255,255,255,.3); padding: .25rem .6rem; }
+    .topbar-title { font-family: 'Anton', sans-serif; font-size: 1rem; letter-spacing: .05em; color: #fff; }
+    .topbar a { font-size: .72rem; color: rgba(255,255,255,.85); text-decoration: none; border: 1px solid rgba(255,255,255,.35); padding: .25rem .65rem; border-radius: 2px; transition: background .15s; }
+    .topbar a:hover { background: rgba(255,255,255,.12); }
     .stripe { height: 5px; background: var(--jaune); }
 
-    .scene { max-width: 900px; margin: 0 auto; padding: 2rem 1.25rem; }
+    .scene { max-width: 960px; margin: 0 auto; padding: 2rem 1.25rem; }
     .hidden { display: none !important; }
 
     /* INTRO */
-    .intro-box { text-align: center; padding: 2rem 0; }
+    .intro-box { text-align: center; padding: 2.5rem 0; }
     .big-cgt { background: var(--rouge); color: var(--jaune); font-family: 'Anton', sans-serif; font-size: 2.5rem; padding: 1rem 1.5rem; display: inline-block; letter-spacing: .1em; margin-bottom: 1.5rem; }
-    #intro-text h1 { font-family: 'Anton', sans-serif; font-size: 1.6rem; margin-bottom: .5rem; }
-    #intro-text p { color: var(--muted); font-size: .9rem; margin-bottom: 1.5rem; }
-    .btn-primary { background: var(--rouge); color: #fff; border: none; padding: .85rem 2rem; font-family: 'Archivo', sans-serif; font-size: .9rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; cursor: pointer; transition: background .15s; }
-    .btn-primary:hover { background: #C40017; }
-    .btn-primary:disabled { background: #444; cursor: default; }
-    .btn-secondary { background: transparent; color: var(--muted); border: 1px solid var(--border); padding: .75rem 1.5rem; font-family: 'Archivo', sans-serif; font-size: .85rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; cursor: pointer; transition: all .15s; margin-left: .5rem; }
+    #intro-text h1 { font-family: 'Anton', sans-serif; font-size: 1.7rem; margin-bottom: .5rem; }
+    #intro-text p { color: var(--texte-muted); font-size: .9rem; margin-bottom: 1.75rem; }
+
+    /* BOUTONS */
+    .btn-primary { background: var(--accent); color: #fff; border: none; padding: .85rem 2rem; font-family: 'Archivo', sans-serif; font-size: .9rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; cursor: pointer; border-radius: 3px; transition: background .15s; }
+    .btn-primary:hover { background: var(--accent-dark); }
+    .btn-primary:disabled { background: var(--border); color: var(--texte-muted); cursor: default; }
+    .btn-secondary { background: transparent; color: var(--texte-muted); border: 1px solid var(--border); padding: .75rem 1.5rem; font-family: 'Archivo', sans-serif; font-size: .85rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; cursor: pointer; border-radius: 3px; transition: all .15s; margin-left: .5rem; }
     .btn-secondary:hover { border-color: var(--texte); color: var(--texte); }
 
     /* LOBBY */
     #lobby { display: grid; grid-template-columns: auto 1fr; gap: 2rem; align-items: start; }
-    .qr-block { background: #fff; padding: 1rem; display: flex; flex-direction: column; align-items: center; gap: .75rem; }
-    .qr-block .session-badge { background: var(--rouge); color: #fff; font-family: 'Anton', sans-serif; font-size: 1.4rem; letter-spacing: .12em; padding: .4rem 1rem; }
-    .qr-block .qr-hint { font-size: .72rem; color: #555; text-align: center; max-width: 200px; }
+    .qr-block { background: #fff; padding: 1rem; display: flex; flex-direction: column; align-items: center; gap: .75rem; border-radius: 4px; }
+    .qr-block .session-badge { background: var(--accent); color: #fff; font-family: 'Anton', sans-serif; font-size: 1.5rem; letter-spacing: .14em; padding: .45rem 1.1rem; border-radius: 2px; }
+    .qr-block .qr-hint { font-size: .72rem; color: #555; text-align: center; max-width: 200px; line-height: 1.5; }
     .lobby-right { display: flex; flex-direction: column; gap: 1rem; }
     .lobby-right h2 { font-family: 'Anton', sans-serif; font-size: 1.1rem; color: var(--texte); }
-    .participants-count { font-size: 2.5rem; font-family: 'Anton', sans-serif; color: var(--jaune); }
+    .participants-count { font-size: 3rem; font-family: 'Anton', sans-serif; color: var(--accent); line-height: 1; }
     #participants-list { display: flex; flex-wrap: wrap; gap: .4rem; min-height: 40px; }
-    .participant-chip { background: var(--card); border: 1px solid var(--border); padding: .3rem .65rem; font-size: .82rem; color: var(--texte); }
-    .join-url { font-size: .7rem; color: var(--muted); word-break: break-all; padding: .5rem; background: var(--card); border: 1px solid var(--border); }
+    .participant-chip { background: var(--fond-card); border: 1px solid var(--border-card); padding: .3rem .7rem; font-size: .82rem; color: var(--texte); border-radius: 2px; }
+    .join-url { font-size: .7rem; color: var(--texte-muted); word-break: break-all; padding: .6rem .75rem; background: var(--fond-card); border: 1px solid var(--border-card); border-radius: 2px; }
+
+    /* PROGRESSION QUESTIONS */
+    .q-progress-wrap { display: flex; align-items: center; gap: .75rem; margin-bottom: .5rem; }
+    .q-progress-track { flex: 1; height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; }
+    .q-progress-fill { height: 100%; background: var(--accent); border-radius: 3px; transition: width .4s; }
+    .q-progress-label { font-size: .72rem; color: var(--texte-muted); font-weight: 700; white-space: nowrap; }
 
     /* QUESTION PANEL */
     #question-panel { display: flex; flex-direction: column; gap: 1rem; }
     .host-q-meta { display: flex; align-items: center; gap: 1rem; }
-    .host-q-num { font-size: .72rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
-    .answer-progress-wrap { flex: 1; background: var(--card); height: 8px; }
-    .answer-progress-fill { height: 100%; background: var(--vert); transition: width .3s; }
-    #answer-count { font-size: .78rem; color: var(--muted); white-space: nowrap; }
-    #q-text-host { font-family: 'Anton', sans-serif; font-size: clamp(1.3rem, 3vw, 2rem); line-height: 1.3; }
-    .choice-bar { display: flex; align-items: center; gap: .75rem; padding: .7rem .85rem; background: var(--card); border: 2px solid var(--border); transition: border-color .2s; }
+    .host-q-num { font-size: .72rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--texte-muted); }
+    .answer-progress-wrap { flex: 1; background: var(--fond-card); height: 8px; border-radius: 4px; overflow: hidden; }
+    .answer-progress-fill { height: 100%; background: var(--vert); transition: width .3s; border-radius: 4px; }
+    #answer-count { font-size: .78rem; color: var(--texte-muted); white-space: nowrap; }
+    #q-text-host { font-family: 'Anton', sans-serif; font-size: clamp(1.3rem, 3vw, 2rem); line-height: 1.3; background: var(--fond-card); border: 1px solid var(--border-card); padding: 1.1rem 1.25rem; border-radius: 4px; }
+
+    /* CHOIX HOST */
+    #choices-host { display: flex; flex-direction: column; gap: .45rem; }
+    .choice-bar { display: flex; align-items: center; gap: .75rem; padding: .75rem 1rem; background: var(--fond-card); border: 2px solid var(--border-card); border-radius: 4px; transition: border-color .2s, background .2s; }
     .choice-bar.correct-bar { border-color: var(--vert); background: var(--vert-bg); }
-    .choice-bar.wrong-bar { border-color: #333; opacity: .6; }
-    .choice-letter { font-family: 'Anton', sans-serif; font-size: .9rem; color: var(--muted); width: 20px; flex-shrink: 0; }
-    .choice-label { flex: 1; font-size: .9rem; }
-    .choice-count { font-family: 'Anton', sans-serif; font-size: 1rem; color: var(--jaune); width: 28px; text-align: right; flex-shrink: 0; }
-    .bar-track { width: 80px; height: 6px; background: #2E2E2E; flex-shrink: 0; }
-    .bar-fill { height: 100%; background: var(--rouge); transition: width .4s; }
+    .choice-bar.wrong-bar { border-color: var(--border); opacity: .5; }
+    .choice-letter { font-family: 'Anton', sans-serif; font-size: .9rem; color: var(--texte-muted); width: 22px; flex-shrink: 0; background: var(--fond-hover); border-radius: 2px; text-align: center; padding: 1px 0; }
+    .correct-bar .choice-letter { background: var(--vert); color: #fff; }
+    .choice-label { flex: 1; font-size: .9rem; line-height: 1.4; }
+    .bar-track { width: 100px; height: 8px; background: var(--border); border-radius: 4px; overflow: hidden; flex-shrink: 0; }
+    .bar-fill { height: 100%; background: var(--accent); transition: width .4s; border-radius: 4px; }
     .correct-bar .bar-fill { background: var(--vert); }
-    .btn-row { display: flex; gap: .75rem; margin-top: .5rem; }
+    .choice-count { font-family: 'Anton', sans-serif; font-size: 1rem; color: var(--jaune); width: 28px; text-align: right; flex-shrink: 0; }
+    .btn-row { display: flex; gap: .75rem; margin-top: .5rem; flex-wrap: wrap; }
 
-    /* CLASSEMENT */
-    #resultat-panel { }
-    .podium-title { font-family: 'Anton', sans-serif; font-size: 1.5rem; margin-bottom: 1rem; }
-    .rank-row { display: flex; align-items: center; gap: 1rem; padding: .75rem 1rem; background: var(--card); border: 1px solid var(--border); margin-bottom: .4rem; }
-    .rank-row.top { border-color: var(--jaune); }
-    .rank-pos { font-family: 'Anton', sans-serif; font-size: 1.1rem; width: 32px; }
+    /* TABLEAU SCORES LIVE */
+    .score-table-live-wrap { margin-top: .5rem; }
+    .score-table-title { font-size: .68rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--texte-muted); margin-bottom: .5rem; }
+    .score-table { width: 100%; border-collapse: collapse; font-size: .88rem; }
+    .score-table th { text-align: left; font-size: .68rem; letter-spacing: .08em; text-transform: uppercase; color: var(--texte-muted); border-bottom: 1px solid var(--border); padding: .4rem .6rem; font-weight: 600; }
+    .score-table td { padding: .5rem .6rem; border-bottom: 1px solid var(--border-card); }
+    .score-table tr.top-row td { background: var(--fond-hover); }
+    .score-table .rank-cell { font-family: 'Anton', sans-serif; color: var(--texte-muted); width: 32px; }
+    .score-table .score-cell { font-family: 'Anton', sans-serif; color: var(--jaune); text-align: right; }
+
+    /* CLASSEMENT FINAL */
+    .podium-title { font-family: 'Anton', sans-serif; font-size: 1.6rem; margin-bottom: 1.25rem; }
+    .rank-row { display: flex; align-items: center; gap: 1rem; padding: .8rem 1rem; background: var(--fond-card); border: 1px solid var(--border-card); border-radius: 4px; margin-bottom: .4rem; transition: border-color .15s; }
+    .rank-row.top { border-color: var(--accent); }
+    .rank-pos { font-family: 'Anton', sans-serif; font-size: 1.2rem; width: 36px; }
     .rank-name { flex: 1; font-size: .95rem; }
-    .rank-score { font-family: 'Anton', sans-serif; font-size: 1.1rem; color: var(--jaune); }
+    .rank-score { font-family: 'Anton', sans-serif; font-size: 1.15rem; color: var(--jaune); }
 
-    #choices-host { display: flex; flex-direction: column; gap: .5rem; }
-
-    @media (max-width: 600px) {
+    @media (max-width: 640px) {
       #lobby { grid-template-columns: 1fr; }
       .qr-block { width: 100%; }
+      .bar-track { width: 60px; }
     }
   </style>
 </head>
@@ -361,6 +432,10 @@
 
   <!-- QUESTION PANEL -->
   <div id="question-panel" class="hidden">
+    <div class="q-progress-wrap">
+      <div class="q-progress-track"><div class="q-progress-fill" id="q-progress-fill" style="width:0%"></div></div>
+      <span class="q-progress-label" id="q-progress-label">1 / 12</span>
+    </div>
     <div class="host-q-meta">
       <span class="host-q-num" id="q-num-host">Question 1 / 12</span>
       <div class="answer-progress-wrap"><div class="answer-progress-fill" id="answer-progress" style="width:0%"></div></div>
@@ -372,6 +447,7 @@
       <button class="btn-primary" id="btn-reveler" onclick="reveler()">Révéler la réponse</button>
       <button class="btn-primary hidden" id="btn-suivante" onclick="question_suivante()">Question suivante →</button>
     </div>
+    <div id="score-table-live" class="score-table-live-wrap hidden"></div>
   </div>
 
   <!-- CLASSEMENT FINAL -->

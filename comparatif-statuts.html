@@ -66,17 +66,17 @@
     .hero-sub { font-size: .88rem; color: rgba(255,255,255,.75); line-height: 1.6; max-width: 600px; margin-bottom: 1.25rem; }
     .btn-print {
       display: inline-flex; align-items: center; gap: .45rem;
-      background: transparent; border: 1px solid rgba(255,255,255,.4);
-      color: rgba(255,255,255,.85); padding: .5rem 1rem; font-size: .8rem;
+      background: var(--accent); border: none; border-radius: 6px;
+      color: #fff; padding: .5rem 1rem; font-size: .8rem;
       font-family: 'Archivo', sans-serif; cursor: pointer; letter-spacing: .04em;
     }
-    .btn-print:hover { background: rgba(255,255,255,.1); }
+    .btn-print:hover { background: var(--accent-dark); }
 
     /* MAIN */
     main { padding: 2rem 1.5rem 4rem; max-width: 1100px; margin: 0 auto; }
 
     /* TABLE WRAPPER */
-    .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; background: var(--fond-card); border: 1px solid var(--border-card); }
+    .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; background: var(--fond-card); border: 1px solid var(--border-card); border-radius: 10px; overflow: hidden; }
 
     table { width: 100%; border-collapse: collapse; min-width: 700px; font-size: .82rem; }
 
@@ -84,15 +84,13 @@
     thead th { color: #fff; padding: .75rem 1rem; text-align: left; font-family: 'Anton', sans-serif; font-size: .82rem; letter-spacing: .05em; white-space: nowrap; }
     thead th:first-child { background: var(--rouge-dark); min-width: 180px; }
 
-    tbody tr:nth-child(even) td { background: #F8F7F4; }
-    :root[data-theme="dark"] tbody tr:nth-child(even) td { background: #141414; }
+    tbody tr:nth-child(even) td { background: var(--fond-hover); }
 
     tbody td { padding: .7rem 1rem; border-bottom: 1px solid var(--border); vertical-align: top; line-height: 1.5; }
     tbody td:first-child {
       font-weight: 700; font-size: .78rem; text-transform: uppercase; letter-spacing: .05em;
-      color: var(--texte-muted); background: #F0EEE8; white-space: nowrap;
+      color: var(--texte-muted); background: var(--fond-card); white-space: nowrap;
     }
-    :root[data-theme="dark"] tbody td:first-child { background: #111; }
 
     /* ICÔNES */
     .ico { font-size: 1rem; font-weight: 700; }
