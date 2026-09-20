@@ -16,7 +16,7 @@ const { createSign } = require('crypto');
 // ── Fetch via rss2json.com (proxy public, contourne hotlink protection) ────────
 // Gratuit jusqu'à 10 000 requêtes/jour — largement suffisant pour un cron 24h
 function fetchRSS(feedUrl) {
-  const api = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(feedUrl)}&count=6`;
+  const api = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(feedUrl)}`;
   return new Promise((resolve, reject) => {
     const req = https.get(api, {
       headers: { 'User-Agent': 'CGT-Occitanie-Veille/1.0' },
