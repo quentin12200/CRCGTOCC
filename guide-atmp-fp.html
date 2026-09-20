@@ -131,10 +131,10 @@
 
     /* CALLOUT */
     .callout { border-radius: 8px; padding: 1rem 1.25rem; margin: 1rem 0; }
-    .callout-rouge { background: #fff5f5; border-left: 4px solid var(--rouge); }
-    .callout-jaune { background: #fffbea; border-left: 4px solid var(--jaune); }
-    .callout-vert { background: #f0faf0; border-left: 4px solid #2E7D32; }
-    .callout-bleu { background: #f0f4ff; border-left: 4px solid #1565C0; }
+    .callout-rouge { background: var(--fond-card); border-left: 4px solid var(--rouge); }
+    .callout-jaune { background: var(--fond-card); border-left: 4px solid var(--jaune); }
+    .callout-vert { background: var(--fond-card); border-left: 4px solid #2E7D32; }
+    .callout-bleu { background: var(--accent-muted); border-left: 4px solid var(--accent); }
     .callout strong { display: block; margin-bottom: .35rem; }
 
     /* STEPS */
@@ -154,14 +154,15 @@
 
     /* CONTACTS */
     .contacts-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1rem; margin-top: 1rem; }
-    .contact-card { background: var(--fond-card); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.25rem; }
+    .contact-card { background: var(--fond-card); border: 1px solid var(--border-card); border-radius: 10px; padding: 1rem 1.25rem; transition: border-color .15s; }
+    .contact-card:hover { border-color: var(--accent); }
     .contact-card h4 { font-size: .9rem; font-weight: 700; margin-bottom: .4rem; }
     .contact-card p, .contact-card a { font-size: .83rem; color: var(--texte-muted); line-height: 1.5; display: block; }
-    .contact-card a { color: var(--rouge); text-decoration: none; }
+    .contact-card a { color: var(--accent); text-decoration: none; }
     .contact-card a:hover { text-decoration: underline; }
 
     /* BACK BUTTON */
-    .back-btn { display: inline-flex; align-items: center; gap: .4rem; color: var(--rouge); font-size: .88rem; font-weight: 600; text-decoration: none; margin-bottom: 1.5rem; }
+    .back-btn { display: inline-flex; align-items: center; gap: .4rem; color: var(--accent); font-size: .88rem; font-weight: 600; text-decoration: none; margin-bottom: 1.5rem; }
     .back-btn:hover { text-decoration: underline; }
 
     @media (max-width: 768px) {
