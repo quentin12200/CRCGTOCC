@@ -400,22 +400,24 @@ function renderFeed(items) {
   document.getElementById('no-result').classList.toggle('show', items.length === 0);
 }
 
-// ── FILTRES ──────────────────────────────────────────────────────────────────
+// ── FILTRES & RECHERCHE ───────────────────────────────────────────────────────
 let activeFilter = 'all';
 let searchQuery = '';
+let ALL_ITEMS = [];
 
-function getFiltered() {
-  return FEED.filter(item => {
-    const matchCat = activeFilter === 'all' || item.cat === activeFilter;
-    const matchSearch = !searchQuery || item.dataset_text_cache.includes(searchQuery);
-    return matchCat && matchSearch;
+function prepareCache(items) {
+  items.forEach(item => {
+    item._cache = (item.title + ' ' + (item.body||'') + ' ' + (item.ref||'')).toLowerCase();
   });
 }
 
-// Précalcul du texte searchable
-FEED.forEach(item => {
-  item.dataset_text_cache = (item.title + ' ' + item.body + ' ' + (item.ref||'')).toLowerCase();
-});
+function getFiltered() {
+  return ALL_ITEMS.filter(item => {
+    const matchCat = activeFilter === 'all' || item.cat === activeFilter;
+    const matchSearch = !searchQuery || item._cache.includes(searchQuery);
+    return matchCat && matchSearch;
+  });
+}
 
 document.querySelectorAll('.filter-btn').forEach(btn => {
   btn.addEventListener('click', function() {
@@ -435,8 +437,65 @@ document.getElementById('search-input').addEventListener('input', function() {
   }, 200);
 });
 
+// ── CHARGEMENT FIREBASE ───────────────────────────────────────────────────────
+const FIREBASE_PROJECT = 'crocc-b499f';
+
+function firestoreToItem(doc, idx) {
+  const f = doc.fields || {};
+  const s = k => f[k]?.stringValue || '';
+  const b = k => f[k]?.booleanValue || false;
+  return {
+    id: idx,
+    cat: s('cat') || 'pratique',
+    date: s('date') || s('createdAt').slice(0,10) || '',
+    isNew: b('isNew'),
+    title: s('title'),
+    ref: s('source') ? `${s('source')}${s('sourceUrl') ? ' — ' + s('sourceUrl') : ''}` : '',
+    body: s('body'),
+    detail: s('detail'),
+    impact: s('impact') || 'med',
+    impactLabel: s('impactLabel') || '',
+  };
+}
+
+async function loadFromFirebase() {
+  const feed = document.getElementById('feed');
+  feed.innerHTML = '<div style="padding:2rem;color:var(--texte-muted);font-size:.88rem">⟳ Chargement de la veille…</div>';
+
+  try {
+    const url = `https://firestore.googleapis.com/v1/projects/${FIREBASE_PROJECT}/databases/(default)/documents/veille?orderBy=createdAt%20desc&pageSize=50`;
+    const res = await fetch(url);
+    if (!res.ok) throw new Error('Firestore ' + res.status);
+    const data = await res.json();
+
+    const docs = data.documents || [];
+    if (docs.length > 0) {
+      // Firebase a des données — on les utilise
+      ALL_ITEMS = docs.map((doc, i) => firestoreToItem(doc, i));
+    } else {
+      // Pas encore de données Firebase → fallback statique
+      ALL_ITEMS = FEED;
+    }
+  } catch(e) {
+    console.warn('Firebase non disponible, fallback statique', e);
+    ALL_ITEMS = FEED;
+  }
+
+  prepareCache(ALL_ITEMS);
+  renderFeed(getFiltered());
+
+  // Indicateur de source
+  const isLive = ALL_ITEMS !== FEED;
+  const badge = document.createElement('div');
+  badge.style.cssText = 'font-size:.72rem;color:var(--texte-muted);margin-bottom:.75rem;';
+  badge.textContent = isLive
+    ? `✓ ${ALL_ITEMS.length} articles chargés depuis la veille automatique`
+    : '⚠ Affichage des données statiques — la synchronisation automatique n\'a pas encore tourné';
+  document.getElementById('feed').parentNode.insertBefore(badge, document.getElementById('feed'));
+}
+
 // ── INIT ─────────────────────────────────────────────────────────────────────
-renderFeed(FEED);
+loadFromFirebase();
 </script>
 </body>
 </html>
