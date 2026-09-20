@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Générateur Projet de Vie MDPH — CGT Occitanie</title>
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/style.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --rouge: #E2001A; --rouge-dark: #B8001A; --jaune: #FFD200;
+      --accent: #1A5FAD; --accent-dark: #144D8E; --accent-muted: #E8F0FB;
+      --fond: #101620; --fond-card: #172033; --fond-hover: #1E2D47;
+      --texte: #E6ECF5; --texte-muted: #7D8FA8; --border: #253047; --border-card: #1E2D47;
+    }
+    :root[data-theme="light"] {
+      --accent: #1A5FAD; --accent-dark: #144D8E; --accent-muted: #E8F0FB;
+      --fond: #F4F6FA; --fond-card: #FFFFFF; --fond-hover: #EEF2F8;
+      --texte: #1A2540; --texte-muted: #5A6A84; --border: #D8DEE8; --border-card: #E4E9F2;
+    }
+    @media (prefers-color-scheme: light) {
+      :root:not([data-theme="dark"]) {
+        --accent: #1A5FAD; --fond: #F4F6FA; --fond-card: #FFFFFF; --fond-hover: #EEF2F8;
+        --texte: #1A2540; --texte-muted: #5A6A84; --border: #D8DEE8; --border-card: #E4E9F2;
+      }
+    }
+    :root[data-theme="dark"] {
+      --accent: #4A8FD4; --fond: #101620; --fond-card: #172033; --fond-hover: #1E2D47;
+      --texte: #E6ECF5; --texte-muted: #7D8FA8; --border: #253047; --border-card: #1E2D47;
+    }
+
+    body { background: var(--fond); color: var(--texte); font-family: 'Archivo', sans-serif; min-height: 100vh; display: flex; flex-direction: column; }
+    header { background: var(--rouge); padding: 1rem 2rem; display: flex; align-items: center; gap: 1.25rem; box-shadow: 0 2px 8px rgba(0,0,0,.18); }
+    .logo-wrap { flex-shrink: 0; height: 56px; display: flex; align-items: center; }
+    .logo-wrap img { height: 56px; width: auto; background: white; padding: 3px 5px; }
+    .header-divider { width: 2px; height: 42px; background: rgba(255,255,255,.3); flex-shrink: 0; }
+    .header-title { flex: 1; }
+    .header-title h1 { font-family: 'Anton', sans-serif; font-size: 1.1rem; letter-spacing: .04em; color: #fff; line-height: 1.2; }
+    .header-title span { font-size: .75rem; color: rgba(255,255,255,.75); }
+    .header-back a { font-size: .75rem; color: rgba(255,255,255,.8); text-decoration: none; border: 1px solid rgba(255,255,255,.3); padding: .3rem .7rem; border-radius: 4px; transition: background .15s; }
+    .header-back a:hover { background: rgba(255,255,255,.12); color: #fff; }
+    .stripe { height: 5px; background: var(--jaune); }
+    main { flex: 1; max-width: 960px; width: 100%; margin: 0 auto; padding: 2rem 1.5rem 3rem; }
+
+    /* ── STEPPER ── */
+    .stepper { display: flex; background: var(--fond-card); border: 1px solid var(--border-card); border-radius: 10px; overflow: hidden; margin-bottom: 2.5rem; }
+    .step { flex: 1; display: flex; align-items: center; gap: .55rem; padding: .85rem .75rem; font-size: .72rem; font-weight: 600; color: var(--texte-muted); border-right: 1px solid var(--border); transition: background .2s, color .2s; }
+    .step:last-child { border-right: none; }
+    .step-num { width: 22px; height: 22px; border-radius: 50%; border: 2px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: .65rem; font-weight: 700; flex-shrink: 0; transition: background .2s, border-color .2s; }
+    .step.active { color: var(--texte); background: var(--accent-muted); }
+    .step.active .step-num { background: var(--accent); border-color: var(--accent); color: #fff; }
+    .step.done { color: var(--accent); }
+    .step.done .step-num { background: var(--accent); border-color: var(--accent); color: #fff; content: '✓'; }
+    .step.done .step-num::after { content: '✓'; font-size: .6rem; }
+    .step.done .step-num span { display: none; }
+    @media (max-width: 620px) { .step-label { display: none; } .step { justify-content: center; padding: .7rem .4rem; } }
+
+    /* ── PANELS ── */
+    .panel { display: none; }
+    .panel.active { display: block; animation: fadeIn .22s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+    .panel-title { font-family: 'Anton', sans-serif; font-size: 1.2rem; letter-spacing: .04em; color: var(--texte); margin-bottom: .35rem; }
+    .panel-sub { font-size: .85rem; color: var(--texte-muted); margin-bottom: 1.75rem; line-height: 1.55; }
+
+    /* ── PROFIL CARDS ── */
+    .profil-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem; }
+    @media (max-width: 520px) { .profil-grid { grid-template-columns: 1fr; } }
+    .profil-card { background: var(--fond-card); border: 2px solid var(--border-card); border-radius: 10px; padding: 1.2rem 1.3rem; cursor: pointer; transition: border-color .2s, background .2s; display: flex; align-items: center; gap: 1rem; }
+    .profil-card:hover { border-color: var(--accent); }
+    .profil-card.selected { border-color: var(--accent); background: var(--accent-muted); }
+    .profil-icon { width: 40px; height: 40px; border-radius: 8px; background: var(--accent); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .profil-icon svg { color: #fff; }
+    .profil-info h3 { font-size: .9rem; font-weight: 600; color: var(--texte); margin-bottom: .15rem; }
+    .profil-info p { font-size: .75rem; color: var(--texte-muted); line-height: 1.4; }
+
+    /* ── HANDICAP TAGS ── */
+    .handicap-grid { display: flex; flex-wrap: wrap; gap: .6rem; margin-bottom: 1.5rem; }
+    .h-tag { background: var(--fond-card); border: 1.5px solid var(--border-card); border-radius: 20px; padding: .38rem .85rem; font-size: .8rem; font-weight: 600; color: var(--texte-muted); cursor: pointer; transition: border-color .15s, background .15s, color .15s; user-select: none; }
+    .h-tag:hover { border-color: var(--accent); color: var(--texte); }
+    .h-tag.selected { background: var(--accent); border-color: var(--accent); color: #fff; }
+    .h-tag.multi { }
+
+    /* ── FORM ── */
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .form-grid .full { grid-column: 1 / -1; }
+    @media (max-width: 600px) { .form-grid { grid-template-columns: 1fr; } .form-grid .full { grid-column: 1; } }
+
+    .field { display: flex; flex-direction: column; gap: .32rem; }
+    .field label { font-size: .78rem; font-weight: 600; color: var(--texte); }
+    .field label .opt { font-weight: 400; color: var(--texte-muted); }
+    .field input, .field textarea, .field select {
+      padding: .62rem .85rem; border: 1.5px solid var(--border-card);
+      border-radius: 6px; background: var(--fond-card); color: var(--texte);
+      font-family: 'Archivo', sans-serif; font-size: .875rem;
+      outline: none; transition: border-color .15s;
+    }
+    .field input::placeholder, .field textarea::placeholder { color: var(--texte-muted); }
+    .field input:focus, .field textarea:focus, .field select:focus { border-color: var(--accent); }
+    .field textarea { resize: vertical; min-height: 80px; line-height: 1.55; }
+    .field-hint { font-size: .72rem; color: var(--texte-muted); line-height: 1.4; }
+
+    .section-sep { font-size: .67rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); margin: 1.75rem 0 1.1rem; display: flex; align-items: center; gap: .7rem; }
+    .section-sep::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+    /* ── DOMAINES GEVA ── */
+    .geva-grid { display: flex; flex-direction: column; gap: 1rem; }
+    .geva-item { background: var(--fond-card); border: 1px solid var(--border-card); border-radius: 10px; overflow: hidden; }
+    .geva-header { display: flex; align-items: center; gap: .85rem; padding: .85rem 1.1rem; cursor: pointer; transition: background .15s; }
+    .geva-header:hover { background: var(--fond-hover); }
+    .geva-icon { width: 30px; height: 30px; border-radius: 6px; background: var(--accent-muted); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .geva-icon svg { color: var(--accent); }
+    .geva-title { font-size: .875rem; font-weight: 600; color: var(--texte); flex: 1; }
+    .geva-badge { font-size: .68rem; padding: .18rem .55rem; border-radius: 10px; background: var(--fond-hover); color: var(--texte-muted); }
+    .geva-badge.rempli { background: var(--accent-muted); color: var(--accent); }
+    .geva-body { padding: 0 1.1rem 1rem; display: none; }
+    .geva-body.open { display: block; }
+    .geva-body textarea { width: 100%; padding: .6rem .8rem; border: 1.5px solid var(--border-card); border-radius: 6px; background: var(--fond); color: var(--texte); font-family: 'Archivo', sans-serif; font-size: .85rem; line-height: 1.55; resize: vertical; min-height: 70px; outline: none; transition: border-color .15s; margin-top: .5rem; }
+    .geva-body textarea:focus { border-color: var(--accent); }
+    .geva-hint { font-size: .72rem; color: var(--texte-muted); margin-top: .35rem; line-height: 1.45; }
+
+    /* ── PRESTATIONS ── */
+    .presta-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: .75rem; }
+    .presta-card { background: var(--fond-card); border: 2px solid var(--border-card); border-radius: 8px; padding: .85rem 1rem; cursor: pointer; transition: border-color .2s, background .2s; display: flex; align-items: flex-start; gap: .75rem; }
+    .presta-card:hover { border-color: var(--accent); }
+    .presta-card.selected { border-color: var(--accent); background: var(--accent-muted); }
+    .presta-check { width: 18px; height: 18px; border-radius: 4px; border: 2px solid var(--border); flex-shrink: 0; margin-top: 2px; display: flex; align-items: center; justify-content: center; transition: background .15s, border-color .15s; }
+    .presta-card.selected .presta-check { background: var(--accent); border-color: var(--accent); }
+    .presta-check svg { display: none; color: #fff; }
+    .presta-card.selected .presta-check svg { display: block; }
+    .presta-info h4 { font-size: .825rem; font-weight: 600; color: var(--texte); margin-bottom: .18rem; }
+    .presta-info p { font-size: .72rem; color: var(--texte-muted); line-height: 1.4; }
+
+    /* ── BOUTONS ── */
+    .btn-row { display: flex; gap: .75rem; margin-top: 2rem; flex-wrap: wrap; }
+    .btn-primary { display: inline-flex; align-items: center; gap: .5rem; background: var(--accent); color: #fff; font-family: 'Archivo', sans-serif; font-size: .85rem; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; padding: .7rem 1.4rem; border: none; border-radius: 6px; cursor: pointer; transition: background .15s, transform .15s; }
+    .btn-primary:hover { background: var(--accent-dark); transform: translateY(-1px); }
+    .btn-primary:disabled { opacity: .5; cursor: not-allowed; transform: none; }
+    .btn-secondary { display: inline-flex; align-items: center; gap: .5rem; background: var(--fond-hover); color: var(--texte); font-family: 'Archivo', sans-serif; font-size: .85rem; font-weight: 600; padding: .7rem 1.2rem; border: 1.5px solid var(--border); border-radius: 6px; cursor: pointer; transition: background .15s; }
+    .btn-secondary:hover { background: var(--border); }
+
+    /* ── LOADING ── */
+    .loading-state { display: none; text-align: center; padding: 3.5rem 1rem; }
+    .loading-state.active { display: block; }
+    .spinner { width: 46px; height: 46px; border-radius: 50%; border: 3px solid var(--border); border-top-color: var(--accent); animation: spin .8s linear infinite; margin: 0 auto 1.2rem; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .loading-text { font-size: .9rem; color: var(--texte-muted); margin-bottom: .5rem; }
+    .loading-step-label { font-size: .78rem; color: var(--texte-muted); font-style: italic; }
+
+    /* ── RÉSULTAT ── */
+    .result-state { display: none; }
+    .result-state.active { display: block; }
+    .result-toolbar { display: flex; gap: .6rem; flex-wrap: wrap; margin-bottom: 1rem; }
+    .btn-copy-r, .btn-print-r, .btn-dl-r, .btn-regen-r {
+      display: inline-flex; align-items: center; gap: .4rem;
+      font-family: 'Archivo', sans-serif; font-size: .78rem; font-weight: 700;
+      letter-spacing: .05em; text-transform: uppercase;
+      padding: .5rem .9rem; border-radius: 6px; cursor: pointer; border: none; transition: background .15s;
+    }
+    .btn-copy-r { background: var(--accent); color: #fff; }
+    .btn-copy-r:hover { background: var(--accent-dark); }
+    .btn-copy-r.copied { background: #1D8A4E; }
+    .btn-print-r, .btn-dl-r { background: var(--fond-hover); color: var(--texte); border: 1.5px solid var(--border); }
+    .btn-print-r:hover, .btn-dl-r:hover { background: var(--border); }
+    .btn-regen-r { background: transparent; color: var(--accent); border: 1.5px solid var(--accent); margin-left: auto; }
+    .btn-regen-r:hover { background: var(--accent-muted); }
+
+    .projet-preview {
+      background: #fff; color: #1A1A1A;
+      border: 1px solid var(--border-card); border-radius: 8px;
+      padding: 2.5rem 3rem; font-family: Georgia, serif; font-size: .92rem;
+      line-height: 1.9; white-space: pre-wrap; box-shadow: 0 2px 12px rgba(0,0,0,.08);
+    }
+    [data-theme="dark"] .projet-preview { background: #F8F7F4; }
+    .projet-preview strong { font-weight: 700; }
+    .highlight { background: #FFD200; color: #1A1A1A; padding: 0 2px; }
+
+    .avertissement-box { margin-top: 1rem; background: #FFFBE8; border: 1px solid #FFE870; border-left: 4px solid #FFD200; border-radius: 6px; padding: .85rem 1rem; font-size: .78rem; color: #6B5000; line-height: 1.6; }
+
+    /* ── ERREUR ── */
+    .error-state { display: none; }
+    .error-state.active { display: block; }
+    .error-box { background: #2A0A0A; border: 1px solid #8B1A1A; border-radius: 8px; padding: 1.25rem 1.5rem; color: #FFB3B3; font-size: .88rem; line-height: 1.6; }
+    [data-theme="light"] .error-box { background: #FFF0F0; color: #7A1A1A; border-color: #FFB3B3; }
+
+    /* ── INFO BOX ── */
+    .info-box { background: var(--accent-muted); border: 1px solid var(--accent); border-radius: 8px; padding: .85rem 1rem; font-size: .8rem; color: var(--accent); line-height: 1.55; margin-bottom: 1.5rem; display: flex; gap: .75rem; align-items: flex-start; }
+    [data-theme="dark"] .info-box { background: rgba(74,143,212,.12); color: #7FBDE8; }
+
+    footer { border-top: 1px solid var(--border); background: var(--fond-hover); padding: 1.1rem 1.5rem; text-align: center; font-size: .73rem; color: var(--texte-muted); }
+    footer strong { color: var(--rouge); }
+
+    @media print {
+      body * { visibility: hidden; }
+      .projet-preview, .projet-preview * { visibility: visible; }
+      .projet-preview { position: fixed; top: 0; left: 0; width: 100%; padding: 2cm 2.5cm; border: none; box-shadow: none; font-size: 11pt; }
+    }
+    @media (max-width: 520px) {
+      header { padding: .85rem 1rem; gap: .75rem; }
+      .logo-wrap img { height: 44px; }
+      main { padding: 1.5rem 1rem 2rem; }
+      .projet-preview { padding: 1.25rem 1rem; font-size: .83rem; }
+    }
+  </style>
+</head>
+<body>
+<script src="/assets/cgt-ui.js"></script>
+<script>if(localStorage.getItem('cgt_auth')!=='ok'&&localStorage.getItem('cgt_stagiaire_auth')!=='ok'){location.replace('/login.html?from='+encodeURIComponent(location.pathname));}</script>
+<script>(function(){ var t=localStorage.getItem('cgt_theme'); if(t==='dark')document.documentElement.setAttribute('data-theme','dark'); else if(t==='light')document.documentElement.setAttribute('data-theme','light'); else if(window.matchMedia('(prefers-color-scheme: dark)').matches)document.documentElement.setAttribute('data-theme','dark'); })();</script>
+
+<header>
+  <div class="logo-wrap"><img src="/assets/logo-cgt-occitanie.jpg" alt="CGT Comité Régional Occitanie"></div>
+  <div class="header-divider"></div>
+  <div class="header-title">
+    <h1>Générateur Projet de Vie MDPH</h1>
+    <span>Assisté par IA · Basé sur les recommandations APF France Handicap &amp; CNSA</span>
+  </div>
+  <div class="header-back"><a href="/">← Accueil</a></div>
+</header>
+<div class="stripe"></div>
+
+<main>
+
+  <!-- STEPPER -->
+  <div class="stepper" id="stepper">
+    <div class="step active" id="step-1"><div class="step-num"><span>1</span></div><span class="step-label">Profil</span></div>
+    <div class="step" id="step-2"><div class="step-num"><span>2</span></div><span class="step-label">Identité</span></div>
+    <div class="step" id="step-3"><div class="step-num"><span>3</span></div><span class="step-label">Vie quotidienne</span></div>
+    <div class="step" id="step-4"><div class="step-num"><span>4</span></div><span class="step-label">Social &amp; Aspirations</span></div>
+    <div class="step" id="step-5"><div class="step-num"><span>5</span></div><span class="step-label">Prestations</span></div>
+    <div class="step" id="step-6"><div class="step-num"><span>6</span></div><span class="step-label">Projet généré</span></div>
+  </div>
+
+  <!-- ══ PANEL 1 : PROFIL ══ -->
+  <div class="panel active" id="panel-1">
+    <div class="panel-title">Pour qui rédigez-vous ce projet de vie ?</div>
+    <p class="panel-sub">Le projet de vie est la pièce centrale du dossier MDPH. L'IA adaptera la rédaction selon le profil.</p>
+
+    <div class="profil-grid">
+      <div class="profil-card" data-profil="adulte" onclick="selectProfil(this)">
+        <div class="profil-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+        <div class="profil-info"><h3>Adulte</h3><p>16 ans et plus — rédigé à la 1ère personne par la personne elle-même ou un représentant légal</p></div>
+      </div>
+      <div class="profil-card" data-profil="enfant" onclick="selectProfil(this)">
+        <div class="profil-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+        <div class="profil-info"><h3>Enfant / Adolescent</h3><p>Moins de 16 ans — rédigé à la 3ème personne par les parents ou représentants légaux</p></div>
+      </div>
+    </div>
+
+    <div class="section-sep">Type(s) de handicap <span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:.75rem">(sélectionnez tout ce qui s'applique)</span></div>
+
+    <div class="handicap-grid" id="handicap-grid">
+      <div class="h-tag" data-h="moteur" onclick="toggleHandicap(this)">🦽 Moteur / physique</div>
+      <div class="h-tag" data-h="sensoriel_visuel" onclick="toggleHandicap(this)">👁 Visuel</div>
+      <div class="h-tag" data-h="sensoriel_auditif" onclick="toggleHandicap(this)">👂 Auditif</div>
+      <div class="h-tag" data-h="psychique" onclick="toggleHandicap(this)">🧠 Psychique / psychiatrique</div>
+      <div class="h-tag" data-h="cognitif" onclick="toggleHandicap(this)">💡 Cognitif / DI</div>
+      <div class="h-tag" data-h="autisme" onclick="toggleHandicap(this)">♾ Autisme / TSA</div>
+      <div class="h-tag" data-h="tdah" onclick="toggleHandicap(this)">⚡ TDAH</div>
+      <div class="h-tag" data-h="dys" onclick="toggleHandicap(this)">📖 Troubles DYS</div>
+      <div class="h-tag" data-h="maladie" onclick="toggleHandicap(this)">🏥 Maladie évolutive / ALD</div>
+      <div class="h-tag" data-h="polyhandicap" onclick="toggleHandicap(this)">🔗 Polyhandicap</div>
+    </div>
+
+    <div class="field full" style="margin-bottom:1rem">
+      <label>Qui rédige ce projet ? <span class="opt">(optionnel)</span></label>
+      <input type="text" id="f-redacteur" placeholder="Ex : la personne elle-même, les parents, l'éducateur référent, un tuteur...">
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-primary" id="btn1-next" onclick="goStep(2)" disabled>Continuer <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></button>
+    </div>
+  </div>
+
+  <!-- ══ PANEL 2 : IDENTITÉ ══ -->
+  <div class="panel" id="panel-2">
+    <div class="panel-title">Identité et situation actuelle</div>
+    <p class="panel-sub">Ces informations personnalisent le projet de vie. Rien n'est transmis à un tiers.</p>
+
+    <div class="form-grid">
+      <div class="field">
+        <label>Prénom <span style="color:var(--rouge)">*</span></label>
+        <input type="text" id="f-prenom" placeholder="Ex : Marie">
+      </div>
+      <div class="field">
+        <label>Nom <span class="opt">(optionnel)</span></label>
+        <input type="text" id="f-nom" placeholder="Ex : DUPONT">
+      </div>
+      <div class="field">
+        <label>Âge <span style="color:var(--rouge)">*</span></label>
+        <input type="text" id="f-age" placeholder="Ex : 34 ans">
+      </div>
+      <div class="field">
+        <label>Situation familiale</label>
+        <input type="text" id="f-famille" placeholder="Ex : célibataire, marié·e, 2 enfants...">
+      </div>
+      <div class="field full">
+        <label>Lieu de vie</label>
+        <input type="text" id="f-logement" placeholder="Ex : appartement au 3ème étage sans ascenseur, maison adaptée, établissement...">
+      </div>
+      <div class="field full">
+        <label>Situation professionnelle ou scolaire</label>
+        <input type="text" id="f-emploi" placeholder="Ex : en arrêt maladie depuis 2 ans, sans emploi, élève en ULIS, apprenti...">
+      </div>
+    </div>
+
+    <div class="section-sep">Diagnostic(s) et suivi médical</div>
+    <div class="form-grid">
+      <div class="field full">
+        <label>Diagnostic(s) précis <span style="color:var(--rouge)">*</span></label>
+        <textarea id="f-diagnostics" rows="3" placeholder="Ex : Sclérose en plaques progressive depuis 2018 (Dr Martin, neurologue, CHU Toulouse) · Dépression sévère (suivi psychiatrique mensuel)"></textarea>
+        <span class="field-hint">Mentionnez le nom exact du diagnostic, la date et le ou les médecins spécialistes.</span>
+      </div>
+      <div class="field full">
+        <label>Aides et accompagnements déjà en place <span class="opt">(optionnel)</span></label>
+        <textarea id="f-aides" rows="2" placeholder="Ex : RQTH obtenue en 2022, aide ménagère 3h/semaine, fauteuil manuel, suivi ESAT..."></textarea>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-secondary" onclick="goStep(1)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg> Retour</button>
+      <button class="btn-primary" onclick="goStep(3)">Continuer <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></button>
+    </div>
+  </div>
+
+  <!-- ══ PANEL 3 : DOMAINES GEVA ══ -->
+  <div class="panel" id="panel-3">
+    <div class="panel-title">Impact sur la vie quotidienne</div>
+    <p class="panel-sub">C'est la section la plus importante. Décrivez les difficultés concrètes dans chaque domaine. <strong>Soyez précis·e : chiffrez, donnez des exemples, décrivez aussi les mauvais jours.</strong></p>
+
+    <div class="info-box">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:1px"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      <span>Cliquez sur chaque domaine pour le développer. Vous n'avez pas besoin de tout remplir — concentrez-vous sur les domaines les plus impactés par votre handicap.</span>
+    </div>
+
+    <div class="geva-grid" id="geva-grid">
+
+      <div class="geva-item">
+        <div class="geva-header" onclick="toggleGeva(this)">
+          <div class="geva-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
+          <span class="geva-title">Hygiène et soins corporels</span>
+          <span class="geva-badge" id="badge-hygiene">Non renseigné</span>
+        </div>
+        <div class="geva-body">
+          <textarea id="geva-hygiene" placeholder="Ex : Je ne peux pas me doucher seul·e — je risque de tomber en raison de mes vertiges. L'habillage du bas du corps me prend 45 min à cause de la spasticité de mes membres inférieurs. Mon conjoint m'aide tous les matins." onchange="majBadge('hygiene', this.value)"></textarea>
+          <div class="geva-hint">💡 Précisez : quels gestes sont impossibles ? Combien de temps cela prend-il ? Avez-vous besoin d'aide et de qui ?</div>
+        </div>
+      </div>
+
+      <div class="geva-item">
+        <div class="geva-header" onclick="toggleGeva(this)">
+          <div class="geva-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+          <span class="geva-title">Mobilité et déplacements</span>
+          <span class="geva-badge" id="badge-mobilite">Non renseigné</span>
+        </div>
+        <div class="geva-body">
+          <textarea id="geva-mobilite" placeholder="Ex : Je ne peux pas marcher plus de 100m sans douleur intense (EVA 8/10). Je ne peux pas conduire depuis 2022. Je dépends des transports adaptés (VSL) pour tous mes rendez-vous médicaux." onchange="majBadge('mobilite', this.value)"></textarea>
+          <div class="geva-hint">💡 Distance maximale, utilisation de fauteuil/déambulateur, conduite automobile, transports en commun.</div>
+        </div>
+      </div>
+
+      <div class="geva-item">
+        <div class="geva-header" onclick="toggleGeva(this)">
+          <div class="geva-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2l1.5 1.5M3 22l1.5-1.5M21 2l-1.5 1.5M21 22l-1.5-1.5M12 3v2M12 19v2M3 12H1M23 12h-2"/><circle cx="12" cy="12" r="4"/></svg></div>
+          <span class="geva-title">Alimentation et repas</span>
+          <span class="geva-badge" id="badge-alimentation">Non renseigné</span>
+        </div>
+        <div class="geva-body">
+          <textarea id="geva-alimentation" placeholder="Ex : La préparation des repas est impossible en raison de mes tremblements — je risque de me brûler. Je me limite à des repas froids ou des plats préparés." onchange="majBadge('alimentation', this.value)"></textarea>
+          <div class="geva-hint">💡 Préparation, alimentation autonome, déglutition, régimes spécifiques.</div>
+        </div>
+      </div>
+
+      <div class="geva-item">
+        <div class="geva-header" onclick="toggleGeva(this)">
+          <div class="geva-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+          <span class="geva-title">Communication</span>
+          <span class="geva-badge" id="badge-communication">Non renseigné</span>
+        </div>
+        <div class="geva-body">
+          <textarea id="geva-communication" placeholder="Ex : Mes troubles de l'élocution rendent mes appels téléphoniques difficiles à comprendre pour les interlocuteurs. J'ai besoin que les personnes parlent lentement et clairement." onchange="majBadge('communication', this.value)"></textarea>
+          <div class="geva-hint">💡 Langage oral, écrit, lecture, compréhension, téléphone, appareillage auditif/visuel.</div>
+        </div>
+      </div>
+
+      <div class="geva-item">
+        <div class="geva-header" onclick="toggleGeva(this)">
+          <div class="geva-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+          <span class="geva-title">Tâches domestiques et gestion du logement</span>
+          <span class="geva-badge" id="badge-domestique">Non renseigné</span>
+        </div>
+        <div class="geva-body">
+          <textarea id="geva-domestique" placeholder="Ex : Je ne peux pas passer l'aspirateur ni faire les courses — la fatigue m'oblige à m'allonger toutes les 30 min. La gestion des factures et des démarches administratives me prend plusieurs jours à cause de mes difficultés de concentration." onchange="majBadge('domestique', this.value)"></textarea>
+          <div class="geva-hint">💡 Ménage, courses, cuisine, gestion administrative, finances.</div>
+        </div>
+      </div>
+
+      <div class="geva-item">
+        <div class="geva-header" onclick="toggleGeva(this)">
+          <div class="geva-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+          <span class="geva-title">Vie sociale, relations et loisirs</span>
+          <span class="geva-badge" id="badge-social">Non renseigné</span>
+        </div>
+        <div class="geva-body">
+          <textarea id="geva-social" placeholder="Ex : Depuis mon arrêt de travail, je suis sorti·e moins de 5 fois en 6 mois. Mes crises d'angoisse m'empêchent de prendre les transports en commun seul·e. Je n'ai plus de liens avec mes collègues." onchange="majBadge('social', this.value)"></textarea>
+          <div class="geva-hint">💡 Isolement, sorties, loisirs, relations familiales et amicales.</div>
+        </div>
+      </div>
+
+      <div class="geva-item">
+        <div class="geva-header" onclick="toggleGeva(this)">
+          <div class="geva-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
+          <span class="geva-title">Vie professionnelle ou scolaire</span>
+          <span class="geva-badge" id="badge-emploi">Non renseigné</span>
+        </div>
+        <div class="geva-body">
+          <textarea id="geva-emploi" placeholder="Ex : Je ne peux pas maintenir un poste à temps plein — ma fatigue cognitive me contraint à m'arrêter au bout de 3h. J'ai perdu 3 emplois en 2 ans. Mon TDAH me fait rater des réunions et des délais." onchange="majBadge('emploi', this.value)"></textarea>
+          <div class="geva-hint">💡 Maintien dans l'emploi, aménagements nécessaires, impact sur les apprentissages (enfant).</div>
+        </div>
+      </div>
+
+      <div class="geva-item">
+        <div class="geva-header" onclick="toggleGeva(this)">
+          <div class="geva-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div>
+          <span class="geva-title">Santé, traitements et fatigue</span>
+          <span class="geva-badge" id="badge-sante">Non renseigné</span>
+        </div>
+        <div class="geva-body">
+          <textarea id="geva-sante" placeholder="Ex : Je prends 8 médicaments par jour dont certains provoquent une somnolence intense après 14h. Je suis hospitalisé·e en moyenne 3 fois par an. La douleur chronique me tient éveillé·e la nuit 4 nuits sur 7." onchange="majBadge('sante', this.value)"></textarea>
+          <div class="geva-hint">💡 Traitements, hospitalisations, douleur chronique, fatigue, effets secondaires des médicaments.</div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-secondary" onclick="goStep(2)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg> Retour</button>
+      <button class="btn-primary" onclick="goStep(4)">Continuer <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></button>
+    </div>
+  </div>
+
+  <!-- ══ PANEL 4 : PSYCHOSOCIAL & ASPIRATIONS ══ -->
+  <div class="panel" id="panel-4">
+    <div class="panel-title">Impact psychologique et aspirations</div>
+    <p class="panel-sub">Ces deux sections humanisent le projet de vie et montrent à la MDPH la personne derrière le dossier.</p>
+
+    <div class="section-sep">Retentissement psychologique et social</div>
+    <div class="form-grid">
+      <div class="field full">
+        <label>Impact émotionnel et psychologique</label>
+        <textarea id="f-psycho" rows="4" placeholder="Ex : Mon handicap a profondément affecté mon estime de moi. Je souffre d'épisodes dépressifs récurrents depuis le diagnostic. J'ai honte de mon corps et j'évite les situations sociales depuis 3 ans. Mon conjoint/ma conjointe est épuisé·e de compenser mes difficultés au quotidien."></textarea>
+        <span class="field-hint">N'hésitez pas à décrire l'impact sur vos proches (aidants) également.</span>
+      </div>
+      <div class="field full">
+        <label>Situation de crise ou moments difficiles <span class="opt">(optionnel)</span></label>
+        <textarea id="f-crise" rows="3" placeholder="Ex : Hospitalisations en psychiatrie (2 fois en 2023), crises de panique 2 à 3 fois par semaine, situations de mise en danger..."></textarea>
+      </div>
+    </div>
+
+    <div class="section-sep">Aspirations et projet de vie</div>
+    <div class="info-box">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:1px"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+      <span>Décrivez ce que vous souhaitez accomplir, maintenir ou retrouver. Même des aspirations simples (se laver seul·e, reprendre le travail à mi-temps, s'occuper de ses enfants) ont de la valeur.</span>
+    </div>
+    <div class="form-grid">
+      <div class="field full">
+        <label>Ce que vous souhaitez accomplir ou maintenir <span style="color:var(--rouge)">*</span></label>
+        <textarea id="f-aspirations" rows="4" placeholder="Ex : Je souhaite retrouver une activité professionnelle adaptée à mi-temps. Je veux pouvoir élever mes enfants avec un minimum d'autonomie. Mon objectif prioritaire est de quitter l'établissement et de vivre dans un logement adapté avec des aides à domicile."></textarea>
+      </div>
+      <div class="field full">
+        <label>Ce dont vous auriez besoin pour y parvenir</label>
+        <textarea id="f-besoins" rows="3" placeholder="Ex : Une auxiliaire de vie 2h/jour, un aménagement de mon poste de travail, un accompagnement SAVS pour retrouver de l'autonomie, une aide financière pour adapter mon logement..."></textarea>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-secondary" onclick="goStep(3)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg> Retour</button>
+      <button class="btn-primary" onclick="goStep(5)">Continuer <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></button>
+    </div>
+  </div>
+
+  <!-- ══ PANEL 5 : PRESTATIONS ══ -->
+  <div class="panel" id="panel-5">
+    <div class="panel-title">Prestations demandées</div>
+    <p class="panel-sub">Sélectionnez les aides que vous demandez à la MDPH. L'IA justifiera chaque demande en s'appuyant sur vos difficultés.</p>
+
+    <div class="presta-grid" id="presta-grid">
+
+      <div class="presta-card" data-presta="AAH — Allocation Adultes Handicapés" onclick="togglePresta(this)">
+        <div class="presta-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div>
+        <div class="presta-info"><h4>AAH</h4><p>Allocation Adultes Handicapés — revenus de remplacement</p></div>
+      </div>
+
+      <div class="presta-card" data-presta="PCH — Prestation de Compensation du Handicap" onclick="togglePresta(this)">
+        <div class="presta-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div>
+        <div class="presta-info"><h4>PCH</h4><p>Aide humaine, technique, aménagement logement, transport, surcoûts</p></div>
+      </div>
+
+      <div class="presta-card" data-presta="RQTH — Reconnaissance Qualité Travailleur Handicapé" onclick="togglePresta(this)">
+        <div class="presta-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div>
+        <div class="presta-info"><h4>RQTH</h4><p>Reconnaissance Qualité Travailleur Handicapé — emploi et formation</p></div>
+      </div>
+
+      <div class="presta-card" data-presta="CMI — Carte Mobilité Inclusion" onclick="togglePresta(this)">
+        <div class="presta-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div>
+        <div class="presta-info"><h4>CMI</h4><p>Carte Mobilité Inclusion — invalidité, priorité ou stationnement</p></div>
+      </div>
+
+      <div class="presta-card" data-presta="AEEH — Allocation d'Éducation Enfant Handicapé" onclick="togglePresta(this)">
+        <div class="presta-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div>
+        <div class="presta-info"><h4>AEEH</h4><p>Allocation Éducation Enfant Handicapé — enfants</p></div>
+      </div>
+
+      <div class="presta-card" data-presta="Orientation ESMS (ESAT, MAS, FAM, SESSAD, ULIS, SAMSAH...)" onclick="togglePresta(this)">
+        <div class="presta-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div>
+        <div class="presta-info"><h4>Orientation établissement</h4><p>ESAT, MAS, FAM, ULIS, SESSAD, SAMSAH, SAVS...</p></div>
+      </div>
+
+      <div class="presta-card" data-presta="Aménagements scolaires (AESH, PPS, aménagements examens)" onclick="togglePresta(this)">
+        <div class="presta-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div>
+        <div class="presta-info"><h4>Aménagements scolaires</h4><p>AESH, PPS, PAP, aménagements d'examens</p></div>
+      </div>
+
+      <div class="presta-card" data-presta="Aides techniques (fauteuil, appareillage, orthèses, logiciels...)" onclick="togglePresta(this)">
+        <div class="presta-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div>
+        <div class="presta-info"><h4>Aides techniques</h4><p>Fauteuil roulant, appareillage, orthèses, logiciels spécialisés</p></div>
+      </div>
+
+      <div class="presta-card" data-presta="Aménagement du logement (travaux, adaptation)" onclick="togglePresta(this)">
+        <div class="presta-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div>
+        <div class="presta-info"><h4>Aménagement du logement</h4><p>Travaux d'adaptation, douche PMR, rampes...</p></div>
+      </div>
+
+      <div class="presta-card" data-presta="Aide humaine à domicile (auxiliaire de vie, infirmier·e)" onclick="togglePresta(this)">
+        <div class="presta-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div>
+        <div class="presta-info"><h4>Aide humaine à domicile</h4><p>Auxiliaire de vie, aide-soignant·e, infirmier·e</p></div>
+      </div>
+
+    </div>
+
+    <div class="field full" style="margin-top:1.25rem">
+      <label>Autres demandes <span class="opt">(optionnel)</span></label>
+      <input type="text" id="f-autres-presta" placeholder="Ex : Renouvellement AAH, transport adapté, droit au répit pour les aidants...">
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-secondary" onclick="goStep(4)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg> Retour</button>
+      <button class="btn-primary" onclick="generateProjet()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+        Générer le projet de vie
+      </button>
+    </div>
+  </div>
+
+  <!-- ══ PANEL 6 : RÉSULTAT ══ -->
+  <div class="panel" id="panel-6">
+    <div class="panel-title">Votre projet de vie MDPH</div>
+    <p class="panel-sub">Vérifiez et complétez les zones <strong>[À COMPLÉTER]</strong>. Vous pouvez copier ce texte pour l'inclure dans votre dossier MDPH (Cerfa 15692*01, page 8 ou en annexe libre).</p>
+
+    <!-- Loading -->
+    <div class="loading-state active" id="loading-state">
+      <div class="spinner"></div>
+      <div class="loading-text">L'IA rédige votre projet de vie…</div>
+      <div class="loading-step-label" id="loading-label">Analyse des domaines de vie · Recherche des références MDPH…</div>
+    </div>
+
+    <!-- Résultat -->
+    <div class="result-state" id="result-state">
+      <div class="result-toolbar">
+        <button class="btn-copy-r" id="btn-copy" onclick="copyProjet()">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          Copier le texte
+        </button>
+        <button class="btn-print-r" onclick="window.print()">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+          Imprimer
+        </button>
+        <button class="btn-dl-r" onclick="downloadProjet()">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Télécharger .txt
+        </button>
+        <button class="btn-regen-r btn-secondary" onclick="generateProjet()">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-4.5"/></svg>
+          Régénérer
+        </button>
+      </div>
+      <div class="projet-preview" id="projet-preview"></div>
+      <div class="avertissement-box">
+        <strong>Avant de déposer :</strong>
+        Complétez toutes les zones <strong>[À COMPLÉTER]</strong> avec vos informations réelles.
+        Ce projet de vie peut être joint en <strong>annexe libre</strong> au formulaire Cerfa 15692*01 (page 8, partie B).
+        Faites-le relire par un·e travailleur·se social·e, l'<strong>APF France Handicap</strong> ou votre <strong>UD CGT</strong> avant envoi.
+        Accompagnez toujours le dossier d'un <strong>certificat médical récent</strong> (moins de 6 mois).
+      </div>
+    </div>
+
+    <!-- Erreur -->
+    <div class="error-state" id="error-state">
+      <div class="error-box" id="error-msg"></div>
+      <div class="btn-row" style="margin-top:1rem">
+        <button class="btn-primary" onclick="generateProjet()">Réessayer</button>
+        <button class="btn-secondary" onclick="goStep(5)">Modifier</button>
+      </div>
+    </div>
+
+    <div class="btn-row" style="margin-top:1.5rem">
+      <button class="btn-secondary" onclick="goStep(5)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg> Modifier les demandes</button>
+      <button class="btn-secondary" onclick="goStep(1)" style="margin-left:auto">Nouveau projet</button>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <strong>CGT</strong> Comité Régional Occitanie · Générateur basé sur les recommandations APF France Handicap et CNSA · À vérifier avant dépôt MDPH
+</footer>
+
+<script>
+var profilSelected = null;
+var handicapsSelected = [];
+var prestasSelected = [];
+var generatedText = '';
+
+function selectProfil(card) {
+  document.querySelectorAll('.profil-card').forEach(c => c.classList.remove('selected'));
+  card.classList.add('selected');
+  profilSelected = card.dataset.profil;
+  document.getElementById('btn1-next').disabled = false;
+}
+
+function toggleHandicap(tag) {
+  tag.classList.toggle('selected');
+  handicapsSelected = Array.from(document.querySelectorAll('.h-tag.selected')).map(t => t.dataset.h);
+}
+
+function togglePresta(card) {
+  card.classList.toggle('selected');
+  prestasSelected = Array.from(document.querySelectorAll('.presta-card.selected')).map(c => c.dataset.presta);
+}
+
+function toggleGeva(header) {
+  var body = header.nextElementSibling;
+  body.classList.toggle('open');
+}
+
+function majBadge(id, val) {
+  var badge = document.getElementById('badge-' + id);
+  if (!badge) return;
+  if (val.trim()) { badge.textContent = 'Renseigné ✓'; badge.className = 'geva-badge rempli'; }
+  else { badge.textContent = 'Non renseigné'; badge.className = 'geva-badge'; }
+}
+
+function goStep(n) {
+  if (n === 3 && !document.getElementById('f-prenom').value.trim()) {
+    document.getElementById('f-prenom').focus();
+    document.getElementById('f-prenom').style.borderColor = '#E2001A';
+    setTimeout(() => document.getElementById('f-prenom').style.borderColor = '', 2000);
+    return;
+  }
+  if (n === 3 && !document.getElementById('f-age').value.trim()) {
+    document.getElementById('f-age').focus();
+    document.getElementById('f-age').style.borderColor = '#E2001A';
+    setTimeout(() => document.getElementById('f-age').style.borderColor = '', 2000);
+    return;
+  }
+  for (var i = 1; i <= 6; i++) {
+    var s = document.getElementById('step-' + i);
+    var p = document.getElementById('panel-' + i);
+    s.classList.remove('active', 'done');
+    if (p) p.classList.remove('active');
+    if (i < n) s.classList.add('done');
+    if (i === n) { s.classList.add('active'); if (p) p.classList.add('active'); }
+  }
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+async function generateProjet() {
+  if (!document.getElementById('f-aspirations').value.trim()) {
+    goStep(4);
+    setTimeout(() => {
+      document.getElementById('f-aspirations').focus();
+      document.getElementById('f-aspirations').style.borderColor = '#E2001A';
+      setTimeout(() => document.getElementById('f-aspirations').style.borderColor = '', 2000);
+    }, 300);
+    return;
+  }
+
+  goStep(6);
+  var ls = document.getElementById('loading-state');
+  var rs = document.getElementById('result-state');
+  var es = document.getElementById('error-state');
+  ls.classList.add('active'); rs.classList.remove('active'); es.classList.remove('active');
+
+  var msgs = [
+    'Analyse du profil et des diagnostics…',
+    'Évaluation des domaines GEVA…',
+    'Structuration des 5 parties du projet…',
+    'Rédaction en langage fonctionnel…',
+    'Lien retentissement → besoin → attente…',
+    'Finalisation du projet de vie…',
+  ];
+  var mi = 0;
+  var loadInt = setInterval(() => {
+    document.getElementById('loading-label').textContent = msgs[mi % msgs.length];
+    mi++;
+  }, 2800);
+
+  // Collecte GEVA
+  var domainesIds = ['hygiene','mobilite','alimentation','communication','domestique','social','emploi','sante'];
+  var domaines = {};
+  var domainesLabels = {
+    hygiene: 'Hygiène et soins corporels',
+    mobilite: 'Mobilité et déplacements',
+    alimentation: 'Alimentation',
+    communication: 'Communication',
+    domestique: 'Tâches domestiques et gestion administrative',
+    social: 'Vie sociale, relations et loisirs',
+    emploi: 'Vie professionnelle ou scolaire',
+    sante: 'Santé, traitements et fatigue',
+  };
+  domainesIds.forEach(id => {
+    var v = document.getElementById('geva-' + id).value.trim();
+    if (v) domaines[domainesLabels[id]] = v;
+  });
+
+  var prestasAutres = document.getElementById('f-autres-presta').value.trim();
+  var prestas = [...prestasSelected];
+  if (prestasAutres) prestas.push(prestasAutres);
+
+  var payload = {
+    profil: {
+      type: profilSelected,
+      typeHandicap: handicapsSelected.join(', ') || '[Non précisé]',
+      redacteur: document.getElementById('f-redacteur').value.trim(),
+    },
+    identite: {
+      prenom: document.getElementById('f-prenom').value.trim(),
+      nom: document.getElementById('f-nom').value.trim(),
+      age: document.getElementById('f-age').value.trim(),
+      situationFamiliale: document.getElementById('f-famille').value.trim(),
+      logement: document.getElementById('f-logement').value.trim(),
+      emploiScolarite: document.getElementById('f-emploi').value.trim(),
+      diagnostics: document.getElementById('f-diagnostics').value.trim(),
+      aidesActuelles: document.getElementById('f-aides').value.trim(),
+    },
+    domaines,
+    psychosocial: [
+      document.getElementById('f-psycho').value.trim(),
+      document.getElementById('f-crise').value.trim(),
+    ].filter(Boolean).join('\n'),
+    aspirations: [
+      document.getElementById('f-aspirations').value.trim(),
+      document.getElementById('f-besoins').value.trim() ? 'Besoins identifiés : ' + document.getElementById('f-besoins').value.trim() : '',
+    ].filter(Boolean).join('\n'),
+    prestations: prestas,
+  };
+
+  try {
+    var resp = await fetch('/api/generate-projet-vie', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+    clearInterval(loadInt);
+
+    if (!resp.ok) {
+      var err = await resp.json().catch(() => ({ error: 'Erreur réseau (' + resp.status + ')' }));
+      throw new Error(err.error || 'Erreur ' + resp.status);
+    }
+
+    var data = await resp.json();
+    generatedText = data.projet;
+
+    var html = generatedText
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+      .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+      .replace(/\[À COMPLÉTER\]/g, '<mark class="highlight">[À COMPLÉTER]</mark>');
+    document.getElementById('projet-preview').innerHTML = html;
+
+    ls.classList.remove('active');
+    rs.classList.add('active');
+  } catch(e) {
+    clearInterval(loadInt);
+    ls.classList.remove('active');
+    document.getElementById('error-msg').textContent = '⚠ ' + e.message;
+    es.classList.add('active');
+  }
+}
+
+function copyProjet() {
+  var text = generatedText || document.getElementById('projet-preview').innerText;
+  navigator.clipboard.writeText(text).then(() => {
+    var btn = document.getElementById('btn-copy');
+    btn.textContent = '✓ Copié !';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copier le texte';
+      btn.classList.remove('copied');
+    }, 2500);
+  });
+}
+
+function downloadProjet() {
+  var text = generatedText || document.getElementById('projet-preview').innerText;
+  var prenom = document.getElementById('f-prenom').value.trim().replace(/\s+/g, '_') || 'projet';
+  var blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'projet_de_vie_MDPH_' + prenom + '.txt';
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+</script>
+</body>
+</html>
