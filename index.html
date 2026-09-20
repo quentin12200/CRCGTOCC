@@ -334,7 +334,45 @@
       color: rgba(255,255,255,.8);
       line-height: 1.6;
       max-width: 520px;
+      margin-bottom: 1.2rem;
     }
+    .hero-search {
+      display: flex;
+      max-width: 420px;
+      position: relative;
+    }
+    .hero-search input {
+      flex: 1;
+      padding: .6rem 1rem .6rem 2.5rem;
+      border: none;
+      border-radius: 6px 0 0 6px;
+      font-family: 'Archivo', sans-serif;
+      font-size: .875rem;
+      background: rgba(255,255,255,.92);
+      color: #1A2540;
+      outline: none;
+    }
+    .hero-search input::placeholder { color: #7A8AA8; }
+    .hero-search .search-icon-hero {
+      position: absolute; left: .7rem; top: 50%; transform: translateY(-50%);
+      pointer-events: none; color: #7A8AA8;
+    }
+    .hero-search button {
+      padding: .6rem 1rem;
+      background: var(--jaune);
+      color: #1A2540;
+      border: none;
+      border-radius: 0 6px 6px 0;
+      font-family: 'Archivo', sans-serif;
+      font-size: .8rem;
+      font-weight: 700;
+      letter-spacing: .05em;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background .15s;
+    }
+    .hero-search button:hover { background: #e6be00; }
+    @media (max-width: 520px) { .hero-search { max-width: 100%; } }
     .hero-stripe {
       height: 5px;
       background: var(--jaune);
@@ -595,6 +633,11 @@
     <div class="hero-kicker">Formation syndicale CGT Occitanie</div>
     <div class="hero-title">Armer les militants,<br>défendre les salarié·es</div>
     <p class="hero-sub">Chaque droit individuel est un levier collectif. Chaque obligation de l'employeur est assortie de sa sanction. Formez, exigez, agissez.</p>
+    <form class="hero-search" onsubmit="(function(f){var q=f.querySelector('input').value.trim();if(q)location.href='/recherche.html?q='+encodeURIComponent(q);})(this);return false;">
+      <svg class="search-icon-hero" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="search" placeholder="Rechercher une fiche, un quiz, une procédure…" autocomplete="off" id="hero-search-input">
+      <button type="submit">Rechercher</button>
+    </form>
   </div>
 </div>
 <div class="hero-stripe"></div>

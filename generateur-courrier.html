@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Générateur de courrier AT/MP — CGT Occitanie</title>
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/style.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --rouge: #E2001A; --rouge-dark: #B8001A; --jaune: #FFD200;
+      --accent: #1A5FAD; --accent-dark: #144D8E; --accent-muted: #E8F0FB;
+      --fond: #101620; --fond-card: #172033; --fond-hover: #1E2D47;
+      --texte: #E6ECF5; --texte-muted: #7D8FA8; --border: #253047; --border-card: #1E2D47;
+    }
+    :root[data-theme="light"] {
+      --accent: #1A5FAD; --accent-dark: #144D8E; --accent-muted: #E8F0FB;
+      --fond: #F4F6FA; --fond-card: #FFFFFF; --fond-hover: #EEF2F8;
+      --texte: #1A2540; --texte-muted: #5A6A84; --border: #D8DEE8; --border-card: #E4E9F2;
+    }
+    @media (prefers-color-scheme: light) {
+      :root:not([data-theme="dark"]) {
+        --accent: #1A5FAD; --fond: #F4F6FA; --fond-card: #FFFFFF; --fond-hover: #EEF2F8;
+        --texte: #1A2540; --texte-muted: #5A6A84; --border: #D8DEE8; --border-card: #E4E9F2;
+      }
+    }
+    :root[data-theme="dark"] {
+      --accent: #4A8FD4; --fond: #101620; --fond-card: #172033; --fond-hover: #1E2D47;
+      --texte: #E6ECF5; --texte-muted: #7D8FA8; --border: #253047; --border-card: #1E2D47;
+    }
+    body { background: var(--fond); color: var(--texte); font-family: 'Archivo', sans-serif; min-height: 100vh; display: flex; flex-direction: column; }
+    header { background: var(--rouge); padding: 1rem 2rem; display: flex; align-items: center; gap: 1.25rem; box-shadow: 0 2px 8px rgba(0,0,0,.18); }
+    .logo-wrap { flex-shrink: 0; height: 56px; display: flex; align-items: center; }
+    .logo-wrap img { height: 56px; width: auto; background: white; padding: 3px 5px; }
+    .header-divider { width: 2px; height: 42px; background: rgba(255,255,255,.3); flex-shrink: 0; }
+    .header-title { flex: 1; }
+    .header-title h1 { font-family: 'Anton', sans-serif; font-size: 1.1rem; letter-spacing: .04em; color: #fff; line-height: 1.2; }
+    .header-title span { font-size: .75rem; color: rgba(255,255,255,.75); }
+    .header-back a { font-size: .75rem; color: rgba(255,255,255,.8); text-decoration: none; border: 1px solid rgba(255,255,255,.3); padding: .3rem .7rem; border-radius: 4px; transition: background .15s; }
+    .header-back a:hover { background: rgba(255,255,255,.12); color: #fff; }
+    .stripe { height: 5px; background: var(--jaune); }
+
+    main { flex: 1; max-width: 960px; width: 100%; margin: 0 auto; padding: 2rem 1.5rem 3rem; }
+
+    /* ── STEPPER ── */
+    .stepper {
+      display: flex; align-items: center; gap: 0; margin-bottom: 2.5rem;
+      background: var(--fond-card); border: 1px solid var(--border-card);
+      border-radius: 10px; overflow: hidden; padding: 0;
+    }
+    .step {
+      flex: 1; display: flex; align-items: center; gap: .6rem;
+      padding: .9rem 1rem; font-size: .78rem; font-weight: 600;
+      color: var(--texte-muted); letter-spacing: .02em; cursor: default;
+      border-right: 1px solid var(--border); transition: background .2s, color .2s;
+      position: relative;
+    }
+    .step:last-child { border-right: none; }
+    .step-num {
+      width: 24px; height: 24px; border-radius: 50%;
+      border: 2px solid var(--border); display: flex; align-items: center; justify-content: center;
+      font-size: .7rem; font-weight: 700; flex-shrink: 0;
+      transition: background .2s, border-color .2s, color .2s;
+    }
+    .step.active { color: var(--texte); background: var(--accent-muted); }
+    .step.active .step-num { background: var(--accent); border-color: var(--accent); color: #fff; }
+    .step.done { color: var(--accent); }
+    .step.done .step-num { background: var(--accent); border-color: var(--accent); color: #fff; }
+    .step.done .step-num::after { content: '✓'; font-size: .65rem; }
+    .step.done .step-num span { display: none; }
+    @media (max-width: 600px) { .step-label { display: none; } .step { justify-content: center; padding: .75rem .5rem; } }
+
+    /* ── PANELS ── */
+    .panel { display: none; }
+    .panel.active { display: block; animation: fadeIn .25s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+    .panel-title {
+      font-family: 'Anton', sans-serif; font-size: 1.2rem; letter-spacing: .04em;
+      color: var(--texte); margin-bottom: .4rem;
+    }
+    .panel-sub { font-size: .85rem; color: var(--texte-muted); margin-bottom: 1.75rem; line-height: 1.5; }
+
+    /* ── GRILLE TYPE ── */
+    .types-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1rem; }
+    .type-card {
+      background: var(--fond-card); border: 2px solid var(--border-card);
+      border-radius: 10px; padding: 1.1rem 1.2rem; cursor: pointer;
+      transition: border-color .2s, box-shadow .2s, background .2s;
+      display: flex; gap: .85rem; align-items: flex-start;
+    }
+    .type-card:hover { border-color: var(--accent); box-shadow: 0 4px 16px rgba(26,95,173,.12); }
+    .type-card.selected { border-color: var(--accent); background: var(--accent-muted); }
+    .type-icon {
+      width: 36px; height: 36px; border-radius: 8px; background: var(--accent);
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .type-icon svg { color: #fff; }
+    .type-info { flex: 1; }
+    .type-name { font-size: .875rem; font-weight: 600; color: var(--texte); line-height: 1.3; margin-bottom: .2rem; }
+    .type-desc { font-size: .72rem; color: var(--texte-muted); line-height: 1.4; }
+    .type-dest { font-size: .68rem; color: var(--accent); font-weight: 600; margin-top: .3rem; text-transform: uppercase; letter-spacing: .05em; }
+
+    /* ── FORMULAIRE ── */
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.1rem; }
+    .form-grid .full { grid-column: 1 / -1; }
+    @media (max-width: 600px) { .form-grid { grid-template-columns: 1fr; } .form-grid .full { grid-column: 1; } }
+
+    .field { display: flex; flex-direction: column; gap: .35rem; }
+    .field label { font-size: .78rem; font-weight: 600; color: var(--texte); letter-spacing: .02em; }
+    .field label .opt { font-weight: 400; color: var(--texte-muted); }
+    .field input, .field textarea, .field select {
+      padding: .65rem .85rem; border: 1.5px solid var(--border-card);
+      border-radius: 6px; background: var(--fond-card); color: var(--texte);
+      font-family: 'Archivo', sans-serif; font-size: .88rem;
+      outline: none; transition: border-color .15s;
+    }
+    .field input::placeholder, .field textarea::placeholder { color: var(--texte-muted); }
+    .field input:focus, .field textarea:focus, .field select:focus { border-color: var(--accent); }
+    .field textarea { resize: vertical; min-height: 90px; line-height: 1.55; }
+    .field select option { background: var(--fond-card); color: var(--texte); }
+    .field-hint { font-size: .72rem; color: var(--texte-muted); line-height: 1.4; }
+
+    .section-sep {
+      font-size: .68rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
+      color: var(--accent); margin: 1.75rem 0 1.1rem; display: flex; align-items: center; gap: .7rem;
+    }
+    .section-sep::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+    /* ── BOUTONS ── */
+    .btn-row { display: flex; gap: .75rem; margin-top: 2rem; flex-wrap: wrap; }
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: .5rem;
+      background: var(--accent); color: #fff;
+      font-family: 'Archivo', sans-serif; font-size: .85rem; font-weight: 600;
+      letter-spacing: .05em; text-transform: uppercase;
+      padding: .7rem 1.4rem; border: none; border-radius: 6px; cursor: pointer;
+      transition: background .15s, transform .15s;
+    }
+    .btn-primary:hover { background: var(--accent-dark); transform: translateY(-1px); }
+    .btn-primary:disabled { opacity: .55; cursor: not-allowed; transform: none; }
+    .btn-secondary {
+      display: inline-flex; align-items: center; gap: .5rem;
+      background: var(--fond-hover); color: var(--texte);
+      font-family: 'Archivo', sans-serif; font-size: .85rem; font-weight: 600;
+      padding: .7rem 1.2rem; border: 1.5px solid var(--border); border-radius: 6px; cursor: pointer;
+      transition: background .15s;
+    }
+    .btn-secondary:hover { background: var(--border); }
+
+    /* ── GÉNÉRATION ── */
+    .generate-box {
+      background: var(--fond-card); border: 1px solid var(--border-card);
+      border-radius: 10px; padding: 1.5rem; margin-bottom: 1.5rem;
+    }
+    .generate-summary { display: flex; gap: 1.5rem; flex-wrap: wrap; margin-bottom: 1.25rem; }
+    .gen-info { flex: 1; min-width: 140px; }
+    .gen-label { font-size: .68rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--texte-muted); margin-bottom: .2rem; }
+    .gen-value { font-size: .88rem; color: var(--texte); font-weight: 500; }
+
+    /* ── LOADING ── */
+    .loading-state { display: none; text-align: center; padding: 3rem 1rem; }
+    .loading-state.active { display: block; }
+    .spinner {
+      width: 44px; height: 44px; border-radius: 50%;
+      border: 3px solid var(--border); border-top-color: var(--accent);
+      animation: spin .8s linear infinite; margin: 0 auto 1rem;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .loading-text { font-size: .9rem; color: var(--texte-muted); }
+    .loading-steps { margin-top: .75rem; font-size: .78rem; color: var(--texte-muted); }
+
+    /* ── RÉSULTAT ── */
+    .result-state { display: none; }
+    .result-state.active { display: block; }
+    .result-toolbar {
+      display: flex; gap: .6rem; flex-wrap: wrap; margin-bottom: 1rem;
+    }
+    .btn-copy-result, .btn-print-result, .btn-dl-result {
+      display: inline-flex; align-items: center; gap: .4rem;
+      font-family: 'Archivo', sans-serif; font-size: .78rem; font-weight: 700;
+      letter-spacing: .05em; text-transform: uppercase;
+      padding: .5rem .9rem; border-radius: 6px; cursor: pointer; border: none; transition: background .15s;
+    }
+    .btn-copy-result { background: var(--accent); color: #fff; }
+    .btn-copy-result:hover { background: var(--accent-dark); }
+    .btn-copy-result.copied { background: #1D8A4E; }
+    .btn-print-result { background: var(--fond-hover); color: var(--texte); border: 1.5px solid var(--border); }
+    .btn-print-result:hover { background: var(--border); }
+    .btn-dl-result { background: var(--fond-hover); color: var(--texte); border: 1.5px solid var(--border); }
+    .btn-dl-result:hover { background: var(--border); }
+    .btn-regen { background: transparent; color: var(--accent); border: 1.5px solid var(--accent); }
+    .btn-regen:hover { background: var(--accent-muted); }
+
+    .courrier-preview {
+      background: #fff; color: #1A1A1A;
+      border: 1px solid var(--border-card); border-radius: 8px;
+      padding: 2.5rem 3rem; font-family: Georgia, serif; font-size: .92rem;
+      line-height: 1.85; white-space: pre-wrap; box-shadow: 0 2px 12px rgba(0,0,0,.08);
+    }
+    [data-theme="dark"] .courrier-preview { background: #F8F7F4; }
+    .highlight { background: #FFD200; color: #1A1A1A; padding: 0 2px; }
+
+    .avertissement-box {
+      margin-top: 1rem; background: #FFFBE8; border: 1px solid #FFE870;
+      border-left: 4px solid #FFD200; border-radius: 6px;
+      padding: .85rem 1rem; font-size: .78rem; color: #6B5000; line-height: 1.6;
+    }
+
+    /* ── ERREUR ── */
+    .error-state { display: none; }
+    .error-state.active { display: block; }
+    .error-box {
+      background: #2A0A0A; border: 1px solid #8B1A1A; border-radius: 8px;
+      padding: 1.25rem 1.5rem; color: #FFB3B3; font-size: .88rem; line-height: 1.6;
+    }
+    [data-theme="light"] .error-box { background: #FFF0F0; color: #7A1A1A; border-color: #FFB3B3; }
+
+    /* ── FALLBACK (sans clé API) ── */
+    .fallback-state { display: none; }
+    .fallback-state.active { display: block; }
+
+    footer { border-top: 1px solid var(--border); background: var(--fond-hover); padding: 1.1rem 1.5rem; text-align: center; font-size: .73rem; color: var(--texte-muted); }
+    footer strong { color: var(--rouge); }
+
+    @media print {
+      body * { visibility: hidden; }
+      .courrier-preview, .courrier-preview * { visibility: visible; }
+      .courrier-preview { position: fixed; top: 0; left: 0; width: 100%; padding: 2cm 2.5cm; border: none; box-shadow: none; font-size: 11pt; }
+    }
+    @media (max-width: 520px) {
+      header { padding: .85rem 1rem; gap: .75rem; }
+      .logo-wrap img { height: 44px; }
+      main { padding: 1.5rem 1rem 2rem; }
+      .courrier-preview { padding: 1.25rem 1rem; font-size: .82rem; }
+    }
+  </style>
+</head>
+<body>
+<script src="/assets/cgt-ui.js"></script>
+<script>if(localStorage.getItem('cgt_auth')!=='ok'&&localStorage.getItem('cgt_stagiaire_auth')!=='ok'){location.replace('/login.html?from='+encodeURIComponent(location.pathname));}</script>
+<script>
+(function(){
+  var t = localStorage.getItem('cgt_theme');
+  if(t === 'dark') document.documentElement.setAttribute('data-theme','dark');
+  else if(t === 'light') document.documentElement.setAttribute('data-theme','light');
+  else if(window.matchMedia('(prefers-color-scheme: dark)').matches)
+    document.documentElement.setAttribute('data-theme','dark');
+})();
+</script>
+
+<header>
+  <div class="logo-wrap"><img src="/assets/logo-cgt-occitanie.jpg" alt="CGT Comité Régional Occitanie"></div>
+  <div class="header-divider"></div>
+  <div class="header-title">
+    <h1>Générateur de courrier AT/MP</h1>
+    <span>Courrier personnalisé assisté par IA · CGT Occitanie</span>
+  </div>
+  <div class="header-back"><a href="/courriers.html">← Modèles fixes</a></div>
+</header>
+<div class="stripe"></div>
+
+<main>
+
+  <!-- STEPPER -->
+  <div class="stepper" id="stepper">
+    <div class="step active" id="step-1">
+      <div class="step-num"><span>1</span></div>
+      <span class="step-label">Type de courrier</span>
+    </div>
+    <div class="step" id="step-2">
+      <div class="step-num"><span>2</span></div>
+      <span class="step-label">Vos informations</span>
+    </div>
+    <div class="step" id="step-3">
+      <div class="step-num"><span>3</span></div>
+      <span class="step-label">Situation</span>
+    </div>
+    <div class="step" id="step-4">
+      <div class="step-num"><span>4</span></div>
+      <span class="step-label">Courrier généré</span>
+    </div>
+  </div>
+
+  <!-- PANEL 1 : TYPE -->
+  <div class="panel active" id="panel-1">
+    <div class="panel-title">Quel courrier souhaitez-vous rédiger ?</div>
+    <p class="panel-sub">Choisissez le type de courrier. L'IA s'adaptera à votre situation précise à l'étape suivante.</p>
+
+    <div class="types-grid" id="types-grid">
+
+      <div class="type-card" data-type="declaration_at_salarie" onclick="selectType(this)">
+        <div class="type-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        </div>
+        <div class="type-info">
+          <div class="type-name">Déclaration AT — employeur défaillant</div>
+          <div class="type-desc">L'employeur n'a pas déclaré l'accident dans les 48h. Vous vous substituez à lui.</div>
+          <div class="type-dest">Destinataire → CPAM</div>
+        </div>
+      </div>
+
+      <div class="type-card" data-type="employeur_declaration" onclick="selectType(this)">
+        <div class="type-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        </div>
+        <div class="type-info">
+          <div class="type-name">Mise en demeure à l'employeur</div>
+          <div class="type-desc">L'employeur refuse de déclarer l'accident. Vous le mettez en demeure d'agir.</div>
+          <div class="type-dest">Destinataire → Employeur</div>
+        </div>
+      </div>
+
+      <div class="type-card" data-type="contestation_refus" onclick="selectType(this)">
+        <div class="type-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        </div>
+        <div class="type-info">
+          <div class="type-name">Contestation de refus CPAM</div>
+          <div class="type-desc">La CPAM a refusé la prise en charge. Vous contestez cette décision.</div>
+          <div class="type-dest">Destinataire → Commission de recours amiable CPAM</div>
+        </div>
+      </div>
+
+      <div class="type-card" data-type="rechute" onclick="selectType(this)">
+        <div class="type-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-4.5"/></svg>
+        </div>
+        <div class="type-info">
+          <div class="type-name">Déclaration de rechute</div>
+          <div class="type-desc">Aggravation ou réapparition des symptômes liés à un AT antérieur.</div>
+          <div class="type-dest">Destinataire → CPAM</div>
+        </div>
+      </div>
+
+      <div class="type-card" data-type="reconnaissance_mp" onclick="selectType(this)">
+        <div class="type-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.5a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2.69h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 10.28a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7a2 2 0 0 1 1.72 2.03z"/></svg>
+        </div>
+        <div class="type-info">
+          <div class="type-name">Demande de reconnaissance MP</div>
+          <div class="type-desc">Vous demandez la reconnaissance d'une maladie professionnelle (tableau ou hors tableau).</div>
+          <div class="type-dest">Destinataire → CPAM</div>
+        </div>
+      </div>
+
+      <div class="type-card" data-type="faute_inexcusable" onclick="selectType(this)">
+        <div class="type-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        </div>
+        <div class="type-info">
+          <div class="type-name">Faute inexcusable de l'employeur</div>
+          <div class="type-desc">L'employeur avait ou aurait dû avoir conscience du danger. Mise en demeure préalable.</div>
+          <div class="type-dest">Destinataire → Employeur + CPAM</div>
+        </div>
+      </div>
+
+      <div class="type-card" data-type="taux_iipp" onclick="selectType(this)">
+        <div class="type-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg>
+        </div>
+        <div class="type-info">
+          <div class="type-name">Contestation du taux d'IPP</div>
+          <div class="type-desc">Le taux d'incapacité permanente fixé par la CPAM vous semble insuffisant.</div>
+          <div class="type-dest">Destinataire → CPAM / Tribunal judiciaire</div>
+        </div>
+      </div>
+
+      <div class="type-card" data-type="licenciement" onclick="selectType(this)">
+        <div class="type-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="9" x2="15" y2="15"/><line x1="15" y1="9" x2="9" y2="15"/></svg>
+        </div>
+        <div class="type-info">
+          <div class="type-name">Licenciement abusif pendant arrêt AT</div>
+          <div class="type-desc">Vous avez été licencié·e pendant votre arrêt AT sans motif économique réel et sérieux.</div>
+          <div class="type-dest">Destinataire → Employeur + Conseil de prud'hommes</div>
+        </div>
+      </div>
+
+      <div class="type-card" data-type="inaptitude" onclick="selectType(this)">
+        <div class="type-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div class="type-info">
+          <div class="type-name">Contestation d'inaptitude post-AT</div>
+          <div class="type-desc">Le médecin du travail a déclaré une inaptitude que vous souhaitez contester.</div>
+          <div class="type-dest">Destinataire → Conseil de prud'hommes</div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-primary" id="btn-step1-next" onclick="goToStep(2)" disabled>
+        Continuer
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- PANEL 2 : VOS INFOS -->
+  <div class="panel" id="panel-2">
+    <div class="panel-title">Vos informations personnelles</div>
+    <p class="panel-sub">Ces informations servent uniquement à personnaliser votre courrier. Rien n'est envoyé à un serveur externe.</p>
+
+    <div class="form-grid">
+      <div class="field">
+        <label>Prénom et nom <span style="color:var(--rouge)">*</span></label>
+        <input type="text" id="f-nom" placeholder="Ex : Marie DUPONT" autocomplete="name">
+      </div>
+      <div class="field">
+        <label>Date de naissance <span class="opt">(optionnel)</span></label>
+        <input type="date" id="f-ddn">
+      </div>
+      <div class="field full">
+        <label>Adresse complète</label>
+        <input type="text" id="f-adresse" placeholder="Ex : 12 rue des Acacias" autocomplete="street-address">
+      </div>
+      <div class="field">
+        <label>Code postal et ville</label>
+        <input type="text" id="f-cp-ville" placeholder="Ex : 31000 Toulouse" autocomplete="postal-code">
+      </div>
+      <div class="field">
+        <label>Téléphone <span class="opt">(optionnel)</span></label>
+        <input type="tel" id="f-tel" placeholder="Ex : 06 12 34 56 78" autocomplete="tel">
+      </div>
+      <div class="field">
+        <label>N° de sécurité sociale <span class="opt">(optionnel)</span></label>
+        <input type="text" id="f-nss" placeholder="Ex : 2 85 07 31 xxx xxx xx" maxlength="21">
+        <span class="field-hint">Requis pour certains courriers CPAM.</span>
+      </div>
+    </div>
+
+    <div class="section-sep">Votre situation professionnelle</div>
+
+    <div class="form-grid">
+      <div class="field">
+        <label>Nom de l'employeur <span style="color:var(--rouge)">*</span></label>
+        <input type="text" id="f-employeur" placeholder="Ex : Société MARTIN SARL">
+      </div>
+      <div class="field">
+        <label>Adresse de l'employeur</label>
+        <input type="text" id="f-employeur-adr" placeholder="Ex : ZI Les Pins, 31100 Toulouse">
+      </div>
+      <div class="field">
+        <label>Votre poste / métier</label>
+        <input type="text" id="f-poste" placeholder="Ex : Aide-soignante, Cariste...">
+      </div>
+      <div class="field">
+        <label>Votre CPAM</label>
+        <input type="text" id="f-cpam" placeholder="Ex : CPAM de Haute-Garonne, 31">
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-secondary" onclick="goToStep(1)">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        Retour
+      </button>
+      <button class="btn-primary" onclick="goToStep(3)">
+        Continuer
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- PANEL 3 : SITUATION -->
+  <div class="panel" id="panel-3">
+    <div class="panel-title">Décrivez votre situation</div>
+    <p class="panel-sub">Plus vous êtes précis·e, plus le courrier sera adapté. L'IA intégrera les références légales correspondantes.</p>
+
+    <div class="form-grid">
+      <div class="field">
+        <label>Date de l'accident / des premiers symptômes</label>
+        <input type="date" id="f-date-at">
+      </div>
+      <div class="field">
+        <label>Lieu de l'accident / du travail</label>
+        <input type="text" id="f-lieu" placeholder="Ex : Entrepôt de Blagnac, chantier...">
+      </div>
+      <div class="field full">
+        <label>Description des circonstances <span style="color:var(--rouge)">*</span></label>
+        <textarea id="f-circonstances" rows="4" placeholder="Décrivez précisément ce qui s'est passé : ce que vous faisiez, comment l'accident est survenu, les lésions constatées. Citez les témoins si possible."></textarea>
+      </div>
+      <div class="field full">
+        <label>Démarches déjà effectuées <span class="opt">(optionnel)</span></label>
+        <textarea id="f-demarches" rows="3" placeholder="Ex : Signalement oral à l'employeur le ..., certificat médical du Dr ... établi le ..., arrêt de travail jusqu'au ..."></textarea>
+      </div>
+      <div class="field full">
+        <label>Ce que vous demandez / attendez du courrier <span class="opt">(optionnel)</span></label>
+        <textarea id="f-objectif" rows="2" placeholder="Ex : Prise en charge de l'accident, annulation du refus, indemnisation complémentaire..."></textarea>
+      </div>
+      <div class="field full">
+        <label>Informations complémentaires <span class="opt">(optionnel)</span></label>
+        <textarea id="f-details" rows="2" placeholder="Tout élément utile : pièces jointes, témoins, antécédents, contexte syndical..."></textarea>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-secondary" onclick="goToStep(2)">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        Retour
+      </button>
+      <button class="btn-primary" id="btn-generate" onclick="generateCourrier()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+        Générer le courrier
+      </button>
+    </div>
+  </div>
+
+  <!-- PANEL 4 : RÉSULTAT -->
+  <div class="panel" id="panel-4">
+    <div class="panel-title">Votre courrier personnalisé</div>
+    <p class="panel-sub">Vérifiez et complétez les zones <strong>[À COMPLÉTER]</strong> avant envoi. Envoyez toujours en recommandé avec AR.</p>
+
+    <!-- Loading -->
+    <div class="loading-state active" id="loading-state">
+      <div class="spinner"></div>
+      <div class="loading-text">L'IA rédige votre courrier…</div>
+      <div class="loading-steps" id="loading-steps">Analyse de la situation · Recherche des références légales…</div>
+    </div>
+
+    <!-- Résultat -->
+    <div class="result-state" id="result-state">
+      <div class="result-toolbar">
+        <button class="btn-copy-result btn-primary" id="btn-copy" onclick="copyCourrier()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          Copier le texte
+        </button>
+        <button class="btn-print-result btn-secondary" onclick="window.print()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+          Imprimer
+        </button>
+        <button class="btn-dl-result btn-secondary" id="btn-dl" onclick="downloadCourrier()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Télécharger .txt
+        </button>
+        <button class="btn-secondary btn-regen" onclick="generateCourrier()" style="margin-left:auto">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-4.5"/></svg>
+          Régénérer
+        </button>
+      </div>
+      <div class="courrier-preview" id="courrier-preview"></div>
+      <div class="avertissement-box">
+        <strong>⚠ Avant d'envoyer :</strong> Vérifiez et complétez toutes les zones <strong>[À COMPLÉTER]</strong>.
+        Envoyez en <strong>recommandé avec accusé de réception</strong> et conservez une copie.
+        Ce courrier est indicatif — en cas de litige complexe, contactez l'<strong>UD CGT</strong> ou un avocat spécialisé.
+      </div>
+    </div>
+
+    <!-- Erreur -->
+    <div class="error-state" id="error-state">
+      <div class="error-box" id="error-msg"></div>
+      <div class="btn-row" style="margin-top:1rem">
+        <button class="btn-primary" onclick="generateCourrier()">Réessayer</button>
+        <button class="btn-secondary" onclick="goToStep(3)">Modifier la situation</button>
+        <button class="btn-secondary" onclick="useFallback()">Utiliser un modèle fixe</button>
+      </div>
+    </div>
+
+    <!-- Fallback sans API -->
+    <div class="fallback-state" id="fallback-state">
+      <div class="avertissement-box" style="margin-bottom:1rem">
+        Le service IA n'est pas disponible. Voici un modèle pré-rempli avec vos informations — complétez les zones surlignées.
+      </div>
+      <div class="courrier-preview" id="fallback-preview"></div>
+    </div>
+
+    <div class="btn-row" style="margin-top:1.5rem">
+      <button class="btn-secondary" onclick="goToStep(3)">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        Modifier la situation
+      </button>
+      <button class="btn-secondary" onclick="goToStep(1)" style="margin-left:auto">
+        Nouveau courrier
+      </button>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <strong>CGT</strong> Comité Régional Occitanie — Formation AT/MP · Courriers générés avec IA, à vérifier avant envoi
+</footer>
+
+<script>
+var selectedType = null;
+var generatedText = '';
+
+var FALLBACK_TEMPLATES = {
+  declaration_at_salarie: `[PRÉNOM NOM]
+[Adresse]
+[Code postal, Ville]
+
+À l'attention du service Risques Professionnels
+CPAM de [CPAM]
+
+[Ville], le ${new Date().toLocaleDateString('fr-FR')}
+
+Objet : Déclaration d'accident du travail — salarié se substituant à l'employeur
+Recommandé avec accusé de réception
+
+Madame, Monsieur,
+
+Je soussigné·e [PRÉNOM NOM], salarié·e de [EMPLOYEUR], vous informe de la survenance d'un accident du travail le [DATE AT] à [LIEU].
+
+Circonstances : [À COMPLÉTER]
+
+L'employeur n'ayant pas procédé à la déclaration dans le délai légal de 48 heures, je me substitue à lui conformément à l'article L. 441-2 du Code de la sécurité sociale.
+
+Je reste à votre disposition pour tout renseignement complémentaire.
+
+Dans l'attente de votre accusé de réception, veuillez agréer, Madame, Monsieur, l'expression de mes salutations distinguées.
+
+[PRÉNOM NOM]`,
+};
+
+function selectType(card) {
+  document.querySelectorAll('.type-card').forEach(c => c.classList.remove('selected'));
+  card.classList.add('selected');
+  selectedType = card.dataset.type;
+  document.getElementById('btn-step1-next').disabled = false;
+}
+
+function goToStep(n) {
+  // Validation step 2
+  if (n === 3 && !document.getElementById('f-nom').value.trim()) {
+    document.getElementById('f-nom').focus();
+    document.getElementById('f-nom').style.borderColor = '#E2001A';
+    setTimeout(() => document.getElementById('f-nom').style.borderColor = '', 2000);
+    return;
+  }
+  if (n === 3 && !document.getElementById('f-employeur').value.trim()) {
+    document.getElementById('f-employeur').focus();
+    document.getElementById('f-employeur').style.borderColor = '#E2001A';
+    setTimeout(() => document.getElementById('f-employeur').style.borderColor = '', 2000);
+    return;
+  }
+
+  // Mise à jour stepper
+  for (var i = 1; i <= 4; i++) {
+    var step = document.getElementById('step-' + i);
+    var panel = document.getElementById('panel-' + i);
+    step.classList.remove('active', 'done');
+    if (panel) panel.classList.remove('active');
+    if (i < n) step.classList.add('done');
+    if (i === n) { step.classList.add('active'); if (panel) panel.classList.add('active'); }
+  }
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+async function generateCourrier() {
+  // Validation
+  if (!document.getElementById('f-circonstances').value.trim()) {
+    document.getElementById('f-circonstances').focus();
+    document.getElementById('f-circonstances').style.borderColor = '#E2001A';
+    setTimeout(() => document.getElementById('f-circonstances').style.borderColor = '', 2000);
+    return;
+  }
+
+  goToStep(4);
+
+  var ls = document.getElementById('loading-state');
+  var rs = document.getElementById('result-state');
+  var es = document.getElementById('error-state');
+  var fs = document.getElementById('fallback-state');
+  ls.classList.add('active'); rs.classList.remove('active'); es.classList.remove('active'); fs.classList.remove('active');
+
+  // Données
+  var expediteur = {
+    nom: document.getElementById('f-nom').value.trim(),
+    adresse: document.getElementById('f-adresse').value.trim(),
+    cp_ville: document.getElementById('f-cp-ville').value.trim(),
+    nss: document.getElementById('f-nss').value.trim(),
+    telephone: document.getElementById('f-tel').value.trim(),
+    ddn: document.getElementById('f-ddn').value,
+    employeur: document.getElementById('f-employeur').value.trim(),
+    employeur_adr: document.getElementById('f-employeur-adr').value.trim(),
+    poste: document.getElementById('f-poste').value.trim(),
+    cpam: document.getElementById('f-cpam').value.trim(),
+  };
+
+  var destinataire = expediteur.cpam ? 'CPAM de ' + expediteur.cpam : '';
+
+  var situation = [
+    document.getElementById('f-date-at').value ? 'Date AT/MP : ' + new Date(document.getElementById('f-date-at').value).toLocaleDateString('fr-FR') : '',
+    document.getElementById('f-lieu').value.trim() ? 'Lieu : ' + document.getElementById('f-lieu').value.trim() : '',
+    document.getElementById('f-circonstances').value.trim() ? 'Circonstances : ' + document.getElementById('f-circonstances').value.trim() : '',
+    document.getElementById('f-demarches').value.trim() ? 'Démarches effectuées : ' + document.getElementById('f-demarches').value.trim() : '',
+    document.getElementById('f-objectif').value.trim() ? 'Objectif du courrier : ' + document.getElementById('f-objectif').value.trim() : '',
+    document.getElementById('f-details').value.trim() ? 'Informations complémentaires : ' + document.getElementById('f-details').value.trim() : '',
+  ].filter(Boolean).join('\n');
+
+  // Rotate loading messages
+  var msgs = [
+    'Analyse de la situation…',
+    'Recherche des références légales (Code SS, Code du travail)…',
+    'Structuration du courrier…',
+    'Rédaction en cours…',
+    'Finalisation…',
+  ];
+  var mi = 0;
+  var loadInt = setInterval(function() {
+    document.getElementById('loading-steps').textContent = msgs[mi % msgs.length];
+    mi++;
+  }, 2200);
+
+  try {
+    var resp = await fetch('/api/generate-courrier', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ type: selectedType, expediteur, destinataire, situation }),
+    });
+    clearInterval(loadInt);
+
+    if (!resp.ok) {
+      var err = await resp.json().catch(() => ({ error: 'Erreur réseau (' + resp.status + ')' }));
+      throw new Error(err.error || 'Erreur ' + resp.status);
+    }
+
+    var data = await resp.json();
+    generatedText = data.courrier;
+
+    // Surligner les [À COMPLÉTER]
+    var html = generatedText
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+      .replace(/\[À COMPLÉTER\]/g, '<mark class="highlight">[À COMPLÉTER]</mark>');
+    document.getElementById('courrier-preview').innerHTML = html;
+
+    ls.classList.remove('active');
+    rs.classList.add('active');
+  } catch(e) {
+    clearInterval(loadInt);
+    ls.classList.remove('active');
+    document.getElementById('error-msg').textContent = '⚠ ' + e.message + '\nVérifiez que le service est disponible et réessayez. Si le problème persiste, utilisez un modèle fixe.';
+    es.classList.add('active');
+  }
+}
+
+function useFallback() {
+  var tpl = FALLBACK_TEMPLATES[selectedType] || FALLBACK_TEMPLATES['declaration_at_salarie'];
+  var nom = document.getElementById('f-nom').value.trim() || '[PRÉNOM NOM]';
+  var emp = document.getElementById('f-employeur').value.trim() || '[EMPLOYEUR]';
+  var cpam = document.getElementById('f-cpam').value.trim() || '[DÉPARTEMENT]';
+  var dateAt = document.getElementById('f-date-at').value
+    ? new Date(document.getElementById('f-date-at').value).toLocaleDateString('fr-FR') : '[DATE AT]';
+  var lieu = document.getElementById('f-lieu').value.trim() || '[LIEU]';
+  var adr = document.getElementById('f-adresse').value.trim() || '[Adresse]';
+  var cpv = document.getElementById('f-cp-ville').value.trim() || '[Code postal, Ville]';
+
+  var text = tpl
+    .replace(/\[PRÉNOM NOM\]/g, nom)
+    .replace(/\[EMPLOYEUR\]/g, emp)
+    .replace(/\[CPAM\]/g, cpam)
+    .replace(/\[DATE AT\]/g, dateAt)
+    .replace(/\[LIEU\]/g, lieu)
+    .replace(/\[Adresse\]/g, adr)
+    .replace(/\[Code postal, Ville\]/g, cpv);
+
+  var html = text
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/\[À COMPLÉTER\]/g, '<mark class="highlight">[À COMPLÉTER]</mark>');
+  document.getElementById('fallback-preview').innerHTML = html;
+
+  document.getElementById('error-state').classList.remove('active');
+  document.getElementById('fallback-state').classList.add('active');
+}
+
+function copyCourrier() {
+  var text = generatedText || document.getElementById('courrier-preview').innerText;
+  navigator.clipboard.writeText(text).then(function() {
+    var btn = document.getElementById('btn-copy');
+    btn.textContent = '✓ Copié !';
+    btn.classList.add('copied');
+    setTimeout(function() {
+      btn.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copier le texte';
+      btn.classList.remove('copied');
+    }, 2500);
+  });
+}
+
+function downloadCourrier() {
+  var text = generatedText || document.getElementById('courrier-preview').innerText;
+  var nom = document.getElementById('f-nom').value.trim().replace(/\s+/g, '_') || 'courrier';
+  var type = selectedType || 'courrier_AT';
+  var blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = nom + '_' + type + '.txt';
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+</script>
+
+</body>
+</html>
