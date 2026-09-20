@@ -12,25 +12,34 @@
 <link rel="stylesheet" href="/assets/style.css">
 <style>
 :root{
-  --red:#E2001A;--yellow:#FFD200;--ink:#141414;--paper:#FBFAF6;
-  --card:#F1EFE8;--line:#E4E0D4;--muted:#6C6A63;--white:#fff;
+  --red:#E2001A;--yellow:#FFD200;
+  --accent:#1A5FAD;--accent-hover:#144D8E;
+  --bg:#F4F6FA;--card:#FFFFFF;--ink:#1A2540;--muted:#5A6A84;--line:#D8DEE8;--white:#fff;
   --green:#1a7a3c;--green-l:#e8f5ee;
   --disp:'Anton','Arial Narrow',Impact,sans-serif;
   --ui:'Archivo','Helvetica Neue',Arial,sans-serif;
   --body:'Spectral',Georgia,'Times New Roman',serif;
 }
+@media(prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#101620;--card:#172033;--ink:#E6ECF5;--muted:#7D8FA8;--line:#253047;--accent:#4A8FD4;--accent-hover:#3a7ec4;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#101620;--card:#172033;--ink:#E6ECF5;--muted:#7D8FA8;--line:#253047;--accent:#4A8FD4;--accent-hover:#3a7ec4;
+}
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{background:var(--paper);color:var(--ink);font-family:var(--body);-webkit-font-smoothing:antialiased;min-height:100vh}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);-webkit-font-smoothing:antialiased;min-height:100vh}
 
 /* ── NAV ── */
-nav{background:var(--ink);display:flex;align-items:center;justify-content:space-between;padding:0 6vw;height:56px;position:sticky;top:0;z-index:99}
+nav{background:var(--red);display:flex;align-items:center;justify-content:space-between;padding:0 6vw;height:56px;position:sticky;top:0;z-index:99}
 .nav-logo{font-family:var(--disp);font-size:22px;background:var(--yellow);color:var(--red);padding:2px 10px 0;line-height:1.3;text-decoration:none}
-.nav-back{font-family:var(--ui);font-weight:700;color:#ccc;text-decoration:none;font-size:14px;letter-spacing:.06em;text-transform:uppercase;display:flex;align-items:center;gap:.5em;transition:.2s}
-.nav-back:hover{color:var(--yellow)}
+.nav-back{font-family:var(--ui);font-weight:700;color:rgba(255,255,255,.85);text-decoration:none;font-size:14px;letter-spacing:.06em;text-transform:uppercase;display:flex;align-items:center;gap:.5em;transition:.2s}
+.nav-back:hover{color:#fff}
 
 /* ── HERO ── */
-.hero{background:var(--ink);background-image:radial-gradient(rgba(255,255,255,.04) 1px,transparent 1px);background-size:22px 22px;padding:5vh 6vw 4vh;border-bottom:5px solid var(--red)}
+.hero{background:#101620;background-image:radial-gradient(rgba(255,255,255,.04) 1px,transparent 1px);background-size:22px 22px;padding:5vh 6vw 4vh;border-bottom:5px solid var(--red)}
 .hero-kicker{font-family:var(--ui);font-weight:800;letter-spacing:.2em;text-transform:uppercase;font-size:13px;color:var(--yellow);margin-bottom:1.4vh;display:flex;align-items:center;gap:.7em}
 .hero-kicker::before{content:"";width:.55em;height:.55em;background:var(--yellow);transform:rotate(45deg);display:inline-block}
 .hero h1{font-family:var(--disp);font-size:clamp(34px,6vw,96px);color:var(--white);line-height:.96;text-transform:uppercase}
@@ -42,82 +51,87 @@ nav{background:var(--ink);display:flex;align-items:center;justify-content:space-
 main{max-width:1180px;margin:0 auto;padding:4vh 6vw 8vh}
 
 /* ── FORM CARD ── */
-.form-card{background:var(--white);border:1px solid var(--line);border-top:6px solid var(--red);padding:3.5vh 3vw;margin-bottom:4vh}
-.form-card h2{font-family:var(--disp);font-size:clamp(22px,3vw,40px);text-transform:uppercase;margin-bottom:2.5vh}
+.form-card{background:var(--card);border:1px solid var(--line);border-top:6px solid var(--red);border-radius:0 0 10px 10px;padding:3.5vh 3vw;margin-bottom:4vh}
+.form-card h2{font-family:var(--disp);font-size:clamp(22px,3vw,40px);text-transform:uppercase;margin-bottom:2.5vh;color:var(--ink)}
 .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:2.2vh 2.5vw}
 @media(max-width:640px){.form-grid{grid-template-columns:1fr}}
 .field{display:flex;flex-direction:column;gap:.7vh}
 .field.full{grid-column:1/-1}
 label{font-family:var(--ui);font-weight:700;font-size:14px;text-transform:uppercase;letter-spacing:.07em;color:var(--ink)}
 label span{font-weight:400;text-transform:none;letter-spacing:0;color:var(--muted);font-size:13px}
-input[type=number],select{border:2px solid var(--line);padding:1.1vh 1.2vw;font-family:var(--ui);font-size:16px;color:var(--ink);background:var(--paper);outline:none;transition:.2s;width:100%}
-input[type=number]:focus,select:focus{border-color:var(--red)}
+input[type=number],select{border:2px solid var(--line);border-radius:6px;padding:1.1vh 1.2vw;font-family:var(--ui);font-size:16px;color:var(--ink);background:var(--bg);outline:none;transition:.2s;width:100%}
+input[type=number]:focus,select:focus{border-color:var(--accent)}
 .type-toggle{display:grid;grid-template-columns:1fr 1fr;gap:0}
-.type-btn{font-family:var(--ui);font-weight:700;text-transform:uppercase;letter-spacing:.06em;font-size:15px;padding:1.3vh 0;text-align:center;cursor:pointer;border:2px solid var(--line);background:var(--paper);color:var(--muted);transition:.2s;user-select:none}
-.type-btn:first-child{border-right:none}
-.type-btn.act{background:var(--ink);color:var(--yellow);border-color:var(--ink)}
-.btn-calc{display:flex;align-items:center;justify-content:center;gap:.8em;font-family:var(--ui);font-weight:800;text-transform:uppercase;letter-spacing:.1em;font-size:16px;padding:1.6vh 3vw;background:var(--red);color:#fff;border:none;cursor:pointer;transition:.2s;width:100%;margin-top:1.2vh}
-.btn-calc:hover{background:#b5000f}
+.type-btn{font-family:var(--ui);font-weight:700;text-transform:uppercase;letter-spacing:.06em;font-size:15px;padding:1.3vh 0;text-align:center;cursor:pointer;border:2px solid var(--line);background:var(--bg);color:var(--muted);transition:.2s;user-select:none}
+.type-btn:first-child{border-right:none;border-radius:6px 0 0 6px}
+.type-btn:last-child{border-radius:0 6px 6px 0}
+.type-btn.act{background:var(--accent);color:#fff;border-color:var(--accent)}
+.btn-calc{display:flex;align-items:center;justify-content:center;gap:.8em;font-family:var(--ui);font-weight:800;text-transform:uppercase;letter-spacing:.1em;font-size:16px;padding:1.8vh 3vw;background:var(--accent);color:#fff;border:none;border-radius:6px;cursor:pointer;transition:.2s;width:100%;margin-top:1.2vh}
+.btn-calc:hover{background:var(--accent-hover)}
 .btn-calc svg{width:20px;height:20px;flex-shrink:0}
 
 /* ── RESULTS ── */
 #results{display:none}
 #results.show{display:block}
 .res-header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1.5vh;margin-bottom:3vh}
-.res-header h2{font-family:var(--disp);font-size:clamp(20px,2.8vw,38px);text-transform:uppercase}
-.tag-type{font-family:var(--ui);font-weight:800;font-size:12px;letter-spacing:.12em;text-transform:uppercase;padding:4px 12px;background:var(--red);color:#fff}
+.res-header h2{font-family:var(--disp);font-size:clamp(20px,2.8vw,38px);text-transform:uppercase;color:var(--ink)}
+.tag-type{font-family:var(--ui);font-weight:800;font-size:12px;letter-spacing:.12em;text-transform:uppercase;padding:4px 14px;background:var(--accent);color:#fff;border-radius:4px}
 
 /* ── COLUMNS COMPARISON ── */
 .cols{display:grid;grid-template-columns:1fr 1fr;gap:2.5vw;margin-bottom:3.5vh}
 @media(max-width:680px){.cols{grid-template-columns:1fr}}
-.col-card{border:1px solid var(--line);overflow:hidden}
-.col-head{padding:1.6vh 1.8vw;background:var(--ink);color:var(--white);display:flex;align-items:center;justify-content:space-between}
+@media(max-width:480px){.cols{grid-template-columns:1fr}}
+.col-card{border:1px solid var(--line);border-radius:10px;overflow:hidden;transition:.2s}
+.col-card:hover{border-color:var(--accent)}
+.col-head{padding:1.6vh 1.8vw;background:#1A2540;color:var(--white);display:flex;align-items:center;justify-content:space-between}
 .col-head.atmp{background:var(--red)}
 .col-head h3{font-family:var(--disp);font-size:clamp(16px,2vw,26px);text-transform:uppercase}
-.col-head .badge{font-family:var(--ui);font-weight:800;font-size:11px;letter-spacing:.1em;text-transform:uppercase;padding:3px 8px;background:var(--yellow);color:var(--ink)}
-.col-body{padding:2vh 1.8vw;display:flex;flex-direction:column;gap:1.6vh}
+.col-head .badge{font-family:var(--ui);font-weight:800;font-size:11px;letter-spacing:.1em;text-transform:uppercase;padding:3px 8px;background:var(--yellow);color:#1A2540;border-radius:3px}
+.col-body{background:var(--card);padding:2vh 1.8vw;display:flex;flex-direction:column;gap:1.6vh}
 
 /* ── METRIC ── */
 .metric{display:flex;justify-content:space-between;align-items:baseline;gap:1em;border-bottom:1px dashed var(--line);padding-bottom:1.2vh}
 .metric:last-child{border-bottom:none;padding-bottom:0}
 .metric-label{font-family:var(--ui);font-weight:600;font-size:clamp(13px,1.2vw,16px);color:var(--muted);flex:1}
-.metric-val{font-family:var(--disp);font-size:clamp(20px,2.2vw,32px);color:var(--ink);white-space:nowrap}
+.metric-val{font-family:var(--disp);font-size:clamp(22px,2.4vw,34px);color:var(--accent);white-space:nowrap;font-weight:700}
 .metric-val.red{color:var(--red)}
 .metric-val.green{color:var(--green)}
+.metric-val.neutral{color:var(--ink)}
 .metric-sub{font-family:var(--ui);font-size:12px;color:var(--muted);margin-top:.3vh}
 
 /* ── PERIOD TABLE ── */
 .period-table{width:100%;border-collapse:collapse;font-size:clamp(12px,1.1vw,15px);font-family:var(--ui)}
-.period-table th{background:var(--ink);color:var(--yellow);text-transform:uppercase;letter-spacing:.07em;font-size:11px;padding:.9vh 1vw;text-align:left;font-weight:800}
-.period-table td{padding:.8vh 1vw;border-bottom:1px solid var(--line)}
+.period-table th{background:#1A2540;color:var(--yellow);text-transform:uppercase;letter-spacing:.07em;font-size:11px;padding:.9vh 1vw;text-align:left;font-weight:800}
+.period-table td{padding:.8vh 1vw;border-bottom:1px solid var(--line);color:var(--ink);background:var(--card)}
 .period-table tr:last-child td{border-bottom:none}
 .period-table tr.carence td{color:var(--muted);font-style:italic}
 .period-table tr.beyond td{color:var(--muted)}
 .period-table .num{text-align:right;font-weight:700;white-space:nowrap}
-.period-table .total-row td{background:var(--card);font-weight:800;border-top:2px solid var(--ink)}
+.period-table .total-row td{background:var(--bg);font-weight:800;border-top:2px solid var(--line);color:var(--ink)}
 
 /* ── TOTAL STRIP ── */
-.total-strip{background:var(--ink);color:var(--white);padding:2.5vh 2.5vw;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:2vh;margin-bottom:3.5vh}
-.total-strip .lbl{font-family:var(--ui);font-size:clamp(13px,1.3vw,17px);color:#aaa;text-transform:uppercase;letter-spacing:.08em}
-.total-strip .big{font-family:var(--disp);font-size:clamp(28px,4vw,60px);color:var(--yellow)}
-.total-strip .desc{font-family:var(--ui);font-size:clamp(12px,1.1vw,15px);color:#999;margin-top:.4vh}
+.total-strip{background:#1A2540;color:var(--white);padding:2.5vh 2.5vw;border-radius:10px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:2vh;margin-bottom:3.5vh}
+.total-strip .lbl{font-family:var(--ui);font-size:clamp(13px,1.3vw,17px);color:#8fa3c4;text-transform:uppercase;letter-spacing:.08em}
+.total-strip .big{font-family:var(--disp);font-size:clamp(28px,4vw,60px);color:#4A8FD4}
+.total-strip .desc{font-family:var(--ui);font-size:clamp(12px,1.1vw,15px);color:#7D8FA8;margin-top:.4vh}
 .diff-box{text-align:right}
 .diff-pos{color:#6dffaa}
 .diff-neg{color:#ff8080}
 
 /* ── CCN NOTICE ── */
-.ccn-notice{border:2px solid var(--yellow);background:#fffbea;padding:2.5vh 2.5vw;margin-bottom:3.5vh}
+.ccn-notice{border:2px solid var(--accent);background:color-mix(in srgb,var(--accent) 6%,var(--card));padding:2.5vh 2.5vw;border-radius:10px;margin-bottom:3.5vh}
 .ccn-notice h3{font-family:var(--ui);font-weight:800;text-transform:uppercase;letter-spacing:.06em;font-size:clamp(14px,1.4vw,19px);color:var(--ink);display:flex;align-items:center;gap:.6em;margin-bottom:1.4vh}
 .ccn-notice h3::before{content:"⚠";font-style:normal}
-.ccn-notice p{font-size:clamp(13px,1.3vw,17px);line-height:1.55;color:#333;margin-bottom:1.2vh}
+.ccn-notice p{font-size:clamp(13px,1.3vw,17px);line-height:1.55;color:var(--muted);margin-bottom:1.2vh}
+.ccn-notice p strong{color:var(--ink)}
 .ccn-notice p:last-child{margin-bottom:0}
 .ccn-links{display:flex;flex-wrap:wrap;gap:1.2vh 1.5vw;margin-top:1.6vh}
-.ccn-link{display:inline-flex;align-items:center;gap:.5em;font-family:var(--ui);font-weight:700;font-size:14px;letter-spacing:.04em;text-transform:uppercase;padding:.8vh 1.4vw;border:2px solid var(--ink);color:var(--ink);text-decoration:none;transition:.2s}
-.ccn-link:hover{background:var(--ink);color:var(--yellow)}
+.ccn-link{display:inline-flex;align-items:center;gap:.5em;font-family:var(--ui);font-weight:700;font-size:14px;letter-spacing:.04em;text-transform:uppercase;padding:.8vh 1.4vw;border:2px solid var(--accent);border-radius:6px;color:var(--accent);text-decoration:none;transition:.2s}
+.ccn-link:hover{background:var(--accent);color:#fff}
 .ccn-link svg{width:16px;height:16px;flex-shrink:0}
 
 /* ── HYPOTHESES ── */
-.hyp-box{background:var(--card);border-left:6px solid var(--muted);padding:1.8vh 2vw;font-size:clamp(12px,1.1vw,15px);color:var(--muted);line-height:1.6;font-family:var(--ui)}
+.hyp-box{background:var(--card);border:1px solid var(--line);border-left:6px solid var(--muted);border-radius:0 8px 8px 0;padding:1.8vh 2vw;font-size:clamp(12px,1.1vw,15px);color:var(--muted);line-height:1.6;font-family:var(--ui)}
 .hyp-box h4{font-weight:800;text-transform:uppercase;letter-spacing:.07em;font-size:12px;margin-bottom:.8vh;color:var(--ink)}
 .hyp-box ul{padding-left:1.2em}
 .hyp-box ul li{margin-bottom:.35vh}
@@ -195,11 +209,11 @@ input[type=number]:focus,select:focus{border-color:var(--red)}
     </div>
     <div>
       <div class="lbl">dont CPAM</div>
-      <div class="big" style="color:#fff" id="res-cpam-tot">—</div>
+      <div class="big" id="res-cpam-tot">—</div>
     </div>
     <div>
       <div class="lbl">dont Employeur légal</div>
-      <div class="big" style="color:#fff" id="res-emp-tot">—</div>
+      <div class="big" id="res-emp-tot">—</div>
     </div>
     <div class="diff-box">
       <div class="lbl">Net estimé vs net habituel</div>
@@ -224,27 +238,27 @@ input[type=number]:focus,select:focus{border-color:var(--red)}
             <div class="metric-sub" id="sdjb-formula"></div>
           </div>
           <div>
-            <div class="metric-val red" id="res-sdjb">—</div>
+            <div class="metric-val" id="res-sdjb">—</div>
             <div class="metric-sub" style="text-align:right">€/jour</div>
           </div>
         </div>
         <div class="metric" id="carence-row">
           <div class="metric-label">Délai de carence</div>
           <div>
-            <div class="metric-val" id="res-carence">—</div>
+            <div class="metric-val neutral" id="res-carence">—</div>
           </div>
         </div>
         <div class="metric">
           <div class="metric-label">IJ versées par la CPAM</div>
           <div>
-            <div class="metric-val red" id="res-ij-day">—</div>
+            <div class="metric-val" id="res-ij-day">—</div>
             <div class="metric-sub" style="text-align:right">€/jour</div>
           </div>
         </div>
         <div class="metric">
           <div class="metric-label">Total CPAM sur la période</div>
           <div>
-            <div class="metric-val red" id="res-ij-total">—</div>
+            <div class="metric-val" id="res-ij-total">—</div>
             <div class="metric-sub" style="text-align:right">€</div>
           </div>
         </div>
@@ -264,7 +278,7 @@ input[type=number]:focus,select:focus{border-color:var(--red)}
             <div class="metric-sub" id="maintien-label-p1"></div>
           </div>
           <div>
-            <div class="metric-val" id="res-p1-days">—</div>
+            <div class="metric-val neutral" id="res-p1-days">—</div>
             <div class="metric-sub" style="text-align:right">jours</div>
           </div>
         </div>
@@ -274,21 +288,21 @@ input[type=number]:focus,select:focus{border-color:var(--red)}
             <div class="metric-sub" id="maintien-label-p2"></div>
           </div>
           <div>
-            <div class="metric-val" id="res-p2-days">—</div>
+            <div class="metric-val neutral" id="res-p2-days">—</div>
             <div class="metric-sub" style="text-align:right">jours</div>
           </div>
         </div>
         <div class="metric">
           <div class="metric-label">Complément versé par l'employeur</div>
           <div>
-            <div class="metric-val red" id="res-emp-day">—</div>
+            <div class="metric-val" id="res-emp-day">—</div>
             <div class="metric-sub" style="text-align:right">€/jour moy.</div>
           </div>
         </div>
         <div class="metric">
           <div class="metric-label">Total employeur sur la période</div>
           <div>
-            <div class="metric-val red" id="res-emp-total-col">—</div>
+            <div class="metric-val" id="res-emp-total-col">—</div>
             <div class="metric-sub" style="text-align:right">€</div>
           </div>
         </div>
@@ -396,11 +410,11 @@ input[type=number]:focus,select:focus{border-color:var(--red)}
     </div>
     <div>
       <div class="lbl">Rente mensuelle brute</div>
-      <div class="big" style="color:#fff" id="ipp-rente-mensuelle">—</div>
+      <div class="big" id="ipp-rente-mensuelle">—</div>
     </div>
     <div>
       <div class="lbl">Taux réduit appliqué</div>
-      <div class="big" style="color:#fff" id="ipp-taux-reduit">—</div>
+      <div class="big" id="ipp-taux-reduit">—</div>
     </div>
   </div>
 
@@ -413,23 +427,23 @@ input[type=number]:focus,select:focus{border-color:var(--red)}
       <div class="col-body">
         <div class="metric">
           <div class="metric-label">Taux IPP brut</div>
-          <div><div class="metric-val red" id="ipp-d-taux">—</div></div>
+          <div><div class="metric-val" id="ipp-d-taux">—</div></div>
         </div>
         <div class="metric">
           <div><div class="metric-label">Taux réduit (fraction SS)</div><div class="metric-sub" id="ipp-d-formule"></div></div>
-          <div><div class="metric-val" id="ipp-d-taux-reduit">—</div></div>
+          <div><div class="metric-val neutral" id="ipp-d-taux-reduit">—</div></div>
         </div>
         <div class="metric">
           <div><div class="metric-label">Salaire de référence</div><div class="metric-sub" id="ipp-d-salaire-note"></div></div>
-          <div><div class="metric-val" id="ipp-d-salaire-ref">—</div></div>
+          <div><div class="metric-val neutral" id="ipp-d-salaire-ref">—</div></div>
         </div>
         <div class="metric">
           <div class="metric-label">Rente annuelle brute</div>
-          <div><div class="metric-val red" id="ipp-d-annuelle">—</div></div>
+          <div><div class="metric-val" id="ipp-d-annuelle">—</div></div>
         </div>
         <div class="metric">
           <div class="metric-label">Rente mensuelle brute</div>
-          <div><div class="metric-val red" id="ipp-d-mensuelle">—</div></div>
+          <div><div class="metric-val" id="ipp-d-mensuelle">—</div></div>
         </div>
       </div>
     </div>
@@ -446,19 +460,19 @@ input[type=number]:focus,select:focus{border-color:var(--red)}
         </div>
         <div class="metric" id="ipp-capital-row" style="display:none">
           <div><div class="metric-label">Capital unique indicatif</div><div class="metric-sub">Si IPP &lt; 10 % — estimation indicative</div></div>
-          <div><div class="metric-val red" id="ipp-capital">—</div></div>
+          <div><div class="metric-val" id="ipp-capital">—</div></div>
         </div>
         <div class="metric">
           <div class="metric-label">PASS 2026</div>
-          <div><div class="metric-val">46 368 €</div></div>
+          <div><div class="metric-val neutral">46 368 €</div></div>
         </div>
         <div class="metric">
           <div class="metric-label">Plafond salaire (2×PASS)</div>
-          <div><div class="metric-val">92 736 €</div></div>
+          <div><div class="metric-val neutral">92 736 €</div></div>
         </div>
         <div class="metric">
           <div class="metric-label">Plancher salaire (½×PASS)</div>
-          <div><div class="metric-val">23 184 €</div></div>
+          <div><div class="metric-val neutral">23 184 €</div></div>
         </div>
       </div>
     </div>
@@ -672,7 +686,7 @@ function calculate(){
       <td>${p.label}</td>
       <td class="num">${p.days}</td>
       <td class="num">${p.total>0?fmtE(p.total):'—'}</td>
-      <td class="num" style="color:var(--red)">${p.cpam>0?fmtE(p.cpam):'—'}</td>
+      <td class="num" style="color:var(--accent)">${p.cpam>0?fmtE(p.cpam):'—'}</td>
       <td class="num">${p.emp>0?fmtE(p.emp):'0,00 €'}</td>
       <td class="num" style="font-weight:700">${p.total>0?fmtE(rowTotal):'0,00 €'}</td>`;
     tbody.appendChild(tr);
@@ -684,7 +698,7 @@ function calculate(){
     <td>TOTAL</td>
     <td class="num">${dur}</td>
     <td class="num">—</td>
-    <td class="num" style="color:var(--red)">${fmtE(totalCPAM)}</td>
+    <td class="num" style="color:var(--accent)">${fmtE(totalCPAM)}</td>
     <td class="num">${fmtE(totalEmp)}</td>
     <td class="num">${fmtE(grandTotal)}</td>`;
   tbody.appendChild(tfoot);
@@ -751,7 +765,7 @@ function calculerIPP() {
     document.getElementById('ipp-capital-row').style.display = 'none';
   } else {
     eligEl.textContent = 'IPP < 10 % → Capital unique';
-    eligEl.className = 'metric-val red';
+    eligEl.className = 'metric-val';
     const capital = salBrut * (ipp / 100) * 0.5;
     document.getElementById('ipp-capital').textContent = fmtE(capital);
     document.getElementById('ipp-capital-row').style.display = '';
