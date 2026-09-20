@@ -13,26 +13,41 @@
 const https = require('https');
 const { createSign } = require('crypto');
 
-// ── Fetch avec suivi de redirections ──────────────────────────────────────────
-function fetchUrl(url, opts = {}, depth = 0) {
-  if (depth > 3) return Promise.reject(new Error('Trop de redirections : ' + url));
+// ── Fetch via rss2json.com (proxy public, contourne hotlink protection) ────────
+// Gratuit jusqu'à 10 000 requêtes/jour — largement suffisant pour un cron 24h
+function fetchRSS(feedUrl) {
+  const api = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(feedUrl)}&count=6`;
   return new Promise((resolve, reject) => {
-    const req = https.get(url, {
-      headers: {
-        'User-Agent': 'CGT-Occitanie-Veille/1.0 (formation-cr-cgt-occ.net)',
-        'Accept': 'application/xml, text/xml, text/html, */*',
-        ...opts.headers,
-      },
+    const req = https.get(api, {
+      headers: { 'User-Agent': 'CGT-Occitanie-Veille/1.0' },
     }, res => {
-      if ([301, 302, 303, 307, 308].includes(res.statusCode) && res.headers.location) {
-        const next = res.headers.location.startsWith('http')
-          ? res.headers.location
-          : new URL(res.headers.location, url).href;
-        return fetchUrl(next, opts, depth + 1).then(resolve).catch(reject);
-      }
       let data = '';
       res.on('data', c => data += c);
-      res.on('end', () => resolve({ status: res.statusCode, body: data }));
+      res.on('end', () => {
+        try {
+          const json = JSON.parse(data);
+          if (json.status === 'ok') resolve(json.items || []);
+          else reject(new Error(`rss2json erreur : ${json.message || json.status} — ${feedUrl}`));
+        } catch(e) { reject(e); }
+      });
+    });
+    req.on('error', reject);
+    req.setTimeout(14000, () => { req.destroy(); reject(new Error('Timeout RSS : ' + feedUrl)); });
+  });
+}
+
+// ── Fetch JSON direct (pour APIs) ─────────────────────────────────────────────
+function fetchJSON(url, headers = {}) {
+  return new Promise((resolve, reject) => {
+    const req = https.get(url, {
+      headers: { 'User-Agent': 'CGT-Occitanie-Veille/1.0', 'Accept': 'application/json', ...headers },
+    }, res => {
+      let data = '';
+      res.on('data', c => data += c);
+      res.on('end', () => {
+        try { resolve({ status: res.statusCode, body: JSON.parse(data) }); }
+        catch(e) { reject(e); }
+      });
     });
     req.on('error', reject);
     req.setTimeout(14000, () => { req.destroy(); reject(new Error('Timeout : ' + url)); });
@@ -61,6 +76,18 @@ function parseRSS(xml, source, cat, limit = 6) {
   return items;
 }
 
+// ── Convertit un item rss2json en format interne ──────────────────────────────
+function r2jToItem(item, source, cat) {
+  return {
+    title: item.title || '',
+    desc: (item.description || item.content || '').replace(/<[^>]+>/g, '').trim().slice(0, 600),
+    link: item.link || '',
+    date: item.pubDate || '',
+    source,
+    cat,
+  };
+}
+
 // ── Source 1 : Ameli.fr ────────────────────────────────────────────────────────
 async function fetchAmeli() {
   const urls = [
@@ -69,11 +96,11 @@ async function fetchAmeli() {
   ];
   for (const url of urls) {
     try {
-      const r = await fetchUrl(url);
-      if (r.status === 200 && r.body.includes('<item>')) {
-        const items = parseRSS(r.body, 'Ameli.fr', 'circulaire');
-        console.log(`[ameli] ${items.length} articles (${url})`);
-        return items;
+      const items = await fetchRSS(url);
+      if (items.length) {
+        const mapped = items.map(i => r2jToItem(i, 'Ameli.fr', 'circulaire'));
+        console.log(`[ameli] ${mapped.length} articles`);
+        return mapped;
       }
     } catch(e) { console.warn('[ameli]', e.message); }
   }
@@ -84,55 +111,42 @@ async function fetchAmeli() {
 // ── Source 2 : Agefiph ────────────────────────────────────────────────────────
 async function fetchAgefiph() {
   try {
-    const r = await fetchUrl('https://www.agefiph.fr/Flux-RSS');
-    if (r.status === 200 && r.body.includes('<item>')) {
-      const items = parseRSS(r.body, 'Agefiph', 'pratique');
-      console.log(`[agefiph] ${items.length} articles`);
-      return items;
-    }
+    const items = await fetchRSS('https://www.agefiph.fr/Flux-RSS');
+    const mapped = items.map(i => r2jToItem(i, 'Agefiph', 'pratique'));
+    console.log(`[agefiph] ${mapped.length} articles`);
+    return mapped;
   } catch(e) { console.warn('[agefiph]', e.message); }
   return [];
 }
 
 // ── Source 3 : INRS ────────────────────────────────────────────────────────────
 async function fetchINRS() {
-  // INRS publie ses actualités en RSS
   const urls = [
-    'https://www.inrs.fr/flux-rss.html',
     'https://www.inrs.fr/rss/actualites.xml',
     'https://www.inrs.fr/actualites.html',
   ];
   for (const url of urls) {
     try {
-      const r = await fetchUrl(url);
-      if (r.status === 200 && r.body.includes('<item>')) {
-        const items = parseRSS(r.body, 'INRS', 'rapport');
-        console.log(`[inrs] ${items.length} articles (${url})`);
-        return items;
+      const items = await fetchRSS(url);
+      if (items.length) {
+        const mapped = items.map(i => r2jToItem(i, 'INRS', 'rapport'));
+        console.log(`[inrs] ${mapped.length} articles`);
+        return mapped;
       }
-    } catch(e) { console.warn('[inrs]', url, e.message); }
+    } catch(e) { console.warn('[inrs]', e.message); }
   }
   console.warn('[inrs] Aucun flux disponible');
   return [];
 }
 
-// ── Source 4 : Bulletins officiels Ministère du Travail ───────────────────────
+// ── Source 4 : Bulletins officiels Min. Travail ───────────────────────────────
 async function fetchBulletinsOfficiels() {
-  const urls = [
-    'https://bulletins-officiels.social.gouv.fr/flux-rss',
-    'https://bulletins-officiels.social.gouv.fr/rss',
-  ];
-  for (const url of urls) {
-    try {
-      const r = await fetchUrl(url);
-      if (r.status === 200 && r.body.includes('<item>')) {
-        const items = parseRSS(r.body, 'Bulletins officiels — Min. Travail', 'decret');
-        console.log(`[bulletins] ${items.length} articles`);
-        return items;
-      }
-    } catch(e) { console.warn('[bulletins]', e.message); }
-  }
-  console.warn('[bulletins] Aucun flux disponible');
+  try {
+    const items = await fetchRSS('https://bulletins-officiels.social.gouv.fr/flux-rss');
+    const mapped = items.map(i => r2jToItem(i, 'Bulletins officiels — Min. Travail', 'decret'));
+    console.log(`[bulletins] ${mapped.length} articles`);
+    return mapped;
+  } catch(e) { console.warn('[bulletins]', e.message); }
   return [];
 }
 
