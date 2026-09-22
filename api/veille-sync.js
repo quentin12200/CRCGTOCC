@@ -184,19 +184,94 @@ async function fetchHAS() {
   return [];
 }
 
+// Cour de Cassation — jurisprudence chambre sociale (AT/MP, droit du travail)
+async function fetchCourCassation() {
+  const urls = [
+    'https://www.courdecassation.fr/rss/decisions.rss',
+    'https://www.courdecassation.fr/flux-rss/decisions',
+    'https://www.courdecassation.fr/rss',
+  ];
+  for (const url of urls) {
+    const items = await fetchDirectRSS(url, 'Cour de Cassation', 'jurisprudence');
+    if (items.length > 0) return items;
+  }
+  return [];
+}
+
+// INRS — Institut National de Recherche et Sécurité (prévention, pratiques SST)
+async function fetchINRS() {
+  const urls = [
+    'https://www.inrs.fr/rss/actualites.xml',
+    'https://www.inrs.fr/rss.xml',
+    'https://www.inrs.fr/flux-rss',
+  ];
+  for (const url of urls) {
+    const items = await fetchDirectRSS(url, 'INRS', 'pratique');
+    if (items.length > 0) return items;
+  }
+  return [];
+}
+
+// CGT.fr — actualités syndicales confédérales
+async function fetchCGT() {
+  const urls = [
+    'https://www.cgt.fr/rss.xml',
+    'https://www.cgt.fr/feed',
+    'https://www.cgt.fr/actualites/feed',
+    'https://www.cgt.fr/spip.php?page=backend',
+  ];
+  for (const url of urls) {
+    const items = await fetchDirectRSS(url, 'CGT', 'pratique');
+    if (items.length > 0) return items;
+  }
+  return [];
+}
+
+// NVO — Nouvelle Vie Ouvrière (journal CGT, pratiques militantes)
+async function fetchNVO() {
+  const urls = [
+    'https://www.nvo.fr/feed/',
+    'https://www.nvo.fr/rss.xml',
+    'https://www.nvo.fr/feed/rss/',
+  ];
+  for (const url of urls) {
+    const items = await fetchDirectRSS(url, 'NVO', 'pratique');
+    if (items.length > 0) return items;
+  }
+  return [];
+}
+
+// Santé & Travail — magazine pratique sur santé au travail
+async function fetchSanteEtTravail() {
+  const urls = [
+    'https://www.sante-et-travail.fr/feed',
+    'https://www.sante-et-travail.fr/rss.xml',
+  ];
+  for (const url of urls) {
+    const items = await fetchDirectRSS(url, 'Santé & Travail', 'pratique');
+    if (items.length > 0) return items;
+  }
+  return [];
+}
+
 // ── Collecte toutes les sources ────────────────────────────────────────────────
 async function collectSources() {
-  const [legifrance, servicePublic, minTravail, anact, has] = await Promise.all([
+  const [legifrance, servicePublic, minTravail, anact, has, courCass, inrs, cgt, nvo, santeT] = await Promise.all([
     fetchLegifrance(),
     fetchServicePublic(),
     fetchMinTravail(),
     fetchANACT(),
     fetchHAS(),
+    fetchCourCassation(),
+    fetchINRS(),
+    fetchCGT(),
+    fetchNVO(),
+    fetchSanteEtTravail(),
   ]);
 
-  // Priorité : textes officiels en premier
-  const all = [...legifrance, ...minTravail, ...anact, ...has, ...servicePublic];
-  console.log(`[collect] Total : ${all.length} articles collectés`);
+  // Pratiques syndicales en priorité, puis jurisprudence, puis institutionnel
+  const all = [...cgt, ...nvo, ...santeT, ...inrs, ...courCass, ...anact, ...minTravail, ...legifrance, ...has, ...servicePublic];
+  console.log(`[collect] Total : ${all.length} articles collectés (CGT:${cgt.length} NVO:${nvo.length} INRS:${inrs.length} CassSoc:${courCass.length})`);
   return all;
 }
 
@@ -218,7 +293,7 @@ Produis une fiche pratique CGT. Réponds UNIQUEMENT en JSON valide (pas de texte
   "angle_cgt": "Position CGT en une phrase courte et directe",
   "impact": "high ou med ou low",
   "impactLabel": "ex: Impact fort — droits nouveaux pour les victimes AT",
-  "cat": "${item.cat}"
+  "cat": "${item.cat || 'pratique'}"
 }`;
 
   const payload = JSON.stringify({
@@ -386,7 +461,7 @@ module.exports = async function handler(req, res) {
     const results = [];
     let saved = 0;
 
-    for (const item of sources.slice(0, 6)) {
+    for (const item of sources.slice(0, 12)) {
       try {
         const exists = await alreadyExists(token, item.title);
         if (exists) {
