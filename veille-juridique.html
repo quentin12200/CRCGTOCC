@@ -80,12 +80,14 @@
     .cat-decret { background: rgba(0,87,168,.1);  color: #0057A8; border: 1px solid rgba(0,87,168,.2); }
     .cat-circulaire { background: rgba(46,125,50,.1); color: #2E7D32; border: 1px solid rgba(46,125,50,.2); }
     .cat-rapport { background: rgba(106,27,154,.1); color: #6A1B9A; border: 1px solid rgba(106,27,154,.2); }
-    .cat-pratique { background: rgba(245,168,0,.15); color: #A07000; border: 1px solid rgba(245,168,0,.25); }
+    .cat-pratique      { background: rgba(245,168,0,.15); color: #A07000; border: 1px solid rgba(245,168,0,.25); }
+    .cat-jurisprudence { background: rgba(226,0,26,.12); color: #C40017; border: 1px solid rgba(226,0,26,.2); }
     [data-theme="dark"] .cat-arret  { background: rgba(226,0,26,.2);  color: #FF6666; }
     [data-theme="dark"] .cat-decret { background: rgba(0,87,168,.2);  color: #7AB4FF; }
     [data-theme="dark"] .cat-circulaire { background: rgba(46,125,50,.2); color: #7FD47F; }
     [data-theme="dark"] .cat-rapport { background: rgba(106,27,154,.2); color: #CF9FFF; }
-    [data-theme="dark"] .cat-pratique { background: rgba(245,168,0,.2); color: #FFD47F; }
+    [data-theme="dark"] .cat-pratique      { background: rgba(245,168,0,.2); color: #FFD47F; }
+    [data-theme="dark"] .cat-jurisprudence { background: rgba(226,0,26,.2); color: #FF6666; }
 
     .item-meta { display: flex; align-items: center; gap: .5rem; flex-wrap: wrap; }
     .item-date { font-size: .72rem; color: var(--texte-muted); }
@@ -129,6 +131,26 @@
     .side-link::before { content: '→'; color: var(--rouge); font-size: .7rem; flex-shrink: 0; }
     .legend-row { display: flex; align-items: center; gap: .5rem; font-size: .78rem; color: var(--texte-muted); margin-bottom: .4rem; }
     .legend-dot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+
+    /* ── MODAL SYNC ── */
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.65); z-index: 900; align-items: center; justify-content: center; padding: 1rem; }
+    .modal-overlay.open { display: flex; }
+    .modal-box { background: var(--fond-card); border: 1px solid var(--border-card); max-width: 440px; width: 100%; padding: 1.75rem; }
+    .modal-box h3 { font-family: 'Anton', sans-serif; font-size: 1.1rem; margin-bottom: .4rem; }
+    .modal-box p { font-size: .83rem; color: var(--texte-muted); margin-bottom: 1.1rem; line-height: 1.5; }
+    .modal-box label { font-size: .78rem; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--texte-muted); display: block; margin-bottom: .4rem; }
+    .modal-box input[type=password] { width: 100%; padding: .55rem .75rem; background: var(--fond); border: 1.5px solid var(--border); color: var(--texte); font-family: 'Archivo', sans-serif; font-size: .9rem; outline: none; margin-bottom: 1rem; }
+    .modal-box input[type=password]:focus { border-color: var(--rouge); }
+    .modal-actions { display: flex; gap: .6rem; justify-content: flex-end; }
+    .btn-cancel { background: none; border: 1px solid var(--border); color: var(--texte-muted); font-family: 'Archivo', sans-serif; font-size: .8rem; font-weight: 600; padding: .5rem 1rem; cursor: pointer; }
+    .btn-launch { background: var(--rouge); color: #fff; border: none; font-family: 'Archivo', sans-serif; font-size: .8rem; font-weight: 700; letter-spacing: .04em; padding: .5rem 1.2rem; cursor: pointer; }
+    .btn-launch:disabled { opacity: .5; cursor: not-allowed; }
+    .sync-status { margin-top: 1rem; padding: .75rem 1rem; font-size: .82rem; border-left: 3px solid transparent; display: none; line-height: 1.5; }
+    .sync-status.info  { display: block; border-color: var(--rouge); background: rgba(226,0,26,.06); color: var(--texte); }
+    .sync-status.ok    { display: block; border-color: #2E7D32; background: rgba(46,125,50,.08); color: #2E7D32; }
+    .sync-status.error { display: block; border-color: #C00; background: rgba(200,0,0,.07); color: #C00; }
+    [data-theme="dark"] .sync-status.ok    { color: #7FD47F; }
+    [data-theme="dark"] .sync-status.error { color: #FF8888; }
   </style>
 </head>
 <body>
@@ -144,6 +166,7 @@
   </div>
   <div class="header-actions">
     <a href="/index.html" class="btn-hdr">← Accueil</a>
+    <button class="btn-hdr" id="btn-sync" onclick="openSyncPanel()">↻ Mettre à jour</button>
     <button class="btn-hdr" onclick="window.print()">🖨 Imprimer</button>
   </div>
 </header>
@@ -169,6 +192,7 @@
     <div class="filters-bar">
       <button class="filter-btn active" data-f="all">Tout</button>
       <button class="filter-btn" data-f="arret">Arrêts Cour de cassation</button>
+      <button class="filter-btn" data-f="jurisprudence">Jurisprudence</button>
       <button class="filter-btn" data-f="decret">Décrets / Lois</button>
       <button class="filter-btn" data-f="circulaire">Circulaires CNAM</button>
       <button class="filter-btn" data-f="rapport">Rapports officiels</button>
@@ -346,6 +370,7 @@ const FEED = [
 // ── RENDU ────────────────────────────────────────────────────────────────────
 const CAT_LABELS = {
   arret: 'Arrêt Cour de cassation',
+  jurisprudence: 'Jurisprudence',
   decret: 'Décret / Loi',
   circulaire: 'Circulaire CNAM',
   rapport: 'Rapport officiel',
@@ -496,6 +521,78 @@ async function loadFromFirebase() {
 
 // ── INIT ─────────────────────────────────────────────────────────────────────
 loadFromFirebase();
+
+// ── SYNC MANUEL ──────────────────────────────────────────────────────────────
+function openSyncPanel() {
+  document.getElementById('modal-sync').classList.add('open');
+  document.getElementById('sync-token').focus();
+  document.getElementById('sync-status').className = 'sync-status';
+}
+
+function closeSyncPanel() {
+  document.getElementById('modal-sync').classList.remove('open');
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('modal-sync').addEventListener('click', function(e) {
+    if (e.target === this) closeSyncPanel();
+  });
+
+  document.getElementById('sync-form').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const token = document.getElementById('sync-token').value.trim();
+    if (!token) return;
+
+    const btn = document.getElementById('btn-launch');
+    const status = document.getElementById('sync-status');
+    btn.disabled = true;
+    status.className = 'sync-status info';
+    status.textContent = '⟳ Synchronisation en cours… (peut prendre 30 à 60 secondes)';
+
+    try {
+      const res = await fetch('/api/trigger-veille', {
+        method: 'POST',
+        headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
+      });
+      const data = await res.json();
+
+      if (!res.ok) {
+        status.className = 'sync-status error';
+        status.textContent = '✗ Erreur ' + res.status + ' — ' + (data.error || 'réponse inattendue');
+      } else {
+        status.className = 'sync-status ok';
+        const saved = data.sauvegardes ?? '?';
+        const total = data.collectes ?? '?';
+        status.textContent = `✓ ${data.message || 'Synchronisation terminée'} (${total} collectés, ${saved} ajoutés)`;
+        // Recharger les articles après 1 seconde
+        setTimeout(() => { loadFromFirebase(); closeSyncPanel(); }, 1500);
+      }
+    } catch(err) {
+      status.className = 'sync-status error';
+      status.textContent = '✗ Erreur réseau : ' + err.message;
+    } finally {
+      btn.disabled = false;
+    }
+  });
+});
 </script>
+
+<!-- ── MODAL SYNC ── -->
+<div class="modal-overlay" id="modal-sync">
+  <div class="modal-box">
+    <h3>↻ Mettre à jour la veille</h3>
+    <p>Déclenche une synchronisation immédiate depuis toutes les sources (CGT, NVO, INRS, Légifrance, Min. Travail…). Entrez le token administrateur pour confirmer.</p>
+    <form id="sync-form">
+      <label for="sync-token">Token administrateur</label>
+      <input type="password" id="sync-token" placeholder="••••••••••••" autocomplete="off" required>
+      <div class="sync-status" id="sync-status"></div>
+      <div class="modal-actions">
+        <button type="button" class="btn-cancel" onclick="closeSyncPanel()">Annuler</button>
+        <button type="submit" class="btn-launch" id="btn-launch">Lancer la synchronisation</button>
+      </div>
+    </form>
+  </div>
+</div>
+
 </body>
 </html>
