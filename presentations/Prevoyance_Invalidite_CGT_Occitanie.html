@@ -301,7 +301,16 @@ h1,h2{font-family:var(--disp);font-weight:400;line-height:.98;letter-spacing:.01
   <button class="cb" id="bPrint" title="Exporter PDF (Impr.)" onclick="window.print()">&#8659;</button>
   <button class="cb" id="bHelp" title="Aide (?)">?</button>
 </div>
-<div id="notes"><div id="notes-head"><span class="n-label">Notes du formateur</span><span class="n-slide" id="notes-slide-num"></span><button id="notes-close" onclick="toggleNotes()" title="Fermer (N)">✕</button></div><div id="notes-body"><div class="nbody"></div></div></div>
+<div id="notes">
+  <div id="notes-handle" title="Faire glisser pour redimensionner"></div>
+  <div id="notes-head">
+    <span class="n-label">✎ Notes formateur</span>
+    <span class="n-slide" id="notes-slide-num"></span>
+    <button class="notes-btn" id="notes-min" onclick="miniNotes()" title="Réduire / agrandir">−</button>
+    <button class="notes-btn" id="notes-close" onclick="toggleNotes()" title="Fermer (N)">✕</button>
+  </div>
+  <div id="notes-body"><div class="nbody"></div></div>
+</div>
 <canvas id="ink"></canvas>
 <div id="inktools">
   <button class="it pen act" data-tool="pen" title="Stylo rouge">&#9998;</button>
@@ -697,7 +706,7 @@ function buildSlide(s,i){
       });
     },100);
   } else if(s.type==='case'){
-    const qs=Array.isArray(s.questions)?s.questions.map(q=>`<li>${q}</li>`).join(''):'';
+    const qs=Array.isArray(s.questions)?s.questions.map((q,i)=>`<li><span class="qi">${i+1}</span>${q.replace(/^[①②③④⑤⑥]/,'').trim()}</li>`).join(''):'';
     const crItems=Array.isArray(s.corrige)?s.corrige.map(c=>`<li>${c}</li>`).join(''):s.corrige||'';
     const corrigeBlock=crItems?`
       <button class="btn-corrige" onclick="const c=this.nextElementSibling;c.classList.toggle('show');this.textContent=c.classList.contains('show')?'▲ Masquer le corrigé':'▼ Voir le corrigé'">▼ Voir le corrigé</button>
@@ -844,6 +853,35 @@ document.getElementById('bPrev').addEventListener('click',()=>goTo(cur-1));
 document.getElementById('bNext').addEventListener('click',()=>goTo(cur+1));
 document.getElementById('bOv').addEventListener('click',()=>{buildOv();ovEl.classList.toggle('show');});
 document.getElementById('bNotes').addEventListener('click',()=>notesEl.classList.toggle('show'));
+function toggleNotes(){notesEl.classList.toggle('show');}
+function miniNotes(){notesEl.classList.toggle("mini");}
+
+/* drag resize du panneau notes */
+(function(){
+  const handle=document.getElementById("notes-handle");
+  let dragging=false,startY=0,startH=0;
+  handle.addEventListener("mousedown",e=>{
+    dragging=true;startY=e.clientY;startH=notesEl.offsetHeight;
+    document.body.style.userSelect="none";
+  });
+  document.addEventListener("mousemove",e=>{
+    if(!dragging)return;
+    const delta=startY-e.clientY;
+    const newH=Math.min(Math.max(54,startH+delta),window.innerHeight*.85);
+    notesEl.style.height=newH+"px";
+    if(newH<=60)notesEl.classList.add("mini"); else notesEl.classList.remove("mini");
+  });
+  document.addEventListener("mouseup",()=>{dragging=false;document.body.style.userSelect="";});
+  handle.addEventListener("touchstart",e=>{dragging=true;startY=e.touches[0].clientY;startH=notesEl.offsetHeight;},{passive:true});
+  document.addEventListener("touchmove",e=>{
+    if(!dragging)return;
+    const delta=startY-e.touches[0].clientY;
+    const newH=Math.min(Math.max(54,startH+delta),window.innerHeight*.85);
+    notesEl.style.height=newH+"px";
+    if(newH<=60)notesEl.classList.add("mini"); else notesEl.classList.remove("mini");
+  },{passive:true});
+  document.addEventListener("touchend",()=>{dragging=false;});
+})();
 document.getElementById('bFull').addEventListener('click',()=>document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen());
 document.getElementById('bHelp').addEventListener('click',()=>document.getElementById('help').classList.toggle('show'));
 
