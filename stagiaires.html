@@ -178,7 +178,11 @@
     }
     .btn-ouvrir:hover { background: var(--accent-dark); transform: translateY(-1px); }
 
-    .ressources-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-bottom: 2.5rem; }
+    .ressources-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
+    .ressource-group { margin-bottom: 2rem; }
+    .ressource-group-header { display: flex; align-items: center; gap: .6rem; font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--accent); margin-bottom: .9rem; }
+    .ressource-group-header::after { content: ''; flex: 1; height: 2px; background: linear-gradient(to right, var(--accent) 0%, transparent 100%); opacity: .25; border-radius: 1px; }
+    .ressource-group-header svg { flex-shrink: 0; opacity: .8; }
     .ressource-item {
       display: flex; align-items: center; gap: .9rem;
       background: var(--fond-card); border: 1px solid var(--border-card);
@@ -648,115 +652,92 @@
 
   <div class="section-label">Documents et ressources</div>
 
-  <div class="ressources-grid">
-    <a class="ressource-item" href="/veille-juridique.html">
-      <div class="ressource-icon">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
-      </div>
-      <div class="ressource-text">
-        <span class="ressource-name">Veille juridique AT/MP</span>
-        <span class="ressource-desc">Arrêts, décrets, circulaires — mis à jour automatiquement</span>
-      </div>
-    </a>
-    <a class="ressource-item" href="/maladies-pro.html">
-      <div class="ressource-icon">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
-      </div>
-      <div class="ressource-text">
-        <span class="ressource-name">Tableaux maladies professionnelles</span>
-        <span class="ressource-desc">99 tableaux régime général + commentaires CGT</span>
-      </div>
-    </a>
-    <a class="ressource-item" href="/lexique.html">
-      <div class="ressource-icon">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-      </div>
-      <div class="ressource-text">
-        <span class="ressource-name">Lexique AT/MP &amp; Prévoyance</span>
-        <span class="ressource-desc">50+ définitions, recherche, imprimable</span>
-      </div>
-    </a>
-    <a class="ressource-item" href="/generateur-courrier.html">
-      <div class="ressource-icon">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-      </div>
-      <div class="ressource-text">
-        <span class="ressource-name">Générateur de courrier IA</span>
-        <span class="ressource-desc">Courrier personnalisé en 3 étapes · 9 types · références légales</span>
-      </div>
-    </a>
-    <a class="ressource-item" href="/courriers.html">
-      <div class="ressource-icon">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-      </div>
-      <div class="ressource-text">
-        <span class="ressource-name">Modèles de courriers fixes</span>
-        <span class="ressource-desc">4 lettres types AT/MP à adapter et envoyer</span>
-      </div>
-    </a>
-    <a class="ressource-item" href="/fiches.html">
-      <div class="ressource-icon">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-      </div>
-      <div class="ressource-text">
-        <span class="ressource-name">Fiches mémo</span>
-        <span class="ressource-desc">Délais, barème IPP, invalidité — à imprimer</span>
-      </div>
-    </a>
-    <a class="ressource-item" href="/guide-dossier-atmp.html">
-      <div class="ressource-icon">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
-      </div>
-      <div class="ressource-text">
-        <span class="ressource-name">Guide dossier AT / MP</span>
-        <span class="ressource-desc">AT · MP tableau · MP hors tableau — étapes + documents</span>
-      </div>
-    </a>
-    <a class="ressource-item" href="/jurisprudence.html">
-      <div class="ressource-icon">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-      </div>
-      <div class="ressource-text">
-        <span class="ressource-name">Jurisprudence AT/MP</span>
-        <span class="ressource-desc">Arrêts clés Cour de cassation commentés CGT</span>
-      </div>
-    </a>
-    <a class="ressource-item" href="/exercices-atmp.html">
-      <div class="ressource-icon">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-      </div>
-      <div class="ressource-text">
-        <span class="ressource-name">Exercices &amp; Ateliers AT/MP</span>
-        <span class="ressource-desc">Mises en situation, cas pratiques corrigés</span>
-      </div>
-    </a>
-    <a class="ressource-item" href="/generateur-projet-vie.html">
-      <div class="ressource-icon">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-      </div>
-      <div class="ressource-text">
-        <span class="ressource-name">Générateur Projet de Vie MDPH IA</span>
-        <span class="ressource-desc">Rédigez votre projet de vie MDPH guidé par IA</span>
-      </div>
-    </a>
-    <a class="ressource-item" href="/carnet-atmp.html">
-      <div class="ressource-icon">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><line x1="12" y1="6" x2="12" y2="12"/><line x1="9" y1="9" x2="15" y2="9"/></svg>
-      </div>
-      <div class="ressource-text">
-        <span class="ressource-name">Carnet de suivi AT/MP</span>
-        <span class="ressource-desc">Suivre votre dossier étape par étape</span>
-      </div>
-    </a>
-    <a class="ressource-item" href="/argumentaire.html">
-      <div class="ressource-icon">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-      </div>
-      <div class="ressource-text">
-        <span class="ressource-name">Argumentaire syndical AT/MP</span>
-        <span class="ressource-desc">Arguments CGT pour la négociation et la formation</span>
-      </div>
-    </a>
+  <!-- ── GROUPE 1 : Monter son dossier ── -->
+  <div class="ressource-group">
+    <div class="ressource-group-header">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+      Monter son dossier
+    </div>
+    <div class="ressources-grid">
+      <a class="ressource-item" href="/guide-dossier-atmp.html">
+        <div class="ressource-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>
+        <div class="ressource-text"><span class="ressource-name">Guide dossier AT / MP</span><span class="ressource-desc">AT · MP tableau · hors tableau — étapes + documents</span></div>
+      </a>
+      <a class="ressource-item" href="/carnet-atmp.html">
+        <div class="ressource-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><line x1="12" y1="6" x2="12" y2="12"/><line x1="9" y1="9" x2="15" y2="9"/></svg></div>
+        <div class="ressource-text"><span class="ressource-name">Carnet de suivi AT/MP</span><span class="ressource-desc">Suivre votre dossier étape par étape</span></div>
+      </a>
+      <a class="ressource-item" href="/fiches.html">
+        <div class="ressource-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
+        <div class="ressource-text"><span class="ressource-name">Fiches mémo</span><span class="ressource-desc">Délais, barème IPP, invalidité — à imprimer</span></div>
+      </a>
+    </div>
+  </div>
+
+  <!-- ── GROUPE 2 : Références juridiques ── -->
+  <div class="ressource-group">
+    <div class="ressource-group-header">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+      Références juridiques
+    </div>
+    <div class="ressources-grid">
+      <a class="ressource-item" href="/veille-juridique.html">
+        <div class="ressource-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></div>
+        <div class="ressource-text"><span class="ressource-name">Veille juridique AT/MP</span><span class="ressource-desc">Arrêts, décrets, circulaires — mis à jour automatiquement</span></div>
+      </a>
+      <a class="ressource-item" href="/jurisprudence.html">
+        <div class="ressource-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
+        <div class="ressource-text"><span class="ressource-name">Jurisprudence AT/MP</span><span class="ressource-desc">Arrêts clés Cour de cassation commentés CGT</span></div>
+      </a>
+      <a class="ressource-item" href="/maladies-pro.html">
+        <div class="ressource-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>
+        <div class="ressource-text"><span class="ressource-name">Tableaux maladies professionnelles</span><span class="ressource-desc">99 tableaux régime général + commentaires CGT</span></div>
+      </a>
+      <a class="ressource-item" href="/lexique.html">
+        <div class="ressource-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div>
+        <div class="ressource-text"><span class="ressource-name">Lexique AT/MP &amp; Prévoyance</span><span class="ressource-desc">50+ définitions, recherche, imprimable</span></div>
+      </a>
+    </div>
+  </div>
+
+  <!-- ── GROUPE 3 : Rédiger et agir ── -->
+  <div class="ressource-group">
+    <div class="ressource-group-header">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+      Rédiger et agir
+    </div>
+    <div class="ressources-grid">
+      <a class="ressource-item" href="/generateur-courrier.html">
+        <div class="ressource-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+        <div class="ressource-text"><span class="ressource-name">Générateur de courrier IA</span><span class="ressource-desc">Courrier personnalisé · 9 types · références légales</span></div>
+      </a>
+      <a class="ressource-item" href="/courriers.html">
+        <div class="ressource-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+        <div class="ressource-text"><span class="ressource-name">Modèles de courriers fixes</span><span class="ressource-desc">4 lettres types AT/MP à adapter et envoyer</span></div>
+      </a>
+      <a class="ressource-item" href="/generateur-projet-vie.html">
+        <div class="ressource-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+        <div class="ressource-text"><span class="ressource-name">Générateur Projet de Vie MDPH</span><span class="ressource-desc">Rédigez votre projet de vie MDPH guidé par IA</span></div>
+      </a>
+    </div>
+  </div>
+
+  <!-- ── GROUPE 4 : Formation et pédagogie ── -->
+  <div class="ressource-group">
+    <div class="ressource-group-header">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+      Formation et pédagogie
+    </div>
+    <div class="ressources-grid">
+      <a class="ressource-item" href="/exercices-atmp.html">
+        <div class="ressource-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
+        <div class="ressource-text"><span class="ressource-name">Exercices &amp; Ateliers AT/MP</span><span class="ressource-desc">Mises en situation, cas pratiques corrigés</span></div>
+      </a>
+      <a class="ressource-item" href="/argumentaire.html">
+        <div class="ressource-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+        <div class="ressource-text"><span class="ressource-name">Argumentaire syndical AT/MP</span><span class="ressource-desc">Arguments CGT pour la négociation et la formation</span></div>
+      </a>
+    </div>
   </div>
 
 </main>
