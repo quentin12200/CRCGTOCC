@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Guide Dossier AT/MP — CGT Occitanie</title>
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/style.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --rouge: #E2001A; --jaune: #FFD200;
+      --accent: #1A5FAD; --accent-dark: #144D8E; --accent-muted: #E8F0FB;
+      --vert: #2E7D32; --vert-bg: rgba(46,125,50,.08);
+      --orange: #E65100; --orange-bg: rgba(230,81,0,.08);
+      --fond: #101620; --fond-card: #172033; --fond-hover: #1E2D47;
+      --texte: #E6ECF5; --texte-muted: #7D8FA8; --border: #253047; --border-card: #1E2D47;
+    }
+    :root[data-theme="light"] {
+      --fond: #F4F6FA; --fond-card: #FFFFFF; --fond-hover: #EEF2F8;
+      --texte: #1A2540; --texte-muted: #5A6A84; --border: #D8DEE8; --border-card: #E4E9F2;
+    }
+    @media (prefers-color-scheme: light) {
+      :root:not([data-theme="dark"]) {
+        --fond: #F4F6FA; --fond-card: #FFFFFF; --fond-hover: #EEF2F8;
+        --texte: #1A2540; --texte-muted: #5A6A84; --border: #D8DEE8; --border-card: #E4E9F2;
+      }
+    }
+    :root[data-theme="dark"] {
+      --fond: #101620; --fond-card: #172033; --fond-hover: #1E2D47;
+      --texte: #E6ECF5; --texte-muted: #7D8FA8; --border: #253047; --border-card: #1E2D47;
+    }
+
+    body { background: var(--fond); color: var(--texte); font-family: 'Archivo', sans-serif; min-height: 100vh; }
+
+    .topbar { background: var(--rouge); padding: .85rem 1.5rem; display: flex; align-items: center; gap: 1rem; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,.3); }
+    .topbar-badge { font-family: 'Anton', sans-serif; font-size: 1.1rem; color: var(--jaune); letter-spacing: .06em; }
+    .topbar-title { font-family: 'Anton', sans-serif; font-size: .95rem; color: #fff; letter-spacing: .03em; }
+    .topbar-back { margin-left: auto; color: rgba(255,255,255,.75); font-size: .78rem; text-decoration: none; border: 1px solid rgba(255,255,255,.3); padding: .25rem .65rem; }
+    .topbar-back:hover { color: #fff; background: rgba(255,255,255,.1); }
+    .stripe { height: 4px; background: var(--jaune); }
+
+    /* NAV TABS */
+    .nav-tabs { background: var(--fond-card); border-bottom: 1px solid var(--border); display: flex; gap: 0; overflow-x: auto; }
+    .tab-btn { font-family: 'Archivo', sans-serif; font-size: .82rem; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; padding: .9rem 1.4rem; border: none; background: none; color: var(--texte-muted); cursor: pointer; white-space: nowrap; border-bottom: 3px solid transparent; transition: all .15s; }
+    .tab-btn:hover { color: var(--texte); }
+    .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+    .tab-btn.at.active { color: var(--rouge); border-bottom-color: var(--rouge); }
+    .tab-btn.mp-t.active { color: var(--vert); border-bottom-color: var(--vert); }
+    .tab-btn.mp-ht.active { color: var(--orange); border-bottom-color: var(--orange); }
+
+    /* CONTENT */
+    .page { max-width: 860px; margin: 0 auto; padding: 2rem 1.25rem 5rem; }
+    .panel { display: none; }
+    .panel.active { display: block; }
+
+    /* HERO PANEL */
+    .panel-hero { margin-bottom: 2rem; }
+    .panel-hero h2 { font-family: 'Anton', sans-serif; font-size: 1.6rem; letter-spacing: .03em; margin-bottom: .4rem; }
+    .panel-hero p { font-size: .9rem; color: var(--texte-muted); line-height: 1.6; max-width: 68ch; }
+    .hero-badge { display: inline-flex; align-items: center; gap: .5rem; font-size: .72rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; padding: .3rem .8rem; margin-bottom: .8rem; }
+    .badge-at  { background: rgba(226,0,26,.12); color: var(--rouge); border: 1px solid rgba(226,0,26,.25); }
+    .badge-mp-t { background: var(--vert-bg); color: var(--vert); border: 1px solid rgba(46,125,50,.25); }
+    .badge-mp-ht { background: var(--orange-bg); color: var(--orange); border: 1px solid rgba(230,81,0,.25); }
+
+    /* PROGRESS BAR */
+    .progress-wrap { margin-bottom: 1.75rem; background: var(--fond-card); border: 1px solid var(--border-card); padding: 1rem 1.2rem; }
+    .progress-label { font-size: .75rem; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; color: var(--texte-muted); margin-bottom: .6rem; display: flex; justify-content: space-between; }
+    .progress-bar { height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; }
+    .progress-fill { height: 100%; border-radius: 3px; transition: width .4s ease; }
+    .fill-at  { background: var(--rouge); }
+    .fill-mp-t { background: var(--vert); }
+    .fill-mp-ht { background: var(--orange); }
+
+    /* PHASES */
+    .phase { margin-bottom: 2rem; }
+    .phase-title { font-family: 'Anton', sans-serif; font-size: 1rem; letter-spacing: .05em; text-transform: uppercase; color: var(--texte-muted); margin-bottom: 1rem; padding-bottom: .5rem; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: .6rem; }
+    .phase-title .phase-num { width: 26px; height: 26px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: .75rem; font-weight: 800; color: #fff; flex-shrink: 0; }
+    .at-color   { background: var(--rouge); }
+    .mp-t-color { background: var(--vert); }
+    .mp-ht-color { background: var(--orange); }
+    .accent-color { background: var(--accent); }
+
+    /* ITEMS */
+    .item { display: flex; align-items: flex-start; gap: .85rem; padding: .85rem 1rem; background: var(--fond-card); border: 1px solid var(--border-card); margin-bottom: .4rem; cursor: pointer; transition: background .12s, border-color .12s; }
+    .item:hover { background: var(--fond-hover); }
+    .item.checked { opacity: .65; }
+    .item.checked .item-text { text-decoration: line-through; color: var(--texte-muted); }
+    .checkbox { width: 20px; height: 20px; border: 2px solid var(--border); border-radius: 4px; flex-shrink: 0; margin-top: .15rem; display: flex; align-items: center; justify-content: center; transition: all .15s; }
+    .item.checked .checkbox { background: var(--vert); border-color: var(--vert); }
+    .checkbox::after { content: '✓'; font-size: 12px; color: #fff; display: none; }
+    .item.checked .checkbox::after { display: block; }
+    .item-content { flex: 1; }
+    .item-text { font-size: .88rem; line-height: 1.45; font-weight: 500; }
+    .item-sub { font-size: .77rem; color: var(--texte-muted); margin-top: .25rem; line-height: 1.4; }
+    .item-delay { font-size: .7rem; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; padding: .15rem .5rem; border-radius: 3px; margin-top: .3rem; display: inline-block; }
+    .delay-urgent { background: rgba(226,0,26,.12); color: var(--rouge); }
+    .delay-normal { background: rgba(26,95,173,.1); color: var(--accent); }
+    .delay-long   { background: rgba(46,125,50,.1); color: var(--vert); }
+
+    /* DOCS BOX */
+    .docs-box { background: var(--fond-card); border: 1px solid var(--border-card); border-left: 4px solid var(--accent); padding: 1.1rem 1.2rem; margin-bottom: 1.5rem; }
+    .docs-box h4 { font-size: .8rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--accent); margin-bottom: .75rem; }
+    .doc-item { display: flex; align-items: center; gap: .65rem; padding: .4rem 0; border-bottom: 1px solid var(--border); font-size: .84rem; }
+    .doc-item:last-child { border-bottom: none; }
+    .doc-icon { font-size: 1.1rem; flex-shrink: 0; }
+    .doc-name { flex: 1; font-weight: 500; }
+    .doc-note { font-size: .74rem; color: var(--texte-muted); }
+    .doc-req { font-size: .68rem; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; padding: .12rem .45rem; border-radius: 2px; }
+    .req-obl { background: rgba(226,0,26,.1); color: var(--rouge); }
+    .req-util { background: rgba(26,95,173,.08); color: var(--accent); }
+
+    /* ALERTE */
+    .alerte { background: rgba(226,0,26,.07); border: 1px solid rgba(226,0,26,.2); border-left: 4px solid var(--rouge); padding: .9rem 1.1rem; margin-bottom: 1.2rem; font-size: .85rem; line-height: 1.5; }
+    .alerte strong { color: var(--rouge); }
+    .info-box { background: var(--accent-muted); border: 1px solid rgba(26,95,173,.2); border-left: 4px solid var(--accent); padding: .9rem 1.1rem; margin-bottom: 1.2rem; font-size: .85rem; line-height: 1.5; color: var(--texte); }
+    [data-theme="dark"] .info-box { background: rgba(26,95,173,.1); }
+    .info-box strong { color: var(--accent); }
+
+    /* RESET */
+    .btn-reset { background: none; border: 1px solid var(--border); color: var(--texte-muted); font-family: 'Archivo', sans-serif; font-size: .75rem; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; padding: .4rem .9rem; cursor: pointer; margin-top: 1.5rem; }
+    .btn-reset:hover { border-color: var(--rouge); color: var(--rouge); }
+
+    @media print {
+      .topbar, .nav-tabs, .stripe, .btn-reset, .progress-wrap { display: none !important; }
+      body { background: #fff; color: #000; }
+      .item { break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+<script src="/assets/cgt-ui.js"></script>
+<script>if(localStorage.getItem('cgt_auth')!=='ok'&&localStorage.getItem('cgt_stagiaire_auth')!=='ok'){location.replace('/login.html?from='+encodeURIComponent(location.pathname));}</script>
+
+<div class="topbar">
+  <span class="topbar-badge">CGT</span>
+  <span class="topbar-title">Guide Dossier AT / MP</span>
+  <a href="/index.html" class="topbar-back">← Accueil</a>
+</div>
+<div class="stripe"></div>
+
+<nav class="nav-tabs">
+  <button class="tab-btn at active" onclick="switchTab('at')">⚡ Accident du travail</button>
+  <button class="tab-btn mp-t" onclick="switchTab('mp-t')">📋 MP — Tableau</button>
+  <button class="tab-btn mp-ht" onclick="switchTab('mp-ht')">🔍 MP — Hors tableau</button>
+</nav>
+
+<div class="page">
+
+  <!-- ═══ ONGLET AT ═══ -->
+  <div class="panel active" id="panel-at">
+    <div class="panel-hero">
+      <div class="hero-badge badge-at">Accident du Travail</div>
+      <h2>Comment monter un dossier AT</h2>
+      <p>Guide complet point par point — de la déclaration à la consolidation. Cochez chaque étape au fur et à mesure.</p>
+    </div>
+
+    <div class="progress-wrap">
+      <div class="progress-label"><span>Progression du dossier</span><span id="prog-at-txt">0 / 0</span></div>
+      <div class="progress-bar"><div class="progress-fill fill-at" id="prog-at" style="width:0%"></div></div>
+    </div>
+
+    <div class="alerte"><strong>⏱ Délais critiques :</strong> L'employeur a <strong>48 h</strong> pour déclarer l'AT à la CPAM. Si refus, le salarié dispose de <strong>2 ans</strong> pour déclarer lui-même. La CPAM a <strong>30 jours</strong> pour statuer (90 jours si réserves).</div>
+
+    <!-- PHASE 1 -->
+    <div class="phase">
+      <div class="phase-title"><span class="phase-num at-color">1</span>Immédiatement après l'accident</div>
+
+      <div class="item" data-key="at-1-1" onclick="toggle(this)">
+        <div class="checkbox"></div>
+        <div class="item-content">
+          <div class="item-text">Consulter un médecin et obtenir le Certificat Médical Initial (CMI)</div>
+          <div class="item-sub">Le CMI décrit les lésions initiales — c'est la pièce maîtresse du dossier. Ne pas le perdre.</div>
+          <span class="item-delay delay-urgent">Dès que possible</span>
+        </div>
+      </div>
+
+      <div class="item" data-key="at-1-2" onclick="toggle(this)">
+        <div class="checkbox"></div>
+        <div class="item-content">
+          <div class="item-text">Informer l'employeur immédiatement (ou dans la journée)</div>
+          <div class="item-sub">Par oral ET par écrit si possible (mail, SMS conservé). Préciser : heure, lieu, circonstances, témoins.</div>
+          <span class="item-delay delay-urgent">Dans la journée</span>
+        </div>
+      </div>
+
+      <div class="item" data-key="at-1-3" onclick="toggle(this)">
+        <div class="checkbox"></div>
+        <div class="item-content">
+          <div class="item-text">Recueillir les coordonnées de témoins présents</div>
+          <div class="item-sub">Nom, prénom, poste, téléphone. Les témoins peuvent confirmer les circonstances si l'employeur émet des réserves.</div>
+          <span class="item-delay delay-urgent">Immédiatement</span>
+        </div>
+      </div>
+
+      <div class="item" data-key="at-1-4" onclick="toggle(this)">
+        <div class="checkbox"></div>
+        <div class="item-content">
+          <div class="item-text">Photographier les lieux et le matériel en cause (si possible)</div>
+          <div class="item-sub">Sol mouillé, échafaudage, machine, EPI défectueux… Ces preuves disparaissent vite.</div>
+          <span class="item-delay delay-urgent">Le jour même</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- PHASE 2 -->
+    <div class="phase">
+      <div class="phase-title"><span class="phase-num at-color">2</span>Déclaration AT (J+48h max)</div>
+
+      <div class="item" data-key="at-2-1" onclick="toggle(this)">
+        <div class="checkbox"></div>
+        <div class="item-content">
+          <div class="item-text">Vérifier que l'employeur a bien déclaré l'AT à la CPAM</div>
+          <div class="item-sub">L'employeur doit remettre une feuille d'AT au salarié et envoyer la déclaration à la CPAM sous 48 h.</div>
+          <span class="item-delay delay-urgent">Avant 48 h</span>
+        </div>
+      </div>
+
+      <div class="item" data-key="at-2-2" onclick="toggle(this)">
+        <div class="checkbox"></div>
+        <div class="item-content">
+          <div class="item-text">Si l'employeur refuse de déclarer : déclarer soi-même via Ameli.fr ou courrier CPAM</div>
+          <div class="item-sub">Le salarié peut toujours déclarer dans les 2 ans. Utiliser le formulaire Cerfa 14463 ou l'espace Ameli.</div>
+          <span class="item-delay delay-urgent">Délai 2 ans max</span>
+        </div>
+      </div>
+
+      <div class="item" data-key="at-2-3" onclick="toggle(this)">
+        <div class="checkbox"></div>
+        <div class="item-content">
+          <div class="item-text">Émettre des réserves motivées si les circonstances sont contestées</div>
+          <div class="item-sub">L'employeur peut émettre des réserves dans le délai de déclaration. Le salarié peut aussi transmettre ses observations à la CPAM.</div>
+          <span class="item-delay delay-normal">Avec la déclaration</span>
+        </div>
+      </div>
+
+      <div class="item" data-key="at-2-4" onclick="toggle(this)">
+        <div class="checkbox"></div>
+        <div class="item-content">
+          <div class="item-text">Envoyer le volet 1 du CMI à la CPAM (volets 2 et 3 au médecin / salarié)</div>
+          <div class="item-sub">Le médecin remet 3 volets du CMI. Le salarié envoie le volet 1 à la CPAM dans les 24 h.</div>
+          <span class="item-delay delay-urgent">Sous 24 h</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- PHASE 3 -->
+    <div class="phase">
+      <div class="phase-title"><span class="phase-num at-color">3</span>Instruction par la CPAM (30 à 90 jours)</div>
+
+      <div class="item" data-key="at-3-1" onclick="toggle(this)">
+        <div class="checkbox"></div>
+        <div class="item-content">
+          <div class="item-text">Répondre au questionnaire CPAM dans le délai imparti</div>
+          <div class="item-sub">La CPAM peut envoyer un questionnaire au salarié ET à l'employeur. Répondre avec précision, idéalement avec l'aide du délégué CGT.</div>
+          <span class="item-delay delay-normal">Délai indiqué CPAM</span>
+        </div>
+      </div>
+
+      <div class="item" data-key="at-3-2" onclick="toggle(this)">
+        <div class="checkbox"></div>
+        <div class="item-content">
+          <div class="item-text">Consulter le dossier d'instruction CPAM (droit au contradictoire)</div>
+          <div class="item-sub">Avant toute décision, la CPAM doit informer le salarié et l'employeur. Demander à consulter le dossier (art. R. 441-13 CSS).</div>
+          <span class="item-delay delay-normal">Avant décision CPAM</span>
+        </div>
+      </div>
+
+      <div class="item" data-key="at-3-3" onclick="toggle(this)">
+        <div class="checkbox"></div>
+        <div class="item-content">
+          <div class="item-text">En cas de décision défavorable : saisir la Commission de Recours Amiable (CRA)</div>
+          <div class="item-sub">Délai : 2 mois après notification. Joindre tous les éléments : CMI, témoignages, photos, échanges écrits avec l'employeur.</div>
+          <span class="item-delay delay-normal">2 mois après refus</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- PHASE 4 -->
+    <div class="phase">
+      <div class="phase-title"><span class="phase-num at-color">4</span>Pendant l'arrêt de travail</div>
+
+      <div class="item" data-key="at-4-1" onclick="toggle(this)">
+        <div class="checkbox"></div>
+        <div class="item-content">
+          <div class="item-text">Envoyer chaque prolongation d'arrêt à la CPAM et à l'employeur</div>
+          <div class="item-sub">Certificat de prolongation (volet 1 à la CPAM, volet 2 à l'employeur). Conserver une copie.</div>
+          <span class="item-delay delay-normal">À chaque prolongation</span>
+        </div>
+      </div>
+
+      <div class="item" data-key="at-4-2" onclick="toggle(this)">
+        <div class="checkbox"></div>
+        <div class="item-content">
+          <div class="item-text">Calculer et vérifier les indemnités journalières AT reçues</div>
+          <div class="item-sub">IJ AT = 60 % du salaire journalier de référence (80 % à partir du 29e jour). Pas de délai de carence.</div>
+          <span class="item-delay delay-normal">Chaque mois</span>
+        </div>
+      </div>
+
+      <div class="item" data-key="at-4-3" onclick="toggle(this)">
+        <div class="checkbox"></div>
+        <div class="item-content">
+          <div class="item-text">En cas de rechute : déclarer à la CPAM sur le formulaire de rechute (Cerfa 11383)</div>
+          <div class="item-sub">La rechute doit être signalée même des mois ou années après la consolidation, si elle est liée à l'AT initial.</div>
+          <span class="item-delay delay-normal">Dès apparition rechute</span>
+        </div>
+      </div>
+
+      <div class="item" data-key="at-4-4" onclick="toggle(this)">
+        <div class="checkbox"></div>
+        <div class="item-content">
+          <div class="item-text">Refuser toute contre-visite patronale — elle est illégale en AT</div>
+          <div class="item-sub">L'employeur ne peut pas organiser de contre-visite pendant un arrêt AT. Seule la CPAM peut contrôler (Cass. civ. 2e, 2026).</div>
+          <span class="item-delay delay-urgent">Si tentative patronale</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- PHASE 5 -->
+    <div class="phase">
+      <div class="phase-title"><span class="phase-num at-color">5</span>Consolidation et séquelles</div>
+
+      <div class="item" data-key="at-5-1" onclick="toggle(this)">
+        <div class="checkbox"></div>
+        <div class="item-content">
+          <div class="item-text">Contester la consolidation prématurée si l'état de santé n'est pas stabilisé</div>
+          <div class="item-sub">La CPAM fixe une date de consolidation. Si l'état n'est pas stabilisé, contester via le médecin traitant et la CRA.</div>
+          <span class="item-delay delay-normal">À la notification</span>
+        </div>
+      </div>
+
+      <div class="item" data-key="at-5-2" onclick="toggle(this)">
+        <div class="checkbox"></div>
+        <div class="item-content">
+          <div class="item-text">Vérifier le taux d'IPP fixé par le médecin-conseil CPAM</div>
+          <div class="item-sub">Si séquelles permanentes, la CPAM fixe un taux d'IPP (incapacité permanente partielle). Taux ≥ 10 % → rente ; < 10 % → capital.</div>
+          <span class="item-delay delay-normal">Après consolidation</span>
+        </div>
+      </div>
+
+      <div class="item" data-key="at-5-3" onclick="toggle(this)">
+        <div class="checkbox"></div>
+        <div class="item-content">
+          <div class="item-text">Contester le taux d'IPP si sous-estimé : expertise médicale contradictoire</div>
+          <div class="item-sub">Délai : 2 mois après notification du taux. Saisir le Tribunal judiciaire (pôle social) — prévoir un médecin expert de votre côté.</div>
+          <span class="item-delay delay-normal">2 mois après notification</span>
+        </div>
+      </div>
+
+      <div class="item" data-key="at-5-4" onclick="toggle(this)">
+        <div class="checkbox"></div>
+        <div class="item-content">
+          <div class="item-text">Explorer la faute inexcusable de l'employeur si les conditions sont réunies</div>
+          <div class="item-sub">L'employeur connaissait le danger et n'a pas agi → majoration de rente + indemnisation complémentaire. Délai de prescription : 2 ans après consolidation.</div>
+          <span class="item-delay delay-long">Avant 2 ans après conso.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- DOCUMENTS AT -->
+    <div class="docs-box">
+      <h4>📁 Documents à réunir — Dossier AT complet</h4>
+      <div class="doc-item"><span class="doc-icon">📄</span><span class="doc-name">Certificat Médical Initial (CMI) — volet salarié</span><span class="doc-note">Toutes les lésions décrites</span><span class="doc-req req-obl">Obligatoire</span></div>
+      <div class="doc-item"><span class="doc-icon">📄</span><span class="doc-name">Déclaration AT Cerfa 60-3682 ou accusé Ameli</span><span class="doc-note">Copie de ce qu'a envoyé l'employeur</span><span class="doc-req req-obl">Obligatoire</span></div>
+      <div class="doc-item"><span class="doc-icon">📄</span><span class="doc-name">Feuille d'AT (prise en charge soins)</span><span class="doc-note">Délivrée par l'employeur lors de la déclaration</span><span class="doc-req req-obl">Obligatoire</span></div>
+      <div class="doc-item"><span class="doc-icon">📋</span><span class="doc-name">Témoignages écrits des collègues présents</span><span class="doc-note">Datés et signés, avec coordonnées</span><span class="doc-req req-util">Très utile</span></div>
+      <div class="doc-item"><span class="doc-icon">📸</span><span class="doc-name">Photos du lieu et du matériel (horodatées)</span><span class="doc-note">Plan de situation, état du sol, EPI, machines</span><span class="doc-req req-util">Très utile</span></div>
+      <div class="doc-item"><span class="doc-icon">📋</span><span class="doc-name">Extrait du DUER (Document Unique Évaluation Risques)</span><span class="doc-note">Le risque doit y figurer — s'il n'y est pas, c'est un argument</span><span class="doc-req req-util">Très utile</span></div>
+      <div class="doc-item"><span class="doc-icon">📧</span><span class="doc-name">Échanges écrits avec l'employeur (mails, courriers)</span><span class="doc-note">Alertes préalables, refus de déclarer, réponses hiérarchiques</span><span class="doc-req req-util">Très utile</span></div>
+      <div class="doc-item"><span class="doc-icon">📊</span><span class="doc-name">Bulletins de salaire des 3 derniers mois</span><span class="doc-note">Calcul de la base de l'IJ et de la rente</span><span class="doc-req req-obl">Obligatoire</span></div>
+      <div class="doc-item"><span class="doc-icon">📄</span><span class="doc-name">Notifications CPAM (décision, taux IPP, consolidation)</span><span class="doc-note">Conserver TOUTES les notifications avec leurs dates</span><span class="doc-req req-obl">Obligatoire</span></div>
+      <div class="doc-item"><span class="doc-icon">📋</span><span class="doc-name">Comptes-rendus CSSCT / CSE mentionnant le risque</span><span class="doc-note">Preuve de connaissance du danger par l'employeur (faute inexcusable)</span><span class="doc-req req-util">Pour faute inexcusable</span></div>
+    </div>
+
+    <button class="btn-reset" onclick="resetPanel('at')">↺ Réinitialiser la checklist AT</button>
+  </div>
+
+  <!-- ═══ ONGLET MP TABLEAU ═══ -->
+  <div class="panel" id="panel-mp-t">
+    <div class="panel-hero">
+      <div class="hero-badge badge-mp-t">Maladie Professionnelle — Tableau</div>
+      <h2>MP reconnue via un tableau</h2>
+      <p>Les tableaux (1 à 100+) listent les maladies reconnues automatiquement si les conditions sont remplies. Pas besoin de prouver le lien : c'est une présomption d'origine.</p>
+    </div>
+
+    <div class="progress-wrap">
+      <div class="progress-label"><span>Progression du dossier</span><span id="prog-mp-t-txt">0 / 0</span></div>
+      <div class="progress-bar"><div class="progress-fill fill-mp-t" id="prog-mp-t" style="width:0%"></div></div>
+    </div>
+
+    <div class="info-box"><strong>ℹ Principe du tableau :</strong> Si la maladie figure dans un tableau ET que le salarié a exercé le travail désigné ET que le délai de prise en charge est respecté → reconnaissance <strong>automatique</strong>. Pas besoin de prouver le lien causal.</div>
+
+    <!-- PHASE 1 -->
+    <div class="phase">
+      <div class="phase-title"><span class="phase-num mp-t-color">1</span>Identifier le bon tableau</div>
+
+      <div class="item" data-key="mpt-1-1" onclick="toggle(this)">
+        <div class="checkbox"></div>
+        <div class="item-content">
+          <div class="item-text">Identifier le tableau correspondant à la pathologie</div>
+          <div class="item-sub">Ex : tableau 57 = TMS membres supérieurs, tableau 30 = amiante/mésothéliome, tableau 97 = affections psychiques. Consulter Ameli ou INRS.</div>
+          <span class="item-delay delay-urgent">Avant tout dépôt</span>
+        </div>
+      </div>
+
+      <div class="item" data-key="mpt-1-2" onclick="toggle(this)">
+        <div class="checkbox"></div>
+        <div class="item-content">
+          <div class="item-text">Vérifier que la maladie figure exactement dans la désignation du tableau</div>
+          <div class="item-sub">La désignation doit correspondre au diagnostic médical. Un terme trop général peut être refusé.</div>
+          <span class="item-delay delay-urgent">Avant dépôt</span>
+        </div>
+      </div>
+
+      <div class="item" data-key="mpt-1-3" onclick="toggle(this)">
+        <div class="checkbox"></div>
+        <div class="item-content">
+          <div class="item-text">Vérifier le délai de prise en charge (DPC) du tableau</div>
+          <div class="item-sub">Ex. tableau 57C : DPC = 1 an. La demande doit être déposée dans ce délai après la fin de l'exposition ou le diagnostic.</div>
+          <span class="item-delay delay-urgent">Critique</span>
+        </div>
+      </div>
+
+      <div class="item" data-key="mpt-1-4" onclick="toggle(this)">
+        <div class="checkbox"></div>
+        <div class="item-content">
+          <div class="item-text">Vérifier la durée minimale d'exposition exigée par le tableau</div>
+          <div class="item-sub">Certains tableaux exigent une durée minimum d'exposition (ex. 6 mois pour tableau 57). Reconstituer l'historique de carrière.</div>
+          <span class="item-delay delay-normal">Avant dépôt</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- PHASE 2 -->
+    <div class="phase">
+      <div class="phase-title"><span class="phase-num mp-t-color">2</span>Constitution du dossier</div>
+
+      <div class="item" data-key="mpt-2-1" onclick="toggle(this)">
+        <div class="checkbox"></div>
+        <div class="item-content">
+          <div class="item-text">Obtenir le certificat médical initial de MP auprès du médecin traitant ou spécialiste</div>
+          <div class="item-sub">Le médecin coche « maladie professionnelle » et cite le tableau. C'est la pièce de départ obligatoire.</div>
+          <span class="item-delay delay-urgent">1re étape</span>
+        </div>
+      </div>
+
+      <div class="item" data-key="mpt-2-2" onclick="toggle(this)">
+        <div class="checkbox"></div>
+        <div class="item-content">
+          <div class="item-text">Remplir le formulaire de déclaration MP (Cerfa 60-3950) avec le médecin</div>
+          <div class="item-sub">Ce formulaire comporte le CMI + la désignation du tableau. À envoyer à la CPAM en recommandé avec AR.</div>
+          <span class="item-delay delay-urgent">Dès diagnostic</span>
+        </div>
+      </div>
+
+      <div class="item" data-key="mpt-2-3" onclick="toggle(this)">
+        <div class="checkbox"></div>
+        <div class="item-content">
+          <div class="item-text">Reconstituer l'historique professionnel détaillé (postes, durées, expositions)</div>
+          <div class="item-sub">Contrat de travail, fiches de poste, bulletins de salaire, attestation employeur. La CPAM vérifiera l'exposition.</div>
+          <span class="item-delay delay-normal">À préparer</span>
+        </div>
+      </div>
+
+      <div class="item" data-key="mpt-2-4" onclick="toggle(this)">
+        <div class="checkbox"></div>
+        <div class="item-content">
+          <div class="item-text">Obtenir une attestation d'exposition professionnelle (si applicable)</div>
+          <div class="item-sub">L'employeur doit remettre une attestation d'exposition aux agents chimiques, physiques (bruit, vibrations) ou biologiques.</div>
+          <span class="item-delay delay-normal">Demander à l'employeur</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- PHASE 3 -->
+    <div class="phase">
+      <div class="phase-title"><span class="phase-num mp-t-color">3</span>Instruction CPAM</div>
+
+      <div class="item" data-key="mpt-3-1" onclick="toggle(this)">
+        <div class="checkbox"></div>
+        <div class="item-content">
+          <div class="item-text">La CPAM enquête sur les conditions d'exposition (questionnaire + enquête employeur)</div>
+          <div class="item-sub">Coopérer avec l'enquêteur CPAM et lui fournir tous les éléments. L'employeur sera aussi interrogé.</div>
+          <span class="item-delay delay-normal">90 jours</span>
+        </div>
+      </div>
+
+      <div class="item" data-key="mpt-3-2" onclick="toggle(this)">
+        <div class="checkbox"></div>
+        <div class="item-content">
+          <div class="item-text">Exercer le droit de consultation du dossier avant décision</div>
+          <div class="item-sub">Comme pour l'AT, le salarié peut consulter le dossier d'instruction et transmettre des observations.</div>
+          <span class="item-delay delay-normal">Avant décision</span>
+        </div>
+      </div>
+
+      <div class="item" data-key="mpt-3-3" onclick="toggle(this)">
+        <div class="checkbox"></div>
+        <div class="item-content">
+          <div class="item-text">En cas de refus : CRA puis Tribunal judiciaire (pôle social)</div>
+          <div class="item-sub">CRA dans les 2 mois du refus, puis TJ si CRA défavorable (2 mois supplémentaires).</div>
+          <span class="item-delay delay-normal">2 mois après refus</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- DOCUMENTS MP TABLEAU -->
+    <div class="docs-box" style="border-left-color:var(--vert)">
+      <h4 style="color:var(--vert)">📁 Documents à réunir — MP Tableau</h4>
+      <div class="doc-item"><span class="doc-icon">📄</span><span class="doc-name">Cerfa 60-3950 — Déclaration MP + CMI</span><span class="doc-note">Rempli par le médecin, signé par le patient</span><span class="doc-req req-obl">Obligatoire</span></div>
+      <div class="doc-item"><span class="doc-icon">📋</span><span class="doc-name">Tableau MP correspondant (numéro + désignation)</span><span class="doc-note">Imprimé ou référencé — prouver que la maladie y figure exactement</span><span class="doc-req req-obl">Obligatoire</span></div>
+      <div class="doc-item"><span class="doc-icon">📊</span><span class="doc-name">Historique de carrière complet (relevé CNAV)</span><span class="doc-note">Durées d'exposition par poste et par employeur</span><span class="doc-req req-obl">Obligatoire</span></div>
+      <div class="doc-item"><span class="doc-icon">📄</span><span class="doc-name">Attestation d'exposition professionnelle</span><span class="doc-note">Fournie par l'employeur (obligation légale)</span><span class="doc-req req-obl">Obligatoire</span></div>
+      <div class="doc-item"><span class="doc-icon">📄</span><span class="doc-name">Contrats de travail, fiches de poste</span><span class="doc-note">Pour établir la nature et la durée de l'exposition</span><span class="doc-req req-util">Très utile</span></div>
+      <div class="doc-item"><span class="doc-icon">📋</span><span class="doc-name">Résultats d'examens médicaux (bilans annuels, suivi santé travail)</span><span class="doc-note">Historique médical lié à l'exposition professionnelle</span><span class="doc-req req-util">Très utile</span></div>
+      <div class="doc-item"><span class="doc-icon">📋</span><span class="doc-name">Mesures d'exposition (bruit, produits chimiques, TMS)</span><span class="doc-note">Résultats de mesures sur le lieu de travail si disponibles</span><span class="doc-req req-util">Très utile</span></div>
+    </div>
+
+    <button class="btn-reset" onclick="resetPanel('mp-t')">↺ Réinitialiser la checklist MP Tableau</button>
+  </div>
+
+  <!-- ═══ ONGLET MP HORS TABLEAU ═══ -->
+  <div class="panel" id="panel-mp-ht">
+    <div class="panel-hero">
+      <div class="hero-badge badge-mp-ht">MP Hors Tableau — CRRMP</div>
+      <h2>MP sans tableau : la voie du CRRMP</h2>
+      <p>Quand la maladie ne figure dans aucun tableau (ou que les conditions ne sont pas toutes remplies), le Comité Régional de Reconnaissance des Maladies Professionnelles (CRRMP) peut reconnaître le lien. Dossier plus lourd, preuve à construire.</p>
+    </div>
+
+    <div class="progress-wrap">
+      <div class="progress-label"><span>Progression du dossier</span><span id="prog-mp-ht-txt">0 / 0</span></div>
+      <div class="progress-bar"><div class="progress-fill fill-mp-ht" id="prog-mp-ht" style="width:0%"></div></div>
+    </div>
+
+    <div class="alerte"><strong>⚠ Conditions CRRMP :</strong> Pour être recevable, le dossier doit démontrer (1) un taux d'IPP prévisible <strong>≥ 25 %</strong> (ou décès), ET (2) un lien <strong>direct et essentiel</strong> entre la maladie et l'activité professionnelle habituelle.</div>
+
+    <!-- PHASE 1 -->
+    <div class="phase">
+      <div class="phase-title"><span class="phase-num mp-ht-color">1</span>Évaluer la recevabilité</div>
+
+      <div class="item" data-key="mpht-1-1" onclick="toggle(this)">
+        <div class="checkbox"></div>
+        <div class="item-content">
+          <div class="item-text">Confirmer que la pathologie ne peut pas être couverte par un tableau (ou que les conditions ne sont pas réunies)</div>
+          <div class="item-sub">Consulter d'abord tous les tableaux. La voie CRRMP n'est ouverte que si la voie tableau est fermée.</div>
+          <span class="item-delay delay-urgent">Avant tout dépôt</span>
+        </div>
+      </div>
+
+      <div class="item" data-key="mpht-1-2" onclick="toggle(this)">
+        <div class="checkbox"></div>
+        <div class="item-content">
+          <div class="item-text">Évaluer le taux d'IPP prévisible avec le médecin traitant ou spécialiste</div>
+          <div class="item-sub">Taux ≥ 25 % requis. Demander au médecin une évaluation écrite du taux prévisible — c'est une condition d'accès au CRRMP.</div>
+          <span class="item-delay delay-urgent">Critique</span>
+        </div>
+      </div>
+
+      <div class="item" data-key="mpht-1-3" onclick="toggle(this)">
+        <div class="checkbox"></div>
+        <div class="item-content">
+          <div class="item-text">Réunir les preuves du lien direct et essentiel entre le travail et la maladie</div>
+          <div class="item-sub">Expositions documentées, témoignages, études scientifiques disponibles sur le lien pathologie/exposition.</div>
+          <span class="item-delay delay-normal">À préparer</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- PHASE 2 -->
+    <div class="phase">
+      <div class="phase-title"><span class="phase-num mp-ht-color">2</span>Constitution du dossier CRRMP</div>
+
+      <div class="item" data-key="mpht-2-1" onclick="toggle(this)">
+        <div class="checkbox"></div>
+        <div class="item-content">
+          <div class="item-text">Remplir le Cerfa 60-3950 et le transmettre à la CPAM (même formulaire que MP tableau)</div>
+          <div class="item-sub">La CPAM transmet ensuite au CRRMP. Ne pas envoyer directement au CRRMP — toujours passer par la CPAM.</div>
+          <span class="item-delay delay-urgent">1re étape</span>
+        </div>
+      </div>
+
+      <div class="item" data-key="mpht-2-2" onclick="toggle(this)">
+        <div class="checkbox"></div>
+        <div class="item-content">
+          <div class="item-text">Rédiger un rapport médical détaillé (par le médecin traitant ou spécialiste)</div>
+          <div class="item-sub">Le rapport doit décrire : diagnostic précis, chronologie de l'exposition, mécanisme scientifique du lien, taux IPP prévisible.</div>
+          <span class="item-delay delay-normal">Pièce maîtresse</span>
+        </div>
+      </div>
+
+      <div class="item" data-key="mpht-2-3" onclick="toggle(this)">
+        <div class="checkbox"></div>
+        <div class="item-content">
+          <div class="item-text">Constituer un dossier d'exposition professionnel complet et chronologique</div>
+          <div class="item-sub">Tous les postes occupés, durées, nature des expositions, produits utilisés. Témoignages d'anciens collègues si disponibles.</div>
+          <span class="item-delay delay-normal">À construire</span>
+        </div>
+      </div>
+
+      <div class="item" data-key="mpht-2-4" onclick="toggle(this)">
+        <div class="checkbox"></div>
+        <div class="item-content">
+          <div class="item-text">Joindre des études ou publications scientifiques reliant la pathologie à l'exposition</div>
+          <div class="item-sub">Articles Pubmed, rapports ANSES, INRS, IARC. Renforcer l'argumentaire scientifique du médecin.</div>
+          <span class="item-delay delay-normal">Renforce le dossier</span></div>
+      </div>
+
+      <div class="item" data-key="mpht-2-5" onclick="toggle(this)">
+        <div class="checkbox"></div>
+        <div class="item-content">
+          <div class="item-text">Obtenir les fiches de données de sécurité (FDS) des produits chimiques utilisés</div>
+          <div class="item-sub">L'employeur est tenu de les fournir. En cas de refus, saisir l'inspection du travail.</div>
+          <span class="item-delay delay-normal">Si exposition chimique</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- PHASE 3 -->
+    <div class="phase">
+      <div class="phase-title"><span class="phase-num mp-ht-color">3</span>Instruction CRRMP</div>
+
+      <div class="item" data-key="mpht-3-1" onclick="toggle(this)">
+        <div class="checkbox"></div>
+        <div class="item-content">
+          <div class="item-text">Le CRRMP réunit 3 médecins : médecin-conseil CPAM, médecin du travail, praticien hospitalier</div>
+          <div class="item-sub">Le comité dispose d'un délai de 4 mois pour statuer (circulaire CNAM 2026 : 3 mois). Le salarié peut être convoqué.</div>
+          <span class="item-delay delay-long">3 à 4 mois</span>
+        </div>
+      </div>
+
+      <div class="item" data-key="mpht-3-2" onclick="toggle(this)">
+        <div class="checkbox"></div>
+        <div class="item-content">
+          <div class="item-text">Exercer le droit au contradictoire avant la décision du CRRMP</div>
+          <div class="item-sub">Depuis la réforme 2019, le salarié peut consulter le dossier et transmettre des observations avant l'avis du CRRMP.</div>
+          <span class="item-delay delay-normal">Avant avis CRRMP</span>
+        </div>
+      </div>
+
+      <div class="item" data-key="mpht-3-3" onclick="toggle(this)">
+        <div class="checkbox"></div>
+        <div class="item-content">
+          <div class="item-text">En cas d'avis défavorable : contestation devant le Tribunal judiciaire possible</div>
+          <div class="item-sub">Délai : 2 mois après notification. Une expertise médicale judiciaire peut être demandée. Accompagnement CGT fortement recommandé.</div>
+          <span class="item-delay delay-normal">2 mois après refus</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- DOCUMENTS MP HORS TABLEAU -->
+    <div class="docs-box" style="border-left-color:var(--orange)">
+      <h4 style="color:var(--orange)">📁 Documents à réunir — MP Hors Tableau (CRRMP)</h4>
+      <div class="doc-item"><span class="doc-icon">📄</span><span class="doc-name">Cerfa 60-3950 — Déclaration MP</span><span class="doc-note">Même formulaire que la voie tableau</span><span class="doc-req req-obl">Obligatoire</span></div>
+      <div class="doc-item"><span class="doc-icon">📋</span><span class="doc-name">Rapport médical détaillé avec taux IPP prévisible ≥ 25 %</span><span class="doc-note">Rédigé par médecin traitant ou spécialiste — pièce centrale</span><span class="doc-req req-obl">Obligatoire</span></div>
+      <div class="doc-item"><span class="doc-icon">📊</span><span class="doc-name">Historique d'exposition professionnel complet</span><span class="doc-note">Tous postes, produits, durées — depuis le début de carrière</span><span class="doc-req req-obl">Obligatoire</span></div>
+      <div class="doc-item"><span class="doc-icon">📋</span><span class="doc-name">Fiches de données sécurité (FDS) des produits</span><span class="doc-note">Demander à l'employeur actuel et passé</span><span class="doc-req req-obl">Si chimiques</span></div>
+      <div class="doc-item"><span class="doc-icon">📄</span><span class="doc-name">Publications scientifiques / rapports ANSES / IARC</span><span class="doc-note">Prouver le lien causal reconnu par la science</span><span class="doc-req req-util">Fortement recommandé</span></div>
+      <div class="doc-item"><span class="doc-icon">📋</span><span class="doc-name">Témoignages d'anciens collègues (datés, signés)</span><span class="doc-note">Confirment l'exposition réelle au poste de travail</span><span class="doc-req req-util">Très utile</span></div>
+      <div class="doc-item"><span class="doc-icon">📋</span><span class="doc-name">Résultats de mesures d'exposition sur le lieu de travail</span><span class="doc-note">Campagnes de mesure, rapports inspection du travail, CARSAT</span><span class="doc-req req-util">Très utile</span></div>
+      <div class="doc-item"><span class="doc-icon">📄</span><span class="doc-name">Relevé de carrière CNAV complet</span><span class="doc-note">Reconstitue tous les employeurs et durées d'emploi</span><span class="doc-req req-obl">Obligatoire</span></div>
+      <div class="doc-item"><span class="doc-icon">📄</span><span class="doc-name">Compte-rendu médecine du travail (visites périodiques)</span><span class="doc-note">Peut attester l'exposition ou les symptômes précoces</span><span class="doc-req req-util">Très utile</span></div>
+    </div>
+
+    <button class="btn-reset" onclick="resetPanel('mp-ht')">↺ Réinitialiser la checklist MP Hors Tableau</button>
+  </div>
+
+</div>
+
+<script>
+const PANELS = ['at','mp-t','mp-ht'];
+
+function switchTab(id) {
+  PANELS.forEach(p => {
+    document.getElementById('panel-'+p).classList.toggle('active', p === id);
+    document.querySelector('.tab-btn.'+p).classList.toggle('active', p === id);
+  });
+}
+
+function toggle(el) {
+  el.classList.toggle('checked');
+  try { localStorage.setItem(el.dataset.key, el.classList.contains('checked') ? '1' : '0'); } catch(e) {}
+  updateProgress();
+}
+
+function updateProgress() {
+  PANELS.forEach(p => {
+    const items = document.querySelectorAll('#panel-'+p+' .item');
+    const checked = document.querySelectorAll('#panel-'+p+' .item.checked');
+    const total = items.length;
+    const done = checked.length;
+    const pct = total ? Math.round(done / total * 100) : 0;
+    const fill = document.getElementById('prog-'+p);
+    const txt = document.getElementById('prog-'+p+'-txt');
+    if (fill) fill.style.width = pct + '%';
+    if (txt) txt.textContent = done + ' / ' + total;
+  });
+}
+
+function resetPanel(p) {
+  if (!confirm('Réinitialiser toutes les cases cochées ?')) return;
+  document.querySelectorAll('#panel-'+p+' .item').forEach(el => {
+    el.classList.remove('checked');
+    try { localStorage.removeItem(el.dataset.key); } catch(e) {}
+  });
+  updateProgress();
+}
+
+// Restaurer l'état depuis localStorage
+document.querySelectorAll('.item[data-key]').forEach(el => {
+  try { if (localStorage.getItem(el.dataset.key) === '1') el.classList.add('checked'); } catch(e) {}
+});
+updateProgress();
+</script>
+</body>
+</html>
