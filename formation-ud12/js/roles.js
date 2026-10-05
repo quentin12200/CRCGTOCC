@@ -388,7 +388,7 @@ const CHARTE = [
       "Suivre le parcours de chaque syndiqué·e (changement d'employeur, intérim, emplois multiples, retraite…) pour éviter toute rupture d'adhésion",
       "Assurer la continuité actif / retraité : ne plus perdre deux syndiqué·es sur trois au départ en retraite",
       "Faire circuler l'information entre les structures, avec CoGiTiel comme outil de base",
-      "Cotisation : 1 % du salaire pour les actif·ves ; pour les retraité·es, au moins 0,5 % de la pension nette en tendant vers 1 % (le modèle de statuts 2024 retient 1 %)",
+      "Cotisation : 1 % net, pour toutes et tous — du salaire net (primes comprises) pour les actif·ves, de la pension nette pour les retraité·es",
       "Généraliser le prélèvement automatique ; aucune rétention des quotes-parts dues aux autres structures",
       "Chaque syndicat se dote d'une politique financière et d'une commission financière de contrôle, en toute transparence"
     ]
@@ -550,6 +550,10 @@ const QUIZ_POOL = [
     options: ["1 % du salaire net, primes comprises", "1 % du salaire brut", "Un montant fixe décidé par la fédération", "0,5 % du salaire net"],
     answer: "1 % du salaire net, primes comprises",
     explanation: "La cotisation mensuelle est égale à 1 % du salaire net, toutes primes comprises, ou de la pension ou retraite nette (art. 6)." },
+  { role: "tresorier", type: "vf",
+    question: "Un·e syndiqué·e retraité·e cotise 1 % de sa pension nette.",
+    answer: "Vrai",
+    explanation: "Le taux est le même pour tout le monde : 1 % net, du salaire pour les actif·ves, de la pension ou retraite nette (régime de base et complémentaire) pour les retraité·es (art. 6)." },
   { role: "ce", type: "qcm",
     question: "Qui approuve chaque année les comptes du syndicat ?",
     options: ["La commission exécutive", "Le congrès", "La CFC", "L'union départementale"],
