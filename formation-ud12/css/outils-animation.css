@@ -1,0 +1,150 @@
+/* Boîte à outils d'animation — s'appuie sur les tokens de occitanie.css */
+
+.ot-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1200;
+  background: rgba(10,14,22,.72);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 5vh 16px;
+  overflow-y: auto;
+}
+.ot-modal[hidden], .ot-pill[hidden], .ot-fullscreen[hidden] { display: none !important; }
+
+.ot-box {
+  width: 100%;
+  max-width: 860px;
+  background: var(--oc-fond-card);
+  color: var(--oc-texte);
+  border-radius: 12px;
+  border-top: 5px solid var(--oc-rouge);
+  box-shadow: 0 20px 60px rgba(0,0,0,.35);
+  padding: 1.5rem 1.75rem 1.75rem;
+  animation: otIn .2s ease;
+}
+@keyframes otIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+
+.ot-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
+.ot-head h2 { font-family: 'Anton', sans-serif; font-weight: 400; font-size: 1.5rem; letter-spacing: .03em; }
+.ot-close { background: none; border: 0; font-size: 1.9rem; line-height: 1; color: var(--oc-texte-muted); cursor: pointer; }
+.ot-close:hover { color: var(--oc-rouge); }
+
+.ot-tabs { display: flex; gap: .25rem; border-bottom: 1px solid var(--oc-border); margin-bottom: 1.4rem; flex-wrap: wrap; }
+.ot-tabs button {
+  background: none; border: 0; border-bottom: 3px solid transparent;
+  padding: .6rem .9rem; margin-bottom: -1px; cursor: pointer;
+  font-family: 'Archivo', sans-serif; font-size: .8rem; font-weight: 600;
+  letter-spacing: .06em; text-transform: uppercase; color: var(--oc-texte-muted);
+}
+.ot-tabs button:hover { color: var(--oc-texte); }
+.ot-tabs button.active { color: var(--oc-accent); border-bottom-color: var(--oc-accent); }
+
+.ot-panel { display: none; }
+.ot-panel.active { display: block; }
+
+/* Boutons */
+.ot-box button:not(.ot-close):not([data-tab]),
+.ot-card a,
+.ot-fs-actions button {
+  font-family: 'Archivo', sans-serif;
+  font-size: .76rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase;
+  background: var(--oc-fond-hover); color: var(--oc-texte);
+  border: 1px solid var(--oc-border); border-radius: 6px;
+  padding: .55rem .95rem; cursor: pointer; text-decoration: none;
+  display: inline-flex; align-items: center; justify-content: center;
+  transition: background .15s, color .15s, border-color .15s;
+}
+.ot-box button:not(.ot-close):not([data-tab]):hover,
+.ot-card a:hover,
+.ot-fs-actions button:hover { background: var(--oc-accent); border-color: var(--oc-accent); color: #fff; }
+.ot-box .ot-primary,
+.ot-card a.ot-primary { background: var(--oc-accent) !important; border-color: var(--oc-accent) !important; color: #fff !important; }
+.ot-box .ot-primary:hover { background: var(--oc-accent-dark) !important; }
+
+.ot-actions { display: flex; gap: .5rem; flex-wrap: wrap; align-items: center; margin-top: 1rem; }
+
+.ot-box input[type="number"], .ot-box input[type="text"], .ot-box textarea {
+  font-family: 'Archivo', sans-serif; font-size: .95rem;
+  background: var(--oc-fond); color: var(--oc-texte);
+  border: 1px solid var(--oc-border); border-radius: 6px; padding: .5rem .7rem;
+}
+.ot-box input:focus, .ot-box textarea:focus { outline: none; border-color: var(--oc-accent); box-shadow: 0 0 0 3px var(--oc-accent-muted); }
+
+/* Minuteur */
+.ot-presets { display: flex; gap: .4rem; flex-wrap: wrap; align-items: center; }
+.ot-custom { display: inline-flex; gap: .3rem; margin-left: auto; }
+.ot-custom input { width: 5rem; }
+.ot-timer {
+  font-family: 'Anton', sans-serif; font-size: clamp(4rem, 14vw, 7.5rem);
+  text-align: center; letter-spacing: .04em; line-height: 1.1;
+  margin: 1.2rem 0 .6rem; color: var(--oc-texte);
+  font-variant-numeric: tabular-nums;
+}
+.ot-timer.low, .ot-fs-time.low { color: var(--oc-rouge); }
+.ot-timer.done, .ot-fs-time.done { color: var(--oc-rouge); animation: otBlink 1s steps(2) infinite; }
+@keyframes otBlink { 50% { opacity: .25; } }
+.ot-timer-bar { height: 6px; background: var(--oc-border); border-radius: 3px; overflow: hidden; }
+.ot-timer-bar div { height: 100%; width: 0; background: var(--oc-jaune); transition: width .25s linear; }
+.ot-timer-label { width: 100%; margin-top: 1rem; }
+
+/* Tirage */
+.ot-label { display: block; font-size: .72rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--oc-accent); margin-bottom: .5rem; }
+.ot-box textarea { width: 100%; resize: vertical; line-height: 1.5; }
+.ot-inline { display: inline-flex; align-items: center; gap: .4rem; font-size: .85rem; color: var(--oc-texte-muted); }
+.ot-inline input { width: 4rem; }
+.ot-draw-result { margin-top: 1.25rem; }
+.ot-hint { color: var(--oc-texte-muted); font-size: .9rem; }
+.ot-picked {
+  font-family: 'Anton', sans-serif; font-size: clamp(2.2rem, 8vw, 3.6rem);
+  text-align: center; padding: 1.2rem; letter-spacing: .03em;
+  background: var(--oc-noir); color: var(--oc-jaune); border-left: 6px solid var(--oc-rouge);
+}
+.ot-picked.rolling { color: #fff; }
+.ot-groups { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: .75rem; }
+.ot-group { background: var(--oc-fond); border: 1px solid var(--oc-border-card); border-left: 3px solid var(--oc-accent); padding: .75rem .9rem; font-size: .92rem; line-height: 1.6; }
+.ot-group-title { font-family: 'Anton', sans-serif; letter-spacing: .04em; color: var(--oc-rouge); margin-bottom: .3rem; }
+
+/* Quiz & évaluation */
+.ot-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; }
+.ot-card {
+  background: var(--oc-fond); border: 1px solid var(--oc-border-card); border-top: 3px solid var(--oc-accent);
+  border-radius: 10px; padding: 1.1rem; display: flex; flex-direction: column; gap: .7rem;
+}
+.ot-card h3 { font-family: 'Anton', sans-serif; font-weight: 400; font-size: 1.1rem; letter-spacing: .02em; }
+.ot-card p { font-size: .85rem; color: var(--oc-texte-muted); line-height: 1.55; flex: 1; }
+.ot-card a { align-self: flex-start; }
+.ot-qr { background: #fff; padding: 8px; align-self: center; line-height: 0; border-radius: 6px; }
+.ot-qr img, .ot-qr canvas { display: block; }
+
+/* Pastille flottante */
+.ot-pill {
+  position: fixed; right: 16px; top: 108px; z-index: 950;
+  font-family: 'Anton', sans-serif; font-size: 1.05rem; letter-spacing: .05em;
+  background: var(--oc-noir); color: var(--oc-jaune);
+  border: 0; border-left: 4px solid var(--oc-rouge); border-radius: 4px;
+  padding: .45rem .9rem; cursor: pointer; box-shadow: 0 4px 16px rgba(0,0,0,.3);
+  font-variant-numeric: tabular-nums;
+}
+.ot-pill.low, .ot-pill.done { background: var(--oc-rouge); color: #fff; }
+
+/* Plein écran */
+.ot-fullscreen {
+  position: fixed; inset: 0; z-index: 1300;
+  background: var(--oc-noir); color: #fff;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1rem;
+  border-top: 10px solid var(--oc-rouge); border-bottom: 10px solid var(--oc-jaune);
+  padding: 16px;
+}
+.ot-fs-label { font-family: 'Archivo', sans-serif; font-size: clamp(1rem, 3vw, 1.8rem); color: var(--oc-jaune); text-align: center; letter-spacing: .04em; text-transform: uppercase; }
+.ot-fs-time { font-family: 'Anton', sans-serif; font-size: clamp(6rem, 28vw, 22rem); line-height: 1; font-variant-numeric: tabular-nums; }
+.ot-fs-actions { display: flex; gap: .6rem; }
+.ot-fs-actions button { background: rgba(255,255,255,.08); color: #fff; border-color: rgba(255,255,255,.25); }
+
+@media (max-width: 600px) {
+  .ot-box { padding: 1.1rem; }
+  .ot-custom { margin-left: 0; }
+  .ot-pill { top: auto; bottom: 120px; }
+}
+@media print { .ot-modal, .ot-pill, .ot-fullscreen, .ot-slide-btn { display: none !important; } }

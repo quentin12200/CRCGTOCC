@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Quiz Vie syndicale — CGT</title>
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/style.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --rouge: #E2001A; --rouge-dark: #C40017; --jaune: #FFD200; --fond: #101620; --card-bg: #172033; --accent: #1A5FAD; --accent-dark: #144D8E; --texte: #E6ECF5; --texte-muted: #7D8FA8; --border: #253047; --vert: #1DB954; --vert-bg: #0A2016; --rouge-bg: #200A0A; }
+    body { background: var(--fond); color: var(--texte); font-family: 'Inter', sans-serif; min-height: 100vh; display: flex; flex-direction: column; }
+    .topbar { background: #0C1220; border-bottom: 3px solid var(--rouge); padding: .75rem 1.5rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+    .topbar-title { font-family: 'Anton', sans-serif; font-size: 1rem; letter-spacing: .05em; color: #fff; }
+    .topbar a { font-size: .72rem; color: rgba(255,255,255,.8); text-decoration: none; border: 1px solid rgba(255,255,255,.3); padding: .25rem .6rem; transition: background .15s; }
+    .topbar a:hover { background: rgba(255,255,255,.1); }
+    .stripe { height: 5px; background: var(--jaune); }
+    .progress-bar-wrap { background: var(--card-bg); border-bottom: 1px solid var(--border); padding: .6rem 1.5rem; display: flex; align-items: center; gap: 1rem; }
+    .progress-track { flex: 1; height: 6px; background: var(--border); border-radius: 3px; }
+    .progress-fill { height: 100%; background: var(--accent); border-radius: 3px; transition: width .4s ease; }
+    .progress-label { font-size: .75rem; color: var(--texte-muted); white-space: nowrap; }
+    .scene { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 2rem 1.25rem; }
+    #intro { text-align: center; max-width: 520px; }
+    #intro .big-badge { background: var(--rouge); color: var(--jaune); font-family: 'Anton', sans-serif; font-size: 2.5rem; padding: 1rem 1.5rem; display: inline-block; letter-spacing: .1em; margin-bottom: 1.5rem; }
+    #intro h1 { font-family: 'Anton', sans-serif; font-size: 1.6rem; letter-spacing: .04em; margin-bottom: .75rem; }
+    #intro p { font-size: .9rem; color: var(--texte-muted); line-height: 1.6; margin-bottom: 1.5rem; }
+    #intro .meta { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-bottom: 2rem; }
+    #intro .meta span { font-size: .75rem; color: var(--texte-muted); border: 1px solid var(--border); padding: .3rem .75rem; }
+    #question-wrap { width: 100%; max-width: 680px; animation: fadeIn .3s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+    .q-num { font-size: .7rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--texte-muted); margin-bottom: .6rem; }
+    .q-text { font-family: 'Anton', sans-serif; font-size: clamp(1.2rem, 3vw, 1.7rem); line-height: 1.3; letter-spacing: .02em; margin-bottom: 1.5rem; color: var(--texte); }
+    .choices { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; }
+    .choice { background: var(--card-bg); border: 2px solid var(--border); border-radius: 8px; color: var(--texte); font-family: 'Inter', sans-serif; font-size: clamp(.85rem, 2.2vw, 1rem); padding: 1rem 1.1rem; text-align: left; cursor: pointer; line-height: 1.45; transition: border-color .2s, background .2s, transform .2s; display: flex; gap: .6rem; align-items: flex-start; }
+    .choice:hover:not(:disabled) { border-color: var(--accent); background: #1A2A45; transform: translateX(4px); }
+    .choice.correct { border-color: var(--vert); background: var(--vert-bg); color: #fff; }
+    .choice.wrong { border-color: var(--rouge); background: var(--rouge-bg); color: #fff; }
+    .choice.reveal-correct { border-color: var(--vert); background: var(--vert-bg); }
+    .choice:disabled { cursor: default; }
+    .choice-letter { font-family: 'Anton', sans-serif; font-size: .9rem; color: var(--texte-muted); flex-shrink: 0; margin-top: 1px; }
+    .choice.correct .choice-letter, .choice.reveal-correct .choice-letter { color: var(--vert); }
+    .choice.wrong .choice-letter { color: var(--rouge); }
+    .explication { margin-top: 1.25rem; padding: .85rem 1rem; font-size: .875rem; line-height: 1.6; border-left: 4px solid; border-radius: 0 6px 6px 0; display: none; }
+    .explication.show { display: block; }
+    .explication.ok { border-color: var(--vert); background: var(--vert-bg); color: #A8F0C4; }
+    .explication.ko { border-color: var(--rouge); background: var(--rouge-bg); color: #FF9FAB; }
+    .explication strong { color: #fff; }
+    .btn-suivant { margin-top: 1.5rem; background: var(--accent); color: #fff; border: none; border-radius: 6px; padding: .85rem 2rem; font-family: 'Inter', sans-serif; font-size: .9rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; cursor: pointer; display: none; transition: background .15s; }
+    .btn-suivant:hover { background: var(--accent-dark); }
+    .btn-suivant.show { display: inline-block; }
+    #resultats { text-align: center; max-width: 560px; animation: slideUp .4s ease; }
+    @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    .score-circle { width: 130px; height: 130px; border-radius: 50%; border: 6px solid var(--accent); display: flex; flex-direction: column; align-items: center; justify-content: center; margin: 0 auto 1.5rem; }
+    .score-circle .score-num { font-family: 'Anton', sans-serif; font-size: 2.2rem; color: var(--texte); line-height: 1; }
+    .score-circle .score-total { font-size: .75rem; color: var(--texte-muted); }
+    .score-badge { display: inline-block; font-family: 'Anton', sans-serif; font-size: .8rem; letter-spacing: .1em; padding: .3rem .9rem; margin-bottom: .75rem; border-radius: 4px; }
+    .badge-excellent { background: var(--vert); color: #000; }
+    .badge-bien { background: var(--jaune); color: #000; }
+    .badge-retrav { background: #444; color: #fff; }
+    .score-msg { font-family: 'Anton', sans-serif; font-size: 1.4rem; margin-bottom: .5rem; }
+    .score-sub { font-size: .875rem; color: var(--texte-muted); margin-bottom: 1.5rem; line-height: 1.6; }
+    .retenir { text-align: left; background: #141E30; border: 1px solid var(--border); border-left: 4px solid var(--jaune); border-radius: 0 6px 6px 0; padding: 1rem 1.25rem; margin-bottom: 1.5rem; }
+    .retenir h3 { font-family: 'Anton', sans-serif; font-size: .85rem; letter-spacing: .1em; color: var(--jaune); margin-bottom: .75rem; }
+    .retenir ul { list-style: none; }
+    .retenir ul li { font-size: .85rem; color: #ccc; line-height: 1.6; padding: .2rem 0 .2rem 1.2rem; position: relative; }
+    .retenir ul li::before { content: '→'; position: absolute; left: 0; color: var(--jaune); }
+    .recap { text-align: left; background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.25rem; margin-bottom: 1.5rem; font-size: .82rem; line-height: 1.7; }
+    .recap-item { display: flex; gap: .5rem; margin-bottom: .3rem; }
+    .recap-item .ok { color: var(--vert); font-weight: 700; }
+    .recap-item .ko { color: #FF6B7A; font-weight: 700; }
+    .result-actions { display: flex; gap: .75rem; flex-wrap: wrap; justify-content: center; }
+    .btn-refaire { background: var(--accent); color: #fff; border: none; border-radius: 6px; padding: .85rem 2rem; font-family: 'Inter', sans-serif; font-size: .9rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; cursor: pointer; transition: background .15s; }
+    .btn-refaire:hover { background: var(--accent-dark); }
+    .btn-modules { font-size: .8rem; color: var(--texte-muted); text-decoration: none; border: 1px solid var(--border); border-radius: 6px; padding: .75rem 1.25rem; transition: border-color .15s; }
+    .btn-modules:hover { border-color: var(--accent); color: var(--texte); }
+    .hidden { display: none !important; }
+    @media (max-width: 560px) { .choices { grid-template-columns: 1fr; } .topbar { padding: .65rem 1rem; } }
+  </style>
+</head>
+<body>
+<script src="/assets/cgt-ui.js"></script>
+<script>if(localStorage.getItem('cgt_stagiaire_auth')!=='ok'&&localStorage.getItem('cgt_auth')!=='ok'){location.replace('/login-stagiaire.html?from='+encodeURIComponent(location.pathname));}</script>
+
+<div class="topbar">
+  <span class="topbar-title">Quiz — Fonctionnement statutaire d'un syndicat</span>
+  <a href="/quiz/">← Modules quiz</a>
+</div>
+<div class="stripe"></div>
+
+<div class="progress-bar-wrap" id="progress-wrap" style="display:none">
+  <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+  <span class="progress-label" id="progress-label">1 / 15</span>
+</div>
+
+<div class="scene">
+
+  <div id="intro">
+    <div class="big-badge">CGT</div>
+    <h1>Quiz Vie syndicale<br>Fonctionnement statutaire</h1>
+    <p>15 questions sur les statuts, les instances (AG, congrès, CE, bureau), les rôles de chacun·e, la cotisation et les structures de la CGT.<br>Correction immédiate après chaque réponse.</p>
+    <div class="meta">
+      <span>⏱ ~10 minutes</span>
+      <span>15 questions</span>
+      <span>Correction immédiate</span>
+    </div>
+    <button class="btn-suivant show" onclick="demarrer()" style="display:inline-block">Commencer le quiz</button>
+  </div>
+
+  <div id="question-wrap" class="hidden">
+    <div class="q-num" id="q-num">Question 1 / 15</div>
+    <div class="q-text" id="q-text"></div>
+    <div class="choices" id="choices"></div>
+    <div class="explication" id="explication"></div>
+    <button class="btn-suivant" id="btn-suivant" onclick="suivant()">Question suivante →</button>
+  </div>
+
+  <div id="resultats" class="hidden">
+    <div class="score-circle">
+      <span class="score-num" id="score-num">0</span>
+      <span class="score-total" id="score-total">/ 15</span>
+    </div>
+    <div class="score-badge" id="score-badge"></div>
+    <div class="score-msg" id="score-msg"></div>
+    <div class="score-sub" id="score-sub"></div>
+    <div class="retenir">
+      <h3>À RETENIR</h3>
+      <ul>
+        <li>Les <strong>syndiqué·es réuni·es en AG ou en congrès</strong> sont souverain·es : la CE dirige entre deux congrès, le bureau anime au quotidien.</li>
+        <li>La cotisation statutaire est de <strong>1 % du salaire net, toutes primes comprises</strong> — elle ouvre droit à un crédit d'impôt de 66 %.</li>
+        <li>Chaque syndicat est doublement affilié : à sa <strong>fédération</strong> (branche) et à l'<strong>UL / UD</strong> (territoire), avec la répartition via <strong>CoGéTise</strong>.</li>
+      </ul>
+    </div>
+    <div class="recap" id="recap"></div>
+    <div class="result-actions">
+      <button class="btn-refaire" onclick="refaire()">Recommencer</button>
+      <a class="btn-modules" href="/quiz/">Retour modules</a>
+    </div>
+  </div>
+
+</div>
+
+<script src="/formation-ud12/js/questions-vie-syndicale.js"></script>
+<script>
+const QUESTIONS = window.QUESTIONS_VIE_SYNDICALE;
+
+let current = 0, score = 0, reponses = [];
+
+function demarrer() {
+  document.getElementById('intro').classList.add('hidden');
+  document.getElementById('progress-wrap').style.display = 'flex';
+  document.getElementById('question-wrap').classList.remove('hidden');
+  afficherQuestion();
+}
+
+function afficherQuestion() {
+  const q = QUESTIONS[current];
+  document.getElementById('q-num').textContent = `Question ${current + 1} / ${QUESTIONS.length}`;
+  document.getElementById('q-text').textContent = q.q;
+  const letters = ['A', 'B', 'C', 'D'];
+  document.getElementById('choices').innerHTML = q.choices.map((c, i) =>
+    `<button class="choice" onclick="repondre(${i})"><span class="choice-letter">${letters[i]}</span><span>${c}</span></button>`
+  ).join('');
+  document.getElementById('explication').className = 'explication';
+  document.getElementById('explication').innerHTML = '';
+  document.getElementById('btn-suivant').className = 'btn-suivant';
+  document.getElementById('progress-fill').style.width = (current / QUESTIONS.length * 100) + '%';
+  document.getElementById('progress-label').textContent = `${current + 1} / ${QUESTIONS.length}`;
+  document.getElementById('question-wrap').style.animation = 'none';
+  void document.getElementById('question-wrap').offsetWidth;
+  document.getElementById('question-wrap').style.animation = '';
+}
+
+function repondre(idx) {
+  const q = QUESTIONS[current];
+  const buttons = document.querySelectorAll('.choice');
+  buttons.forEach(b => b.disabled = true);
+  const isCorrect = idx === q.correct;
+  if (isCorrect) score++;
+  reponses.push({ q: q.q, correct: isCorrect, correctAnswer: q.choices[q.correct] });
+  buttons[idx].classList.add(isCorrect ? 'correct' : 'wrong');
+  if (!isCorrect) buttons[q.correct].classList.add('reveal-correct');
+  const expl = document.getElementById('explication');
+  expl.innerHTML = (isCorrect ? '✓ Bonne réponse ! ' : '✗ Incorrect. ') + q.explication;
+  expl.className = `explication show ${isCorrect ? 'ok' : 'ko'}`;
+  const btnS = document.getElementById('btn-suivant');
+  btnS.className = 'btn-suivant show';
+  btnS.textContent = current < QUESTIONS.length - 1 ? 'Question suivante →' : 'Voir les résultats →';
+}
+
+function suivant() {
+  current++;
+  if (current >= QUESTIONS.length) afficherResultats();
+  else afficherQuestion();
+}
+
+function afficherResultats() {
+  document.getElementById('question-wrap').classList.add('hidden');
+  document.getElementById('progress-fill').style.width = '100%';
+  document.getElementById('score-num').textContent = score;
+  const badge = document.getElementById('score-badge');
+  let msg, sub, badgeClass, badgeText;
+  const pct = score / QUESTIONS.length;
+  if (pct >= .8) { msg = 'Excellent !'; sub = 'Vous maîtrisez le fonctionnement statutaire du syndicat. Partagez-le avec vos camarades !'; badgeClass = 'badge-excellent'; badgeText = 'EXCELLENT'; }
+  else if (pct >= .6) { msg = 'Bien !'; sub = 'Bonne base. Revoyez les modules interactifs pour consolider les points manqués.'; badgeClass = 'badge-bien'; badgeText = 'BIEN'; }
+  else { msg = 'À retravailler.'; sub = 'Relisez les 3 points clés ci-dessous et le glossaire de la formation.'; badgeClass = 'badge-retrav'; badgeText = 'À RETRAVAILLER'; }
+  badge.className = `score-badge ${badgeClass}`;
+  badge.textContent = badgeText;
+  document.getElementById('score-msg').textContent = msg;
+  document.getElementById('score-sub').textContent = sub;
+  document.getElementById('recap').innerHTML = reponses.map((r, i) =>
+    `<div class="recap-item"><span class="${r.correct ? 'ok' : 'ko'}">${r.correct ? '✓' : '✗'}</span><span>Q${i+1} : ${r.q.substring(0, 60)}…${r.correct ? '' : ` <em style="color:#FF9FAB">→ ${r.correctAnswer}</em>`}</span></div>`
+  ).join('');
+  document.getElementById('resultats').classList.remove('hidden');
+  try { localStorage.setItem('cgt_quiz_vie_syndicale', JSON.stringify({ score: score, total: QUESTIONS.length, date: new Date().toISOString().slice(0,10), pct: Math.round(score/QUESTIONS.length*100) })); } catch(e) {}
+}
+
+function refaire() {
+  current = 0; score = 0; reponses = [];
+  document.getElementById('resultats').classList.add('hidden');
+  document.getElementById('question-wrap').classList.remove('hidden');
+  afficherQuestion();
+}
+</script>
+</body>
+</html>

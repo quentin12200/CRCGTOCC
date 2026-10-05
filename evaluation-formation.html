@@ -24,7 +24,7 @@
     const app = initializeApp(FIREBASE_CONFIG);
     const db = getDatabase(app);
 
-    const THEMES = [
+    let THEMES = [
       {
         id: 'atmp',
         label: 'Module AT/MP — Accidents du travail & maladies professionnelles',
@@ -51,6 +51,22 @@
         question: 'L\'animation de la formation a-t-elle favorisé votre compréhension et votre implication ?'
       },
     ];
+
+    // Formation évaluée : ?f=vie-syndicale pour la formation UD CGT Aveyron
+    const FORMATION = new URLSearchParams(location.search).get('f') === 'vie-syndicale' ? 'vie-syndicale' : null;
+    if (FORMATION === 'vie-syndicale') {
+      THEMES.splice(0, THEMES.length,
+        { id: 'statuts',    label: 'Fonctionnement statutaire & démocratie syndicale', question: 'Comprenez-vous mieux le rôle des statuts et des instances (AG, congrès, CE, bureau) ?' },
+        { id: 'roles',      label: 'Rôles : adhérent·es, élu·es, mandaté·es, responsables', question: 'Les rôles et responsabilités de chacun·e dans le syndicat vous semblent-ils clairs ?' },
+        { id: 'cotisations',label: 'Cotisations, CoGéTise & structures CGT', question: 'Avez-vous compris le circuit de la cotisation et l\'articulation syndicat / UL / UD / fédération ?' },
+        { id: 'supports',   label: 'Qualité des supports et des activités', question: 'Les supports et les modules interactifs étaient-ils clairs et utiles ?' },
+        { id: 'formateur',  label: 'Animation & pédagogie du formateur', question: 'L\'animation de la formation a-t-elle favorisé votre compréhension et votre implication ?' }
+      );
+      document.addEventListener('DOMContentLoaded', () => {
+        document.querySelector('.topbar h1').textContent = 'Évaluation — Formation vie syndicale';
+        document.title = 'Évaluation — Formation vie syndicale · CGT';
+      });
+    }
 
     let ratings = {};
 
@@ -80,6 +96,7 @@
         ratings,
         commentaire,
       };
+      if (FORMATION) data.formation = FORMATION;
 
       try {
         const newRef = push(ref(db, 'sessions/evaluations'));
