@@ -2,10 +2,10 @@
 <html lang="fr">
 <head>
   <script>if(localStorage.getItem('cgt_auth')!=='ok'){location.replace('/login.html?from='+encodeURIComponent(location.pathname));}</script>
+  <script>try{var t=localStorage.getItem('cgt_theme');if(t==='dark'||t==='light'){localStorage.setItem('theme',t);document.documentElement.setAttribute('data-theme',t);}}catch(e){}</script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AG et Congrès - Formation CGT</title>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css">
   <style>
     :root {
@@ -284,6 +284,11 @@
       }
     }
   </style>
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/occitanie.css">
 </head>
 <body>
   <header>
@@ -621,5 +626,6 @@
     // Initialiser la prévisualisation de l'ordre du jour
     updatePreview();
   </script>
+  <script src="js/occitanie.js"></script>
 </body>
 </html>
