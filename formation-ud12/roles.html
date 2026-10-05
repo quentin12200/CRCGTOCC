@@ -73,7 +73,7 @@
 
       <div class="slide-actions">
         <button class="toc-button" type="button" aria-controls="table-of-contents" aria-expanded="false">📋 Sommaire</button>
-        <button class="presentation-button" type="button" aria-pressed="false">🖥️ Mode projection</button>
+        <button class="presentation-button" type="button" aria-controls="projection" aria-expanded="false">🖥️ Mode projection</button>
         <button class="print-button" type="button">🖨️ Imprimer la fiche-mémo</button>
       </div>
     </div>
@@ -164,6 +164,29 @@
       <a class="back-link" href="index.html">← Retour aux slides</a>
     </div>
   </main>
+
+
+  <!-- Mode projection : diaporama plein écran pour l'animateur -->
+  <div id="projection" class="projection" role="dialog" aria-modal="true" aria-label="Mode projection" hidden>
+    <div class="proj-bar">
+      <div class="proj-tabs" role="tablist" aria-label="Contenu projeté">
+        <button type="button" class="proj-tab active" role="tab" aria-selected="true" data-deck="roles">Rôles</button>
+        <button type="button" class="proj-tab" role="tab" aria-selected="false" data-deck="quiz">Quiz en groupe</button>
+      </div>
+      <span id="proj-counter" class="proj-counter" aria-live="polite"></span>
+      <div class="proj-tools">
+        <button type="button" id="proj-fullscreen" title="Plein écran (F)">⛶ Plein écran</button>
+        <button type="button" id="proj-close" title="Quitter (Échap)">✖ Quitter</button>
+      </div>
+    </div>
+    <div id="proj-stage" class="proj-stage" aria-live="polite"></div>
+    <div class="proj-bar proj-bar--bottom">
+      <button type="button" id="proj-prev">◀ Précédent</button>
+      <button type="button" id="proj-reveal" class="proj-reveal">Révéler la réponse</button>
+      <button type="button" id="proj-next">Suivant ▶</button>
+      <p class="proj-help">→ / PageDown : révéler puis avancer · ← : reculer · Espace : révéler · F : plein écran · Échap : quitter</p>
+    </div>
+  </div>
 
   <script src="js/roles.js"></script>
   <script src="js/occitanie.js"></script>

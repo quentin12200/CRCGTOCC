@@ -651,24 +651,157 @@ document.addEventListener('DOMContentLoaded', function() {
     if (e.key === 'Escape' && toc.classList.contains('active')) { setToc(false); tocButton.focus(); }
   });
 
-  /* ---------- Projection & impression ---------- */
+  /* ---------- Mode projection (diaporama animateur) ---------- */
+  // Une diapo à la fois : la question d'abord, la réponse au 2e appui.
+  // Clavier / télécommande : → ou PageDown = avancer, ← ou PageUp = reculer,
+  // Espace ou Entrée = révéler, F = plein écran, Échap = quitter.
 
+  const proj = document.getElementById('projection');
+  const projStage = document.getElementById('proj-stage');
+  const projCounter = document.getElementById('proj-counter');
+  const projReveal = document.getElementById('proj-reveal');
+  const projPrev = document.getElementById('proj-prev');
+  const projNext = document.getElementById('proj-next');
+  const projTabs = proj.querySelectorAll('.proj-tab');
   const presBtn = document.querySelector('.presentation-button');
-  function setPresentation(on) {
-    document.body.classList.toggle('presentation', on);
-    presBtn.setAttribute('aria-pressed', String(on));
-    presBtn.textContent = on ? '✖ Quitter la projection' : '🖥️ Mode projection';
+
+  let deck = 'roles';
+  let slides = [];
+  let slideIndex = 0;
+  let revealed = false;
+  let lastFocus = null;
+
+  function buildDeck() {
+    if (deck === 'roles') {
+      // Respecte le filtre actif en mode exploration
+      const visibleIds = Array.from(roleCards).filter(c => !c.hidden).map(c => c.id.replace('role-', ''));
+      slides = ROLES.filter(r => visibleIds.includes(r.id));
+    } else {
+      slides = shuffle(QUIZ_POOL).slice(0, QUIZ_LENGTH).map(q => ({
+        ...q,
+        options: q.type === 'vf' ? ['Vrai', 'Faux'] : shuffle(q.options)
+      }));
+    }
+    slideIndex = 0;
   }
-  presBtn.addEventListener('click', () => {
-    const on = !document.body.classList.contains('presentation');
-    setPresentation(on);
+
+  function renderSlide() {
+    const item = slides[slideIndex];
+    projStage.innerHTML = '';
+    projCounter.textContent = `${slideIndex + 1} / ${slides.length}`;
+    projPrev.disabled = slideIndex === 0;
+    projNext.disabled = slideIndex === slides.length - 1 && revealed;
+    projReveal.textContent = revealed ? 'Masquer la réponse' : 'Révéler la réponse';
+
+    if (deck === 'roles') {
+      projStage.appendChild(el('div', { className: 'proj-head' }, [
+        el('span', { className: 'proj-icon', 'aria-hidden': 'true', text: item.icon }),
+        el('div', {}, [
+          el('span', { className: 'proj-cat', text: CATEGORIES[item.cat] }),
+          el('h2', { className: 'proj-title', text: item.title })
+        ])
+      ]));
+      projStage.appendChild(el('p', { className: 'proj-question', text: item.question }));
+      if (revealed) {
+        projStage.appendChild(el('div', { className: 'proj-answer' }, [
+          el('ul', { className: 'proj-list' }, item.missions.map(m => el('li', { text: m }))),
+          el('dl', { className: 'proj-meta' }, [
+            el('div', {}, [el('dt', { text: 'Qui élit ou désigne ?' }), el('dd', { text: item.designation })]),
+            el('div', {}, [el('dt', { text: 'Rend compte à' }), el('dd', { text: item.rendCompte })])
+          ]),
+          el('p', { className: 'proj-source', text: '📖 ' + item.source })
+        ]));
+      }
+    } else {
+      projStage.appendChild(el('span', { className: 'proj-cat', text: item.type === 'vf' ? 'Vrai ou faux ?' : 'Question' }));
+      projStage.appendChild(el('h2', { className: 'proj-title proj-title--quiz', text: item.question }));
+      const letters = 'ABCD';
+      projStage.appendChild(el('ol', { className: 'proj-options' + (item.type === 'vf' ? ' proj-options--vf' : '') },
+        item.options.map((o, i) => el('li', {
+          className: revealed ? (o === item.answer ? 'good' : 'bad') : ''
+        }, [el('span', { className: 'proj-letter', text: item.type === 'vf' ? '' : letters[i] }), document.createTextNode(o)]))));
+      if (revealed) {
+        projStage.appendChild(el('p', { className: 'proj-explanation', text: item.explanation }));
+      }
+    }
+  }
+
+  function goTo(i) {
+    if (i < 0 || i >= slides.length) return;
+    slideIndex = i;
+    revealed = false;
+    renderSlide();
+  }
+
+  // « Avancer » révèle d'abord la réponse, puis passe à la diapo suivante
+  function advance() {
+    if (!revealed) { revealed = true; renderSlide(); }
+    else goTo(slideIndex + 1);
+  }
+
+  function setDeck(name) {
+    deck = name;
+    projTabs.forEach(t => {
+      const on = t.dataset.deck === name;
+      t.classList.toggle('active', on);
+      t.setAttribute('aria-selected', String(on));
+    });
+    buildDeck();
+    revealed = false;
+    renderSlide();
+  }
+
+  function openProjection() {
+    lastFocus = document.activeElement;
+    proj.hidden = false;
+    document.body.classList.add('proj-open');
+    presBtn.setAttribute('aria-expanded', 'true');
+    setDeck(quizPanel.hidden ? 'roles' : 'quiz');
     try {
-      if (on && document.documentElement.requestFullscreen) document.documentElement.requestFullscreen().catch(() => {});
-      else if (!on && document.fullscreenElement) document.exitFullscreen();
+      if (proj.requestFullscreen) proj.requestFullscreen().catch(() => {});
     } catch (e) {}
-  });
-  document.addEventListener('fullscreenchange', () => {
-    if (!document.fullscreenElement) setPresentation(false);
+    projNext.focus();
+  }
+
+  function closeProjection() {
+    proj.hidden = true;
+    document.body.classList.remove('proj-open');
+    presBtn.setAttribute('aria-expanded', 'false');
+    try { if (document.fullscreenElement) document.exitFullscreen(); } catch (e) {}
+    if (lastFocus) lastFocus.focus();
+  }
+
+  presBtn.addEventListener('click', openProjection);
+  document.getElementById('proj-close').addEventListener('click', closeProjection);
+  document.getElementById('proj-fullscreen').addEventListener('click', toggleFullscreen);
+  projPrev.addEventListener('click', () => goTo(slideIndex - 1));
+  projNext.addEventListener('click', advance);
+  projReveal.addEventListener('click', () => { revealed = !revealed; renderSlide(); });
+  projTabs.forEach(t => t.addEventListener('click', () => setDeck(t.dataset.deck)));
+
+  function toggleFullscreen() {
+    try {
+      if (document.fullscreenElement) document.exitFullscreen();
+      else if (proj.requestFullscreen) proj.requestFullscreen().catch(() => {});
+    } catch (e) {}
+  }
+
+  document.addEventListener('keydown', e => {
+    if (proj.hidden) return;
+    // Laisse les boutons du bandeau réagir normalement à Entrée / Espace
+    const onButton = e.target.closest && e.target.closest('.proj-bar button');
+    switch (e.key) {
+      case 'ArrowRight': case 'PageDown': e.preventDefault(); advance(); break;
+      case 'ArrowLeft': case 'PageUp': e.preventDefault(); goTo(slideIndex - 1); break;
+      case ' ': case 'Enter':
+        if (onButton) return;
+        e.preventDefault(); revealed = !revealed; renderSlide(); break;
+      case 'Home': e.preventDefault(); goTo(0); break;
+      case 'End': e.preventDefault(); goTo(slides.length - 1); break;
+      case 'f': case 'F': toggleFullscreen(); break;
+      // En plein écran, le navigateur intercepte le 1er Échap pour quitter le plein écran
+      case 'Escape': closeProjection(); break;
+    }
   });
 
   // La fiche-mémo imprimée montre toutes les cartes ouvertes (voir @media print)
