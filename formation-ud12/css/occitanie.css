@@ -1,0 +1,789 @@
+/* ============================================================
+   Formation vie syndicale (UD CGT Aveyron)
+   Habillage aligné sur le design system CGT Occitanie
+   (/assets/style.css + page d'accueil formateurs).
+   Chargé en dernier sur chaque page : remappe les variables
+   d'origine et harmonise typographie, en-tête, cartes et boutons.
+   ============================================================ */
+
+/* ── Tokens ───────────────────────────────────────────────── */
+:root,
+html[data-theme="light"] {
+  --oc-rouge:        #E2001A;
+  --oc-rouge-dark:   #B8001A;
+  --oc-jaune:        #FFD200;
+  --oc-noir:         #0F0F0F;
+  --oc-accent:       #1A5FAD;
+  --oc-accent-dark:  #144D8E;
+  --oc-accent-muted: #E8F0FB;
+  --oc-fond:         #F4F6FA;
+  --oc-fond-card:    #FFFFFF;
+  --oc-fond-hover:   #EEF2F8;
+  --oc-texte:        #1A2540;
+  --oc-texte-muted:  #5A6A84;
+  --oc-border:       #D8DEE8;
+  --oc-border-card:  #E4E9F2;
+  --oc-footer:       #EEECEA;
+  --oc-shadow:       0 2px 8px rgba(26,95,173,.07);
+  --oc-shadow-hover: 0 8px 28px rgba(26,95,173,.14);
+
+  /* Variables d'origine remappées */
+  --cgt-red:        var(--oc-rouge);
+  --cgt-dark-red:   var(--oc-rouge-dark);
+  --cgt-light-red:  #FDECEE;
+  --cgt-red-rgb:    226, 0, 26;
+  --text-dark:      var(--oc-texte);
+  --text-light:     #FFFFFF;
+  --bg-light:       var(--oc-fond);
+  --card-bg:        var(--oc-fond-card);
+  --shadow:         var(--oc-shadow);
+  --body-bg:        var(--oc-fond);
+}
+
+html[data-theme="dark"],
+body.dark-theme {
+  --oc-accent:       #4A8FD4;
+  --oc-accent-dark:  #3A7DBF;
+  --oc-accent-muted: #162035;
+  --oc-fond:         #101620;
+  --oc-fond-card:    #172033;
+  --oc-fond-hover:   #1E2D47;
+  --oc-texte:        #E6ECF5;
+  --oc-texte-muted:  #7D8FA8;
+  --oc-border:       #253047;
+  --oc-border-card:  #1E2D47;
+  --oc-footer:       #0C111A;
+  --oc-shadow:       0 4px 20px rgba(0,0,0,.45);
+  --oc-shadow-hover: 0 8px 28px rgba(0,0,0,.55);
+
+  --cgt-light-red:  #2A1520;
+  --text-dark:      var(--oc-texte);
+  --bg-light:       var(--oc-fond);
+  --card-bg:        var(--oc-fond-card);
+  --shadow:         var(--oc-shadow);
+  --body-bg:        var(--oc-fond);
+}
+
+/* ── Base ─────────────────────────────────────────────────── */
+html, body {
+  background: var(--oc-fond) !important;
+}
+
+body {
+  font-family: 'Archivo', sans-serif !important;
+  color: var(--oc-texte) !important;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3,
+.modal-header h2,
+.toc-header h2 {
+  font-family: 'Anton', sans-serif;
+  font-weight: 400;
+  letter-spacing: .02em;
+  line-height: 1.2;
+}
+
+.glossary-term h3 {
+  font-family: 'Archivo', sans-serif;
+  font-weight: 600;
+  letter-spacing: 0;
+}
+
+button, input, select, textarea {
+  font-family: 'Archivo', sans-serif;
+}
+
+a { color: var(--oc-accent); }
+
+::selection { background: var(--oc-jaune); color: var(--oc-noir); }
+
+/* ── En-tête : bandeau rouge + bande jaune ─────────────────── */
+header {
+  background: var(--oc-rouge) !important;
+  color: #FFFFFF !important;
+  display: flex !important;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 1rem 2rem !important;
+  margin-bottom: 0 !important;
+  border-bottom: 5px solid var(--oc-jaune);
+  box-shadow: 0 2px 8px rgba(0,0,0,.18) !important;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+header img {
+  height: 56px !important;
+  width: auto;
+  margin: 0 !important;
+  background: #FFFFFF;
+  padding: 4px 6px;
+  display: block;
+}
+
+header .logo {
+  flex-shrink: 0;
+  padding-right: 1.25rem;
+  border-right: 2px solid rgba(255,255,255,.3);
+}
+
+header > img {
+  margin-right: 0 !important;
+}
+
+header .header-text {
+  flex: 1;
+  text-align: left !important;
+  padding-left: 1.25rem;
+  border-left: 2px solid rgba(255,255,255,.3);
+}
+
+header h1 {
+  font-family: 'Anton', sans-serif !important;
+  font-weight: 400 !important;
+  font-size: 1.25rem !important;
+  letter-spacing: .04em !important;
+  color: #FFFFFF !important;
+  margin: 0 !important;
+}
+
+header > h1 { flex: 1; }
+
+header h2 {
+  font-family: 'Archivo', sans-serif !important;
+  font-weight: 400 !important;
+  font-size: .82rem !important;
+  color: rgba(255,255,255,.8) !important;
+  letter-spacing: .02em !important;
+  margin-top: .2rem !important;
+}
+
+#edit-date-btn { color: #FFFFFF; }
+
+/* Lien retour vers l'espace formateurs (injecté) */
+.oc-back {
+  color: #FFFFFF !important;
+  text-decoration: none;
+  font-family: 'Anton', sans-serif;
+  font-size: .85rem;
+  letter-spacing: .05em;
+  padding: .35rem .8rem;
+  border: 1px solid rgba(255,255,255,.4);
+  border-radius: 4px;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  transition: background .15s, border-color .15s;
+}
+.oc-back:hover {
+  background: rgba(255,255,255,.12);
+  border-color: #FFFFFF;
+}
+
+/* Interrupteur de thème */
+.theme-switch-wrapper,
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  margin-left: 0 !important;
+}
+.slider {
+  background-color: rgba(0,0,0,.25) !important;
+}
+input:checked + .slider {
+  background-color: var(--oc-noir) !important;
+}
+.theme-icon {
+  color: #FFFFFF !important;
+  margin-left: 8px;
+}
+
+/* Bandeau organisateur : style « kicker » du hero Occitanie */
+.org-info {
+  position: static !important;
+  background: var(--oc-noir) !important;
+  color: var(--oc-jaune) !important;
+  font-size: .68rem;
+  font-weight: 700;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  padding: .7rem 1rem !important;
+  box-shadow: none !important;
+}
+
+/* Barre de progression haute */
+.top-progress-bar {
+  height: 5px !important;
+  margin-bottom: 0 !important;
+  background: var(--oc-border) !important;
+}
+.top-progress-indicator { background: var(--oc-jaune) !important; }
+.slide-counter-mini {
+  top: 10px !important;
+  right: 16px !important;
+  background: var(--oc-noir) !important;
+  color: var(--oc-jaune) !important;
+  font-family: 'Anton', sans-serif;
+  font-weight: 400 !important;
+  letter-spacing: .06em;
+  font-size: .8rem !important;
+  border-radius: 4px !important;
+  padding: .2rem .6rem !important;
+}
+
+/* ── Conteneurs / cartes ──────────────────────────────────── */
+#slides-container { padding-top: 2rem !important; }
+
+.slide { max-width: 980px !important; }
+
+.card,
+.statuts-container,
+.roles-container,
+.congres-section,
+.cotisations-section,
+.modules-navigation,
+.calculator,
+.statuts-quiz {
+  background: var(--oc-fond-card) !important;
+  color: var(--oc-texte) !important;
+  border: 1px solid var(--oc-border-card);
+  border-radius: 12px !important;
+  box-shadow: var(--oc-shadow) !important;
+}
+
+.congres-section,
+.cotisations-section {
+  transition: box-shadow .2s, transform .2s, border-color .2s !important;
+}
+.congres-section:hover,
+.cotisations-section:hover {
+  transform: translateY(-3px) !important;
+  box-shadow: var(--oc-shadow-hover) !important;
+  border-color: var(--oc-accent);
+}
+
+.card { padding: 2rem 2.2rem !important; }
+
+.card-header {
+  border-bottom: 1px solid var(--oc-border);
+  padding-bottom: 1rem;
+  gap: .75rem;
+}
+
+.card-header h2,
+.statuts-intro h2,
+.roles-intro h2,
+.congres-header h2,
+.congres-header h3,
+.cotisations-header h2,
+.cotisations-header h3,
+.modules-navigation h3,
+.statut-info h3 {
+  color: var(--oc-texte) !important;
+  font-family: 'Anton', sans-serif !important;
+  font-weight: 400 !important;
+  letter-spacing: .02em;
+}
+
+.card-header h2 {
+  font-size: 1.55rem !important;
+  border-left: 5px solid var(--oc-rouge);
+  padding-left: .8rem;
+}
+
+.statuts-intro,
+.roles-intro {
+  border-bottom: 1px solid var(--oc-border) !important;
+}
+.statuts-intro h2,
+.roles-intro h2 { font-size: 1.9rem !important; }
+
+.congres-header,
+.cotisations-header {
+  border-bottom: 2px solid var(--oc-rouge) !important;
+}
+
+/* Libellé de section façon « section-label » Occitanie */
+.activity-container h3,
+.modules-navigation h3 {
+  font-family: 'Archivo', sans-serif !important;
+  font-size: .72rem !important;
+  font-weight: 700 !important;
+  letter-spacing: .14em !important;
+  text-transform: uppercase;
+  color: var(--oc-accent) !important;
+  display: flex;
+  align-items: center;
+  gap: .7rem;
+}
+.activity-container h3::after,
+.modules-navigation h3::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--oc-border);
+}
+
+.objectif {
+  background: var(--oc-fond-card) !important;
+  border: 1px solid var(--oc-border-card);
+  border-left: 5px solid var(--oc-rouge) !important;
+  border-radius: 0 8px 8px 0 !important;
+  color: var(--oc-texte) !important;
+  font-weight: 600 !important;
+  line-height: 1.6;
+  box-shadow: var(--oc-shadow);
+}
+
+.activity-content {
+  background: var(--oc-fond) !important;
+  color: var(--oc-texte) !important;
+  border-left: 4px solid var(--oc-accent) !important;
+  border-radius: 0 8px 8px 0 !important;
+  box-shadow: none !important;
+  line-height: 1.7;
+}
+
+.statut-info,
+.statut-citation {
+  background: var(--oc-fond) !important;
+  border-left-color: var(--oc-rouge) !important;
+  box-shadow: none !important;
+}
+.statut-content strong { color: var(--oc-rouge) !important; }
+
+.timeline-content {
+  background: var(--oc-fond) !important;
+  border: 1px solid var(--oc-border-card);
+}
+.timeline-content h3 { color: var(--oc-texte) !important; font-family: 'Anton', sans-serif; font-weight: 400; }
+.timeline-content:hover { box-shadow: var(--oc-shadow-hover) !important; border-color: var(--oc-accent); }
+
+/* Gestion du temps */
+.time-control {
+  border-top: 1px dashed var(--oc-border);
+  padding-top: 1.1rem;
+  margin-top: 2rem !important;
+}
+.time-input, .time-output {
+  color: var(--oc-texte-muted) !important;
+  font-style: normal !important;
+  font-size: .88rem;
+}
+.time-output span { color: var(--oc-texte); font-weight: 700; }
+
+input[type="time"],
+input[type="text"],
+input[type="number"],
+input[type="date"]:not(#date-picker),
+select,
+textarea,
+.ordre-jour-item input,
+.form-group input {
+  background: var(--oc-fond-card) !important;
+  color: var(--oc-texte) !important;
+  border: 1px solid var(--oc-border) !important;
+  border-radius: 6px !important;
+  padding: .45rem .65rem;
+}
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--oc-accent) !important;
+  box-shadow: 0 0 0 3px var(--oc-accent-muted) !important;
+}
+
+/* ── Boutons ──────────────────────────────────────────────── */
+.slide-actions button,
+.congres-actions button,
+.cotisations-actions button,
+.statuts-actions button,
+.mode-btn,
+.controls button {
+  font-family: 'Archivo', sans-serif !important;
+  font-size: .76rem !important;
+  font-weight: 600 !important;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  background: var(--oc-fond-hover) !important;
+  color: var(--oc-texte) !important;
+  border: 1px solid var(--oc-border) !important;
+  border-radius: 6px !important;
+  padding: .55rem .95rem !important;
+  box-shadow: none !important;
+  animation: none !important;
+  transition: background .15s, color .15s, border-color .15s, transform .15s !important;
+}
+
+.slide-actions button:hover,
+.congres-actions button:hover,
+.cotisations-actions button:hover,
+.statuts-actions button:hover,
+.mode-btn:hover,
+.controls button:hover {
+  background: var(--oc-accent) !important;
+  border-color: var(--oc-accent) !important;
+  color: #FFFFFF !important;
+  transform: translateY(-1px) !important;
+}
+
+.slide-actions .module-button,
+.mode-btn.active,
+.controls #next-btn {
+  background: var(--oc-accent) !important;
+  border-color: var(--oc-accent) !important;
+  color: #FFFFFF !important;
+}
+.slide-actions .module-button:hover,
+.controls #next-btn:hover {
+  background: var(--oc-accent-dark) !important;
+}
+
+.back-button {
+  display: inline-flex !important;
+  align-items: center;
+  gap: .45rem;
+  background: var(--oc-accent) !important;
+  color: #FFFFFF !important;
+  font-size: .8rem;
+  font-weight: 600;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: .65rem 1.1rem !important;
+  border-radius: 6px !important;
+}
+.back-button:hover { background: var(--oc-accent-dark) !important; }
+
+.ordre-jour-item {
+  background: var(--oc-fond) !important;
+  border-left: 4px solid var(--oc-accent) !important;
+}
+.ordre-jour-item button {
+  background: var(--oc-rouge) !important;
+  border-radius: 6px !important;
+}
+.vote-option,
+.flow-step {
+  background: var(--oc-fond) !important;
+  border: 1px solid var(--oc-border-card);
+}
+.vote-option:hover,
+.vote-option.selected {
+  background: var(--oc-accent-muted) !important;
+  border-color: var(--oc-accent) !important;
+}
+
+/* Barre de navigation basse (diaporama) */
+.controls {
+  background: var(--oc-fond-card) !important;
+  border-top: 1px solid var(--oc-border);
+  box-shadow: 0 -4px 16px rgba(0,0,0,.08) !important;
+  padding: .75rem 1rem !important;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: .5rem;
+}
+.controls button { margin: 0 !important; }
+
+body > .progress-bar {
+  height: 4px !important;
+  bottom: auto !important;
+  top: auto;
+  background: var(--oc-border) !important;
+}
+body > .progress-bar .progress-indicator { background: var(--oc-rouge) !important; }
+
+/* ── Navigation modules (fin de diaporama) ─────────────────── */
+.modules-navigation {
+  max-width: 980px !important;
+  text-align: left !important;
+  padding: 1.75rem !important;
+}
+.modules-buttons {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem !important;
+}
+.module-nav-button {
+  width: auto !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  gap: .9rem;
+  padding: .9rem 1rem !important;
+  background: var(--oc-fond-card) !important;
+  border: 1px solid var(--oc-border-card) !important;
+  border-left: 3px solid var(--oc-accent) !important;
+  border-radius: 0 !important;
+  color: var(--oc-texte) !important;
+  box-shadow: 0 1px 3px rgba(0,0,0,.04);
+  transition: border-left-color .15s, box-shadow .15s !important;
+}
+.module-nav-button:hover {
+  transform: none !important;
+  border-left-color: var(--oc-rouge) !important;
+  background: var(--oc-fond-card) !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,.09) !important;
+}
+.module-icon {
+  font-size: 1.2rem !important;
+  margin: 0 !important;
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--oc-fond);
+  border: 1px solid var(--oc-border);
+}
+.module-title {
+  text-align: left !important;
+  font-size: .875rem;
+  font-weight: 600 !important;
+}
+
+/* ── Sommaire latéral ─────────────────────────────────────── */
+.toc {
+  background: var(--oc-fond-card) !important;
+  color: var(--oc-texte) !important;
+  border-left: 5px solid var(--oc-jaune);
+}
+.toc-header {
+  background: var(--oc-rouge) !important;
+  color: #FFFFFF !important;
+}
+.toc-header h2 { font-size: 1.2rem; letter-spacing: .05em; }
+.close-toc { color: #FFFFFF !important; }
+.toc-content li { border-bottom-color: var(--oc-border) !important; }
+.toc-content a {
+  color: var(--oc-texte) !important;
+  font-size: .9rem;
+  border-left: 3px solid transparent;
+  border-radius: 0 !important;
+}
+.toc-content a:hover {
+  background: var(--oc-accent-muted) !important;
+  color: var(--oc-accent) !important;
+  border-left-color: var(--oc-accent);
+}
+
+/* ── Modales (ressources, glossaire) ───────────────────────── */
+.modal { background: rgba(10,14,22,.72) !important; }
+.modal-content {
+  background: var(--oc-fond-card) !important;
+  color: var(--oc-texte) !important;
+  border-radius: 12px !important;
+  border-top: 5px solid var(--oc-rouge);
+}
+.modal-header {
+  background: var(--oc-fond-card) !important;
+  border-bottom: 1px solid var(--oc-border) !important;
+}
+.close-modal { color: var(--oc-texte-muted) !important; }
+.close-modal:hover { color: var(--oc-rouge) !important; }
+
+.resources-category {
+  background: var(--oc-fond) !important;
+  border: 1px solid var(--oc-border-card);
+  box-shadow: none !important;
+}
+.resources-category h3 {
+  background: var(--oc-fond) !important;
+  color: var(--oc-accent) !important;
+  font-family: 'Archivo', sans-serif !important;
+  font-size: .72rem !important;
+  font-weight: 700 !important;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  border-bottom: 2px solid var(--oc-accent) !important;
+}
+.resources-list a {
+  background: var(--oc-fond-card) !important;
+  color: var(--oc-texte) !important;
+  border: 1px solid var(--oc-border-card);
+  border-left: 3px solid var(--oc-accent);
+  border-radius: 0 !important;
+  font-size: .875rem;
+}
+.resources-list a:hover {
+  border-left-color: var(--oc-rouge);
+  transform: none !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,.09);
+}
+
+.glossary-search input {
+  border-radius: 6px !important;
+  font-size: 1rem !important;
+}
+.letter {
+  background: var(--oc-fond) !important;
+  color: var(--oc-texte);
+  border: 1px solid var(--oc-border);
+  border-radius: 6px !important;
+  box-shadow: none !important;
+  font-size: .9rem !important;
+}
+.letter.active,
+.letter:hover {
+  background: var(--oc-accent) !important;
+  border-color: var(--oc-accent);
+  color: #FFFFFF !important;
+  transform: none !important;
+}
+.glossary-term {
+  background: var(--oc-fond-card) !important;
+  border: 1px solid var(--oc-border-card) !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+}
+.glossary-term h3 {
+  background: var(--oc-fond-card) !important;
+  color: var(--oc-texte) !important;
+  border-left: 3px solid var(--oc-accent) !important;
+  font-size: 1rem !important;
+}
+.glossary-term h3::after { color: var(--oc-accent) !important; }
+.glossary-term:hover h3,
+.glossary-term.active h3 {
+  background: var(--oc-accent-muted) !important;
+  border-left-color: var(--oc-rouge) !important;
+}
+.definition {
+  background: var(--oc-fond) !important;
+  color: var(--oc-texte) !important;
+  font-size: .95rem !important;
+}
+.glossary-list::-webkit-scrollbar-thumb,
+.resources-list::-webkit-scrollbar-thumb { background: var(--oc-accent) !important; }
+
+/* ── Rôles : cartes retournables ───────────────────────────── */
+.role-card {
+  border: 1px solid var(--oc-border-card);
+  border-radius: 12px !important;
+  box-shadow: var(--oc-shadow) !important;
+}
+.role-front { background: var(--oc-fond-card) !important; border-top: 4px solid var(--oc-rouge); }
+.role-back { background: var(--oc-fond-card) !important; border-top: 4px solid var(--oc-accent); }
+
+/* ── Pied de page (injecté) ────────────────────────────────── */
+.oc-footer {
+  border-top: 1px solid var(--oc-border);
+  background: var(--oc-footer);
+  padding: 1.1rem 1.5rem;
+  text-align: center;
+  font-size: .73rem;
+  color: var(--oc-texte-muted);
+  letter-spacing: .02em;
+  margin-top: 2.5rem;
+}
+.oc-footer strong { color: var(--oc-rouge); }
+.oc-footer a { color: var(--oc-rouge); text-decoration: underline; }
+body:has(> .controls) .oc-footer { margin-bottom: 64px; }
+
+/* ── Responsive ───────────────────────────────────────────── */
+@media (max-width: 768px) {
+  header {
+    flex-direction: row !important;
+    flex-wrap: wrap;
+    padding: .75rem 1rem !important;
+    gap: .75rem;
+    text-align: left !important;
+  }
+  header img { height: 44px !important; }
+  header .header-text { flex-basis: calc(100% - 80px); border-left: 0; padding-left: 0; }
+  header .logo { border-right: 0; padding-right: 0; }
+  header h1 { font-size: 1.05rem !important; }
+  .oc-back { font-size: .75rem; padding: .3rem .6rem; }
+  .card { padding: 1.25rem !important; }
+  .card-header h2 { font-size: 1.25rem !important; }
+  .controls button { padding: .5rem .7rem !important; font-size: .7rem !important; }
+}
+
+@media print {
+  .oc-back, .oc-footer { display: none !important; }
+  header { position: static; }
+}
+
+/* Les ancres/slides ne passent pas sous l'en-tête collant */
+.slide, section[id] { scroll-margin-top: 110px; }
+html[data-theme="dark"], html:has(body.dark-theme) { color-scheme: dark; }
+
+/* Interrupteur de thème des modules (classe .switch non définie à l'origine :
+   le curseur débordait sur tout l'en-tête) */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 48px;
+  height: 24px;
+  flex-shrink: 0;
+}
+.switch input { opacity: 0; width: 0; height: 0; position: absolute; }
+.switch .slider { border-radius: 34px; }
+
+/* Boutons d'action principaux : style « btn-ouvrir » Occitanie */
+.reveal-btn,
+.hide-btn,
+.roles-actions button,
+.quiz-controls button,
+#check-answers,
+#reset-activity,
+button[onclick^="addItem"],
+button[onclick^="simulateVote"],
+button[onclick^="calculerCotisation"],
+button[onclick^="animateChart"] {
+  font-family: 'Archivo', sans-serif !important;
+  font-size: .78rem !important;
+  font-weight: 600 !important;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  background: var(--oc-accent) !important;
+  color: #FFFFFF !important;
+  border: 1px solid var(--oc-accent) !important;
+  border-radius: 6px !important;
+  padding: .6rem 1.1rem !important;
+  cursor: pointer;
+  box-shadow: none !important;
+  transition: background .15s, transform .15s !important;
+}
+.reveal-btn:hover,
+.hide-btn:hover,
+.roles-actions button:hover,
+.quiz-controls button:not(:disabled):hover,
+#check-answers:hover,
+#reset-activity:hover,
+button[onclick^="addItem"]:hover,
+button[onclick^="simulateVote"]:hover,
+button[onclick^="calculerCotisation"]:hover,
+button[onclick^="animateChart"]:hover {
+  background: var(--oc-accent-dark) !important;
+  transform: translateY(-1px) !important;
+}
+.hide-btn,
+#reset-activity,
+#hide-all-btn,
+#back-to-slides,
+button[onclick^="addItem"] {
+  background: var(--oc-fond-hover) !important;
+  color: var(--oc-texte) !important;
+  border-color: var(--oc-border) !important;
+}
+.hide-btn:hover,
+#reset-activity:hover,
+#hide-all-btn:hover,
+#back-to-slides:hover,
+button[onclick^="addItem"]:hover {
+  background: var(--oc-accent) !important;
+  border-color: var(--oc-accent) !important;
+  color: #FFFFFF !important;
+}
+.quiz-controls button:disabled { opacity: .45; cursor: not-allowed; }
+
+.role-front h3,
+.role-back h3 { color: var(--oc-texte) !important; font-family: 'Anton', sans-serif; font-weight: 400; }
