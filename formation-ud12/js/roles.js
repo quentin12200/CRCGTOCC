@@ -18,17 +18,17 @@ const ROLES = [
     title: "Adhérent·e",
     icon: "🧑‍🤝‍🧑",
     question: "Quels sont les droits et devoirs d'un·e adhérent·e CGT ?",
-    designation: "Adhère librement au syndicat de son entreprise ou de sa profession et y cotise.",
-    rendCompte: "Décide avec les autres syndiqué·es, en assemblée générale et en congrès.",
+    designation: "Tout·e salarié·e ou ancien·ne salarié·e, sans distinction de statut, d'opinion politique, religieuse ou philosophique, ni de nationalité.",
+    rendCompte: "Décide avec les autres syndiqué·es : le congrès des syndiqué·es est l'instance souveraine.",
     missions: [
-      "Participe à la vie démocratique du syndicat",
-      "Vote lors des assemblées générales et des congrès",
-      "Contribue financièrement par sa cotisation",
-      "Est informé·e et consulté·e sur l'activité et les décisions",
-      "Peut être candidat·e aux responsabilités syndicales",
-      "Diffuse les valeurs et les revendications de la CGT"
+      "Droit : s'exprimer librement — les syndiqué·es sont égaux, libres et responsables",
+      "Droit : être informé·e et participer aux formations syndicales",
+      "Droit : participer à toutes les décisions sur l'orientation du syndicat",
+      "Devoir : respecter les orientations et les règles de vie de la CGT",
+      "Devoir : ne pas porter atteinte aux intérêts et à l'image de la CGT",
+      "Devoir : payer régulièrement sa cotisation (1 % du salaire ou de la pension nette) — sans cotisation à jour, on ne peut pas se prévaloir du syndicat"
     ],
-    source: "Statuts du syndicat et statuts confédéraux"
+    source: "Modèle de statuts de syndicat CGT (2024), art. 1, 5 et 6"
   },
   {
     id: "congres",
@@ -36,16 +36,17 @@ const ROLES = [
     title: "Congrès / Assemblée générale",
     icon: "🏛️",
     question: "Pourquoi dit-on que le congrès est l'instance souveraine du syndicat ?",
-    designation: "Réunit l'ensemble des syndiqué·es (ou leurs délégué·es).",
-    rendCompte: "Les syndiqué·es elles-mêmes et eux-mêmes : c'est l'instance la plus haute.",
+    designation: "Le congrès réunit tous les syndiqué·es à jour de leurs cotisations. Il est convoqué par la CE, au moins un mois à l'avance, avec l'ordre du jour.",
+    rendCompte: "Aux syndiqué·es elles-mêmes et eux-mêmes : c'est l'instance la plus haute.",
     missions: [
-      "Définit les orientations et les revendications du syndicat",
-      "Adopte et modifie les statuts",
+      "Débat de l'activité, de l'orientation et des finances du syndicat",
+      "Se prononce par un vote (à mains levées ou à bulletins secrets) sur les rapports présentés",
       "Élit la commission exécutive et la commission financière de contrôle",
-      "Examine le rapport d'activité et le rapport financier, et donne quitus",
-      "Se réunit à la périodicité fixée par les statuts"
+      "Est le seul à pouvoir modifier les statuts (majorité des deux tiers)",
+      "Entre deux congrès, une assemblée générale est convoquée par la CE au moins une fois par an",
+      "Un congrès extraordinaire peut être demandé par la CE ou par au moins un tiers des syndiqué·es"
     ],
-    source: "Statuts du syndicat"
+    source: "Modèle de statuts de syndicat CGT (2024), art. 7 et 11"
   },
   {
     id: "ce",
@@ -53,16 +54,17 @@ const ROLES = [
     title: "Commission exécutive",
     icon: "🧩",
     question: "Quel est le rôle de la commission exécutive (CE) ?",
-    designation: "Élue par le congrès.",
+    designation: "Élue par le congrès, parmi les syndiqué·es à jour de leurs cotisations (les membres sortants sont rééligibles).",
     rendCompte: "Au congrès.",
     missions: [
-      "Dirige le syndicat entre deux congrès",
-      "Met en œuvre les orientations décidées en congrès",
-      "Prend les décisions politiques et stratégiques",
-      "Élit en son sein le bureau, le ou la secrétaire général·e et le ou la trésorier·ère",
-      "Contrôle l'activité du bureau"
+      "Dirige le syndicat entre deux congrès, avec les pouvoirs les plus étendus dans le cadre des statuts et des orientations du congrès",
+      "Se réunit au moins une fois par mois et décide à la majorité (moitié des voix plus une)",
+      "Élit le bureau syndical, composé au minimum d'un·e secrétaire général·e et d'un·e trésorier·ère",
+      "Approuve chaque année les comptes arrêtés par le bureau",
+      "Convoque le congrès et les assemblées générales",
+      "Peut suspendre ou exclure un·e syndiqué·e pour violation grave des statuts, après l'avoir entendu·e (appel possible devant l'AG ou le congrès)"
     ],
-    source: "Statuts du syndicat"
+    source: "Modèle de statuts de syndicat CGT (2024), art. 5, 7 et 8"
   },
   {
     id: "cfc",
@@ -70,32 +72,32 @@ const ROLES = [
     title: "Commission financière de contrôle",
     icon: "🔎",
     question: "À quoi sert la commission financière de contrôle (CFC) ?",
-    designation: "Élue par le congrès.",
-    rendCompte: "Au congrès, devant lequel elle présente son rapport.",
+    designation: "Élue par le congrès, parmi des syndiqué·es qui ne sont pas membres de la CE. Nombre de membres toujours impair, au moins trois.",
+    rendCompte: "À la commission exécutive et au congrès.",
     missions: [
-      "Contrôle la tenue des comptes et la régularité des dépenses",
-      "Vérifie la perception et le reversement des cotisations",
-      "Agit en toute indépendance du bureau",
-      "Présente son rapport au congrès, avant le vote du quitus"
+      "Vérifie la bonne gestion des finances du syndicat",
+      "Peut formuler toutes suggestions et remarques sur la gestion et la politique financière",
+      "Se réunit au moins deux fois par an",
+      "Ses membres sont invités à chaque réunion de la CE, sans droit de vote"
     ],
-    source: "Statuts du syndicat"
+    source: "Modèle de statuts de syndicat CGT (2024), art. 7 et 9"
   },
   {
     id: "bureau",
     cat: "syndicat",
     title: "Bureau syndical",
     icon: "🗂️",
-    question: "Quelles sont les fonctions du bureau syndical ?",
-    designation: "Élu par la commission exécutive, parmi ses membres.",
+    question: "Quelles sont les fonctions du bureau syndical (ou secrétariat) ?",
+    designation: "Élu par la commission exécutive ; composé au minimum d'un·e secrétaire général·e et d'un·e trésorier·ère.",
     rendCompte: "À la commission exécutive.",
     missions: [
-      "Assure la gestion quotidienne du syndicat",
-      "Met en œuvre les décisions de la CE",
-      "Prépare les réunions de la CE",
-      "Coordonne l'activité des différents secteurs",
-      "Réagit rapidement aux situations urgentes"
+      "Met en œuvre les orientations et décisions du congrès et de la CE",
+      "Prend les initiatives nécessaires à la bonne marche du syndicat et à sa vie démocratique",
+      "Organise son travail sous la responsabilité du ou de la secrétaire général·e",
+      "Prépare et convoque les réunions de la CE et assume les tâches administratives",
+      "Arrête chaque année les comptes, les fait approuver par la CE et en assure la publicité"
     ],
-    source: "Statuts du syndicat"
+    source: "Modèle de statuts de syndicat CGT (2024), art. 10 ; Code du travail, art. L2135-1 et suivants"
   },
   {
     id: "sg",
@@ -103,16 +105,16 @@ const ROLES = [
     title: "Secrétaire général·e",
     icon: "🧭",
     question: "Quel est le rôle du ou de la secrétaire général·e d'un syndicat CGT ?",
-    designation: "Élu·e par la commission exécutive.",
+    designation: "Membre du bureau, élu·e par la commission exécutive.",
     rendCompte: "À la commission exécutive et au congrès.",
     missions: [
-      "Représente le syndicat auprès des employeurs et des institutions",
+      "Représente le syndicat en justice (tout·e syndiqué·e peut aussi le faire, sur mandat du bureau)",
+      "Le bureau organise son travail sous sa responsabilité",
       "Coordonne l'activité syndicale et veille à l'application des décisions",
-      "Anime l'équipe syndicale et les réunions du bureau",
-      "Signe les correspondances officielles du syndicat",
+      "Signe et paraphe les statuts avec le ou la trésorier·ère, pour leur dépôt en mairie",
       "Ne décide pas seul·e : applique les orientations du congrès et de la CE"
     ],
-    source: "Statuts du syndicat"
+    source: "Modèle de statuts de syndicat CGT (2024), art. 4 et 10, et recommandations complémentaires"
   },
   {
     id: "tresorier",
@@ -120,16 +122,16 @@ const ROLES = [
     title: "Trésorier·ère",
     icon: "💰",
     question: "Quelles sont les responsabilités du ou de la trésorier·ère ?",
-    designation: "Élu·e par la commission exécutive.",
-    rendCompte: "À la CE ; les comptes sont contrôlés par la CFC et approuvés par le congrès.",
+    designation: "Membre du bureau, élu·e par la commission exécutive.",
+    rendCompte: "Au bureau et à la CE, qui approuve chaque année les comptes ; contrôlé·e par la CFC.",
     missions: [
-      "Gère les finances du syndicat et tient la comptabilité",
-      "Établit les comptes annuels et en assure la publication",
-      "Suit les cotisations et leur reversement via CoGéTise",
-      "Prépare le budget prévisionnel",
-      "Présente régulièrement l'état des finances aux instances"
+      "Encaisse les cotisations sur le compte bancaire du syndicat (1 % du salaire net, primes comprises, ou de la pension nette)",
+      "Conserve la part du syndicat et reverse le reste à CoGéTise, qui le répartit entre UL, UD, fédération, comité régional et confédération",
+      "Tient la comptabilité et prépare les comptes annuels que le bureau arrête",
+      "Veille à la publication des comptes (transparence financière, critère de représentativité)",
+      "Signe et paraphe les statuts avec le ou la secrétaire général·e"
     ],
-    source: "Code du travail, art. L2135-1 à L2135-6 (transparence financière)"
+    source: "Modèle de statuts de syndicat CGT (2024), art. 6 et 10 ; Code du travail, art. L2135-1 à L2135-6"
   },
   {
     id: "org",
@@ -137,8 +139,8 @@ const ROLES = [
     title: "Secrétaire à l'organisation",
     icon: "📋",
     question: "Que fait le ou la secrétaire à l'organisation ?",
-    designation: "Élu·e par la commission exécutive.",
-    rendCompte: "À la commission exécutive.",
+    designation: "Membre du bureau, élu·e par la CE, si les statuts du syndicat prévoient ce poste. Le modèle de statuts n'impose que le ou la SG et le ou la trésorier·ère.",
+    rendCompte: "Au bureau et à la commission exécutive.",
     missions: [
       "Organise la vie interne du syndicat (réunions, AG, congrès)",
       "Suit l'évolution des adhésions et la syndicalisation",
@@ -146,7 +148,7 @@ const ROLES = [
       "Coordonne la communication interne",
       "Assure le lien avec les structures interprofessionnelles (UL, UD)"
     ],
-    source: "Statuts du syndicat"
+    source: "Statuts propres à chaque syndicat (poste facultatif)"
   },
   {
     id: "ds",
@@ -285,19 +287,19 @@ const ROLES = [
 const QUIZ_POOL = [
   { role: "congres", type: "qcm",
     question: "Quelle instance est souveraine et définit les orientations du syndicat ?",
-    options: ["Le congrès (ou l'AG des syndiqué·es)", "La commission exécutive", "Le bureau", "Le ou la secrétaire général·e"],
-    answer: "Le congrès (ou l'AG des syndiqué·es)",
-    explanation: "Le congrès réunit les syndiqué·es : il fixe les orientations, élit la CE et la CFC et donne quitus." },
+    options: ["Le congrès des syndiqué·es", "La commission exécutive", "Le bureau", "Le ou la secrétaire général·e"],
+    answer: "Le congrès des syndiqué·es",
+    explanation: "Le congrès de tous les syndiqué·es à jour de leurs cotisations est l'instance souveraine : il débat de l'activité, de l'orientation et des finances, vote sur les rapports et élit la CE et la CFC (art. 7)." },
   { role: "ce", type: "qcm",
     question: "Quel organe dirige le syndicat entre deux congrès ?",
     options: ["La commission exécutive", "Le bureau", "Le ou la secrétaire général·e", "La CFC"],
     answer: "La commission exécutive",
-    explanation: "Élue par le congrès, la CE dirige le syndicat entre deux congrès et lui rend compte." },
+    explanation: "Élue par le congrès, la CE dirige le syndicat entre deux congrès. Elle se réunit au moins une fois par mois (art. 8)." },
   { role: "ce", type: "qcm",
-    question: "Qui élit le bureau et le ou la secrétaire général·e ?",
+    question: "Qui élit le bureau syndical, dont le ou la secrétaire général·e ?",
     options: ["La commission exécutive", "Les adhérent·es, directement", "L'union départementale", "Le congrès confédéral"],
     answer: "La commission exécutive",
-    explanation: "La CE élit en son sein le bureau, le ou la SG et le ou la trésorier·ère, qui lui rendent compte." },
+    explanation: "La CE élit le bureau syndical, composé au minimum d'un·e secrétaire général·e et d'un·e trésorier·ère (art. 8)." },
   { role: "ds", type: "vf",
     question: "Le ou la délégué·e syndical·e est élu·e par les salarié·es de l'entreprise.",
     answer: "Faux",
@@ -311,7 +313,7 @@ const QUIZ_POOL = [
     question: "Quelle instance contrôle la gestion financière du syndicat ?",
     options: ["La commission financière de contrôle", "Le bureau", "Le ou la trésorier·ère", "La commission exécutive"],
     answer: "La commission financière de contrôle",
-    explanation: "Élue par le congrès et indépendante du bureau, la CFC vérifie les comptes et présente son rapport au congrès." },
+    explanation: "Élue par le congrès en dehors de la CE, la CFC vérifie la bonne gestion des finances et rend compte à la CE et au congrès (art. 9)." },
   { role: "org", type: "qcm",
     question: "Qui suit les adhésions et tient à jour le fichier des syndiqué·es ?",
     options: ["Le ou la secrétaire à l'organisation", "Le ou la trésorier·ère", "Le ou la délégué·e syndical·e", "Le ou la secrétaire général·e"],
@@ -321,7 +323,7 @@ const QUIZ_POOL = [
     question: "Par quel outil passe la répartition des cotisations dans la CGT ?",
     options: ["CoGéTise", "CoGiTiel", "L'URSSAF", "Un virement direct à la fédération"],
     answer: "CoGéTise",
-    explanation: "CoGéTise répartit chaque cotisation entre le syndicat, l'UL/UD, la fédération et la confédération. CoGiTiel, c'est le fichier des syndiqué·es." },
+    explanation: "Le syndicat encaisse les cotisations, garde sa part et reverse le reste à CoGéTise, qui le répartit entre UL, UD, fédérations, comité régional et confédération (art. 6). CoGiTiel, c'est le fichier des syndiqué·es." },
   { role: "rss", type: "vf",
     question: "Un·e représentant·e de section syndicale (RSS) peut négocier les accords comme un·e DS.",
     answer: "Faux",
@@ -358,11 +360,11 @@ const QUIZ_POOL = [
     question: "Qui assure la gestion quotidienne du syndicat et prépare les réunions de la CE ?",
     options: ["Le bureau", "Le congrès", "La CFC", "Les adhérent·es"],
     answer: "Le bureau",
-    explanation: "Élu par la CE, le bureau gère le quotidien et lui rend compte." },
+    explanation: "Élu par la CE, le bureau met en œuvre ses décisions, prépare et convoque ses réunions et assume les tâches administratives (art. 10)." },
   { role: "adherent", type: "vf",
     question: "Tout·e adhérent·e peut être candidat·e aux responsabilités syndicales.",
     answer: "Vrai",
-    explanation: "C'est un droit de chaque syndiqué·e, dans les conditions prévues par les statuts." },
+    explanation: "Oui, à condition d'être à jour de ses cotisations : c'est la seule condition posée pour être membre de la CE (art. 8)." },
   { role: "sg", type: "vf",
     question: "Le ou la secrétaire général·e peut décider seul·e des orientations du syndicat.",
     answer: "Faux",
@@ -371,7 +373,34 @@ const QUIZ_POOL = [
     question: "Qui représente le syndicat et coordonne son activité, sous le contrôle de la CE ?",
     options: ["Le ou la secrétaire général·e", "Le ou la trésorier·ère", "Le ou la délégué·e syndical·e", "La CFC"],
     answer: "Le ou la secrétaire général·e",
-    explanation: "Le ou la SG représente le syndicat et anime l'équipe, mais rend compte à la CE et au congrès." }
+    explanation: "Le ou la SG représente le syndicat, y compris en justice, et le bureau travaille sous sa responsabilité ; il ou elle rend compte à la CE et au congrès (art. 4 et 10)." },
+  { role: "tresorier", type: "qcm",
+    question: "Quel est le montant de la cotisation prévu par le modèle de statuts CGT ?",
+    options: ["1 % du salaire net, primes comprises", "1 % du salaire brut", "Un montant fixe décidé par la fédération", "0,5 % du salaire net"],
+    answer: "1 % du salaire net, primes comprises",
+    explanation: "La cotisation mensuelle est égale à 1 % du salaire net, toutes primes comprises, ou de la pension ou retraite nette (art. 6)." },
+  { role: "ce", type: "qcm",
+    question: "Qui approuve chaque année les comptes du syndicat ?",
+    options: ["La commission exécutive", "Le congrès", "La CFC", "L'union départementale"],
+    answer: "La commission exécutive",
+    explanation: "Le bureau arrête les comptes, la CE les approuve chaque année et un procès-verbal est établi ; le bureau en assure ensuite la publicité (art. 8 et 10)." },
+  { role: "cfc", type: "vf",
+    question: "Les membres de la CFC peuvent aussi être membres de la commission exécutive.",
+    answer: "Faux",
+    explanation: "La CFC est élue par le congrès parmi des syndiqué·es extérieur·es à la CE. Ses membres sont invités aux réunions de la CE, mais sans droit de vote (art. 7 et 9)." },
+  { role: "congres", type: "qcm",
+    question: "Qui peut demander la convocation d'un congrès extraordinaire ?",
+    options: ["La CE, ou au moins un tiers des syndiqué·es", "Seulement le ou la secrétaire général·e", "Seulement l'union départementale", "N'importe quel·le syndiqué·e seul·e"],
+    answer: "La CE, ou au moins un tiers des syndiqué·es",
+    explanation: "Un congrès extraordinaire peut être convoqué par la CE si les circonstances l'exigent, ou à la demande d'au moins un tiers des syndiqué·es (art. 7)." },
+  { role: "congres", type: "vf",
+    question: "Entre deux congrès, une assemblée générale des syndiqué·es doit se tenir au moins une fois par an.",
+    answer: "Vrai",
+    explanation: "Elle est convoquée par la CE chaque fois que les circonstances l'exigent, et au moins une fois par an (art. 7)." },
+  { role: "adherent", type: "vf",
+    question: "La CE peut exclure un·e syndiqué·e sans l'avoir entendu·e.",
+    answer: "Faux",
+    explanation: "En cas de violation grave des statuts, la CE peut suspendre ou exclure, mais seulement après avoir fait connaître les griefs et entendu les explications. L'appel est possible devant l'AG ou le congrès (art. 5)." }
 ];
 
 const QUIZ_LENGTH = 10;

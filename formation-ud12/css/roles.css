@@ -207,6 +207,10 @@ button.schema-box:hover {
   border-width: 3px;
 }
 
+.schema-box--optional {
+  border-style: dashed;
+}
+
 .schema-box--static {
   cursor: default;
   border-style: dashed;
