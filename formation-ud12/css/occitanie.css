@@ -787,3 +787,24 @@ button[onclick^="addItem"]:hover {
 
 .role-front h3,
 .role-back h3 { color: var(--oc-texte) !important; font-family: 'Anton', sans-serif; font-weight: 400; }
+
+/* Illustration en bandeau en haut de chaque slide (img/slides/slide-N.webp) */
+.slide-visual {
+  margin: -2rem -2.2rem 1.5rem;
+  border-radius: 12px 12px 0 0;
+  overflow: hidden;
+  background: var(--oc-fond);
+  aspect-ratio: 16 / 9;
+}
+.slide-visual img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+@media (max-width: 768px) {
+  .slide-visual { margin: -1.25rem -1.25rem 1.25rem; }
+}
+@media print {
+  .slide-visual { margin: 0 0 1rem; border-radius: 0; break-inside: avoid; }
+}
