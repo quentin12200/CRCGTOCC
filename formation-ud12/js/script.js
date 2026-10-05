@@ -326,6 +326,13 @@ function toggleTOC() {
  * @param {KeyboardEvent} e - L'événement clavier
  */
 function handleKeyNavigation(e) {
+  // Pas de navigation pendant la saisie ou quand les outils d'animation sont ouverts
+  const t = e.target;
+  if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable)) return;
+  const tools = document.getElementById('ot-modal');
+  const full = document.getElementById('ot-fullscreen');
+  if ((tools && !tools.hidden) || (full && !full.hidden)) return;
+
   // Flèche droite ou Espace pour avancer
   if (e.key === "ArrowRight" || e.key === " ") {
     next();

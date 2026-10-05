@@ -151,6 +151,22 @@
     </div>
   </a>
 
+  <a class="quiz-card" href="/quiz/quiz-vie-syndicale.html">
+    <span class="card-num">6</span>
+    <div class="card-tag">Module 6</div>
+    <div class="card-title">Vie syndicale &amp; statuts</div>
+    <div class="card-desc">AG, congrès, CE, bureau, rôles de chacun·e, cotisation à 1 %, CoGéTise et structures CGT. Formation UD CGT Aveyron.</div>
+    <div class="card-meta">
+      <span>15 questions</span>
+      <span>~10 min</span>
+      <span>Vie syndicale</span>
+    </div>
+    <div class="card-cta">
+      Démarrer
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H4M10 2V8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+  </a>
+
 </div>
 
 <script>
@@ -160,7 +176,8 @@ document.addEventListener('DOMContentLoaded', function() {
     { key: 'cgt_quiz_sst',        href: '/quiz/quiz-sst.html' },
     { key: 'cgt_quiz_prevoyance', href: '/quiz/quiz-prevoyance.html' },
     { key: 'cgt_quiz_handicap',   href: '/quiz/quiz-handicap.html' },
-    { key: 'cgt_quiz_fp',         href: '/quiz/quiz-fp.html' }
+    { key: 'cgt_quiz_fp',         href: '/quiz/quiz-fp.html' },
+    { key: 'cgt_quiz_vie_syndicale', href: '/quiz/quiz-vie-syndicale.html' }
   ];
   modules.forEach(function(m) {
     var card = document.querySelector('a.quiz-card[href="' + m.href + '"]');

@@ -29,6 +29,23 @@
       { id: 'formateur',   label: 'Animation & pédagogie' },
     ];
 
+    // ?f=vie-syndicale : résultats de la formation UD CGT Aveyron (sinon : formations AT/MP)
+    const FORMATION = new URLSearchParams(location.search).get('f') === 'vie-syndicale' ? 'vie-syndicale' : null;
+    if (FORMATION === 'vie-syndicale') {
+      THEMES.splice(0, THEMES.length,
+        { id: 'statuts',     label: 'Statuts & démocratie syndicale' },
+        { id: 'roles',       label: 'Rôles dans le syndicat' },
+        { id: 'cotisations', label: 'Cotisations & structures CGT' },
+        { id: 'supports',    label: 'Supports & activités' },
+        { id: 'formateur',   label: 'Animation & pédagogie' }
+      );
+      document.addEventListener('DOMContentLoaded', () => {
+        const h = document.querySelector('.topbar h1, .topbar-title');
+        if (h) h.textContent = 'Résultats — Évaluation formation vie syndicale';
+        document.title = 'Résultats évaluation — Formation vie syndicale · CGT';
+      });
+    }
+
     const app = initializeApp(FIREBASE_CONFIG);
     const db = getDatabase(app);
 
@@ -36,7 +53,7 @@
 
     // Generate QR code
     document.addEventListener('DOMContentLoaded', () => {
-      const evalUrl = `${location.origin}/evaluation-formation.html`;
+      const evalUrl = `${location.origin}/evaluation-formation.html${FORMATION ? '?f=' + FORMATION : ''}`;
       document.getElementById('eval-url').textContent = evalUrl;
       document.getElementById('qr-container').innerHTML = '';
       new window.QRCode(document.getElementById('qr-container'), {
@@ -49,7 +66,7 @@
       // Listen for evaluations
       onValue(ref(db, 'sessions/evaluations'), snap => {
         const val = snap.val();
-        allEvals = val ? Object.entries(val).map(([k, v]) => ({ id: k, ...v })) : [];
+        allEvals = val ? Object.entries(val).map(([k, v]) => ({ id: k, ...v })).filter(e => (e.formation || null) === FORMATION) : [];
         renderResults();
       });
     });
@@ -91,7 +108,8 @@
 
     async function clearAll() {
       if (!confirm(`Supprimer les ${allEvals.length} évaluation(s) ? Cette action est irréversible.`)) return;
-      await remove(ref(db, 'sessions/evaluations'));
+      // Ne supprime que les évaluations de la formation affichée
+      await Promise.all(allEvals.map(e => remove(ref(db, `sessions/evaluations/${e.id}`))));
     }
 
     window.clearAll = clearAll;

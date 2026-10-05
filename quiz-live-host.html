@@ -8,6 +8,7 @@
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%23E2001A'/%3E%3Ctext x='16' y='23' text-anchor='middle' font-family='sans-serif' font-weight='bold' font-size='16' fill='%23FFD200'%3ECGT%3C/text%3E%3C/svg%3E">
   <link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="/formation-ud12/js/questions-vie-syndicale.js"></script>
   <!-- Firebase SDK -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
@@ -23,7 +24,7 @@
       appId: "1:420650097260:web:50bdd6dfcc4930a9139649"
     };
 
-    const QUESTIONS = [
+    const QUESTIONS_ATMP = [
       { q: "Quel délai a l'employeur pour déclarer un AT à la CPAM ?", choices: ["24 heures", "48 heures (hors dim. et jours fériés)", "5 jours ouvrés", "8 jours calendaires"], correct: 1 },
       { q: "À partir de quel jour les IJ AT/MP passent à 80 % du salaire ?", choices: ["Dès le 1er jour", "À partir du 8e jour", "À partir du 29e jour", "À partir du 91e jour"], correct: 2 },
       { q: "Que signifie la présomption d'imputabilité ?", choices: ["L'employeur est présumé responsable", "Le salarié doit prouver le lien avec le travail", "Tout accident au temps et lieu de travail est présumé professionnel", "La CPAM présume l'accident frauduleux"], correct: 2 },
@@ -55,6 +56,15 @@
       { q: "Qui peut déclencher le droit d'alerte pour danger grave et imminent ?", choices: ["Uniquement le secrétaire du CSE", "Tout élu du CSE individuellement", "Le médecin du travail uniquement", "L'inspection du travail"], correct: 1 }
     ];
 
+    // Jeu de questions : ?set=vie-syndicale pour la formation UD CGT Aveyron, AT/MP par défaut
+    const SET = new URLSearchParams(location.search).get('set') === 'vie-syndicale' ? 'vie-syndicale' : 'atmp';
+    const QUESTIONS = SET === 'vie-syndicale' ? window.QUESTIONS_VIE_SYNDICALE : QUESTIONS_ATMP;
+    const SET_TITLE = SET === 'vie-syndicale' ? 'Quiz Vie syndicale' : 'Quiz AT/MP';
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('intro-title').textContent = SET_TITLE + ' — Session en direct';
+      document.title = SET_TITLE + ' Live — Formateur · CGT';
+    });
+
     const app = initializeApp(FIREBASE_CONFIG);
     const db = getDatabase(app);
 
@@ -76,13 +86,14 @@
       sessionId = genCode();
       document.getElementById('session-code').textContent = sessionId;
 
-      const joinUrl = `${location.origin}/quiz-live-join.html?s=${sessionId}`;
+      const joinUrl = `${location.origin}/quiz-live-join.html?s=${sessionId}${SET === 'atmp' ? '' : '&set=' + SET}`;
       document.getElementById('join-url').textContent = joinUrl;
 
       await set(ref(db, `sessions/${sessionId}`), {
         status: 'lobby',
         currentQ: -1,
         totalQ: QUESTIONS.length,
+        title: SET_TITLE,
         createdAt: Date.now()
       });
 
@@ -423,7 +434,7 @@
   <div class="intro-box">
     <div class="big-cgt">CGT</div>
     <div id="intro-text">
-      <h1>Quiz AT/MP — Session en direct</h1>
+      <h1 id="intro-title">Quiz AT/MP — Session en direct</h1>
       <p>Créez une session · Les stagiaires scannent le QR code · Les résultats s'affichent en temps réel.</p>
     </div>
     <button class="btn-primary" id="btn-creer" onclick="creerSession()">Créer une session</button>

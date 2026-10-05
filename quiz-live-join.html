@@ -371,7 +371,8 @@
   <div class="box">
     <div class="box-header">
       <span class="cgt-badge">CGT</span>
-      <h1>Quiz AT/MP<br>Formation en direct</h1>
+      <h1 id="join-title">Quiz AT/MP<br>Formation en direct</h1>
+      <script>if(new URLSearchParams(location.search).get('set')==='vie-syndicale'){document.getElementById('join-title').innerHTML='Quiz Vie syndicale<br>Formation en direct';document.title='Quiz Live Vie syndicale — CGT';}</script>
     </div>
     <div class="stripe"></div>
     <div class="box-body">
