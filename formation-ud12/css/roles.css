@@ -265,6 +265,19 @@ button.schema-box:hover {
   margin-bottom: 0;
 }
 
+.charte-group + .charte-group {
+  margin-top: 30px;
+}
+
+.charte-group h4 {
+  font-family: 'Anton', sans-serif;
+  font-weight: 400;
+  font-size: 20px;
+  text-align: center;
+  margin: 0 0 6px;
+  color: var(--oc-texte, var(--text-dark));
+}
+
 .charte-grid .role-card {
   background: var(--card-bg);
 }

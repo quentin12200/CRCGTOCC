@@ -26,9 +26,11 @@ const ROLES = [
       "Droit : participer à toutes les décisions sur l'orientation du syndicat",
       "Devoir : respecter les orientations et les règles de vie de la CGT",
       "Devoir : ne pas porter atteinte aux intérêts et à l'image de la CGT",
-      "Devoir : payer régulièrement sa cotisation (1 % du salaire ou de la pension nette) — sans cotisation à jour, on ne peut pas se prévaloir du syndicat"
+      "Devoir : payer régulièrement sa cotisation (1 % du salaire ou de la pension nette) — sans cotisation à jour, on ne peut pas se prévaloir du syndicat",
+      "Reçoit un livret d'accueil à son arrivée, et a accès à la formation syndicale tout au long de sa vie syndicale",
+      "Reste syndiqué·e quand sa situation change (nouvel employeur, intérim, retraite…) : la CGT suit son parcours"
     ],
-    source: "Modèle de statuts de syndicat CGT (2024), art. 1, 5 et 6"
+    source: "Modèle de statuts de syndicat CGT (2024), art. 1, 5 et 6 ; Charte de la vie syndicale (47e congrès)"
   },
   {
     id: "congres",
@@ -44,9 +46,10 @@ const ROLES = [
       "Élit la commission exécutive et la commission financière de contrôle",
       "Est le seul à pouvoir modifier les statuts (majorité des deux tiers)",
       "Entre deux congrès, une assemblée générale est convoquée par la CE au moins une fois par an",
-      "Un congrès extraordinaire peut être demandé par la CE ou par au moins un tiers des syndiqué·es"
+      "Un congrès extraordinaire peut être demandé par la CE ou par au moins un tiers des syndiqué·es",
+      "Doit être préparé pour que les syndiqué·es puissent réellement débattre et décider de l'activité, du programme revendicatif, de la direction et des mandats"
     ],
-    source: "Modèle de statuts de syndicat CGT (2024), art. 7 et 11"
+    source: "Modèle de statuts de syndicat CGT (2024), art. 7 et 11 ; Charte de la vie syndicale (47e congrès)"
   },
   {
     id: "ce",
@@ -62,9 +65,10 @@ const ROLES = [
       "Élit le bureau syndical, composé au minimum d'un·e secrétaire général·e et d'un·e trésorier·ère",
       "Approuve chaque année les comptes arrêtés par le bureau",
       "Convoque le congrès et les assemblées générales",
-      "Peut suspendre ou exclure un·e syndiqué·e pour violation grave des statuts, après l'avoir entendu·e (appel possible devant l'AG ou le congrès)"
+      "Peut suspendre ou exclure un·e syndiqué·e pour violation grave des statuts, après l'avoir entendu·e (appel possible devant l'AG ou le congrès) — jamais pour une simple divergence d'orientation",
+      "Doit être représentative de la diversité des salarié·es : mixité et parité, place des jeunes et des précaires, rotation des responsabilités"
     ],
-    source: "Modèle de statuts de syndicat CGT (2024), art. 5, 7 et 8"
+    source: "Modèle de statuts de syndicat CGT (2024), art. 5, 7 et 8 ; Charte de la vie syndicale (47e congrès)"
   },
   {
     id: "cfc",
@@ -78,9 +82,10 @@ const ROLES = [
       "Vérifie la bonne gestion des finances du syndicat",
       "Peut formuler toutes suggestions et remarques sur la gestion et la politique financière",
       "Se réunit au moins deux fois par an",
-      "Ses membres sont invités à chaque réunion de la CE, sans droit de vote"
+      "Ses membres sont invités à chaque réunion de la CE, sans droit de vote",
+      "Communique en toute transparence aux syndiqué·es le contrôle de la gestion financière"
     ],
-    source: "Modèle de statuts de syndicat CGT (2024), art. 7 et 9"
+    source: "Modèle de statuts de syndicat CGT (2024), art. 7 et 9 ; Charte de la vie syndicale (47e congrès)"
   },
   {
     id: "bureau",
@@ -129,9 +134,10 @@ const ROLES = [
       "Conserve la part du syndicat et reverse le reste à CoGéTise, qui le répartit entre UL, UD, fédération, comité régional et confédération",
       "Tient la comptabilité et prépare les comptes annuels que le bureau arrête",
       "Veille à la publication des comptes (transparence financière, critère de représentativité)",
+      "Développe le prélèvement automatique des cotisations et veille à ce qu'aucune quote-part due aux autres structures ne soit retenue",
       "Signe et paraphe les statuts avec le ou la secrétaire général·e"
     ],
-    source: "Modèle de statuts de syndicat CGT (2024), art. 6 et 10 ; Code du travail, art. L2135-1 à L2135-6"
+    source: "Modèle de statuts de syndicat CGT (2024), art. 6 et 10 ; Code du travail, art. L2135-1 à L2135-6 ; Charte de la vie syndicale (47e congrès)"
   },
   {
     id: "org",
@@ -143,12 +149,12 @@ const ROLES = [
     rendCompte: "Au bureau et à la commission exécutive.",
     missions: [
       "Organise la vie interne du syndicat (réunions, AG, congrès)",
-      "Suit l'évolution des adhésions et la syndicalisation",
-      "Tient à jour le fichier des syndiqué·es (CoGiTiel)",
-      "Coordonne la communication interne",
+      "Suit l'évolution des adhésions et organise la syndicalisation, y compris des précaires, des sous-traitants et des cadres",
+      "Accueille les nouveaux syndiqué·es (livret d'accueil) et organise leur formation",
+      "Tient à jour le fichier des syndiqué·es (CoGiTiel) et suit le parcours de chacun·e pour éviter les ruptures d'adhésion, notamment au départ en retraite",
       "Assure le lien avec les structures interprofessionnelles (UL, UD)"
     ],
-    source: "Statuts propres à chaque syndicat (poste facultatif)"
+    source: "Statuts propres à chaque syndicat (poste facultatif) ; Charte de la vie syndicale (47e congrès)"
   },
   {
     id: "ds",
@@ -303,9 +309,93 @@ const STATUT_BY_ROLE = {
   defenseur: "mandate", conseiller: "mandate"
 };
 
+const CHARTE_GROUPS = {
+  vie: {
+    title: "Charte de la vie syndicale",
+    intro: "Adoptée au 47e congrès confédéral (résolution n°3) : des syndiqué·es sur tous les lieux de travail, informé·es, formé·es et propriétaires de leur organisation."
+  },
+  elus: {
+    title: "Charte de l'élu·e et mandaté·e CGT",
+    intro: "« Des élu·es et mandaté·es solidaires, démocratiques et efficaces. » Leur efficacité et leur crédibilité ne prennent force qu'au sein du syndicat. Réactualisée en novembre 2025."
+  }
+};
+
 const CHARTE = [
   {
+    id: "vs-partout",
+    group: "vie",
+    icon: "🌍",
+    title: "Des syndiqué·es sur tous les lieux de travail",
+    question: "Comment faire reculer les déserts syndicaux ?",
+    points: [
+      "S'adresser à l'ensemble des salarié·es, avec des dispositions particulières pour chaque catégorie et chaque situation",
+      "Créer des syndicats de site ou de zone pour regrouper les syndiqué·es isolé·es des petites entreprises, souvent précaires, femmes, jeunes ou issu·es de l'immigration",
+      "Syndiquer les salarié·es des sous-traitants, en coordination avec les syndicats des donneurs d'ordres, sans tutelle des uns sur les autres",
+      "Développer une activité spécifique pour les cadres et les techniciens",
+      "Organiser les retraité·es et les privé·es d'emploi là où ils et elles vivent (cités, quartiers, localités)",
+      "Proposer systématiquement aux salarié·es des entreprises voisines de se syndiquer et de s'organiser"
+    ]
+  },
+  {
+    id: "vs-formes",
+    group: "vie",
+    icon: "📰",
+    title: "Des syndiqué·es informé·es et formé·es",
+    question: "Comment le syndicat accueille-t-il, informe-t-il et forme-t-il ses syndiqué·es ?",
+    points: [
+      "Remettre systématiquement un livret d'accueil à chaque nouveau·elle syndiqué·e",
+      "Proposer la lecture régulière de la presse confédérale (NVO, Options, Vie Nouvelle) et utiliser les outils numériques",
+      "Mettre en débat dans les syndicats les documents préparatoires aux décisions de la CGT",
+      "La formation syndicale, sociale et économique est un droit : dès l'adhésion, puis tout au long de la vie syndicale",
+      "Toute prise de responsabilité est accompagnée d'une formation, avant ou le plus rapidement possible"
+    ]
+  },
+  {
+    id: "vs-proprietaires",
+    group: "vie",
+    icon: "🗳️",
+    title: "Des syndiqué·es propriétaires de leur organisation",
+    question: "Comment les syndiqué·es gardent-ils et elles la main sur leur syndicat ?",
+    points: [
+      "Une activité permanente et démocratique dans chaque syndicat et section syndicale",
+      "Une assemblée des syndiqué·es au moins une fois par an, et des congrès réguliers, préparés démocratiquement",
+      "Les syndiqué·es débattent et décident de l'activité, du programme revendicatif, de la direction et des mandats",
+      "Les mandaté·es et les candidat·es aux élections sont désigné·es démocratiquement par les syndiqué·es de chaque catégorie ou collège ; chacun·e peut être candidat·e",
+      "Aucune exclusion fondée sur une différence d'approche de l'orientation, dès lors que les statuts et les règles de vie sont respectés"
+    ]
+  },
+  {
+    id: "vs-directions",
+    group: "vie",
+    icon: "🧑‍🤝‍🧑",
+    title: "Des directions syndicales à l'image des salarié·es",
+    question: "À quoi doit ressembler une direction syndicale ?",
+    points: [
+      "Représentative de la diversité des salarié·es et des syndiqué·es",
+      "Favoriser la prise de responsabilité des adhérent·es, la place des jeunes et la rotation des responsabilités",
+      "Viser partout la mixité, et au-delà la parité, à tous les niveaux",
+      "Intégrer les salarié·es précaires dans les collectifs de direction",
+      "Combattre le racisme, la xénophobie, l'homophobie et les discriminations envers les femmes, et favoriser l'accès aux responsabilités des camarades immigré·es ou issu·es de l'immigration"
+    ]
+  },
+  {
+    id: "vs-parcours",
+    group: "vie",
+    icon: "🔄",
+    title: "Suivre chaque syndiqué·e, conquérir des moyens",
+    question: "Que se passe-t-il quand un·e syndiqué·e change d'employeur ou part à la retraite ?",
+    points: [
+      "Suivre le parcours de chaque syndiqué·e (changement d'employeur, intérim, emplois multiples, retraite…) pour éviter toute rupture d'adhésion",
+      "Assurer la continuité actif / retraité : ne plus perdre deux syndiqué·es sur trois au départ en retraite",
+      "Faire circuler l'information entre les structures, avec CoGiTiel comme outil de base",
+      "Cotisation : 1 % du salaire pour les actif·ves ; pour les retraité·es, au moins 0,5 % de la pension nette en tendant vers 1 % (le modèle de statuts 2024 retient 1 %)",
+      "Généraliser le prélèvement automatique ; aucune rétention des quotes-parts dues aux autres structures",
+      "Chaque syndicat se dote d'une politique financière et d'une commission financière de contrôle, en toute transparence"
+    ]
+  },
+  {
     id: "charte-syndicat",
+    group: "elus",
     icon: "🏠",
     title: "Le rôle du syndicat",
     question: "Que doit faire le syndicat pour ses élu·es et mandaté·es ?",
@@ -319,6 +409,7 @@ const CHARTE = [
   },
   {
     id: "charte-engagements",
+    group: "elus",
     icon: "✊",
     title: "Les engagements des élu·es et mandaté·es",
     question: "À quoi s'engage un·e élu·e ou mandaté·e CGT ?",
@@ -334,6 +425,7 @@ const CHARTE = [
   },
   {
     id: "charte-organisation",
+    group: "elus",
     icon: "🤲",
     title: "La responsabilité de l'organisation qui mandate",
     question: "Quelles sont les obligations de la structure CGT qui mandate ?",
@@ -348,6 +440,7 @@ const CHARTE = [
   },
   {
     id: "charte-statut",
+    group: "elus",
     icon: "🏷️",
     title: "Élu·e ou mandaté·e ?",
     question: "Quelle différence entre un·e élu·e et un·e mandaté·e ? Citez des exemples.",
@@ -514,7 +607,35 @@ const QUIZ_POOL = [
     question: "Qui doit veiller à la formation et au soutien des mandaté·es ?",
     options: ["La structure CGT qui les mandate", "L'employeur", "Les mandaté·es seul·es", "Uniquement la confédération"],
     answer: "La structure CGT qui les mandate",
-    explanation: "La structure qui mandate veille à la formation, réunit régulièrement les mandaté·es, les soutient et prépare leur reclassement en fin de mandat (charte)." }
+    explanation: "La structure qui mandate veille à la formation, réunit régulièrement les mandaté·es, les soutient et prépare leur reclassement en fin de mandat (charte)." },
+  { role: "vs-formes", type: "vf",
+    question: "Toute prise de responsabilité syndicale doit être accompagnée d'une formation.",
+    answer: "Vrai",
+    explanation: "La charte de la vie syndicale prévoit qu'elle soit accompagnée d'une formation correspondante, avant ou le plus rapidement possible." },
+  { role: "vs-formes", type: "qcm",
+    question: "Que remet-on systématiquement à un·e nouveau·elle syndiqué·e ?",
+    options: ["Un livret d'accueil", "Un contrat d'engagement", "Une carte d'élu·e", "Rien de particulier"],
+    answer: "Un livret d'accueil",
+    explanation: "La charte de la vie syndicale décide d'accompagner l'arrivée des nouveaux syndiqué·es par la remise systématique d'un livret d'accueil." },
+  { role: "vs-proprietaires", type: "vf",
+    question: "Un syndicat peut exclure un·e syndiqué·e parce qu'il ou elle a une approche différente de l'orientation.",
+    answer: "Faux",
+    explanation: "La charte demande de bannir toute exclusion fondée sur des différences d'approche de l'orientation, dès lors que les statuts et les règles de vie de la CGT sont respectés." },
+  { role: "vs-directions", type: "qcm",
+    question: "Quel objectif la charte de la vie syndicale fixe-t-elle pour les directions syndicales ?",
+    options: ["La mixité, et au-delà la parité", "Des mandats sans limite de durée", "Uniquement des militant·es expérimenté·es", "Une direction réduite au ou à la SG"],
+    answer: "La mixité, et au-delà la parité",
+    explanation: "Les directions doivent être représentatives de la diversité des salarié·es : mixité, parité, place des jeunes et des précaires, rotation des responsabilités." },
+  { role: "vs-parcours", type: "qcm",
+    question: "Selon la charte de la vie syndicale, combien de syndiqué·es la CGT perdait-elle au départ en retraite ?",
+    options: ["Deux sur trois", "Un sur dix", "Un sur deux", "Presque aucun·e"],
+    answer: "Deux sur trois",
+    explanation: "D'où l'objectif d'assurer la continuité syndicale actif / retraité et de suivre le parcours de chaque syndiqué·e." },
+  { role: "vs-proprietaires", type: "qcm",
+    question: "Au minimum, à quelle fréquence le syndicat doit-il réunir l'assemblée de ses syndiqué·es ?",
+    options: ["Une fois par an", "Une fois tous les cinq ans", "Seulement au congrès", "Quand l'employeur le demande"],
+    answer: "Une fois par an",
+    explanation: "La charte de la vie syndicale et le modèle de statuts (art. 7) prévoient une assemblée générale des syndiqué·es au moins une fois par an." }
 ];
 
 const QUIZ_LENGTH = 10;
@@ -606,16 +727,24 @@ document.addEventListener('DOMContentLoaded', function() {
     rolesGrid.appendChild(card);
   });
 
-  const charteGrid = document.getElementById('charte-grid');
-  CHARTE.forEach(block => {
-    charteGrid.appendChild(buildCard({
-      id: block.id,
-      icon: block.icon,
-      label: 'Charte CGT',
-      title: block.title,
-      question: block.question,
-      body: [el('ul', { className: 'role-details' }, block.points.map(m => el('li', { text: m })))]
-    }));
+  const charteGroups = document.getElementById('charte-groups');
+  Object.entries(CHARTE_GROUPS).forEach(([key, group]) => {
+    const grid = el('div', { className: 'roles-grid charte-grid' });
+    CHARTE.filter(b => b.group === key).forEach(block => {
+      grid.appendChild(buildCard({
+        id: block.id,
+        icon: block.icon,
+        label: group.title,
+        title: block.title,
+        question: block.question,
+        body: [el('ul', { className: 'role-details' }, block.points.map(m => el('li', { text: m })))]
+      }));
+    });
+    charteGroups.appendChild(el('div', { className: 'charte-group', id: 'charte-' + key }, [
+      el('h4', { text: group.title }),
+      el('p', { className: 'charte-intro', text: group.intro }),
+      grid
+    ]));
   });
 
   const roleCards = rolesGrid.querySelectorAll('.role-card');
@@ -870,7 +999,7 @@ document.addEventListener('DOMContentLoaded', function() {
       projStage.appendChild(el('div', { className: 'proj-head' }, [
         el('span', { className: 'proj-icon', 'aria-hidden': 'true', text: item.icon }),
         el('div', {}, [
-          el('span', { className: 'proj-cat', text: deck === 'roles' ? CATEGORIES[item.cat] : 'Charte de l\'élu·e et mandaté·e CGT' }),
+          el('span', { className: 'proj-cat', text: deck === 'roles' ? CATEGORIES[item.cat] : CHARTE_GROUPS[item.group].title }),
           el('h2', { className: 'proj-title', text: item.title }),
           badge ? el('span', { className: 'role-badge role-badge--' + badge, text: STATUTS[badge] }) : null
         ])
