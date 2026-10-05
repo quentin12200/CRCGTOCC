@@ -157,15 +157,16 @@ const ROLES = [
     icon: "🗣️",
     question: "Quel est le rôle du ou de la délégué·e syndical·e (DS) dans l'entreprise ?",
     designation: "Désigné·e par un syndicat représentatif (entreprise d'au moins 50 salarié·es), en priorité parmi les candidat·es ayant obtenu au moins 10 % aux élections du CSE.",
-    rendCompte: "Au syndicat qui l'a mandaté·e.",
+    rendCompte: "Au syndicat qui l'a désigné·e, régulièrement. Les syndiqué·es peuvent confier le mandat à quelqu'un d'autre s'il ne correspond pas aux orientations votées.",
     missions: [
       "Représente le syndicat auprès de l'employeur",
       "Négocie et signe les accords collectifs (dont les NAO), sur mandat du syndicat",
-      "Porte les revendications des salarié·es",
-      "Anime la section syndicale dans l'entreprise",
+      "Consulte les syndiqué·es et les salarié·es avant toute signature d'accord",
+      "Travaille avec le syndicat avant toute déclaration ou décision qui engage la CGT",
+      "Anime la section syndicale et renforce le syndicat",
       "Informe et conseille les salarié·es sur leurs droits"
     ],
-    source: "Code du travail, art. L2143-3 et suivants"
+    source: "Code du travail, art. L2143-3 et suivants ; Charte de l'élu·e et mandaté·e CGT (2025)"
   },
   {
     id: "rss",
@@ -174,14 +175,14 @@ const ROLES = [
     icon: "🌱",
     question: "Qu'est-ce qu'un·e représentant·e de section syndicale (RSS) ?",
     designation: "Désigné·e par un syndicat qui a constitué une section mais n'est pas (encore) représentatif dans l'entreprise (au moins 50 salarié·es).",
-    rendCompte: "Au syndicat qui l'a mandaté·e.",
+    rendCompte: "Au syndicat qui l'a désigné·e, régulièrement.",
     missions: [
       "Fait vivre la section syndicale et développe la syndicalisation",
       "Prépare les élections pour que le syndicat devienne représentatif",
       "A les mêmes prérogatives que le DS, sauf la négociation (hors cas exceptionnels)",
       "Son mandat prend fin après les élections si le syndicat n'est pas reconnu représentatif"
     ],
-    source: "Code du travail, art. L2142-1-1 et suivants"
+    source: "Code du travail, art. L2142-1-1 et suivants ; Charte de l'élu·e et mandaté·e CGT (2025)"
   },
   {
     id: "cse",
@@ -189,16 +190,17 @@ const ROLES = [
     title: "Élu·e au CSE",
     icon: "🏢",
     question: "Quelles sont les missions d'un·e élu·e au comité social et économique (CSE) ?",
-    designation: "Élu·e par les salarié·es, comme titulaire ou suppléant·e, en principe pour 4 ans.",
-    rendCompte: "Aux salarié·es ; à la section syndicale pour les élu·es présenté·es par la CGT.",
+    designation: "Élu·e par les salarié·es (titulaire ou suppléant·e, en principe pour 4 ans), sur une liste CGT décidée par les syndiqué·es.",
+    rendCompte: "Aux salarié·es, et au syndicat, qui doit lui demander un compte rendu régulier de son activité.",
     missions: [
       "Présente les réclamations individuelles et collectives (dès 11 salarié·es)",
       "Veille au respect du droit du travail et contribue à la santé et à la sécurité",
       "Dès 50 salarié·es : est consulté·e sur les orientations stratégiques, la situation économique et la politique sociale",
       "Dès 50 salarié·es : gère les activités sociales et culturelles",
-      "Peut alerter (danger grave et imminent, atteinte aux droits des personnes)"
+      "Peut alerter (danger grave et imminent, atteinte aux droits des personnes)",
+      "Prend en compte tous les salarié·es : CDI, CDD, intérimaires, sous-traitance"
     ],
-    source: "Code du travail, art. L2312-5 (moins de 50) et L2312-8 (50 et plus)"
+    source: "Code du travail, art. L2312-5 (moins de 50) et L2312-8 (50 et plus) ; Charte de l'élu·e et mandaté·e CGT (2025)"
   },
   {
     id: "rscse",
@@ -207,14 +209,14 @@ const ROLES = [
     icon: "🎙️",
     question: "Quel est le rôle du ou de la représentant·e syndical·e au CSE (RS) ?",
     designation: "Désigné·e par un syndicat représentatif. Dans les entreprises de moins de 300 salarié·es, le ou la DS est de droit RS au CSE.",
-    rendCompte: "Au syndicat qui l'a mandaté·e.",
+    rendCompte: "Au syndicat qui l'a désigné·e, avec qui il ou elle prépare chaque réunion.",
     missions: [
       "Assiste aux réunions du CSE avec voix consultative (sans vote)",
       "Porte la parole et les analyses du syndicat",
       "Reçoit les mêmes informations que les élu·es",
       "Fait le lien entre les élu·es et la section syndicale"
     ],
-    source: "Code du travail, art. L2314-2"
+    source: "Code du travail, art. L2314-2 ; Charte de l'élu·e et mandaté·e CGT (2025)"
   },
   {
     id: "cssct",
@@ -255,14 +257,14 @@ const ROLES = [
     icon: "⚖️",
     question: "Qui peut défendre un·e salarié·e devant les prud'hommes, à part un·e avocat·e ?",
     designation: "Inscrit·e sur une liste régionale arrêtée par l'administration (DREETS), sur proposition des organisations syndicales.",
-    rendCompte: "À l'organisation qui l'a proposé·e.",
+    rendCompte: "À la structure CGT qui l'a mandaté·e, devant qui il ou elle rend compte de son activité.",
     missions: [
       "Assiste ou représente les salarié·es devant le conseil de prud'hommes et la cour d'appel",
       "Dispose d'heures pour exercer sa mission",
       "Est un·e salarié·e protégé·e",
       "Est tenu·e au secret professionnel"
     ],
-    source: "Code du travail, art. L1453-4 et suivants"
+    source: "Code du travail, art. L1453-4 et suivants ; Charte de l'élu·e et mandaté·e CGT (2025)"
   },
   {
     id: "conseiller",
@@ -271,14 +273,90 @@ const ROLES = [
     icon: "🤝",
     question: "Qui assiste un·e salarié·e convoqué·e à un entretien de licenciement quand il n'y a pas de représentant·e du personnel ?",
     designation: "Inscrit·e sur une liste départementale arrêtée par le préfet, sur proposition notamment des syndicats.",
-    rendCompte: "À l'organisation qui l'a proposé·e.",
+    rendCompte: "À la structure CGT qui l'a mandaté·e, devant qui il ou elle rend compte de son activité.",
     missions: [
       "Assiste le ou la salarié·e lors de l'entretien préalable au licenciement, dans les entreprises sans représentant·e du personnel",
       "Peut aussi l'assister lors des entretiens de rupture conventionnelle",
       "Intervient gratuitement pour le ou la salarié·e",
       "Est un·e salarié·e protégé·e, tenu·e au secret professionnel"
     ],
-    source: "Code du travail, art. L1232-4 et L1232-7 et suivants"
+    source: "Code du travail, art. L1232-4 et L1232-7 et suivants ; Charte de l'élu·e et mandaté·e CGT (2025)"
+  }
+];
+
+// Élu·e, mandaté·e ou responsable : vocabulaire de la Charte de l'élu·e et mandaté·e CGT (2025)
+const STATUTS = {
+  syndique: "Syndiqué·e",
+  instance: "Instance",
+  responsable: "Responsable élu·e",
+  elu: "Élu·e",
+  mandate: "Mandaté·e",
+  designe: "Désigné·e par le CSE"
+};
+const STATUT_BY_ROLE = {
+  adherent: "syndique",
+  congres: "instance", ce: "instance", cfc: "instance", bureau: "instance",
+  sg: "responsable", tresorier: "responsable", org: "responsable",
+  ds: "mandate", rss: "mandate", rscse: "mandate",
+  cse: "elu",
+  cssct: "designe", rp: "designe",
+  defenseur: "mandate", conseiller: "mandate"
+};
+
+const CHARTE = [
+  {
+    id: "charte-syndicat",
+    icon: "🏠",
+    title: "Le rôle du syndicat",
+    question: "Que doit faire le syndicat pour ses élu·es et mandaté·es ?",
+    points: [
+      "Décider des candidatures, après débat avec les syndiqué·es : ce sont elles et eux, souverain·es, qui décident des listes",
+      "Permettre aux mandaté·es d'exercer dans les meilleures conditions et de participer à la vie du syndicat",
+      "Les aider : discussion, formation syndicale, abonnements aux publications de la CGT",
+      "Consulter les syndiqué·es et les salarié·es avant toute signature d'accord",
+      "Demander un compte rendu régulier de l'activité des élu·es et mandaté·es qu'il a désigné·es"
+    ]
+  },
+  {
+    id: "charte-engagements",
+    icon: "✊",
+    title: "Les engagements des élu·es et mandaté·es",
+    question: "À quoi s'engage un·e élu·e ou mandaté·e CGT ?",
+    points: [
+      "Porter les revendications des salarié·es et les orientations décidées en congrès",
+      "Renforcer son syndicat pour construire le rapport de force",
+      "Débattre avec franchise et fraternité, puis appliquer les décisions votées à la majorité",
+      "Prendre en compte tous les salarié·es : ouvrier·ères, employé·es, technicien·nes, cadres, CDI, CDD, intérim, sous-traitance",
+      "Travailler avec la structure qui l'a désigné·e avant toute déclaration qui engage la CGT, et lui rendre compte",
+      "Reverser, quand elles existent, les indemnités et dotations liées au mandat",
+      "Personne n'est propriétaire de son mandat : les syndiqué·es peuvent le confier à d'autres s'il ne correspond pas aux orientations votées"
+    ]
+  },
+  {
+    id: "charte-organisation",
+    icon: "🤲",
+    title: "La responsabilité de l'organisation qui mandate",
+    question: "Quelles sont les obligations de la structure CGT qui mandate ?",
+    points: [
+      "Veiller à la formation des syndiqué·es qu'elle mandate",
+      "Réunir régulièrement les mandaté·es et les soutenir",
+      "Limiter la durée et le nombre de mandats ; c'est au collectif d'éviter le cumul",
+      "Prendre en charge les pertes de salaire liées au mandat, après avoir lutté pour des droits dans l'entreprise",
+      "Veiller au reclassement des militant·es en fin de mandat",
+      "Construire des listes représentatives de toutes les catégories : féminiser, rajeunir les responsables"
+    ]
+  },
+  {
+    id: "charte-statut",
+    icon: "🏷️",
+    title: "Élu·e ou mandaté·e ?",
+    question: "Quelle différence entre un·e élu·e et un·e mandaté·e ? Citez des exemples.",
+    points: [
+      "Élu·es (choisi·es par les salarié·es ou les agent·es) : CSE, CSE d'établissement, commissions administratives et consultatives paritaires, comités sociaux d'administration et territoriaux…",
+      "Mandatement syndical (désigné·es par le syndicat) : DS, DS central, RS, CSE central, comités de groupe et de groupe européen",
+      "Mandatement par les organisations (UL, UD, fédération…) : administrateur·trices des caisses de Sécurité sociale, conseiller·ères du salarié, conseiller·ères prud'hommes, défenseur·es syndicaux·ales, instances paritaires…",
+      "Dans tous les cas : on rend compte à la structure qui a désigné, et l'efficacité de la CGT ne prend force qu'au sein du syndicat"
+    ]
   }
 ];
 
@@ -400,7 +478,43 @@ const QUIZ_POOL = [
   { role: "adherent", type: "vf",
     question: "La CE peut exclure un·e syndiqué·e sans l'avoir entendu·e.",
     answer: "Faux",
-    explanation: "En cas de violation grave des statuts, la CE peut suspendre ou exclure, mais seulement après avoir fait connaître les griefs et entendu les explications. L'appel est possible devant l'AG ou le congrès (art. 5)." }
+    explanation: "En cas de violation grave des statuts, la CE peut suspendre ou exclure, mais seulement après avoir fait connaître les griefs et entendu les explications. L'appel est possible devant l'AG ou le congrès (art. 5)." },
+  { role: "charte-syndicat", type: "qcm",
+    question: "Qui décide des candidatures CGT aux élections et aux mandats ?",
+    options: ["Le syndicat, après débat avec les syndiqué·es", "L'élu·e sortant·e", "L'union départementale seule", "La fédération seule"],
+    answer: "Le syndicat, après débat avec les syndiqué·es",
+    explanation: "La décision de proposer des candidatures appartient au syndicat. Les syndiqué·es étant souverain·es, ce sont elles et eux qui décident des listes (charte de l'élu·e et mandaté·e)." },
+  { role: "charte-engagements", type: "vf",
+    question: "Un·e élu·e CGT est propriétaire de son mandat jusqu'à son terme.",
+    answer: "Faux",
+    explanation: "« Personne n'est propriétaire de son mandat syndical, et chaque responsabilité est un bien collectif. » Les syndiqué·es peuvent le confier à d'autres (charte)." },
+  { role: "charte-syndicat", type: "qcm",
+    question: "Que prévoit la charte avant toute signature d'accord dans l'entreprise ?",
+    options: ["Consulter les syndiqué·es et les salarié·es", "Informer seulement l'UD", "Attendre l'avis de l'employeur", "Rien : le ou la DS décide seul·e"],
+    answer: "Consulter les syndiqué·es et les salarié·es",
+    explanation: "Le syndicat construit la démarche avec les syndiqué·es et consulte les salarié·es avant toute signature d'accord ou événement important (charte)." },
+  { role: "charte-engagements", type: "vf",
+    question: "Quand elles existent, les indemnités liées à un mandat sont reversées à l'organisation.",
+    answer: "Vrai",
+    explanation: "Les élu·es et mandaté·es s'engagent à reverser les dotations, indemnités et autres émoluments liés à la responsabilité. En contrepartie, l'organisation prend en charge les pertes de salaire (charte)." },
+  { role: "charte-statut", type: "qcm",
+    question: "Selon la charte, un·e conseiller·ère du salarié ou un·e défenseur·e syndical·e est…",
+    options: ["Un·e mandaté·e de la CGT", "Un·e élu·e du personnel", "Un·e salarié·e de l'UD", "Un·e bénévole sans lien avec la CGT"],
+    answer: "Un·e mandaté·e de la CGT",
+    explanation: "Ce sont des mandats confiés par les organisations de la CGT. Ils et elles rendent compte à la structure qui les a désigné·es (charte)." },
+  { role: "charte-engagements", type: "vf",
+    question: "Les syndiqué·es peuvent confier un mandat à quelqu'un d'autre s'il ne correspond pas aux orientations votées.",
+    answer: "Vrai",
+    explanation: "Les syndiqué·es peuvent contrôler à tout moment l'activité de leurs mandaté·es et confier les mandats à d'autres s'ils ne sont pas remplis correctement (charte)." },
+  { role: "charte-organisation", type: "vf",
+    question: "La charte demande de limiter la durée et le nombre de mandats d'un·e militant·e.",
+    answer: "Vrai",
+    explanation: "Une limitation de la durée et du nombre de mandats est nécessaire ; c'est au collectif d'éviter le cumul (charte)." },
+  { role: "charte-organisation", type: "qcm",
+    question: "Qui doit veiller à la formation et au soutien des mandaté·es ?",
+    options: ["La structure CGT qui les mandate", "L'employeur", "Les mandaté·es seul·es", "Uniquement la confédération"],
+    answer: "La structure CGT qui les mandate",
+    explanation: "La structure qui mandate veille à la formation, réunit régulièrement les mandaté·es, les soutient et prépare leur reclassement en fin de mandat (charte)." }
 ];
 
 const QUIZ_LENGTH = 10;
@@ -450,41 +564,68 @@ document.addEventListener('DOMContentLoaded', function() {
     panel.hidden = !open;
   }
 
-  ROLES.forEach(role => {
-    const panelId = 'panel-' + role.id;
+  // Carte dépliable commune aux rôles et aux blocs de la charte
+  function buildCard({ id, icon, label, title, question, badge, body }) {
+    const panelId = 'panel-' + id;
     const btn = el('button', { type: 'button', className: 'reveal-btn', 'aria-expanded': 'false', 'aria-controls': panelId, text: 'Révéler' });
-
-    const meta = el('dl', { className: 'role-meta' }, [
-      el('dt', { text: 'Qui élit ou désigne ?' }), el('dd', { text: role.designation }),
-      el('dt', { text: 'Rend compte à' }), el('dd', { text: role.rendCompte })
-    ]);
-    const missions = el('ul', { className: 'role-details' }, role.missions.map(m => el('li', { text: m })));
-    const source = el('p', { className: 'role-source', text: '📖 ' + role.source });
-
-    const card = el('article', { className: 'role-card', id: 'role-' + role.id, 'data-cat': role.cat, 'aria-labelledby': 'title-' + role.id }, [
+    const card = el('article', { className: 'role-card', id: 'role-' + id, 'aria-labelledby': 'title-' + id }, [
       el('div', { className: 'role-head' }, [
-        el('span', { className: 'role-icon', 'aria-hidden': 'true', text: role.icon }),
+        el('span', { className: 'role-icon', 'aria-hidden': 'true', text: icon }),
         el('div', {}, [
-          el('span', { className: 'role-cat', text: CATEGORIES[role.cat] }),
-          el('h3', { id: 'title-' + role.id, text: role.title })
+          el('span', { className: 'role-cat', text: label }),
+          el('h3', { id: 'title-' + id, text: title }),
+          badge ? el('span', { className: 'role-badge role-badge--' + badge, text: STATUTS[badge] }) : null
         ])
       ]),
-      el('p', { className: 'role-question', text: role.question }),
+      el('p', { className: 'role-question', text: question }),
       btn,
-      el('div', { className: 'role-panel', id: panelId, hidden: '' }, [meta, missions, source])
+      el('div', { className: 'role-panel', id: panelId, hidden: '' }, body)
     ]);
-
     btn.addEventListener('click', () => setExpanded(card, btn.getAttribute('aria-expanded') !== 'true'));
+    return card;
+  }
+
+  ROLES.forEach(role => {
+    const card = buildCard({
+      id: role.id,
+      icon: role.icon,
+      label: CATEGORIES[role.cat],
+      title: role.title,
+      question: role.question,
+      badge: STATUT_BY_ROLE[role.id],
+      body: [
+        el('dl', { className: 'role-meta' }, [
+          el('dt', { text: 'Qui élit ou désigne ?' }), el('dd', { text: role.designation }),
+          el('dt', { text: 'Rend compte à' }), el('dd', { text: role.rendCompte })
+        ]),
+        el('ul', { className: 'role-details' }, role.missions.map(m => el('li', { text: m }))),
+        el('p', { className: 'role-source', text: '📖 ' + role.source })
+      ]
+    });
+    card.dataset.cat = role.cat;
     rolesGrid.appendChild(card);
   });
 
+  const charteGrid = document.getElementById('charte-grid');
+  CHARTE.forEach(block => {
+    charteGrid.appendChild(buildCard({
+      id: block.id,
+      icon: block.icon,
+      label: 'Charte CGT',
+      title: block.title,
+      question: block.question,
+      body: [el('ul', { className: 'role-details' }, block.points.map(m => el('li', { text: m })))]
+    }));
+  });
+
   const roleCards = rolesGrid.querySelectorAll('.role-card');
+  const allCards = explorationPanel.querySelectorAll('.role-card');
 
   document.getElementById('reveal-all-btn').addEventListener('click', () => {
-    roleCards.forEach(card => { if (!card.hidden) setExpanded(card, true); });
+    allCards.forEach(card => { if (!card.hidden) setExpanded(card, true); });
   });
   document.getElementById('hide-all-btn').addEventListener('click', () => {
-    roleCards.forEach(card => setExpanded(card, false));
+    allCards.forEach(card => setExpanded(card, false));
   });
 
   // Filtres par catégorie
@@ -705,6 +846,8 @@ document.addEventListener('DOMContentLoaded', function() {
       // Respecte le filtre actif en mode exploration
       const visibleIds = Array.from(roleCards).filter(c => !c.hidden).map(c => c.id.replace('role-', ''));
       slides = ROLES.filter(r => visibleIds.includes(r.id));
+    } else if (deck === 'charte') {
+      slides = CHARTE;
     } else {
       slides = shuffle(QUIZ_POOL).slice(0, QUIZ_LENGTH).map(q => ({
         ...q,
@@ -722,16 +865,22 @@ document.addEventListener('DOMContentLoaded', function() {
     projNext.disabled = slideIndex === slides.length - 1 && revealed;
     projReveal.textContent = revealed ? 'Masquer la réponse' : 'Révéler la réponse';
 
-    if (deck === 'roles') {
+    if (deck === 'roles' || deck === 'charte') {
+      const badge = deck === 'roles' ? STATUT_BY_ROLE[item.id] : null;
       projStage.appendChild(el('div', { className: 'proj-head' }, [
         el('span', { className: 'proj-icon', 'aria-hidden': 'true', text: item.icon }),
         el('div', {}, [
-          el('span', { className: 'proj-cat', text: CATEGORIES[item.cat] }),
-          el('h2', { className: 'proj-title', text: item.title })
+          el('span', { className: 'proj-cat', text: deck === 'roles' ? CATEGORIES[item.cat] : 'Charte de l\'élu·e et mandaté·e CGT' }),
+          el('h2', { className: 'proj-title', text: item.title }),
+          badge ? el('span', { className: 'role-badge role-badge--' + badge, text: STATUTS[badge] }) : null
         ])
       ]));
       projStage.appendChild(el('p', { className: 'proj-question', text: item.question }));
-      if (revealed) {
+      if (revealed && deck === 'charte') {
+        projStage.appendChild(el('div', { className: 'proj-answer proj-answer--full' }, [
+          el('ul', { className: 'proj-list' }, item.points.map(m => el('li', { text: m })))
+        ]));
+      } else if (revealed) {
         projStage.appendChild(el('div', { className: 'proj-answer' }, [
           el('ul', { className: 'proj-list' }, item.missions.map(m => el('li', { text: m }))),
           el('dl', { className: 'proj-meta' }, [

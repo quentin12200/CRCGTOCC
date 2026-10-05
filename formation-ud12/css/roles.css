@@ -238,6 +238,42 @@ button.schema-box:hover {
   text-align: center;
 }
 
+/* ── Charte de l'élu·e et mandaté·e ────────────────────────── */
+.charte {
+  margin: 10px 0 0;
+  padding: 20px;
+  background: var(--bg-light);
+  border-radius: 10px;
+  border-top: 4px solid var(--cgt-red);
+}
+
+.charte > h3 {
+  color: var(--cgt-red);
+  text-align: center;
+  font-size: 22px;
+  margin: 0 0 8px;
+}
+
+.charte-intro {
+  max-width: 820px;
+  margin: 0 auto 20px;
+  text-align: center;
+  line-height: 1.5;
+}
+
+.charte-grid {
+  margin-bottom: 0;
+}
+
+.charte-grid .role-card {
+  background: var(--card-bg);
+}
+
+.schema-note a {
+  color: var(--oc-accent, #1A5FAD);
+  font-weight: 600;
+}
+
 /* ── Filtres ─────────────────────────────────────────────── */
 .roles-filters {
   display: flex;
@@ -331,6 +367,44 @@ button.schema-box:hover {
   font-weight: 400;
   font-size: 20px;
   margin: 2px 0 0;
+}
+
+.role-badge {
+  display: inline-block;
+  margin-top: 6px;
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .02em;
+  background: var(--oc-accent-muted, #E8F0FB);
+  color: var(--oc-accent-dark, #144D8E);
+  border: 1px solid var(--oc-accent, #1A5FAD);
+}
+
+.role-badge--elu {
+  background: #E6F4EA;
+  color: #1E6B34;
+  border-color: #2E8B4A;
+}
+
+.role-badge--mandate {
+  background: var(--cgt-light-red, #FDECEE);
+  color: var(--cgt-dark-red, #B8001A);
+  border-color: var(--cgt-red);
+}
+
+.role-badge--designe {
+  background: #FFF6D6;
+  color: #7A5B00;
+  border-color: #C9A200;
+}
+
+html[data-theme="dark"] .role-badge { color: #fff; background: transparent; }
+
+.proj-head .role-badge {
+  font-size: clamp(14px, 1.4vw, 18px);
+  padding: 4px 14px;
 }
 
 .role-question {
@@ -789,6 +863,10 @@ body.proj-open {
   animation: role-in .3s ease both;
 }
 
+.proj-answer--full {
+  grid-template-columns: 1fr;
+}
+
 .proj-list {
   list-style: none;
   padding: 0;
@@ -987,8 +1065,13 @@ body.proj-open {
     gap: 12px;
   }
 
-  .roles-schema {
+  .roles-schema,
+  .charte {
     break-inside: avoid;
+  }
+
+  .charte-grid {
+    display: grid !important;
   }
 }
 
