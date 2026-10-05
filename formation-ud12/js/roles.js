@@ -644,80 +644,26 @@ const QUIZ_POOL = [
 
 const QUIZ_LENGTH = 10;
 
-function shuffle(list) {
-  const a = list.slice();
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
-}
+const { el } = FK;
 
-function el(tag, attrs, children) {
-  const node = document.createElement(tag);
-  Object.entries(attrs || {}).forEach(([k, v]) => {
-    if (k === 'text') node.textContent = v;
-    else if (k === 'className') node.className = v;
-    else node.setAttribute(k, v);
-  });
-  (children || []).forEach(c => c && node.appendChild(c));
-  return node;
-}
+const roleBadge = id => STATUT_BY_ROLE[id]
+  ? { cls: 'role-badge--' + STATUT_BY_ROLE[id], text: STATUTS[STATUT_BY_ROLE[id]] }
+  : null;
 
 document.addEventListener('DOMContentLoaded', function() {
   const rolesGrid = document.getElementById('roles-grid');
-  const explorationModeBtn = document.getElementById('exploration-mode');
-  const quizModeBtn = document.getElementById('quiz-mode');
   const explorationPanel = document.getElementById('exploration-panel');
-  const quizPanel = document.getElementById('quiz-panel');
-  const quizTitle = document.getElementById('quiz-title');
-  const quizText = document.getElementById('quiz-text');
-  const quizOptions = document.getElementById('quiz-options');
-  const quizCheckBtn = document.getElementById('quiz-check');
-  const quizNextBtn = document.getElementById('quiz-next');
-  const quizFeedback = document.getElementById('quiz-feedback');
-  const quizProgressBar = document.getElementById('quiz-progress-bar');
 
   /* ---------- Cartes ---------- */
 
-  function setExpanded(card, open) {
-    const btn = card.querySelector('.reveal-btn');
-    const panel = card.querySelector('.role-panel');
-    card.classList.toggle('revealed', open);
-    btn.setAttribute('aria-expanded', String(open));
-    btn.textContent = open ? 'Masquer' : 'Révéler';
-    panel.hidden = !open;
-  }
-
-  // Carte dépliable commune aux rôles et aux blocs de la charte
-  function buildCard({ id, icon, label, title, question, badge, body }) {
-    const panelId = 'panel-' + id;
-    const btn = el('button', { type: 'button', className: 'reveal-btn', 'aria-expanded': 'false', 'aria-controls': panelId, text: 'Révéler' });
-    const card = el('article', { className: 'role-card', id: 'role-' + id, 'aria-labelledby': 'title-' + id }, [
-      el('div', { className: 'role-head' }, [
-        el('span', { className: 'role-icon', 'aria-hidden': 'true', text: icon }),
-        el('div', {}, [
-          el('span', { className: 'role-cat', text: label }),
-          el('h3', { id: 'title-' + id, text: title }),
-          badge ? el('span', { className: 'role-badge role-badge--' + badge, text: STATUTS[badge] }) : null
-        ])
-      ]),
-      el('p', { className: 'role-question', text: question }),
-      btn,
-      el('div', { className: 'role-panel', id: panelId, hidden: '' }, body)
-    ]);
-    btn.addEventListener('click', () => setExpanded(card, btn.getAttribute('aria-expanded') !== 'true'));
-    return card;
-  }
-
   ROLES.forEach(role => {
-    const card = buildCard({
+    const card = FK.buildCard({
       id: role.id,
       icon: role.icon,
       label: CATEGORIES[role.cat],
       title: role.title,
       question: role.question,
-      badge: STATUT_BY_ROLE[role.id],
+      badge: roleBadge(role.id),
       body: [
         el('dl', { className: 'role-meta' }, [
           el('dt', { text: 'Qui élit ou désigne ?' }), el('dd', { text: role.designation }),
@@ -735,7 +681,7 @@ document.addEventListener('DOMContentLoaded', function() {
   Object.entries(CHARTE_GROUPS).forEach(([key, group]) => {
     const grid = el('div', { className: 'roles-grid charte-grid' });
     CHARTE.filter(b => b.group === key).forEach(block => {
-      grid.appendChild(buildCard({
+      grid.appendChild(FK.buildCard({
         id: block.id,
         icon: block.icon,
         label: group.title,
@@ -755,10 +701,10 @@ document.addEventListener('DOMContentLoaded', function() {
   const allCards = explorationPanel.querySelectorAll('.role-card');
 
   document.getElementById('reveal-all-btn').addEventListener('click', () => {
-    allCards.forEach(card => { if (!card.hidden) setExpanded(card, true); });
+    allCards.forEach(card => { if (!card.hidden) FK.setExpanded(card, true); });
   });
   document.getElementById('hide-all-btn').addEventListener('click', () => {
-    allCards.forEach(card => setExpanded(card, false));
+    allCards.forEach(card => FK.setExpanded(card, false));
   });
 
   // Filtres par catégorie
@@ -779,360 +725,76 @@ document.addEventListener('DOMContentLoaded', function() {
   function focusRole(id) {
     const card = document.getElementById('role-' + id);
     if (!card) return;
-    setMode('exploration');
+    modes.setMode('exploration');
     if (card.hidden) applyFilter('all');
-    setExpanded(card, true);
-    card.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    card.classList.remove('highlight');
-    void card.offsetWidth; // relance l'animation
-    card.classList.add('highlight');
-    card.querySelector('.reveal-btn').focus({ preventScroll: true });
+    FK.highlightCard(card);
   }
 
   document.querySelectorAll('.schema-box[data-target]').forEach(box => {
     box.addEventListener('click', () => focusRole(box.dataset.target));
   });
 
-  /* ---------- Modes ---------- */
+  /* ---------- Modes et quiz ---------- */
 
-  function setMode(mode) {
-    const quiz = mode === 'quiz';
-    explorationModeBtn.classList.toggle('active', !quiz);
-    quizModeBtn.classList.toggle('active', quiz);
-    explorationModeBtn.setAttribute('aria-selected', String(!quiz));
-    quizModeBtn.setAttribute('aria-selected', String(quiz));
-    explorationPanel.hidden = quiz;
-    quizPanel.hidden = !quiz;
-  }
-
-  explorationModeBtn.addEventListener('click', () => setMode('exploration'));
-  quizModeBtn.addEventListener('click', () => {
-    setMode('quiz');
-    startQuiz();
+  const quiz = FK.createQuiz({
+    pool: QUIZ_POOL,
+    length: QUIZ_LENGTH,
+    onSeeCard: q => focusRole(q.role),
+    results: { perfect: 'Sans faute ! Vous maîtrisez qui fait quoi dans le syndicat.' }
   });
+  const modes = FK.initModes({ onQuiz: quiz.start });
 
-  /* ---------- Quiz ---------- */
+  /* ---------- Mode projection ---------- */
 
-  let questions = [];
-  let current = 0;
-  let selected = null;
-  let score = 0;
-  let missed = [];
-
-  function startQuiz() {
-    questions = shuffle(QUIZ_POOL).slice(0, QUIZ_LENGTH).map(q => ({
-      ...q,
-      options: q.type === 'vf' ? ['Vrai', 'Faux'] : shuffle(q.options)
-    }));
-    current = 0;
-    score = 0;
-    missed = [];
-    showQuestion();
-  }
-
-  function showQuestion() {
-    const q = questions[current];
-    selected = null;
-    quizTitle.textContent = `Question ${current + 1}/${questions.length}` + (q.type === 'vf' ? ' — Vrai ou faux ?' : '');
-    quizText.textContent = q.question;
-    quizProgressBar.style.width = (current / questions.length * 100) + '%';
-    quizOptions.innerHTML = '';
-    quizOptions.className = 'quiz-options' + (q.type === 'vf' ? ' quiz-options--vf' : '');
-
-    q.options.forEach(option => {
-      const btn = el('button', { type: 'button', className: 'quiz-option', 'aria-pressed': 'false', text: option });
-      btn.addEventListener('click', () => {
-        if (quizCheckBtn.dataset.done === '1') return;
-        quizOptions.querySelectorAll('.quiz-option').forEach(o => {
-          o.classList.remove('selected');
-          o.setAttribute('aria-pressed', 'false');
-        });
-        btn.classList.add('selected');
-        btn.setAttribute('aria-pressed', 'true');
-        selected = option;
-        quizCheckBtn.disabled = false;
-      });
-      quizOptions.appendChild(btn);
-    });
-
-    quizCheckBtn.hidden = false;
-    quizNextBtn.hidden = false;
-    quizCheckBtn.disabled = true;
-    quizCheckBtn.dataset.done = '0';
-    quizNextBtn.disabled = true;
-    quizNextBtn.textContent = current === questions.length - 1 ? 'Voir mon résultat' : 'Question suivante';
-    quizFeedback.className = 'quiz-feedback';
-    quizFeedback.innerHTML = '';
-  }
-
-  quizCheckBtn.addEventListener('click', () => {
-    if (selected === null) return;
-    const q = questions[current];
-    const ok = selected === q.answer;
-    if (ok) score++; else missed.push(q);
-
-    quizOptions.querySelectorAll('.quiz-option').forEach(o => {
-      o.disabled = true;
-      if (o.textContent === q.answer) o.classList.add('correct');
-      else if (o.textContent === selected) o.classList.add('incorrect');
-    });
-
-    quizFeedback.className = 'quiz-feedback visible ' + (ok ? 'correct' : 'incorrect');
-    quizFeedback.innerHTML = '';
-    quizFeedback.appendChild(el('strong', { text: ok ? 'Bonne réponse ! ' : `Pas tout à fait. La bonne réponse : ${q.answer}. ` }));
-    quizFeedback.appendChild(document.createTextNode(q.explanation + ' '));
-    const link = el('button', { type: 'button', className: 'link-btn', text: 'Voir la fiche →' });
-    link.addEventListener('click', () => focusRole(q.role));
-    quizFeedback.appendChild(link);
-
-    quizCheckBtn.disabled = true;
-    quizCheckBtn.dataset.done = '1';
-    quizNextBtn.disabled = false;
-    quizNextBtn.focus();
-  });
-
-  quizNextBtn.addEventListener('click', () => {
-    current++;
-    if (current < questions.length) showQuestion();
-    else showResults();
-  });
-
-  function showResults() {
-    const total = questions.length;
-    const ratio = score / total;
-    quizProgressBar.style.width = '100%';
-    quizTitle.textContent = `Résultat : ${score}/${total}`;
-    quizText.textContent = ratio === 1 ? 'Sans faute ! Vous maîtrisez qui fait quoi dans le syndicat.'
-      : ratio >= 0.7 ? 'Très bien ! Revoyez les quelques points ci-dessous.'
-      : ratio >= 0.4 ? 'C\'est un bon début. Reprenez les fiches ci-dessous puis retentez le quiz.'
-      : 'Prenez le temps de relire les fiches en mode exploration, puis retentez votre chance.';
-    quizOptions.innerHTML = '';
-    quizOptions.className = 'quiz-options';
-    quizFeedback.className = 'quiz-feedback';
-    quizFeedback.innerHTML = '';
-    quizCheckBtn.hidden = true;
-    quizNextBtn.hidden = true;
-
-    if (missed.length) {
-      const list = el('ul', { className: 'quiz-recap' });
-      missed.forEach(q => {
-        const link = el('button', { type: 'button', className: 'link-btn', text: 'Voir la fiche →' });
-        link.addEventListener('click', () => focusRole(q.role));
-        list.appendChild(el('li', {}, [
-          el('p', { className: 'quiz-recap-q', text: q.question }),
-          el('p', { text: '✔ ' + q.answer + ' — ' + q.explanation }),
-          link
-        ]));
-      });
-      quizOptions.appendChild(el('h4', { text: 'À revoir' }));
-      quizOptions.appendChild(list);
-    }
-
-    const restart = el('button', { type: 'button', className: 'quiz-restart', text: 'Recommencer avec d\'autres questions' });
-    restart.addEventListener('click', startQuiz);
-    quizOptions.appendChild(restart);
-    restart.focus();
-  }
-
-  /* ---------- Sommaire ---------- */
-
-  const toc = document.getElementById('table-of-contents');
-  const tocOverlay = document.getElementById('toc-overlay');
-  const tocButton = document.querySelector('.toc-button');
-
-  function setToc(open) {
-    toc.classList.toggle('active', open);
-    tocOverlay.classList.toggle('active', open);
-    toc.setAttribute('aria-hidden', String(!open));
-    tocButton.setAttribute('aria-expanded', String(open));
-    if (open) document.getElementById('close-toc').focus();
-  }
-  tocButton.addEventListener('click', () => setToc(!toc.classList.contains('active')));
-  document.getElementById('close-toc').addEventListener('click', () => { setToc(false); tocButton.focus(); });
-  tocOverlay.addEventListener('click', () => setToc(false));
-  document.addEventListener('keydown', e => {
-    if (e.key === 'Escape' && toc.classList.contains('active')) { setToc(false); tocButton.focus(); }
-  });
-
-  /* ---------- Mode projection (diaporama animateur) ---------- */
-  // Une diapo à la fois : la question d'abord, la réponse au 2e appui.
-  // Clavier / télécommande : → ou PageDown = avancer, ← ou PageUp = reculer,
-  // Espace ou Entrée = révéler, F = plein écran, Échap = quitter.
-
-  const proj = document.getElementById('projection');
-  const projStage = document.getElementById('proj-stage');
-  const projCounter = document.getElementById('proj-counter');
-  const projReveal = document.getElementById('proj-reveal');
-  const projPrev = document.getElementById('proj-prev');
-  const projNext = document.getElementById('proj-next');
-  const projTabs = proj.querySelectorAll('.proj-tab');
-  const presBtn = document.querySelector('.presentation-button');
-
-  let deck = 'roles';
-  let slides = [];
-  let slideIndex = 0;
-  let revealed = false;
-  let lastFocus = null;
-
-  function buildDeck() {
-    if (deck === 'roles') {
-      // Respecte le filtre actif en mode exploration
-      const visibleIds = Array.from(roleCards).filter(c => !c.hidden).map(c => c.id.replace('role-', ''));
-      slides = ROLES.filter(r => visibleIds.includes(r.id));
-    } else if (deck === 'charte') {
-      slides = CHARTE;
-    } else {
-      slides = shuffle(QUIZ_POOL).slice(0, QUIZ_LENGTH).map(q => ({
-        ...q,
-        options: q.type === 'vf' ? ['Vrai', 'Faux'] : shuffle(q.options)
-      }));
-    }
-    slideIndex = 0;
-  }
-
-  function renderSlide() {
-    const item = slides[slideIndex];
-    projStage.innerHTML = '';
-    projCounter.textContent = `${slideIndex + 1} / ${slides.length}`;
-    projPrev.disabled = slideIndex === 0;
-    projNext.disabled = slideIndex === slides.length - 1 && revealed;
-    projReveal.textContent = revealed ? 'Masquer la réponse' : 'Révéler la réponse';
-
-    if (deck === 'roles' || deck === 'charte') {
-      const badge = deck === 'roles' ? STATUT_BY_ROLE[item.id] : null;
-      projStage.appendChild(el('div', { className: 'proj-head' }, [
-        el('span', { className: 'proj-icon', 'aria-hidden': 'true', text: item.icon }),
-        el('div', {}, [
-          el('span', { className: 'proj-cat', text: deck === 'roles' ? CATEGORIES[item.cat] : CHARTE_GROUPS[item.group].title }),
-          el('h2', { className: 'proj-title', text: item.title }),
-          badge ? el('span', { className: 'role-badge role-badge--' + badge, text: STATUTS[badge] }) : null
-        ])
-      ]));
-      projStage.appendChild(el('p', { className: 'proj-question', text: item.question }));
-      if (revealed && deck === 'charte') {
-        projStage.appendChild(el('div', { className: 'proj-answer proj-answer--full' }, [
-          el('ul', { className: 'proj-list' }, item.points.map(m => el('li', { text: m })))
-        ]));
-      } else if (revealed) {
-        projStage.appendChild(el('div', { className: 'proj-answer' }, [
-          el('ul', { className: 'proj-list' }, item.missions.map(m => el('li', { text: m }))),
-          el('dl', { className: 'proj-meta' }, [
-            el('div', {}, [el('dt', { text: 'Qui élit ou désigne ?' }), el('dd', { text: item.designation })]),
-            el('div', {}, [el('dt', { text: 'Rend compte à' }), el('dd', { text: item.rendCompte })])
-          ]),
-          el('p', { className: 'proj-source', text: '📖 ' + item.source })
-        ]));
+  FK.initProjection({
+    initialDeck: () => modes.isQuiz() ? 'quiz' : 'roles',
+    decks: {
+      roles: {
+        // Respecte le filtre actif en mode exploration
+        build: () => {
+          const visibleIds = Array.from(roleCards).filter(c => !c.hidden).map(c => c.id.replace('role-', ''));
+          return ROLES.filter(r => visibleIds.includes(r.id));
+        },
+        render: (stage, item, revealed) => FK.renderCardSlide(stage, {
+          icon: item.icon,
+          cat: CATEGORIES[item.cat],
+          title: item.title,
+          badge: roleBadge(item.id),
+          question: item.question,
+          answer: () => el('div', { className: 'proj-answer' }, [
+            el('ul', { className: 'proj-list' }, item.missions.map(m => el('li', { text: m }))),
+            el('dl', { className: 'proj-meta' }, [
+              el('div', {}, [el('dt', { text: 'Qui élit ou désigne ?' }), el('dd', { text: item.designation })]),
+              el('div', {}, [el('dt', { text: 'Rend compte à' }), el('dd', { text: item.rendCompte })])
+            ]),
+            el('p', { className: 'proj-source', text: '📖 ' + item.source })
+          ])
+        }, revealed)
+      },
+      charte: {
+        build: () => CHARTE,
+        render: (stage, item, revealed) => FK.renderCardSlide(stage, {
+          icon: item.icon,
+          cat: CHARTE_GROUPS[item.group].title,
+          title: item.title,
+          question: item.question,
+          answer: FK.listAnswer(item.points)
+        }, revealed)
+      },
+      quiz: {
+        build: () => FK.drawQuestions(QUIZ_POOL, QUIZ_LENGTH),
+        render: FK.renderQuizSlide
       }
-    } else {
-      projStage.appendChild(el('span', { className: 'proj-cat', text: item.type === 'vf' ? 'Vrai ou faux ?' : 'Question' }));
-      projStage.appendChild(el('h2', { className: 'proj-title proj-title--quiz', text: item.question }));
-      const letters = 'ABCD';
-      projStage.appendChild(el('ol', { className: 'proj-options' + (item.type === 'vf' ? ' proj-options--vf' : '') },
-        item.options.map((o, i) => el('li', {
-          className: revealed ? (o === item.answer ? 'good' : 'bad') : ''
-        }, [el('span', { className: 'proj-letter', text: item.type === 'vf' ? '' : letters[i] }), document.createTextNode(o)]))));
-      if (revealed) {
-        projStage.appendChild(el('p', { className: 'proj-explanation', text: item.explanation }));
-      }
-    }
-  }
-
-  function goTo(i) {
-    if (i < 0 || i >= slides.length) return;
-    slideIndex = i;
-    revealed = false;
-    renderSlide();
-  }
-
-  // « Avancer » révèle d'abord la réponse, puis passe à la diapo suivante
-  function advance() {
-    if (!revealed) { revealed = true; renderSlide(); }
-    else goTo(slideIndex + 1);
-  }
-
-  function setDeck(name) {
-    deck = name;
-    projTabs.forEach(t => {
-      const on = t.dataset.deck === name;
-      t.classList.toggle('active', on);
-      t.setAttribute('aria-selected', String(on));
-    });
-    buildDeck();
-    revealed = false;
-    renderSlide();
-  }
-
-  function openProjection() {
-    lastFocus = document.activeElement;
-    proj.hidden = false;
-    document.body.classList.add('proj-open');
-    presBtn.setAttribute('aria-expanded', 'true');
-    setDeck(quizPanel.hidden ? 'roles' : 'quiz');
-    try {
-      if (proj.requestFullscreen) proj.requestFullscreen().catch(() => {});
-    } catch (e) {}
-    projNext.focus();
-  }
-
-  function closeProjection() {
-    proj.hidden = true;
-    document.body.classList.remove('proj-open');
-    presBtn.setAttribute('aria-expanded', 'false');
-    try { if (document.fullscreenElement) document.exitFullscreen(); } catch (e) {}
-    if (lastFocus) lastFocus.focus();
-  }
-
-  presBtn.addEventListener('click', openProjection);
-  document.getElementById('proj-close').addEventListener('click', closeProjection);
-  document.getElementById('proj-fullscreen').addEventListener('click', toggleFullscreen);
-  projPrev.addEventListener('click', () => goTo(slideIndex - 1));
-  projNext.addEventListener('click', advance);
-  projReveal.addEventListener('click', () => { revealed = !revealed; renderSlide(); });
-  projTabs.forEach(t => t.addEventListener('click', () => setDeck(t.dataset.deck)));
-
-  function toggleFullscreen() {
-    try {
-      if (document.fullscreenElement) document.exitFullscreen();
-      else if (proj.requestFullscreen) proj.requestFullscreen().catch(() => {});
-    } catch (e) {}
-  }
-
-  document.addEventListener('keydown', e => {
-    if (proj.hidden) return;
-    // Laisse les boutons du bandeau réagir normalement à Entrée / Espace
-    const onButton = e.target.closest && e.target.closest('.proj-bar button');
-    switch (e.key) {
-      case 'ArrowRight': case 'PageDown': e.preventDefault(); advance(); break;
-      case 'ArrowLeft': case 'PageUp': e.preventDefault(); goTo(slideIndex - 1); break;
-      case ' ': case 'Enter':
-        if (onButton) return;
-        e.preventDefault(); revealed = !revealed; renderSlide(); break;
-      case 'Home': e.preventDefault(); goTo(0); break;
-      case 'End': e.preventDefault(); goTo(slides.length - 1); break;
-      case 'f': case 'F': toggleFullscreen(); break;
-      // En plein écran, le navigateur intercepte le 1er Échap pour quitter le plein écran
-      case 'Escape': closeProjection(); break;
     }
   });
 
   // La fiche-mémo imprimée montre toutes les cartes ouvertes (voir @media print)
   document.querySelector('.print-button').addEventListener('click', () => {
-    setMode('exploration');
+    modes.setMode('exploration');
     applyFilter('all');
     window.print();
   });
 
-  /* ---------- Thème (l'enregistrement est géré par occitanie.js) ---------- */
-
-  const themeSwitch = document.getElementById('theme-switch');
-  const themeIcon = document.querySelector('.theme-icon');
-  const isDark = () => document.documentElement.getAttribute('data-theme') === 'dark';
-  themeSwitch.checked = isDark();
-  themeIcon.textContent = isDark() ? '☀️' : '🌙';
-  themeSwitch.addEventListener('change', () => {
-    const t = themeSwitch.checked ? 'dark' : 'light';
-    document.documentElement.setAttribute('data-theme', t);
-    try { localStorage.setItem('theme', t); } catch (e) {}
-    themeIcon.textContent = themeSwitch.checked ? '☀️' : '🌙';
-  });
+  FK.initToc();
+  FK.initTheme();
 });
