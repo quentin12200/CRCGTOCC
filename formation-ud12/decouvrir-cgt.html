@@ -86,6 +86,7 @@
       </section>
 
       <section id="metiers" class="module-section" aria-labelledby="metiers-title">
+        <figure class="module-visual"><img src="img/decouvrir/decouvrir-1.webp" srcset="img/decouvrir/decouvrir-1-800.webp 800w, img/decouvrir/decouvrir-1.webp 1600w" sizes="(max-width: 1000px) 100vw, 980px" width="1600" height="900" loading="lazy" decoding="async" alt="Illustration : Des salarié·es de métiers différents réunis autour d'une table, café sur la table, l'une d'elles parle."></figure>
         <h3 id="metiers-title">1. Accueil : nos métiers</h3>
         <p class="section-intro">Pendant le tour de table, notez le prénom et le métier de chacun·e. Vous retrouverez la liste dans la séquence 3 pour situer chaque stagiaire dans la CGT. <em>La liste reste uniquement sur cet appareil.</em></p>
         <div class="metiers-box">
@@ -114,6 +115,7 @@
       </section>
 
       <section id="animateur" class="module-section" aria-labelledby="animateur-title">
+        <figure class="module-visual"><img src="img/decouvrir/decouvrir-2.webp" srcset="img/decouvrir/decouvrir-2-800.webp 800w, img/decouvrir/decouvrir-2.webp 1600w" sizes="(max-width: 1000px) 100vw, 980px" width="1600" height="900" loading="lazy" decoding="async" alt="Illustration : Une animatrice syndicale raconte une victoire collective à un petit groupe assis."></figure>
         <h3 id="animateur-title">2. Je me présente</h3>
         <p class="section-intro">L'animateur·ice se présente comme un·e salarié·e parmi les autres : c'est ce qui rend la CGT concrète.</p>
         <div class="questions-box">
@@ -128,21 +130,51 @@
       </section>
 
       <section id="structures" class="module-section" aria-labelledby="structures-title">
+        <figure class="module-visual"><img src="img/decouvrir/decouvrir-3.webp" srcset="img/decouvrir/decouvrir-3-800.webp 800w, img/decouvrir/decouvrir-3.webp 1600w" sizes="(max-width: 1000px) 100vw, 980px" width="1600" height="900" loading="lazy" decoding="async" alt="Illustration : Un arbre dont les racines partent d'un salarié et dont deux branches, métiers et territoires, se rejoignent au sommet."></figure>
         <h3 id="structures-title">3. La CGT, en partant du syndiqué</h3>
-        <p class="section-intro">On construit la CGT étape par étape, du ou de la syndiqué·e jusqu'à la Confédération. Cliquez sur une case déjà affichée pour revenir sur son explication.</p>
+        <p class="section-intro">Construisez la CGT ensemble, du ou de la syndiqué·e jusqu'à la Confédération. Chaque case du plateau cache une organisation : lisez l'indice, et trouvez la bonne étiquette.</p>
 
-        <div class="cgt-controls">
-          <button type="button" id="cgt-prev">◀ Étape précédente</button>
-          <span id="cgt-step" class="cgt-step" aria-live="polite"></span>
-          <button type="button" id="cgt-next" class="cgt-next">Commencer ▶</button>
+        <div class="cgt-modes" role="tablist" aria-label="Façon de construire la CGT">
+          <button type="button" class="cgt-mode active" role="tab" aria-selected="true" data-mode="puzzle">🧩 Les stagiaires construisent</button>
+          <button type="button" class="cgt-mode" role="tab" aria-selected="false" data-mode="steps">🎓 Je présente pas à pas</button>
         </div>
-        <div class="cgt-layout">
-          <div class="cgt-schema" id="cgt-schema" aria-label="Schéma de l'organisation de la CGT"></div>
-          <div class="cgt-detail" id="cgt-detail" aria-live="polite"></div>
+
+        <div class="cgt-toolbar" id="cgt-toolbar-puzzle">
+          <div class="cgt-progress" aria-hidden="true"><div class="cgt-progress-bar" id="cgt-progress-bar"></div></div>
+          <span class="cgt-count" id="cgt-count" aria-live="polite"></span>
+          <button type="button" id="cgt-hint">💡 Indice</button>
+          <button type="button" id="cgt-shuffle">🔄 Recommencer</button>
+          <button type="button" id="cgt-solve">Tout placer</button>
         </div>
-        <div class="cgt-controls cgt-controls--small">
-          <button type="button" id="cgt-all">Tout afficher</button>
+        <div class="cgt-toolbar" id="cgt-toolbar-steps" hidden>
+          <button type="button" id="cgt-prev">◀ Précédente</button>
+          <span class="cgt-count" id="cgt-step" aria-live="polite"></span>
+          <button type="button" id="cgt-next" class="cgt-primary">Commencer ▶</button>
           <button type="button" id="cgt-reset">Recommencer</button>
+        </div>
+
+        <div class="cgt-stage">
+          <div class="cgt-board" id="cgt-board" aria-label="Plateau : l'organisation de la CGT">
+            <svg class="cgt-links" id="cgt-links" aria-hidden="true"></svg>
+            <span class="cgt-branch-tag cgt-branch-tag--pro">🔧 Branche professionnelle</span>
+            <span class="cgt-branch-tag cgt-branch-tag--terr">📍 Branche territoriale et interprofessionnelle</span>
+          </div>
+          <div class="cgt-side">
+            <div class="cgt-pioche" id="cgt-pioche" aria-label="Étiquettes à placer"></div>
+            <aside class="cgt-detail" id="cgt-detail" aria-live="polite"></aside>
+          </div>
+        </div>
+        <div class="cgt-floating" id="cgt-floating" hidden>
+          <span>📌 Placer : <strong id="cgt-floating-name"></strong> — touchez la bonne case</span>
+          <button type="button" id="cgt-floating-cancel" aria-label="Annuler la sélection">✕</button>
+        </div>
+        <div class="cgt-celebration" id="cgt-celebration" hidden>
+          <div class="cgt-celebration-box" role="status">
+            <p class="cgt-celebration-emoji" aria-hidden="true">🎉</p>
+            <h4>Bravo, vous avez construit la CGT !</h4>
+            <p id="cgt-celebration-text"></p>
+            <button type="button" id="cgt-celebration-ok">Voir la synthèse</button>
+          </div>
         </div>
 
         <div class="situer-box" id="situer-box" hidden>
@@ -153,6 +185,7 @@
       </section>
 
       <section id="cotisation" class="module-section" aria-labelledby="cotisation-title">
+        <figure class="module-visual"><img src="img/decouvrir/decouvrir-4.webp" srcset="img/decouvrir/decouvrir-4-800.webp 800w, img/decouvrir/decouvrir-4.webp 1600w" sizes="(max-width: 1000px) 100vw, 980px" width="1600" height="900" loading="lazy" decoding="async" alt="Illustration : Une pièce déposée dans une tirelire en forme de maison, d'où partent des rubans colorés vers les structures de la CGT."></figure>
         <h3 id="cotisation-title">4. La cotisation : combien, et où va l'argent ?</h3>
         <p class="section-intro">Faites d'abord deviner : « À votre avis, combien coûte l'adhésion ? Où va l'argent ? »</p>
         <div class="calc-box">
@@ -171,6 +204,7 @@
       </section>
 
       <section id="formation" class="module-section" aria-labelledby="formation-title">
+        <figure class="module-visual"><img src="img/decouvrir/decouvrir-5.webp" srcset="img/decouvrir/decouvrir-5-800.webp 800w, img/decouvrir/decouvrir-5.webp 1600w" sizes="(max-width: 1000px) 100vw, 980px" width="1600" height="900" loading="lazy" decoding="async" alt="Illustration : Des personnes montent un escalier dont chaque marche est un espace de formation, en s'entraidant."></figure>
         <h3 id="formation-title">5. Se former à la CGT</h3>
         <p class="section-intro">« Se syndiquer à la CGT, c'est se former à la CGT ! » La formation syndicale est un droit : 12 jours par an pour tous les salarié·es. <em>Source : guide « Ma formation syndicale CGT », 2026.</em></p>
         <ol class="parcours" id="parcours" aria-label="Le parcours de formation de la CGT"></ol>
@@ -179,6 +213,7 @@
       </section>
 
       <section id="conclusion" class="module-section" aria-labelledby="conclusion-title">
+        <figure class="module-visual"><img src="img/decouvrir/decouvrir-6.webp" srcset="img/decouvrir/decouvrir-6-800.webp 800w, img/decouvrir/decouvrir-6.webp 1600w" sizes="(max-width: 1000px) 100vw, 980px" width="1600" height="900" loading="lazy" decoding="async" alt="Illustration : Fin de séance : on se serre la main et une animatrice tend un document."></figure>
         <h3 id="conclusion-title">6. Conclusion : et maintenant ?</h3>
         <div class="questions-box">
           <h4>Pour finir</h4>

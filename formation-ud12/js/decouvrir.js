@@ -196,6 +196,66 @@ const STRUCTURES = [
   }
 ];
 
+// Plateau : indice affiché dans chaque case vide, et position (colonne / ligne de la grille)
+const PLATEAU = {
+  confederation: { clue: "J'englobe toutes les FD et toutes les UD", col: 2, row: 1 },
+  specifiques:   { clue: "Cadres, retraité·es, privé·es d'emploi, consommateurs", col: 2, row: 2 },
+  cr:            { clue: "Je fais le lien entre les UD d'une région", col: 3, row: 2 },
+  fd:            { clue: "Une même profession dans tout le pays", col: 1, row: 3 },
+  ud:            { clue: "Tous les syndicats du département", col: 3, row: 3 },
+  'unions-pro':  { clue: "Les syndicats d'un même métier dans le département", col: 1, row: 4 },
+  ul:            { clue: "Tous les syndicats d'une ville ou d'un bassin", col: 3, row: 4 },
+  syndicat:      { clue: "La base de toute la CGT", col: 2, row: 5 },
+  section:       { clue: "Les syndiqué·es sur le lieu de travail", col: 2, row: 6 },
+  syndique:      { clue: "Tout part de moi", col: 2, row: 7 }
+};
+
+// Traits entre les cases : [de, vers, branche, pointillés ?]
+const LIENS = [
+  ['syndique', 'section', 'base'],
+  ['section', 'syndicat', 'base'],
+  ['syndicat', 'unions-pro', 'pro'],
+  ['syndicat', 'ul', 'terr'],
+  ['unions-pro', 'fd', 'pro'],
+  ['ul', 'ud', 'terr'],
+  ['fd', 'confederation', 'pro'],
+  ['ud', 'confederation', 'terr'],
+  ['ud', 'cr', 'terr', true],
+  ['specifiques', 'confederation', 'base']
+];
+
+// Illustrations (img/decouvrir/) : une par organisation, affichée une fois la case placée
+const IMG_DIR = 'img/decouvrir/';
+const STRUCTURE_IMG = {
+  syndique: { n: 1, alt: "Une salariée en tenue de travail, souriante, le poing levé, une carte d'adhérente à la main." },
+  section: { n: 2, alt: "Des collègues réunis près d'un panneau d'affichage dans un atelier, des tracts à la main." },
+  syndicat: { n: 3, alt: "Une maison commune aux portes ouvertes où des syndiqué·es votent à main levée." },
+  ul: { n: 4, alt: "Des salarié·es de métiers différents entrent dans une maison des syndicats, sur une place de petite ville." },
+  'unions-pro': { n: 5, alt: "Des soignant·es, des métallos et des agent·es publics réunis, chaque métier autour de sa table." },
+  ud: { n: 6, alt: "La carte d'un département rural, un grand bâtiment au centre relié à toutes les villes par des lignes rouges." },
+  cr: { n: 7, alt: "Plusieurs départements assemblés comme un puzzle pour former une région, reliés par des fils rouges." },
+  fd: { n: 8, alt: "Des travailleur·ses d'un même métier venus de tout le pays, autour d'une grande table de négociation." },
+  specifiques: { n: 9, alt: "Quatre scènes côte à côte : ingénieurs et techniciens, retraité·es, personnes privées d'emploi, famille consommatrice." },
+  confederation: { n: 10, alt: "Une immense assemblée lève ses cartons de vote, des rubans bleu et vert se rejoignent au-dessus de la tribune." }
+};
+const SYNTHESE_IMG = { file: 'structure-synthese', alt: "Deux chemins, l'un bleu bordé d'usines et d'hôpitaux, l'autre vert bordé de villages, partent d'une même maison et se rejoignent au sommet sous une bannière rouge." };
+const SEQUENCE_IMG = [
+  "Des salarié·es de métiers différents réunis autour d'une table, café sur la table, l'une d'elles parle.",
+  "Une animatrice syndicale raconte une victoire collective à un petit groupe assis.",
+  "Un arbre dont les racines partent d'un salarié et dont deux branches, métiers et territoires, se rejoignent au sommet.",
+  "Une pièce déposée dans une tirelire en forme de maison, d'où partent des rubans colorés vers les structures de la CGT.",
+  "Des personnes montent un escalier dont chaque marche est un espace de formation, en s'entraidant.",
+  "Fin de séance : on se serre la main et une animatrice tend un document."
+];
+
+function structureImage(file, alt) {
+  return el('img', {
+    className: 'cgt-detail-img', src: IMG_DIR + file + '.webp',
+    srcset: `${IMG_DIR}${file}-400.webp 400w, ${IMG_DIR}${file}.webp 720w`,
+    sizes: '(max-width: 900px) 92vw, 440px', width: '720', height: '720', alt, decoding: 'async'
+  });
+}
+
 const BRANCHES = {
   pro: {
     title: "Branche professionnelle",
@@ -472,102 +532,383 @@ document.addEventListener('DOMContentLoaded', function() {
   });
   renderMetiers();
 
-  /* ---------- La CGT pas à pas ---------- */
+  /* ---------- La CGT : plateau à construire ---------- */
+  // Deux modes sur le même plateau :
+  // - « puzzle » : les stagiaires placent les étiquettes (glisser-déposer, ou toucher l'étiquette puis la case) ;
+  // - « steps » : l'animateur·ice pose les cases une à une, dans l'ordre de présentation.
 
   const ordered = STRUCTURES.slice().sort((a, b) => a.order - b.order);
-  const schema = document.getElementById('cgt-schema');
+  const byId = Object.fromEntries(STRUCTURES.map(x => [x.id, x]));
+  const board = document.getElementById('cgt-board');
+  const svg = document.getElementById('cgt-links');
+  const pioche = document.getElementById('cgt-pioche');
   const detail = document.getElementById('cgt-detail');
+  const countEl = document.getElementById('cgt-count');
+  const progressBar = document.getElementById('cgt-progress-bar');
   const stepLabel = document.getElementById('cgt-step');
   const prevBtn = document.getElementById('cgt-prev');
   const nextBtn = document.getElementById('cgt-next');
-  let step = 0; // nombre d'étapes révélées
-  let current = null;
-  const nodes = {};
+  const celebration = document.getElementById('cgt-celebration');
+  const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // Le schéma se lit de haut en bas : de la Confédération jusqu'au syndiqué
-  const LAYOUT = [
-    ['confederation'],
-    ['specifiques'],
-    ['fd', 'cr'],
-    ['unions-pro', 'ud'],
-    [null, 'ul'],
-    ['syndicat'],
-    ['section'],
-    ['syndique']
-  ];
+  let mode = 'puzzle';
+  let placed = new Set();
+  let selectedTile = null;
+  let errors = 0;
+  let step = 0;
+  const slots = {};
+  const tiles = {};
 
-  schema.appendChild(el('div', { className: 'cgt-branch-head' }, [
-    el('span', { className: 'cgt-branch-pro', text: '🔧 ' + BRANCHES.pro.title }),
-    el('span', { className: 'cgt-branch-terr', text: '📍 ' + BRANCHES.terr.title })
-  ]));
-  LAYOUT.forEach(row => {
-    const line = el('div', { className: 'cgt-row' + (row.length === 1 ? ' cgt-row--center' : '') });
-    row.forEach(id => {
-      if (!id) { line.appendChild(el('span', { className: 'cgt-spacer' })); return; }
-      const s = STRUCTURES.find(x => x.id === id);
-      const node = el('button', { type: 'button', className: 'cgt-node cgt-node--' + s.col, 'data-id': id }, [
-        el('span', { className: 'cgt-num', text: String(s.order) }),
-        el('span', { className: 'cgt-icon', 'aria-hidden': 'true', text: s.icon }),
-        el('span', { className: 'cgt-label', text: s.short })
-      ]);
-      node.addEventListener('click', () => { if (!node.classList.contains('is-hidden')) showDetail(s); });
-      nodes[id] = node;
-      line.appendChild(node);
-    });
-    schema.appendChild(line);
+  // Cases du plateau
+  STRUCTURES.forEach(st => {
+    const pos = PLATEAU[st.id];
+    const slot = el('button', { type: 'button', className: 'cgt-slot cgt-slot--' + st.col, 'data-id': st.id,
+      style: `grid-column:${pos.col};grid-row:${pos.row}` }, [
+      el('span', { className: 'cgt-slot-clue' }, [el('span', { className: 'cgt-slot-q', 'aria-hidden': 'true', text: '?' }), document.createTextNode(pos.clue)]),
+      el('span', { className: 'cgt-slot-filled' }, [
+        el('span', { className: 'cgt-slot-icon', 'aria-hidden': 'true', text: st.icon }),
+        el('span', { className: 'cgt-slot-name', text: st.short })
+      ])
+    ]);
+    slot.addEventListener('click', () => onSlot(st.id));
+    slots[st.id] = slot;
+    board.appendChild(slot);
   });
 
-  function showDetail(s) {
-    current = s;
-    Object.values(nodes).forEach(n => n.classList.toggle('is-current', n.dataset.id === s.id));
+  // Étiquettes de la pioche
+  STRUCTURES.forEach(st => {
+    const tile = el('button', { type: 'button', className: 'cgt-tile', 'data-id': st.id, 'aria-pressed': 'false' }, [
+      el('span', { className: 'cgt-tile-icon', 'aria-hidden': 'true', text: st.icon }),
+      el('span', { text: st.short })
+    ]);
+    tiles[st.id] = tile;
+    enableDrag(tile);
+  });
+
+  function slotLabel(id) {
+    const st = byId[id];
+    return placed.has(id) ? st.name + ' (placée)' : 'Case vide. Indice : ' + PLATEAU[id].clue;
+  }
+
+  /* -- Traits de liaison -- */
+  function drawLinks() {
+    const box = board.getBoundingClientRect();
+    svg.setAttribute('viewBox', `0 0 ${box.width} ${box.height}`);
+    svg.innerHTML = '';
+    LIENS.forEach(([from, to, branch, dashed]) => {
+      const r1 = slots[from].getBoundingClientRect();
+      const r2 = slots[to].getBoundingClientRect();
+      const x1 = r1.left + r1.width / 2 - box.left, y1 = r1.top + r1.height / 2 - box.top;
+      const x2 = r2.left + r2.width / 2 - box.left, y2 = r2.top + r2.height / 2 - box.top;
+      const my = (y1 + y2) / 2;
+      const d = Math.abs(y1 - y2) < 4 ? `M${x1},${y1} L${x2},${y2}` : `M${x1},${y1} C${x1},${my} ${x2},${my} ${x2},${y2}`;
+      const on = placed.has(from) && placed.has(to);
+      const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      path.setAttribute('d', d);
+      path.setAttribute('class', `cgt-link cgt-link--${branch}${on ? ' is-on' : ''}${dashed ? ' is-dashed' : ''}`);
+      svg.appendChild(path);
+    });
+  }
+  if (window.ResizeObserver) new ResizeObserver(drawLinks).observe(board);
+  window.addEventListener('resize', drawLinks);
+
+  /* -- Panneau d'explication -- */
+  function showDetail(st, extra) {
     detail.innerHTML = '';
+    detail.className = 'cgt-detail cgt-detail--' + st.col;
+    const pic = STRUCTURE_IMG[st.id];
+    if (pic) detail.appendChild(structureImage('structure-' + pic.n, pic.alt));
     detail.appendChild(el('div', { className: 'cgt-detail-head' }, [
-      el('span', { className: 'role-icon', 'aria-hidden': 'true', text: s.icon }),
+      el('span', { className: 'role-icon', 'aria-hidden': 'true', text: st.icon }),
       el('div', {}, [
-        el('span', { className: 'role-cat', text: `Étape ${s.order} sur ${ordered.length}` }),
-        el('h4', { text: s.name })
+        el('span', { className: 'role-cat', text: `Étape ${st.order} sur ${ordered.length}` }),
+        el('h4', { text: st.name })
       ])
     ]));
-    detail.appendChild(el('p', { className: 'role-question', text: s.question }));
-    detail.appendChild(el('ul', { className: 'role-details' }, s.points.map(m => el('li', { text: m }))));
-    if (s.col === 'pro' || s.col === 'terr') {
-      detail.appendChild(el('p', { className: 'cgt-branch-note cgt-branch-note--' + s.col, text: BRANCHES[s.col].title + ' : ' + BRANCHES[s.col].text }));
+    if (extra) detail.appendChild(extra);
+    detail.appendChild(el('p', { className: 'cgt-ask' }, [el('strong', { text: '🗣️ À demander au groupe : ' }), document.createTextNode(st.question)]));
+    detail.appendChild(el('ul', { className: 'role-details' }, st.points.map(m => el('li', { text: m }))));
+    if (st.col === 'pro' || st.col === 'terr') {
+      detail.appendChild(el('p', { className: 'cgt-branch-note cgt-branch-note--' + st.col }, [
+        el('strong', { text: BRANCHES[st.col].title + ' : ' }), document.createTextNode(BRANCHES[st.col].text)
+      ]));
     }
   }
 
-  function render() {
-    ordered.forEach((s, i) => nodes[s.id].classList.toggle('is-hidden', i >= step));
-    Object.values(nodes).forEach(n => {
-      n.setAttribute('aria-hidden', n.classList.contains('is-hidden') ? 'true' : 'false');
-      n.tabIndex = n.classList.contains('is-hidden') ? -1 : 0;
+  function showClue(id) {
+    detail.innerHTML = '';
+    detail.className = 'cgt-detail';
+    detail.appendChild(el('span', { className: 'role-cat', text: 'Case à trouver' }));
+    detail.appendChild(el('h4', { text: '« ' + PLATEAU[id].clue + ' »' }));
+    detail.appendChild(el('p', { text: 'Quelle organisation va ici ? Choisissez une étiquette dans la pioche, puis touchez cette case, ou glissez l\'étiquette dessus.' }));
+  }
+
+  function showIntro() {
+    detail.innerHTML = '';
+    detail.className = 'cgt-detail';
+    if (mode === 'puzzle') {
+      detail.appendChild(el('h4', { text: 'À vous de construire la CGT !' }));
+      detail.appendChild(el('ol', { className: 'cgt-howto' }, [
+        el('li', { text: 'Choisissez une étiquette dans la pioche.' }),
+        el('li', { text: 'Glissez-la sur la bonne case, ou touchez la case.' }),
+        el('li', { text: 'Lisez les indices dans les cases : ils vous guident.' })
+      ]));
+      detail.appendChild(el('p', { className: 'cgt-tip', text: 'Conseil d\'animation : faites venir les stagiaires à tour de rôle, ou laissez le groupe proposer et une personne placer.' }));
+    } else {
+      detail.appendChild(el('h4', { text: 'Présentation pas à pas' }));
+      detail.appendChild(el('p', { text: 'On part du ou de la syndiqué·e et on remonte, étape par étape, jusqu\'à la Confédération. Cliquez sur « Commencer ».' }));
+    }
+  }
+
+  function showSynthese() {
+    detail.innerHTML = '';
+    detail.className = 'cgt-detail';
+    detail.appendChild(structureImage(SYNTHESE_IMG.file, SYNTHESE_IMG.alt));
+    detail.appendChild(el('h4', { text: 'Deux branches qui se rejoignent à la Confédération' }));
+    ['pro', 'terr'].forEach(b => detail.appendChild(el('p', { className: 'cgt-branch-note cgt-branch-note--' + b }, [
+      el('strong', { text: BRANCHES[b].title + ' : ' }), document.createTextNode(BRANCHES[b].text)
+    ])));
+    detail.appendChild(el('p', { className: 'cgt-synthese', text: 'Le syndicat est au croisement des deux : il adhère à sa fédération et à son union départementale. La Confédération générale du travail englobe toutes les FD et toutes les UD. Les organisations spécifiques (UGICT, UCR, CNTPEP, INDECOSA) s\'adressent à des situations particulières.' }));
+  }
+
+  /* -- État du plateau -- */
+  function refresh() {
+    STRUCTURES.forEach(st => {
+      const slot = slots[st.id];
+      const on = placed.has(st.id);
+      slot.classList.toggle('is-placed', on);
+      slot.setAttribute('aria-label', slotLabel(st.id));
+      const tile = tiles[st.id];
+      if (on) { if (tile.parentNode) tile.remove(); }
+      else if (!tile.parentNode) pioche.appendChild(tile);
     });
-    schema.classList.toggle('show-branches', step >= ordered.length);
-    stepLabel.textContent = step === 0 ? 'Prêt·e à construire la CGT ?' : step > ordered.length ? 'Synthèse : deux branches qui se rejoignent' : `Étape ${step} sur ${ordered.length}`;
+    const complete = placed.size === STRUCTURES.length;
+    board.classList.toggle('is-complete', complete);
+    countEl.textContent = `${placed.size} / ${STRUCTURES.length} organisations placées` + (errors ? ` · ${errors} essai${errors > 1 ? 's' : ''} raté${errors > 1 ? 's' : ''}` : '');
+    progressBar.style.width = (placed.size / STRUCTURES.length * 100) + '%';
+    pioche.classList.toggle('is-empty', mode === 'puzzle' && complete);
+    drawLinks();
+  }
+
+  const floating = document.getElementById('cgt-floating');
+  function selectTile(id) {
+    selectedTile = selectedTile === id ? null : id;
+    Object.values(tiles).forEach(t => {
+      const on = t.dataset.id === selectedTile;
+      t.classList.toggle('is-selected', on);
+      t.setAttribute('aria-pressed', String(on));
+    });
+    board.classList.toggle('is-placing', !!selectedTile);
+    // Rappel de l'étiquette choisie, utile sur petit écran pendant qu'on fait défiler jusqu'à la case
+    floating.hidden = !selectedTile;
+    if (selectedTile) document.getElementById('cgt-floating-name').textContent = byId[selectedTile].short;
+  }
+  document.getElementById('cgt-floating-cancel').addEventListener('click', () => selectTile(null));
+
+  function burst(slot) {
+    if (reduceMotion) return;
+    const colors = ['#E2001A', '#FFD200', '#1A5FAD', '#2E8B4A'];
+    for (let k = 0; k < 10; k++) {
+      const dot = el('span', { className: 'cgt-spark', style: `--a:${k * 36}deg;background:${colors[k % 4]}` });
+      slot.appendChild(dot);
+      setTimeout(() => dot.remove(), 700);
+    }
+  }
+
+  function place(id, slotId) {
+    const slot = slots[slotId];
+    if (placed.has(slotId)) return;
+    if (id === slotId) {
+      placed.add(id);
+      selectTile(null);
+      refresh();
+      slot.classList.remove('is-pop'); void slot.offsetWidth; slot.classList.add('is-pop');
+      burst(slot);
+      showDetail(byId[id], el('p', { className: 'cgt-bravo', text: '✔ Bien joué !' }));
+      if (placed.size === STRUCTURES.length) setTimeout(celebrate, reduceMotion ? 0 : 600);
+    } else {
+      errors++;
+      const tile = tiles[id];
+      [tile, slot].forEach(n => {
+        n.classList.remove('is-wrong'); void n.offsetWidth; n.classList.add('is-wrong');
+        setTimeout(() => n.classList.remove('is-wrong'), 700);
+      });
+      refresh();
+      detail.innerHTML = '';
+      detail.className = 'cgt-detail';
+      detail.appendChild(el('p', { className: 'cgt-oups', text: '✘ Pas tout à fait…' }));
+      detail.appendChild(el('p', {}, [
+        document.createTextNode('« ' + byId[id].short + ' » ne va pas dans la case « ' + PLATEAU[slotId].clue + ' ». '),
+        el('strong', { text: 'Indice : ' }), document.createTextNode('cherchez la case « ' + PLATEAU[id].clue + ' ».')
+      ]));
+    }
+  }
+
+  function onSlot(slotId) {
+    if (placed.has(slotId)) { showDetail(byId[slotId]); return; }
+    if (mode !== 'puzzle') return;
+    if (selectedTile) place(selectedTile, slotId);
+    else showClue(slotId);
+  }
+
+  function celebrate() {
+    document.getElementById('cgt-celebration-text').textContent = errors === 0
+      ? 'Sans une seule erreur : chapeau !'
+      : `En ${errors} essai${errors > 1 ? 's' : ''} raté${errors > 1 ? 's' : ''} : c'est en se trompant qu'on apprend.`;
+    celebration.hidden = false;
+    document.getElementById('cgt-celebration-ok').focus();
+  }
+  document.getElementById('cgt-celebration-ok').addEventListener('click', () => {
+    celebration.hidden = true;
+    showSynthese();
+  });
+
+  /* -- Glisser-déposer (souris, doigt) ; un simple appui sélectionne l'étiquette -- */
+  // Pendant un glisser-déposer, la page défile quand on approche du haut ou du bas de l'écran
+  let autoScroll = 0;
+  let autoScrollTimer = null;
+  let lastY = null;
+  function setAutoScroll(y) {
+    // Zone haute sous l'en-tête collant du site ; on ne défile que si l'on va vers le bord
+    const header = document.querySelector('body > header');
+    const top = (header ? header.getBoundingClientRect().bottom : 0) + 40;
+    const bottom = window.innerHeight - 70;
+    const dy = lastY === null ? 0 : y - lastY;
+    lastY = y;
+    if (y < top && dy < 0) autoScroll = -14;
+    else if (y > bottom && dy > 0) autoScroll = 14;
+    else if (y >= top && y <= bottom) autoScroll = 0;
+    if (autoScroll && !autoScrollTimer) {
+      autoScrollTimer = setInterval(() => { if (autoScroll) window.scrollBy(0, autoScroll); }, 16);
+    } else if (!autoScroll && autoScrollTimer) {
+      clearInterval(autoScrollTimer); autoScrollTimer = null;
+    }
+  }
+
+  function enableDrag(tile) {
+    let start = null, ghost = null, over = null;
+    tile.addEventListener('pointerdown', e => {
+      if (e.button !== 0) return;
+      start = { x: e.clientX, y: e.clientY };
+      tile.setPointerCapture(e.pointerId);
+    });
+    tile.addEventListener('pointermove', e => {
+      if (!start) return;
+      if (!ghost && Math.hypot(e.clientX - start.x, e.clientY - start.y) > 8) {
+        ghost = tile.cloneNode(true);
+        ghost.classList.add('cgt-ghost');
+        document.body.appendChild(ghost);
+        tile.classList.add('is-dragging');
+        board.classList.add('is-placing');
+      }
+      if (ghost) {
+        setAutoScroll(e.clientY);
+        ghost.style.left = e.clientX + 'px';
+        ghost.style.top = e.clientY + 'px';
+        ghost.hidden = true;
+        const under = document.elementFromPoint(e.clientX, e.clientY);
+        ghost.hidden = false;
+        const slot = under && under.closest('.cgt-slot:not(.is-placed)');
+        if (over && over !== slot) over.classList.remove('is-over');
+        over = slot;
+        if (over) over.classList.add('is-over');
+      }
+    });
+    function end(e, cancelled) {
+      if (!start) return;
+      const wasDrag = !!ghost;
+      lastY = null;
+      setAutoScroll(window.innerHeight / 2);
+      if (ghost) { ghost.remove(); ghost = null; }
+      tile.classList.remove('is-dragging');
+      if (over) over.classList.remove('is-over');
+      board.classList.toggle('is-placing', !!selectedTile);
+      start = null;
+      if (cancelled) return;
+      if (wasDrag) { if (over) place(tile.dataset.id, over.dataset.id); }
+      else selectTile(tile.dataset.id);
+      over = null;
+    }
+    tile.addEventListener('pointerup', e => end(e, false));
+    tile.addEventListener('pointercancel', e => end(e, true));
+    // Clavier : Entrée / Espace sélectionnent (le clic souris est géré par pointerup)
+    tile.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); selectTile(tile.dataset.id); }
+    });
+  }
+
+  /* -- Boutons du mode puzzle -- */
+  function shufflePioche() {
+    pioche.innerHTML = '';
+    FK.shuffle(STRUCTURES).forEach(st => { if (!placed.has(st.id)) pioche.appendChild(tiles[st.id]); });
+  }
+  document.getElementById('cgt-hint').addEventListener('click', () => {
+    const remaining = STRUCTURES.filter(st => !placed.has(st.id));
+    if (!remaining.length) return;
+    const target = selectedTile ? byId[selectedTile] : remaining[0];
+    if (!selectedTile) selectTile(target.id);
+    const slot = slots[target.id];
+    slot.classList.remove('is-hint'); void slot.offsetWidth; slot.classList.add('is-hint');
+    detail.innerHTML = '';
+    detail.className = 'cgt-detail';
+    detail.appendChild(el('p', {}, [el('strong', { text: '💡 Indice : ' }), document.createTextNode('« ' + target.short + ' » va dans la case qui clignote : « ' + PLATEAU[target.id].clue + ' ».')]));
+  });
+  document.getElementById('cgt-shuffle').addEventListener('click', () => {
+    placed = new Set(); errors = 0; selectTile(null); shufflePioche(); refresh(); showIntro();
+  });
+  document.getElementById('cgt-solve').addEventListener('click', () => {
+    placed = new Set(STRUCTURES.map(st => st.id)); selectTile(null); refresh(); showSynthese();
+  });
+
+  /* -- Mode pas à pas -- */
+  function renderSteps() {
+    placed = new Set(ordered.slice(0, Math.min(step, ordered.length)).map(st => st.id));
+    refresh();
+    stepLabel.textContent = step === 0 ? 'Prêt·e ?' : step > ordered.length ? 'Synthèse' : `Étape ${step} sur ${ordered.length}`;
     prevBtn.disabled = step === 0;
     nextBtn.disabled = step > ordered.length;
-    nextBtn.textContent = step === 0 ? 'Commencer ▶' : step === ordered.length ? 'Synthèse ▶' : 'Étape suivante ▶';
-    if (step === 0) {
-      detail.innerHTML = '';
-      detail.appendChild(el('p', { className: 'role-question', text: 'On part du ou de la syndiqué·e et on remonte, étape par étape, jusqu\'à la Confédération.' }));
-      Object.values(nodes).forEach(n => n.classList.remove('is-current'));
-    } else if (step <= ordered.length) {
-      showDetail(ordered[step - 1]);
-    } else {
-      Object.values(nodes).forEach(n => n.classList.remove('is-current'));
-      detail.innerHTML = '';
-      detail.appendChild(el('h4', { text: 'Deux branches qui se rejoignent à la Confédération' }));
-      ['pro', 'terr'].forEach(b => detail.appendChild(el('p', { className: 'cgt-branch-note cgt-branch-note--' + b }, [
-        el('strong', { text: BRANCHES[b].title + ' : ' }), document.createTextNode(BRANCHES[b].text)
-      ])));
-      detail.appendChild(el('p', { className: 'cgt-synthese', text: 'Le syndicat est au croisement des deux : il adhère à sa fédération et à son union départementale. La Confédération générale du travail englobe toutes les FD et toutes les UD. Les organisations spécifiques (UGICT, UCR, CNTPEP, INDECOSA) s\'adressent à des situations particulières.' }));
-    }
+    nextBtn.textContent = step === 0 ? 'Commencer ▶' : step === ordered.length ? 'Synthèse ▶' : 'Suivante ▶';
+    if (step === 0) showIntro();
+    else if (step <= ordered.length) {
+      const st = ordered[step - 1];
+      showDetail(st);
+      const slot = slots[st.id];
+      slot.classList.remove('is-pop'); void slot.offsetWidth; slot.classList.add('is-pop');
+    } else showSynthese();
   }
+  prevBtn.addEventListener('click', () => { step = Math.max(0, step - 1); renderSteps(); });
+  nextBtn.addEventListener('click', () => { step = Math.min(ordered.length + 1, step + 1); renderSteps(); });
+  document.getElementById('cgt-reset').addEventListener('click', () => { step = 0; renderSteps(); });
 
-  prevBtn.addEventListener('click', () => { step = Math.max(0, step - 1); render(); });
-  nextBtn.addEventListener('click', () => { step = Math.min(ordered.length + 1, step + 1); render(); });
-  document.getElementById('cgt-all').addEventListener('click', () => { step = ordered.length + 1; render(); });
-  document.getElementById('cgt-reset').addEventListener('click', () => { step = 0; render(); });
-  render();
+  /* -- Choix du mode -- */
+  const modeBtns = document.querySelectorAll('.cgt-mode');
+  function setBoardMode(m) {
+    mode = m;
+    modeBtns.forEach(btn => {
+      const on = btn.dataset.mode === m;
+      btn.classList.toggle('active', on);
+      btn.setAttribute('aria-selected', String(on));
+    });
+    document.getElementById('cgt-toolbar-puzzle').hidden = m !== 'puzzle';
+    document.getElementById('cgt-toolbar-steps').hidden = m !== 'steps';
+    pioche.hidden = m !== 'puzzle';
+    board.classList.toggle('is-steps', m === 'steps');
+    celebration.hidden = true;
+    selectTile(null);
+    if (m === 'puzzle') { placed = new Set(); errors = 0; shufflePioche(); refresh(); showIntro(); }
+    else { step = 0; renderSteps(); }
+  }
+  modeBtns.forEach(btn => btn.addEventListener('click', () => setBoardMode(btn.dataset.mode)));
+
+  // Ouvre une organisation (lien « Voir la fiche » du quiz, bouton « Tout révéler »)
+  function revealStructure(id) {
+    if (!placed.has(id)) { placed.add(id); refresh(); }
+    showDetail(byId[id]);
+  }
+  function revealAllStructures() { placed = new Set(STRUCTURES.map(st => st.id)); selectTile(null); refresh(); showSynthese(); }
+  function resetStructures() { setBoardMode(mode); }
+
+  setBoardMode('puzzle');
 
   /* ---------- Cotisation ---------- */
 
@@ -635,12 +976,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
   document.getElementById('reveal-all-btn').addEventListener('click', () => {
     document.querySelectorAll('#exploration-panel .role-card').forEach(c => FK.setExpanded(c, true));
-    step = ordered.length + 1; render();
+    revealAllStructures();
     repartitionBox.hidden = false; repartitionReveal.setAttribute('aria-expanded', 'true'); repartitionReveal.textContent = 'Masquer la répartition';
   });
   document.getElementById('hide-all-btn').addEventListener('click', () => {
     document.querySelectorAll('#exploration-panel .role-card').forEach(c => FK.setExpanded(c, false));
-    step = 0; render();
+    resetStructures();
     repartitionBox.hidden = true; repartitionReveal.setAttribute('aria-expanded', 'false'); repartitionReveal.textContent = 'Révéler la répartition';
   });
 
@@ -651,9 +992,9 @@ document.addEventListener('DOMContentLoaded', function() {
     modes.setMode('exploration');
     const s = STRUCTURES.find(x => x.id === q.role);
     if (s) {
-      step = Math.max(step, s.order); render(); showDetail(s);
+      revealStructure(s.id);
       document.getElementById('structures').scrollIntoView({ behavior: 'smooth' });
-      nodes[s.id].focus({ preventScroll: true });
+      slots[s.id].focus({ preventScroll: true });
       return;
     }
     const target = q.role.startsWith('cotisation') ? 'cotisation' : 'formation';
@@ -670,17 +1011,21 @@ document.addEventListener('DOMContentLoaded', function() {
 
   /* ---------- Mode projection ---------- */
 
-  const listSlide = (cat, item) => (stage, s, revealed) => FK.renderCardSlide(stage, {
+  const listSlide = (cat, imageOf) => (stage, s, revealed) => FK.renderCardSlide(stage, {
     icon: s.icon, cat: typeof cat === 'function' ? cat(s) : cat, title: s.title || s.name,
-    question: s.question, answer: FK.listAnswer(s.points)
+    question: s.question, answer: FK.listAnswer(s.points), image: imageOf ? imageOf(s) : null
   }, revealed);
+  const squareImage = (file, alt) => ({ src: IMG_DIR + file + '.webp', srcset: `${IMG_DIR}${file}-400.webp 400w, ${IMG_DIR}${file}.webp 720w`, alt });
 
   FK.initProjection({
     initialDeck: () => modes.isQuiz() ? 'quiz' : 'structures',
     decks: {
       deroule: {
         build: () => SEQUENCES.map((s, i) => ({ ...s, n: i + 1, question: s.objectif, points: s.activite })),
-        render: listSlide(s => `Séquence ${s.n} · ${s.minutes} minutes`)
+        render: listSlide(s => `Séquence ${s.n} · ${s.minutes} minutes`, s => ({
+          src: `${IMG_DIR}decouvrir-${s.n}.webp`, srcset: `${IMG_DIR}decouvrir-${s.n}-800.webp 800w, ${IMG_DIR}decouvrir-${s.n}.webp 1600w`,
+          alt: SEQUENCE_IMG[s.n - 1], wide: true
+        }))
       },
       structures: {
         build: () => ordered.concat([{
@@ -690,7 +1035,8 @@ document.addEventListener('DOMContentLoaded', function() {
             'Le syndicat est au croisement des deux : il adhère à sa fédération et à son union départementale.',
             'La Confédération générale du travail englobe toutes les FD et toutes les UD.']
         }]),
-        render: listSlide(s => s.order <= ordered.length ? `La CGT pas à pas — étape ${s.order} sur ${ordered.length}` : 'La CGT pas à pas — synthèse')
+        render: listSlide(s => s.order <= ordered.length ? `La CGT pas à pas — étape ${s.order} sur ${ordered.length}` : 'La CGT pas à pas — synthèse',
+          s => s.id && STRUCTURE_IMG[s.id] ? squareImage('structure-' + STRUCTURE_IMG[s.id].n, STRUCTURE_IMG[s.id].alt) : squareImage(SYNTHESE_IMG.file, SYNTHESE_IMG.alt))
       },
       cotisation: {
         build: () => [
@@ -701,7 +1047,10 @@ document.addEventListener('DOMContentLoaded', function() {
           { icon: '✊', name: 'Pourquoi c\'est important ?', question: 'Pourquoi la CGT ne vit-elle que des cotisations ?',
             points: ['L\'indépendance : la CGT ne dépend ni du patronat, ni de l\'État, ni d\'un parti', 'La solidarité : chaque cotisation fait vivre toutes les structures', 'Les moyens d\'agir : tracts, formations, réunions, soutien juridique'] }
         ],
-        render: listSlide('La cotisation')
+        render: listSlide('La cotisation', () => ({
+          src: IMG_DIR + 'decouvrir-4.webp', srcset: `${IMG_DIR}decouvrir-4-800.webp 800w, ${IMG_DIR}decouvrir-4.webp 1600w`,
+          alt: SEQUENCE_IMG[3], wide: true
+        }))
       },
       quiz: {
         build: () => FK.drawQuestions(QUIZ_POOL, QUIZ_LENGTH),

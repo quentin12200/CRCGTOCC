@@ -271,8 +271,20 @@
   // Espace ou Entrée = révéler, F = plein écran, Échap = quitter.
 
   // Diapo « carte » : icône, catégorie, titre, badge, question puis réponse
-  function renderCardSlide(stage, { icon, cat, title, badge, question, answer }, revealed) {
-    stage.appendChild(el('div', { className: 'proj-head' }, [
+  // image : { src, srcset, alt, wide } facultative, affichée à droite du texte
+  function renderCardSlide(stage, { icon, cat, title, badge, question, answer, image }, revealed) {
+    // Avec une image : deux colonnes, le texte à gauche et l'illustration à droite
+    let target = stage;
+    if (image) {
+      const img = el('img', { src: image.src, alt: image.alt || '', decoding: 'async' });
+      if (image.srcset) { img.setAttribute('srcset', image.srcset); img.setAttribute('sizes', image.wide ? '36vw' : '28vw'); }
+      target = el('div', { className: 'proj-split-text' });
+      stage.appendChild(el('div', { className: 'proj-split' + (image.wide ? ' proj-split--wide' : '') }, [
+        target,
+        el('figure', { className: 'proj-visual' }, [img])
+      ]));
+    }
+    target.appendChild(el('div', { className: 'proj-head' }, [
       el('span', { className: 'proj-icon', 'aria-hidden': 'true', text: icon }),
       el('div', {}, [
         el('span', { className: 'proj-cat', text: cat }),
@@ -280,8 +292,8 @@
         badge ? el('span', { className: 'role-badge ' + (badge.cls || ''), text: badge.text }) : null
       ])
     ]));
-    stage.appendChild(el('p', { className: 'proj-question', text: question }));
-    if (revealed) stage.appendChild(answer());
+    target.appendChild(el('p', { className: 'proj-question', text: question }));
+    if (revealed) target.appendChild(answer());
   }
 
   // Diapo « liste » : réponse en une colonne
