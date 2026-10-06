@@ -129,20 +129,49 @@
 
       <section id="structures" class="module-section" aria-labelledby="structures-title">
         <h3 id="structures-title">3. La CGT, en partant du syndiqué</h3>
-        <p class="section-intro">On construit la CGT étape par étape, du ou de la syndiqué·e jusqu'à la Confédération. Cliquez sur une case déjà affichée pour revenir sur son explication.</p>
+        <p class="section-intro">Construisez la CGT ensemble, du ou de la syndiqué·e jusqu'à la Confédération. Chaque case du plateau cache une organisation : lisez l'indice, et trouvez la bonne étiquette.</p>
 
-        <div class="cgt-controls">
-          <button type="button" id="cgt-prev">◀ Étape précédente</button>
-          <span id="cgt-step" class="cgt-step" aria-live="polite"></span>
-          <button type="button" id="cgt-next" class="cgt-next">Commencer ▶</button>
+        <div class="cgt-modes" role="tablist" aria-label="Façon de construire la CGT">
+          <button type="button" class="cgt-mode active" role="tab" aria-selected="true" data-mode="puzzle">🧩 Les stagiaires construisent</button>
+          <button type="button" class="cgt-mode" role="tab" aria-selected="false" data-mode="steps">🎓 Je présente pas à pas</button>
         </div>
-        <div class="cgt-layout">
-          <div class="cgt-schema" id="cgt-schema" aria-label="Schéma de l'organisation de la CGT"></div>
-          <div class="cgt-detail" id="cgt-detail" aria-live="polite"></div>
+
+        <div class="cgt-toolbar" id="cgt-toolbar-puzzle">
+          <div class="cgt-progress" aria-hidden="true"><div class="cgt-progress-bar" id="cgt-progress-bar"></div></div>
+          <span class="cgt-count" id="cgt-count" aria-live="polite"></span>
+          <button type="button" id="cgt-hint">💡 Indice</button>
+          <button type="button" id="cgt-shuffle">🔄 Recommencer</button>
+          <button type="button" id="cgt-solve">Tout placer</button>
         </div>
-        <div class="cgt-controls cgt-controls--small">
-          <button type="button" id="cgt-all">Tout afficher</button>
+        <div class="cgt-toolbar" id="cgt-toolbar-steps" hidden>
+          <button type="button" id="cgt-prev">◀ Précédente</button>
+          <span class="cgt-count" id="cgt-step" aria-live="polite"></span>
+          <button type="button" id="cgt-next" class="cgt-primary">Commencer ▶</button>
           <button type="button" id="cgt-reset">Recommencer</button>
+        </div>
+
+        <div class="cgt-stage">
+          <div class="cgt-board" id="cgt-board" aria-label="Plateau : l'organisation de la CGT">
+            <svg class="cgt-links" id="cgt-links" aria-hidden="true"></svg>
+            <span class="cgt-branch-tag cgt-branch-tag--pro">🔧 Branche professionnelle</span>
+            <span class="cgt-branch-tag cgt-branch-tag--terr">📍 Branche territoriale et interprofessionnelle</span>
+          </div>
+          <div class="cgt-side">
+            <div class="cgt-pioche" id="cgt-pioche" aria-label="Étiquettes à placer"></div>
+            <aside class="cgt-detail" id="cgt-detail" aria-live="polite"></aside>
+          </div>
+        </div>
+        <div class="cgt-floating" id="cgt-floating" hidden>
+          <span>📌 Placer : <strong id="cgt-floating-name"></strong> — touchez la bonne case</span>
+          <button type="button" id="cgt-floating-cancel" aria-label="Annuler la sélection">✕</button>
+        </div>
+        <div class="cgt-celebration" id="cgt-celebration" hidden>
+          <div class="cgt-celebration-box" role="status">
+            <p class="cgt-celebration-emoji" aria-hidden="true">🎉</p>
+            <h4>Bravo, vous avez construit la CGT !</h4>
+            <p id="cgt-celebration-text"></p>
+            <button type="button" id="cgt-celebration-ok">Voir la synthèse</button>
+          </div>
         </div>
 
         <div class="situer-box" id="situer-box" hidden>
