@@ -1054,6 +1054,15 @@ body.proj-open {
   margin: 0 auto;
 }
 
+.proj-split {
+  display: grid; grid-template-columns: minmax(0, 1fr) clamp(180px, 28vw, 400px);
+  gap: clamp(16px, 3vw, 40px); align-items: start;
+}
+.proj-split--wide { grid-template-columns: minmax(0, 1fr) clamp(220px, 36vw, 600px); }
+.proj-split-text { min-width: 0; }
+.proj-visual { margin: 0; border-radius: 14px; overflow: hidden; box-shadow: 0 8px 24px rgba(0,0,0,.18); }
+.proj-visual img { display: block; width: 100%; height: auto; }
+
 .proj-head {
   display: flex;
   align-items: center;
@@ -1242,6 +1251,9 @@ body.proj-open {
 }
 
 @media (max-width: 768px) {
+  .proj-split, .proj-split--wide { grid-template-columns: 1fr; }
+  .proj-visual { order: -1; max-height: 30vh; }
+  .proj-visual img { max-height: 30vh; object-fit: cover; }
   .proj-answer,
   .proj-options {
     grid-template-columns: 1fr;
@@ -1452,6 +1464,7 @@ body.proj-open {
 /* Plateau */
 .cgt-stage { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); gap: 18px; align-items: start; }
 .cgt-side { position: sticky; top: 100px; display: flex; flex-direction: column; gap: 12px; max-height: calc(100vh - 120px); overflow-y: auto; }
+.cgt-side > * { flex-shrink: 0; }
 .cgt-side .cgt-pioche { margin: 0; max-width: none; }
 .cgt-side .cgt-detail { position: static; }
 .cgt-floating {
@@ -1628,3 +1641,16 @@ html[data-theme="dark"] .rep-bar[style*="#0F0F0F"] { background: #E6ECF5 !import
   .roles-container #repartition-box[hidden] { display: block !important; }
 }
 .cgt-synthese { margin-top: 12px; }
+
+/* Illustrations de la page « Découvrir la CGT » */
+.module-visual {
+  margin: 0 auto 16px; max-width: 980px; border-radius: 14px; overflow: hidden;
+  aspect-ratio: 16 / 9; background: var(--bg-light); box-shadow: 0 6px 18px rgba(0,0,0,.1);
+}
+.module-visual img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.cgt-detail-img {
+  display: block; width: 100%; height: 200px; object-fit: cover; border-radius: 10px;
+  margin: 0 0 12px; animation: role-in .4s ease both;
+}
+@media (max-width: 600px) { .cgt-detail-img { height: 170px; } }
+@media print { .module-visual { break-inside: avoid; max-height: 9cm; } .cgt-detail-img { display: none; } }

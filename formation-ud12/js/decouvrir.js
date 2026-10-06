@@ -224,6 +224,38 @@ const LIENS = [
   ['specifiques', 'confederation', 'base']
 ];
 
+// Illustrations (img/decouvrir/) : une par organisation, affichée une fois la case placée
+const IMG_DIR = 'img/decouvrir/';
+const STRUCTURE_IMG = {
+  syndique: { n: 1, alt: "Une salariée en tenue de travail, souriante, le poing levé, une carte d'adhérente à la main." },
+  section: { n: 2, alt: "Des collègues réunis près d'un panneau d'affichage dans un atelier, des tracts à la main." },
+  syndicat: { n: 3, alt: "Une maison commune aux portes ouvertes où des syndiqué·es votent à main levée." },
+  ul: { n: 4, alt: "Des salarié·es de métiers différents entrent dans une maison des syndicats, sur une place de petite ville." },
+  'unions-pro': { n: 5, alt: "Des soignant·es, des métallos et des agent·es publics réunis, chaque métier autour de sa table." },
+  ud: { n: 6, alt: "La carte d'un département rural, un grand bâtiment au centre relié à toutes les villes par des lignes rouges." },
+  cr: { n: 7, alt: "Plusieurs départements assemblés comme un puzzle pour former une région, reliés par des fils rouges." },
+  fd: { n: 8, alt: "Des travailleur·ses d'un même métier venus de tout le pays, autour d'une grande table de négociation." },
+  specifiques: { n: 9, alt: "Quatre scènes côte à côte : ingénieurs et techniciens, retraité·es, personnes privées d'emploi, famille consommatrice." },
+  confederation: { n: 10, alt: "Une immense assemblée lève ses cartons de vote, des rubans bleu et vert se rejoignent au-dessus de la tribune." }
+};
+const SYNTHESE_IMG = { file: 'structure-synthese', alt: "Deux chemins, l'un bleu bordé d'usines et d'hôpitaux, l'autre vert bordé de villages, partent d'une même maison et se rejoignent au sommet sous une bannière rouge." };
+const SEQUENCE_IMG = [
+  "Des salarié·es de métiers différents réunis autour d'une table, café sur la table, l'une d'elles parle.",
+  "Une animatrice syndicale raconte une victoire collective à un petit groupe assis.",
+  "Un arbre dont les racines partent d'un salarié et dont deux branches, métiers et territoires, se rejoignent au sommet.",
+  "Une pièce déposée dans une tirelire en forme de maison, d'où partent des rubans colorés vers les structures de la CGT.",
+  "Des personnes montent un escalier dont chaque marche est un espace de formation, en s'entraidant.",
+  "Fin de séance : on se serre la main et une animatrice tend un document."
+];
+
+function structureImage(file, alt) {
+  return el('img', {
+    className: 'cgt-detail-img', src: IMG_DIR + file + '.webp',
+    srcset: `${IMG_DIR}${file}-400.webp 400w, ${IMG_DIR}${file}.webp 720w`,
+    sizes: '(max-width: 900px) 92vw, 440px', width: '720', height: '720', alt, decoding: 'async'
+  });
+}
+
 const BRANCHES = {
   pro: {
     title: "Branche professionnelle",
@@ -584,6 +616,8 @@ document.addEventListener('DOMContentLoaded', function() {
   function showDetail(st, extra) {
     detail.innerHTML = '';
     detail.className = 'cgt-detail cgt-detail--' + st.col;
+    const pic = STRUCTURE_IMG[st.id];
+    if (pic) detail.appendChild(structureImage('structure-' + pic.n, pic.alt));
     detail.appendChild(el('div', { className: 'cgt-detail-head' }, [
       el('span', { className: 'role-icon', 'aria-hidden': 'true', text: st.icon }),
       el('div', {}, [
@@ -629,6 +663,7 @@ document.addEventListener('DOMContentLoaded', function() {
   function showSynthese() {
     detail.innerHTML = '';
     detail.className = 'cgt-detail';
+    detail.appendChild(structureImage(SYNTHESE_IMG.file, SYNTHESE_IMG.alt));
     detail.appendChild(el('h4', { text: 'Deux branches qui se rejoignent à la Confédération' }));
     ['pro', 'terr'].forEach(b => detail.appendChild(el('p', { className: 'cgt-branch-note cgt-branch-note--' + b }, [
       el('strong', { text: BRANCHES[b].title + ' : ' }), document.createTextNode(BRANCHES[b].text)
@@ -976,17 +1011,21 @@ document.addEventListener('DOMContentLoaded', function() {
 
   /* ---------- Mode projection ---------- */
 
-  const listSlide = (cat, item) => (stage, s, revealed) => FK.renderCardSlide(stage, {
+  const listSlide = (cat, imageOf) => (stage, s, revealed) => FK.renderCardSlide(stage, {
     icon: s.icon, cat: typeof cat === 'function' ? cat(s) : cat, title: s.title || s.name,
-    question: s.question, answer: FK.listAnswer(s.points)
+    question: s.question, answer: FK.listAnswer(s.points), image: imageOf ? imageOf(s) : null
   }, revealed);
+  const squareImage = (file, alt) => ({ src: IMG_DIR + file + '.webp', srcset: `${IMG_DIR}${file}-400.webp 400w, ${IMG_DIR}${file}.webp 720w`, alt });
 
   FK.initProjection({
     initialDeck: () => modes.isQuiz() ? 'quiz' : 'structures',
     decks: {
       deroule: {
         build: () => SEQUENCES.map((s, i) => ({ ...s, n: i + 1, question: s.objectif, points: s.activite })),
-        render: listSlide(s => `Séquence ${s.n} · ${s.minutes} minutes`)
+        render: listSlide(s => `Séquence ${s.n} · ${s.minutes} minutes`, s => ({
+          src: `${IMG_DIR}decouvrir-${s.n}.webp`, srcset: `${IMG_DIR}decouvrir-${s.n}-800.webp 800w, ${IMG_DIR}decouvrir-${s.n}.webp 1600w`,
+          alt: SEQUENCE_IMG[s.n - 1], wide: true
+        }))
       },
       structures: {
         build: () => ordered.concat([{
@@ -996,7 +1035,8 @@ document.addEventListener('DOMContentLoaded', function() {
             'Le syndicat est au croisement des deux : il adhère à sa fédération et à son union départementale.',
             'La Confédération générale du travail englobe toutes les FD et toutes les UD.']
         }]),
-        render: listSlide(s => s.order <= ordered.length ? `La CGT pas à pas — étape ${s.order} sur ${ordered.length}` : 'La CGT pas à pas — synthèse')
+        render: listSlide(s => s.order <= ordered.length ? `La CGT pas à pas — étape ${s.order} sur ${ordered.length}` : 'La CGT pas à pas — synthèse',
+          s => s.id && STRUCTURE_IMG[s.id] ? squareImage('structure-' + STRUCTURE_IMG[s.id].n, STRUCTURE_IMG[s.id].alt) : squareImage(SYNTHESE_IMG.file, SYNTHESE_IMG.alt))
       },
       cotisation: {
         build: () => [
@@ -1007,7 +1047,10 @@ document.addEventListener('DOMContentLoaded', function() {
           { icon: '✊', name: 'Pourquoi c\'est important ?', question: 'Pourquoi la CGT ne vit-elle que des cotisations ?',
             points: ['L\'indépendance : la CGT ne dépend ni du patronat, ni de l\'État, ni d\'un parti', 'La solidarité : chaque cotisation fait vivre toutes les structures', 'Les moyens d\'agir : tracts, formations, réunions, soutien juridique'] }
         ],
-        render: listSlide('La cotisation')
+        render: listSlide('La cotisation', () => ({
+          src: IMG_DIR + 'decouvrir-4.webp', srcset: `${IMG_DIR}decouvrir-4-800.webp 800w, ${IMG_DIR}decouvrir-4.webp 1600w`,
+          alt: SEQUENCE_IMG[3], wide: true
+        }))
       },
       quiz: {
         build: () => FK.drawQuestions(QUIZ_POOL, QUIZ_LENGTH),
