@@ -1360,3 +1360,174 @@ body.proj-open {
     flex-direction: column;
   }
 }
+
+/* ══ Page « Découvrir la CGT » ══════════════════════════════ */
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+}
+
+.intro-facts {
+  list-style: none; padding: 0; margin: 0 auto 20px; max-width: 760px;
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;
+}
+.intro-facts li {
+  background: var(--bg-light); border-radius: 8px; padding: 10px 12px;
+  display: flex; flex-direction: column; gap: 2px;
+}
+.intro-facts span { font-size: 14px; opacity: .8; }
+
+.heure-debut { text-align: center; margin: 0 0 18px; font-weight: 600; }
+.heure-debut input,
+.calc-input input {
+  font: inherit; padding: 6px 10px; border: 1px solid var(--oc-border, #D8DEE8);
+  border-radius: 6px; background: var(--card-bg); color: var(--text-dark);
+}
+.card-subtitle { margin: 0 0 6px; font-size: 15px; }
+
+/* Tableau des métiers */
+.metiers-box, .questions-box, .situer-box, .calc-box, .repartition-box {
+  background: var(--bg-light); border-radius: 10px; padding: 16px 18px; margin: 0 auto 16px; max-width: 980px;
+}
+.questions-box h4, .situer-box h4, .repartition-box h4 { margin: 0 0 8px; color: var(--cgt-red); }
+.questions-box ul { margin: 0; padding-left: 20px; line-height: 1.6; }
+.metiers-table { width: 100%; border-collapse: collapse; }
+.metiers-table th { text-align: left; font-size: 13px; text-transform: uppercase; letter-spacing: .04em; padding: 6px; opacity: .8; }
+.metiers-table td { padding: 4px 6px; }
+.metiers-table input {
+  width: 100%; font: inherit; padding: 8px 10px; border: 1px solid var(--oc-border, #D8DEE8);
+  border-radius: 6px; background: var(--card-bg); color: var(--text-dark);
+}
+.metiers-empty { text-align: center; opacity: .7; margin: 10px 0 0; }
+.metiers-box .roles-actions { margin-top: 12px; }
+
+.situer-box { margin-top: 20px; border-left: 4px solid var(--oc-accent, #1A5FAD); }
+.situer-box ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 8px; }
+.situer-box li { background: var(--card-bg); border-radius: 8px; padding: 8px 12px; display: flex; flex-direction: column; gap: 2px; }
+.situer-box li span { font-size: 14px; opacity: .8; }
+
+/* La CGT pas à pas */
+.cgt-controls { display: flex; align-items: center; justify-content: center; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
+.cgt-controls button {
+  font: inherit; font-weight: 600; padding: 10px 18px; border-radius: 6px; cursor: pointer;
+  background: var(--oc-fond-hover, #EEF2F8); color: var(--text-dark); border: 1px solid var(--oc-border, #D8DEE8);
+}
+.cgt-controls button:disabled { opacity: .4; cursor: default; }
+.cgt-controls .cgt-next { background: var(--cgt-red); border-color: var(--cgt-red); color: #fff; }
+.cgt-controls--small { margin-top: 14px; }
+.cgt-controls--small button { font-size: 14px; padding: 6px 12px; }
+.cgt-step { font-weight: 700; min-width: 220px; text-align: center; }
+
+.cgt-layout { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); gap: 18px; align-items: start; }
+.cgt-schema {
+  background: var(--bg-light); border-radius: 10px; padding: 14px;
+  display: flex; flex-direction: column; gap: 8px;
+}
+.cgt-branch-head { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 13px; font-weight: 700; text-align: center; opacity: .35; transition: opacity .3s; }
+.cgt-schema.show-branches .cgt-branch-head { opacity: 1; }
+.cgt-branch-pro { color: var(--oc-accent, #1A5FAD); }
+.cgt-branch-terr { color: #2E8B4A; }
+.cgt-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.cgt-row--center { grid-template-columns: minmax(0, 60%); justify-content: center; }
+.cgt-spacer { display: block; }
+
+.cgt-node {
+  font: inherit; display: flex; align-items: center; gap: 8px; text-align: left;
+  padding: 10px 12px; border-radius: 10px; cursor: pointer; min-height: 52px;
+  background: var(--card-bg); color: var(--text-dark);
+  border: 2px solid var(--cgt-red);
+  transition: opacity .3s, transform .2s, box-shadow .2s, border-color .3s;
+}
+.cgt-node:hover { transform: translateY(-1px); }
+.cgt-schema.show-branches .cgt-node--pro { border-color: var(--oc-accent, #1A5FAD); background: var(--oc-accent-muted, #E8F0FB); }
+.cgt-schema.show-branches .cgt-node--terr { border-color: #2E8B4A; background: #E6F4EA; }
+html[data-theme="dark"] .cgt-schema.show-branches .cgt-node--terr { background: #13301E; }
+.cgt-node.is-current { box-shadow: 0 0 0 4px rgba(226, 0, 26, .3); transform: scale(1.02); }
+.cgt-node.is-hidden {
+  border-style: dashed; border-color: var(--oc-border, #D8DEE8); background: transparent; cursor: default;
+}
+.cgt-node.is-hidden > * { visibility: hidden; }
+.cgt-num {
+  flex-shrink: 0; width: 24px; height: 24px; border-radius: 50%; background: var(--cgt-red); color: #fff;
+  font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center;
+}
+.cgt-icon { font-size: 22px; line-height: 1; }
+.cgt-label { font-weight: 600; font-size: 15px; line-height: 1.25; }
+
+.cgt-detail {
+  background: var(--card-bg); border: 1px solid var(--oc-border, #D8DEE8); border-top: 4px solid var(--cgt-red);
+  border-radius: 10px; padding: 16px 18px; position: sticky; top: 110px; min-height: 200px;
+}
+.cgt-detail h4 { margin: 0; font-size: 20px; color: var(--oc-texte, var(--text-dark)); }
+.cgt-detail-head { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+.cgt-branch-note { margin: 10px 0 0; padding: 10px 12px; border-radius: 6px; font-size: 14px; line-height: 1.45; }
+.cgt-branch-note--pro { background: var(--oc-accent-muted, #E8F0FB); border-left: 4px solid var(--oc-accent, #1A5FAD); }
+.cgt-branch-note--terr { background: #E6F4EA; border-left: 4px solid #2E8B4A; }
+html[data-theme="dark"] .cgt-branch-note--terr { background: #13301E; }
+
+/* Cotisation */
+.calc-input { font-weight: 600; margin: 0 0 12px; }
+.calc-input input { width: 120px; }
+.calc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.calc-cell { background: var(--card-bg); border-radius: 8px; padding: 10px 12px; display: flex; flex-direction: column; gap: 4px; }
+.calc-cell span { font-size: 13px; opacity: .8; }
+.calc-cell strong { font-size: 20px; }
+.calc-cell--main { border: 2px solid var(--cgt-red); }
+.calc-cell--main strong { color: var(--cgt-red); }
+.calc-note { font-size: 14px; opacity: .85; line-height: 1.5; max-width: 980px; margin: 10px auto 0; }
+.repartition { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
+.rep-head { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+.rep-track { height: 14px; background: var(--card-bg); border-radius: 7px; overflow: hidden; margin: 4px 0; }
+.rep-bar { height: 100%; border-radius: 7px; transition: width .4s; }
+html[data-theme="dark"] .rep-bar[style*="#0F0F0F"] { background: #E6ECF5 !important; }
+.rep-note { margin: 0; font-size: 13px; opacity: .8; }
+
+/* Parcours de formation */
+.parcours {
+  list-style: none; margin: 0 auto 10px; padding: 0; max-width: 980px;
+  display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; counter-reset: parcours;
+}
+.parcours li {
+  position: relative; background: var(--bg-light); border-radius: 10px; padding: 12px;
+  display: flex; flex-direction: column; gap: 4px; font-size: 14px; line-height: 1.4; border-top: 4px solid var(--oc-accent, #1A5FAD);
+}
+.parcours li.is-here { border-top-color: var(--cgt-red); box-shadow: 0 0 0 2px var(--cgt-red); }
+.parcours li.is-here::after {
+  content: "Vous êtes ici"; position: absolute; top: -12px; right: 8px; font-size: 11px; font-weight: 700;
+  background: var(--cgt-red); color: #fff; padding: 2px 8px; border-radius: 999px;
+}
+.parcours-icon { font-size: 24px; }
+.parcours-who { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; opacity: .7; }
+#formation-qr { margin-top: 18px; }
+
+/* Documents */
+.docs-title { color: var(--cgt-red); text-align: center; margin: 20px 0 10px; }
+.docs-list { list-style: none; margin: 0 auto; padding: 0; max-width: 760px; display: flex; flex-direction: column; gap: 6px; }
+.docs-list li { background: var(--bg-light); border-radius: 8px; padding: 10px 14px; }
+.docs-list a { color: var(--text-dark); font-weight: 600; }
+.docs-list a span { font-weight: 400; opacity: .75; }
+
+@media (max-width: 900px) {
+  .cgt-layout { grid-template-columns: 1fr; }
+  .cgt-detail { position: static; }
+  .parcours { grid-template-columns: 1fr 1fr; }
+  .calc-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 600px) {
+  .intro-facts { grid-template-columns: 1fr; }
+  .cgt-label { font-size: 13px; }
+  .cgt-icon { display: none; }
+  .cgt-row--center { grid-template-columns: minmax(0, 80%); }
+  .parcours { grid-template-columns: 1fr; }
+  .metiers-table thead { display: none; }
+  .metiers-table tr { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; padding: 8px 0; border-bottom: 1px solid var(--oc-border, #D8DEE8); }
+  .metiers-table td { padding: 0; }
+}
+@media print {
+  .cgt-controls, .metiers-box .roles-actions, #metiers-clear, .heure-debut input { display: none !important; }
+  .cgt-node.is-hidden { border-style: solid; border-color: var(--cgt-red); }
+  .cgt-node.is-hidden > * { visibility: visible; }
+  .cgt-detail { position: static; }
+  .roles-container #repartition-box[hidden] { display: block !important; }
+}
+.cgt-synthese { margin-top: 12px; }

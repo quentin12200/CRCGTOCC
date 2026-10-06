@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <script>if(localStorage.getItem('cgt_auth')!=='ok'){location.replace('/login.html?from='+encodeURIComponent(location.pathname));}</script>
+  <script>try{var t=localStorage.getItem('cgt_theme');if(t==='dark'||t==='light'){localStorage.setItem('theme',t);document.documentElement.setAttribute('data-theme',t);}}catch(e){}</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Découvrir la CGT</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/roles.css">
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/occitanie.css">
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <img src="img/logo-cgt.png" alt="Logo CGT">
+    </div>
+    <h1>Formation : découvrir la CGT</h1>
+    <div class="theme-toggle">
+      <label class="switch">
+        <input type="checkbox" id="theme-switch" aria-label="Activer le thème sombre">
+        <div class="slider"></div>
+      </label>
+      <span class="theme-icon" aria-hidden="true">🌙</span>
+    </div>
+  </header>
+
+  <div class="org-info">Organisée par l'Union Départementale des Syndicats CGT de l'Aveyron</div>
+
+  <!-- Table des matières -->
+  <nav class="toc" id="table-of-contents" aria-label="Sommaire" aria-hidden="true">
+    <div class="toc-header">
+      <h3>Sommaire</h3>
+      <button class="close-toc" id="close-toc" type="button" aria-label="Fermer le sommaire">&times;</button>
+    </div>
+    <div class="toc-content">
+      <ul>
+        <li><a href="#seance">Déroulé de la séance (2 h)</a></li>
+        <li><a href="#metiers">1. Accueil : les métiers des stagiaires</a></li>
+        <li><a href="#animateur">2. Je me présente</a></li>
+        <li><a href="#structures">3. La CGT, en partant du syndiqué</a></li>
+        <li><a href="#cotisation">4. La cotisation</a></li>
+        <li><a href="#formation">5. Se former à la CGT</a></li>
+        <li><a href="#conclusion">6. Conclusion et documents</a></li>
+        <li><a href="index.html">Formation : fonctionnement statutaire</a></li>
+      </ul>
+    </div>
+  </nav>
+  <div class="toc-overlay" id="toc-overlay"></div>
+
+  <main class="roles-container">
+    <div class="roles-intro">
+      <h2>Découvrir la CGT</h2>
+      <p>Deux heures pour les nouveaux adhérent·es et les salarié·es qui ne sont pas encore syndiqué·es : partir de leurs métiers, leur montrer comment la CGT est construite à partir du syndiqué, à quoi sert la cotisation et comment se former. L'objectif : donner envie de franchir le cap.</p>
+
+      <ul class="intro-facts">
+        <li><strong>⏱ 2 heures</strong><span>en un seul temps</span></li>
+        <li><strong>👥 6 à 10 personnes</strong><span>autour d'une table, en cercle</span></li>
+        <li><strong>📍 Au plus près</strong><span>local syndical, UL, entreprise</span></li>
+      </ul>
+
+      <div class="mode-selector" role="tablist" aria-label="Mode d'utilisation">
+        <button id="exploration-mode" class="mode-btn active" type="button" role="tab" aria-selected="true" aria-controls="exploration-panel">Mode animation</button>
+        <button id="quiz-mode" class="mode-btn" type="button" role="tab" aria-selected="false" aria-controls="quiz-panel">Mode quiz</button>
+      </div>
+
+      <div class="slide-actions">
+        <button class="toc-button" type="button" aria-controls="table-of-contents" aria-expanded="false">📋 Sommaire</button>
+        <button class="presentation-button" type="button" aria-controls="projection" aria-expanded="false">🖥️ Mode projection</button>
+        <button class="print-button" type="button">🖨️ Imprimer le déroulé</button>
+      </div>
+    </div>
+
+    <!-- Mode animation -->
+    <section id="exploration-panel" role="tabpanel" aria-labelledby="exploration-mode">
+
+      <section id="seance" class="module-section" aria-labelledby="seance-title">
+        <h3 id="seance-title">Déroulé de la séance</h3>
+        <p class="section-intro">Six temps pour deux heures. Indiquez l'heure de début : les horaires de chaque séquence se calculent tout seuls.</p>
+        <p class="heure-debut"><label for="heure-debut">⏱ Heure de début :</label> <input type="time" id="heure-debut"></p>
+        <ol class="etapes" id="deroule"></ol>
+      </section>
+
+      <section id="metiers" class="module-section" aria-labelledby="metiers-title">
+        <h3 id="metiers-title">1. Accueil : nos métiers</h3>
+        <p class="section-intro">Pendant le tour de table, notez le prénom et le métier de chacun·e. Vous retrouverez la liste dans la séquence 3 pour situer chaque stagiaire dans la CGT. <em>La liste reste uniquement sur cet appareil.</em></p>
+        <div class="metiers-box">
+          <table class="metiers-table">
+            <thead>
+              <tr><th scope="col">Prénom</th><th scope="col">Métier</th><th scope="col">Entreprise ou service</th><th scope="col">Sa fédération</th><th scope="col"><span class="sr-only">Action</span></th></tr>
+            </thead>
+            <tbody id="metiers-body"></tbody>
+          </table>
+          <p id="metiers-empty" class="metiers-empty">Aucun·e participant·e pour l'instant.</p>
+          <datalist id="federations"></datalist>
+          <div class="roles-actions">
+            <button id="metiers-add" type="button">+ Ajouter un·e participant·e</button>
+            <button id="metiers-clear" type="button">Effacer la liste</button>
+          </div>
+        </div>
+        <div class="questions-box">
+          <h4>Questions pour lancer le tour de table</h4>
+          <ul>
+            <li>« Qu'est-ce que tu fais dans ton travail ? »</li>
+            <li>« Qu'est-ce que tu aimes bien faire dans ton travail ? »</li>
+            <li>« Qu'est-ce qui ne va pas ? »</li>
+            <li>« Qu'est-ce que tu as envie de découvrir de la CGT ? »</li>
+          </ul>
+        </div>
+      </section>
+
+      <section id="animateur" class="module-section" aria-labelledby="animateur-title">
+        <h3 id="animateur-title">2. Je me présente</h3>
+        <p class="section-intro">L'animateur·ice se présente comme un·e salarié·e parmi les autres : c'est ce qui rend la CGT concrète.</p>
+        <div class="questions-box">
+          <h4>Fil conducteur</h4>
+          <ul>
+            <li>Mon métier, mon entreprise ou mon service</li>
+            <li>Pourquoi et quand je me suis syndiqué·e</li>
+            <li>Ce que je fais dans la CGT aujourd'hui : syndicat, mandats, UL, UD…</li>
+            <li>Une victoire collective que j'ai vécue</li>
+          </ul>
+        </div>
+      </section>
+
+      <section id="structures" class="module-section" aria-labelledby="structures-title">
+        <h3 id="structures-title">3. La CGT, en partant du syndiqué</h3>
+        <p class="section-intro">On construit la CGT étape par étape, du ou de la syndiqué·e jusqu'à la Confédération. Cliquez sur une case déjà affichée pour revenir sur son explication.</p>
+
+        <div class="cgt-controls">
+          <button type="button" id="cgt-prev">◀ Étape précédente</button>
+          <span id="cgt-step" class="cgt-step" aria-live="polite"></span>
+          <button type="button" id="cgt-next" class="cgt-next">Commencer ▶</button>
+        </div>
+        <div class="cgt-layout">
+          <div class="cgt-schema" id="cgt-schema" aria-label="Schéma de l'organisation de la CGT"></div>
+          <div class="cgt-detail" id="cgt-detail" aria-live="polite"></div>
+        </div>
+        <div class="cgt-controls cgt-controls--small">
+          <button type="button" id="cgt-all">Tout afficher</button>
+          <button type="button" id="cgt-reset">Recommencer</button>
+        </div>
+
+        <div class="situer-box" id="situer-box" hidden>
+          <h4>Et vous, où êtes-vous dans la CGT ?</h4>
+          <p>Pour chaque stagiaire : quel syndicat, quelle union professionnelle, quelle fédération, quelle union locale ?</p>
+          <ul id="situer-list"></ul>
+        </div>
+      </section>
+
+      <section id="cotisation" class="module-section" aria-labelledby="cotisation-title">
+        <h3 id="cotisation-title">4. La cotisation : combien, et où va l'argent ?</h3>
+        <p class="section-intro">Faites d'abord deviner : « À votre avis, combien coûte l'adhésion ? Où va l'argent ? »</p>
+        <div class="calc-box">
+          <p class="calc-input"><label for="salaire">Salaire net mensuel (ou pension nette) :</label> <input type="number" id="salaire" min="0" step="10" value="1800" inputmode="decimal"> €</p>
+          <div class="calc-grid" id="cotisation-resultat" aria-live="polite"></div>
+          <p class="calc-note">Le crédit d'impôt de 66 % est remboursé même si l'on n'est pas imposable.</p>
+        </div>
+        <div class="roles-actions">
+          <button type="button" id="repartition-reveal" aria-expanded="false" aria-controls="repartition-box">Révéler la répartition</button>
+        </div>
+        <div id="repartition-box" class="repartition-box" hidden>
+          <h4>Répartition d'une cotisation mensuelle</h4>
+          <ul class="repartition" id="repartition"></ul>
+          <p class="calc-note">Le syndicat garde sa part et reverse le reste à <strong>CoGéTise</strong>, qui le répartit automatiquement entre toutes les structures : un système démocratique, solidaire et transparent. Le tout premier timbre de l'année (le FNI) a une répartition particulière. <em>Source : plaquette CoGéTise, congrès de Dijon, 2019.</em></p>
+        </div>
+      </section>
+
+      <section id="formation" class="module-section" aria-labelledby="formation-title">
+        <h3 id="formation-title">5. Se former à la CGT</h3>
+        <p class="section-intro">« Se syndiquer à la CGT, c'est se former à la CGT ! » La formation syndicale est un droit : 12 jours par an pour tous les salarié·es. <em>Source : guide « Ma formation syndicale CGT », 2026.</em></p>
+        <ol class="parcours" id="parcours" aria-label="Le parcours de formation de la CGT"></ol>
+        <p class="calc-note">À côté de ce parcours, des formations « outiller au mandat » préparent aux mandats : élu·e CSE, CSSCT, conseiller·ère prud'hommes, défenseur·e syndical·e, conseiller·ère du salarié, administrateur·ice CPAM, URSSAF, CAF…</p>
+        <div class="roles-grid" id="formation-qr"></div>
+      </section>
+
+      <section id="conclusion" class="module-section" aria-labelledby="conclusion-title">
+        <h3 id="conclusion-title">6. Conclusion : et maintenant ?</h3>
+        <div class="questions-box">
+          <h4>Pour finir</h4>
+          <ul>
+            <li>Tour de table : « Je repars avec… »</li>
+            <li>Remettre la présentation du syndicat et le bulletin d'adhésion</li>
+            <li>« Vous pouvez adhérer maintenant ou plus tard, quand vous le déciderez. »</li>
+            <li>Adhésion en ligne possible sur <a href="https://www.cgt.fr" target="_blank" rel="noopener">cgt.fr</a></li>
+          </ul>
+        </div>
+        <h4 class="docs-title">Documents pour l'animateur·ice</h4>
+        <ul class="docs-list">
+          <li><a href="/0%20FSG%20D%C3%A9couvrir%20la%20CGT/D1%20Bulletin%20d%27adh%C3%A9sion.docx" download>📝 D1 – Bulletin d'adhésion <span>(Word, à adapter avec les coordonnées du syndicat)</span></a></li>
+          <li><a href="/0%20FSG%20D%C3%A9couvrir%20la%20CGT/D2%20Pr%C3%A9sentation%20du%20syndicat.docx" download>🏠 D2 – Présentation du syndicat <span>(Word, à remplir avant la séance)</span></a></li>
+          <li><a href="/0%20FSG%20D%C3%A9couvrir%20la%20CGT/20260403_FormationSyndicale_Guide_A5%20(3).pdf" target="_blank" rel="noopener">🎓 Guide « Ma formation syndicale CGT » <span>(PDF A5, à remettre aux stagiaires)</span></a></li>
+          <li><a href="/0%20FSG%20D%C3%A9couvrir%20la%20CGT/Plaquette%20COGETISE%20dijon%2020-03-19.pdf" target="_blank" rel="noopener">💶 Plaquette CoGéTise <span>(PDF, répartition des cotisations)</span></a></li>
+          <li><a href="/0%20FSG%20D%C3%A9couvrir%20la%20CGT/A5-Flyer%20formation%20D%C3%A9couvrir%20la%20CGT.pdf" target="_blank" rel="noopener">📣 Flyer A5 <span>(PDF, pour inviter)</span></a></li>
+          <li><a href="/0%20FSG%20D%C3%A9couvrir%20la%20CGT/Affiche%20A4%20Formation%20D%C3%A9couvrir%20la%20CGT.pdf" target="_blank" rel="noopener">🖼️ Affiche A4</a> · <a href="/0%20FSG%20D%C3%A9couvrir%20la%20CGT/Affiche%20A3%20Formation%20D%C3%A9couvrir%20la%20CGT.pdf" target="_blank" rel="noopener">Affiche A3</a></li>
+          <li><a href="/0%20FSG%20D%C3%A9couvrir%20la%20CGT/DECOUVRIR%20LA%20CGT%20maj%2012022020.pdf" target="_blank" rel="noopener">📘 Module national « Découvrir la CGT » <span>(PDF, 52 pages, pour aller plus loin)</span></a></li>
+        </ul>
+      </section>
+
+      <div class="roles-actions">
+        <button id="reveal-all-btn" type="button">Tout révéler</button>
+        <button id="hide-all-btn" type="button">Tout masquer</button>
+      </div>
+    </section>
+
+    <!-- Mode quiz -->
+    <section id="quiz-panel" class="quiz-container" role="tabpanel" aria-labelledby="quiz-mode" hidden>
+      <div class="quiz-progress" aria-hidden="true"><div class="quiz-progress-bar" id="quiz-progress-bar"></div></div>
+      <div class="quiz-question">
+        <h3 id="quiz-title">Question</h3>
+        <p id="quiz-text" class="quiz-text"></p>
+        <div id="quiz-options" class="quiz-options" role="group" aria-labelledby="quiz-text"></div>
+        <div id="quiz-feedback" class="quiz-feedback" aria-live="polite"></div>
+        <div class="quiz-controls">
+          <button id="quiz-check" type="button" disabled>Vérifier</button>
+          <button id="quiz-next" type="button" disabled>Question suivante</button>
+        </div>
+      </div>
+    </section>
+
+    <div class="roles-footer-actions">
+      <a class="back-link" href="/index.html">← Espace formateurs</a>
+    </div>
+  </main>
+
+  <!-- Mode projection : diaporama plein écran pour l'animateur -->
+  <div id="projection" class="projection" role="dialog" aria-modal="true" aria-label="Mode projection" hidden>
+    <div class="proj-bar">
+      <div class="proj-tabs" role="tablist" aria-label="Contenu projeté">
+        <button type="button" class="proj-tab" role="tab" aria-selected="false" data-deck="deroule">Déroulé</button>
+        <button type="button" class="proj-tab active" role="tab" aria-selected="true" data-deck="structures">La CGT pas à pas</button>
+        <button type="button" class="proj-tab" role="tab" aria-selected="false" data-deck="cotisation">Cotisation</button>
+        <button type="button" class="proj-tab" role="tab" aria-selected="false" data-deck="quiz">Quiz en groupe</button>
+      </div>
+      <span id="proj-counter" class="proj-counter" aria-live="polite"></span>
+      <div class="proj-tools">
+        <button type="button" id="proj-fullscreen" title="Plein écran (F)">⛶ Plein écran</button>
+        <button type="button" id="proj-close" title="Quitter (Échap)">✖ Quitter</button>
+      </div>
+    </div>
+    <div id="proj-stage" class="proj-stage" aria-live="polite"></div>
+    <div class="proj-bar proj-bar--bottom">
+      <button type="button" id="proj-prev">◀ Précédent</button>
+      <button type="button" id="proj-reveal" class="proj-reveal">Révéler la réponse</button>
+      <button type="button" id="proj-next">Suivant ▶</button>
+      <p class="proj-help">→ / PageDown : révéler puis avancer · ← : reculer · Espace : révéler · F : plein écran · Échap : quitter</p>
+    </div>
+  </div>
+
+  <script src="js/formation-kit.js"></script>
+  <script src="js/decouvrir.js"></script>
+  <script src="js/occitanie.js"></script>
+</body>
+</html>
