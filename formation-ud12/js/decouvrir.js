@@ -117,7 +117,7 @@ const STRUCTURES = [
   },
   {
     id: "ul", order: 4, col: "terr", icon: "📍",
-    short: "Union locale (UL)", name: "L'union locale (UL)",
+    short: "Union locale (UL)", name: "L'union locale des syndicats CGT (UL)",
     question: "Où trouver la CGT près de chez soi, quel que soit son métier ?",
     points: [
       "Elle rassemble tous les syndicats CGT d'une ville ou d'un bassin d'emploi, toutes professions confondues",
@@ -140,13 +140,14 @@ const STRUCTURES = [
   },
   {
     id: "ud", order: 6, col: "terr", icon: "🗺️",
-    short: "Union départementale (UD)", name: "L'union départementale (UD)",
+    short: "Union départementale (UD)", name: "L'union départementale des syndicats CGT (UD)",
     question: "Qui rassemble tous les syndicats CGT du département ?",
     points: [
       "Elle rassemble tous les syndicats CGT du département, de toutes les professions",
       "Elle coordonne les unions locales et porte les revendications interprofessionnelles du territoire",
       "Elle organise la formation syndicale, le soutien juridique, les grandes mobilisations",
-      "Ici : l'union départementale CGT de l'Aveyron"
+      "Elle adhère à la Confédération, comme toutes les UD",
+      "Ici : l'union départementale des syndicats CGT de l'Aveyron"
     ]
   },
   {
@@ -154,7 +155,7 @@ const STRUCTURES = [
     short: "Comité régional", name: "Le comité régional",
     question: "Qui porte la voix de la CGT face à la Région ?",
     points: [
-      "Il rassemble et coordonne les unions départementales d'une région",
+      "Il fait le lien entre les unions départementales d'une même région",
       "Il porte les revendications sur les compétences de la Région : formation professionnelle, transports, développement économique…",
       "Ici : le comité régional CGT Occitanie"
     ]
@@ -167,7 +168,8 @@ const STRUCTURES = [
       "Elles rassemblent les syndicats et les unions professionnelles de leur champ professionnel",
       "Elles couvrent les branches professionnelles et négocient les conventions collectives",
       "Exemples : métallurgie, santé et action sociale, commerce et services, services publics, cheminots…",
-      "Elles organisent la formation et les actions propres à leur profession"
+      "Elles organisent la formation et les actions propres à leur profession",
+      "Elles adhèrent à la Confédération, comme toutes les fédérations"
     ]
   },
   {
@@ -183,10 +185,10 @@ const STRUCTURES = [
   },
   {
     id: "confederation", order: 10, col: "base", icon: "🏛️",
-    short: "La Confédération", name: "La Confédération générale du travail",
+    short: "La Confédération (CGT)", name: "La Confédération générale du travail (CGT)",
     question: "Qu'est-ce qui réunit toutes ces structures ?",
     points: [
-      "Elle est constituée par les fédérations et les unions départementales",
+      "Elle englobe toutes les fédérations (FD) et toutes les unions départementales (UD) : c'est là que les deux branches se rejoignent",
       "Son congrès confédéral, où votent les syndicats, définit les grandes orientations de la CGT",
       "Entre deux congrès, le comité confédéral national (CCN) réunit les UD et les fédérations",
       "Elle porte les revendications nationales et interprofessionnelles et négocie au niveau national"
@@ -197,11 +199,11 @@ const STRUCTURES = [
 const BRANCHES = {
   pro: {
     title: "Branche professionnelle",
-    text: "Syndicat → union professionnelle (USD, CSD, USTM…) → fédération : on s'organise avec celles et ceux qui font le même métier, pour les conventions collectives et les revendications de branche."
+    text: "Syndicat → union professionnelle (USD, CSD, USTM…) → fédération (FD) → Confédération : on s'organise avec celles et ceux qui font le même métier, pour les conventions collectives et les revendications de branche."
   },
   terr: {
     title: "Branche territoriale et interprofessionnelle",
-    text: "Syndicat → union locale → union départementale → comité régional : on s'organise avec tous les salarié·es d'un même territoire, toutes professions confondues."
+    text: "Syndicat → union locale (UL) → union départementale (UD) → Confédération : on s'organise avec tous les salarié·es d'un même territoire, toutes professions confondues. Le comité régional fait le lien entre les UD d'une même région."
   }
 };
 
@@ -276,15 +278,15 @@ const QUIZ_POOL = [
     answer: "Vrai",
     explanation: "La CGT défend aussi les salarié·es dans leur vie hors du travail." },
   { role: "confederation", type: "qcm",
-    question: "La Confédération est constituée par…",
-    options: ["Les fédérations et les unions départementales", "Les unions locales seulement", "Les syndiqué·es directement", "Les comités régionaux seulement"],
-    answer: "Les fédérations et les unions départementales",
-    explanation: "Les deux branches, professionnelle et territoriale, se rejoignent à la Confédération." },
+    question: "La Confédération générale du travail englobe…",
+    options: ["Toutes les fédérations et toutes les unions départementales", "Les unions locales seulement", "Les syndiqué·es directement", "Les comités régionaux seulement"],
+    answer: "Toutes les fédérations et toutes les unions départementales",
+    explanation: "Les deux branches, professionnelle (FD) et territoriale (UD), se rejoignent à la Confédération." },
   { role: "cr", type: "qcm",
     question: "Quelles structures forment la branche territoriale et interprofessionnelle ?",
-    options: ["Union locale, union départementale, comité régional", "Syndicat, fédération, UGICT", "Section, USD, fédération", "UCR, CNTPEP, INDECOSA"],
-    answer: "Union locale, union départementale, comité régional",
-    explanation: "On s'y organise avec tous les salarié·es d'un même territoire, toutes professions confondues." },
+    options: ["Union locale et union départementale", "Syndicat, fédération et UGICT", "Section, USD et fédération", "UCR, CNTPEP et INDECOSA"],
+    answer: "Union locale et union départementale",
+    explanation: "On s'y organise avec tous les salarié·es d'un même territoire, toutes professions confondues ; les UD rejoignent ensuite la Confédération." },
   { role: "cotisation-montant", type: "qcm",
     question: "Combien coûte la cotisation CGT ?",
     options: ["1 % du salaire net", "1 % du salaire brut", "Un forfait de 10 € par mois", "5 % du salaire net"],
@@ -557,7 +559,7 @@ document.addEventListener('DOMContentLoaded', function() {
       ['pro', 'terr'].forEach(b => detail.appendChild(el('p', { className: 'cgt-branch-note cgt-branch-note--' + b }, [
         el('strong', { text: BRANCHES[b].title + ' : ' }), document.createTextNode(BRANCHES[b].text)
       ])));
-      detail.appendChild(el('p', { text: 'Le syndicat est au croisement des deux : il adhère à sa fédération et à son union départementale. Les organisations spécifiques (UGICT, UCR, CNTPEP, INDECOSA) s\'adressent à des situations particulières, et tout se rejoint à la Confédération.' }));
+      detail.appendChild(el('p', { className: 'cgt-synthese', text: 'Le syndicat est au croisement des deux : il adhère à sa fédération et à son union départementale. La Confédération générale du travail englobe toutes les FD et toutes les UD. Les organisations spécifiques (UGICT, UCR, CNTPEP, INDECOSA) s\'adressent à des situations particulières.' }));
     }
   }
 
@@ -685,7 +687,8 @@ document.addEventListener('DOMContentLoaded', function() {
           icon: '🔀', name: 'Deux branches qui se rejoignent', order: ordered.length + 1,
           question: 'Comment la CGT est-elle construite ?',
           points: [BRANCHES.pro.title + ' : ' + BRANCHES.pro.text, BRANCHES.terr.title + ' : ' + BRANCHES.terr.text,
-            'Le syndicat est au croisement des deux : il adhère à sa fédération et à son union départementale.']
+            'Le syndicat est au croisement des deux : il adhère à sa fédération et à son union départementale.',
+            'La Confédération générale du travail englobe toutes les FD et toutes les UD.']
         }]),
         render: listSlide(s => s.order <= ordered.length ? `La CGT pas à pas — étape ${s.order} sur ${ordered.length}` : 'La CGT pas à pas — synthèse')
       },

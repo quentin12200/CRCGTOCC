@@ -1530,3 +1530,4 @@ html[data-theme="dark"] .rep-bar[style*="#0F0F0F"] { background: #E6ECF5 !import
   .cgt-detail { position: static; }
   .roles-container #repartition-box[hidden] { display: block !important; }
 }
+.cgt-synthese { margin-top: 12px; }
