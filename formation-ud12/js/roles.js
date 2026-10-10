@@ -196,7 +196,7 @@ const ROLES = [
     title: "Élu·e au CSE",
     icon: "🏢",
     question: "Quelles sont les missions d'un·e élu·e au comité social et économique (CSE) ?",
-    designation: "Élu·e par les salarié·es (titulaire ou suppléant·e, en principe pour 4 ans), sur une liste CGT décidée par les syndiqué·es.",
+    designation: "Candidat·e choisi·e par les syndiqué·es, dans le syndicat, qui construit la liste CGT ; puis élu·e par les salarié·es (titulaire ou suppléant·e, en principe pour 4 ans).",
     rendCompte: "Aux salarié·es, et au syndicat, qui doit lui demander un compte rendu régulier de son activité.",
     missions: [
       "Présente les réclamations individuelles et collectives (dès 11 salarié·es)",
@@ -471,6 +471,10 @@ const QUIZ_POOL = [
     options: ["La commission exécutive", "Les adhérent·es, directement", "L'union départementale", "Le congrès confédéral"],
     answer: "La commission exécutive",
     explanation: "La CE élit le bureau syndical, composé au minimum d'un·e secrétaire général·e et d'un·e trésorier·ère (art. 8)." },
+  { role: "cse", type: "vf",
+    question: "Ce sont les salarié·es de l'entreprise qui choisissent les candidat·es CGT au CSE.",
+    answer: "Faux",
+    explanation: "Les candidat·es sont choisi·es par les syndiqué·es, dans le syndicat, qui construit la liste CGT. Les salarié·es votent ensuite pour les listes (charte de l'élu·e et mandaté·e)." },
   { role: "ds", type: "vf",
     question: "Le ou la délégué·e syndical·e est élu·e par les salarié·es de l'entreprise.",
     answer: "Faux",
@@ -650,8 +654,10 @@ const roleBadge = id => STATUT_BY_ROLE[id]
   ? { cls: 'role-badge--' + STATUT_BY_ROLE[id], text: STATUTS[STATUT_BY_ROLE[id]] }
   : null;
 
+// Étape du parcours où se trouve chaque catégorie de rôles
+const GRID_BY_CAT = { syndicat: 'grid-syndicat', responsables: 'grid-syndicat', entreprise: 'grid-entreprise', appui: 'grid-appui' };
+
 document.addEventListener('DOMContentLoaded', function() {
-  const rolesGrid = document.getElementById('roles-grid');
   const explorationPanel = document.getElementById('exploration-panel');
 
   /* ---------- Cartes ---------- */
@@ -674,7 +680,7 @@ document.addEventListener('DOMContentLoaded', function() {
       ]
     });
     card.dataset.cat = role.cat;
-    rolesGrid.appendChild(card);
+    document.getElementById(GRID_BY_CAT[role.cat]).appendChild(card);
   });
 
   const charteGroups = document.getElementById('charte-groups');
@@ -697,36 +703,50 @@ document.addEventListener('DOMContentLoaded', function() {
     ]));
   });
 
-  const roleCards = rolesGrid.querySelectorAll('.role-card');
-  const allCards = explorationPanel.querySelectorAll('.role-card');
+  const etapes = Array.from(document.querySelectorAll('.rl-etape'));
+  const stepBtns = Array.from(document.querySelectorAll('.rl-parcours button[data-step]'));
+  const nextBtn = document.getElementById('etape-next');
+  const LAST = stepBtns.length; // étape 5 = quiz
+  let step = 1;
+
+  const currentCards = () => {
+    const e = etapes.find(x => !x.hidden);
+    return e ? e.querySelectorAll('.role-card') : [];
+  };
 
   document.getElementById('reveal-all-btn').addEventListener('click', () => {
-    allCards.forEach(card => { if (!card.hidden) FK.setExpanded(card, true); });
+    currentCards().forEach(card => FK.setExpanded(card, true));
   });
   document.getElementById('hide-all-btn').addEventListener('click', () => {
-    allCards.forEach(card => FK.setExpanded(card, false));
+    currentCards().forEach(card => FK.setExpanded(card, false));
   });
 
-  // Filtres par catégorie
-  const filterBtns = document.querySelectorAll('.filter-btn');
-  function applyFilter(filter) {
-    filterBtns.forEach(b => {
-      const on = b.dataset.filter === filter;
-      b.classList.toggle('active', on);
-      b.setAttribute('aria-pressed', String(on));
+  // Parcours : une seule étape affichée à la fois
+  function goStep(n, scroll) {
+    step = n;
+    stepBtns.forEach(b => {
+      const k = +b.dataset.step;
+      if (k === n) b.setAttribute('aria-current', 'step'); else b.removeAttribute('aria-current');
+      b.classList.toggle('done', k < n);
     });
-    roleCards.forEach(card => {
-      card.hidden = filter !== 'all' && card.dataset.cat !== filter;
-    });
+    if (n === LAST) {
+      document.getElementById('quiz-mode').click();
+    } else {
+      modes.setMode('exploration');
+      etapes.forEach(e => { e.hidden = +e.dataset.step !== n; });
+      nextBtn.textContent = n === LAST - 1 ? 'Passer au quiz →' : 'Étape suivante →';
+    }
+    if (scroll !== false) document.querySelector('.rl-parcours').scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
-  filterBtns.forEach(b => b.addEventListener('click', () => applyFilter(b.dataset.filter)));
+  stepBtns.forEach(b => b.addEventListener('click', () => goStep(+b.dataset.step)));
+  nextBtn.addEventListener('click', () => goStep(Math.min(step + 1, LAST)));
 
   // Ouvre et met en évidence une fiche (depuis le schéma ou le quiz)
   function focusRole(id) {
     const card = document.getElementById('role-' + id);
     if (!card) return;
-    modes.setMode('exploration');
-    if (card.hidden) applyFilter('all');
+    const etape = card.closest('.rl-etape');
+    if (etape && (etape.hidden || modes.isQuiz())) goStep(+etape.dataset.step, false);
     FK.highlightCard(card);
   }
 
@@ -747,13 +767,14 @@ document.addEventListener('DOMContentLoaded', function() {
   /* ---------- Mode projection ---------- */
 
   FK.initProjection({
-    initialDeck: () => modes.isQuiz() ? 'quiz' : 'roles',
+    initialDeck: () => modes.isQuiz() ? 'quiz' : (step === 4 ? 'charte' : 'roles'),
     decks: {
       roles: {
-        // Respecte le filtre actif en mode exploration
+        // Les rôles de l'étape en cours (tous les rôles depuis les chartes ou le quiz)
         build: () => {
-          const visibleIds = Array.from(roleCards).filter(c => !c.hidden).map(c => c.id.replace('role-', ''));
-          return ROLES.filter(r => visibleIds.includes(r.id));
+          const ids = Array.from(currentCards()).map(c => c.id.replace('role-', ''));
+          const list = ROLES.filter(r => ids.includes(r.id));
+          return list.length ? list : ROLES;
         },
         render: (stage, item, revealed) => FK.renderCardSlide(stage, {
           icon: item.icon,
@@ -790,8 +811,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // La fiche-mémo imprimée montre toutes les cartes ouvertes (voir @media print)
   document.querySelector('.print-button').addEventListener('click', () => {
-    modes.setMode('exploration');
-    applyFilter('all');
     window.print();
   });
 

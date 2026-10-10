@@ -58,15 +58,21 @@
   <main class="roles-container">
     <div class="roles-intro">
       <h2>Rôles dans le syndicat CGT</h2>
-      <p>Qui fait quoi, qui désigne qui, et devant qui rend-on compte ? Découvrez les responsabilités au sein du syndicat et dans l'entreprise, puis vérifiez ce que vous avez retenu.</p>
+      <p>Qui décide, qui est élu·e, qui est mandaté·e, et devant qui rend-on compte ? On avance <strong>étape par étape</strong> : commencez par l'étape 1.</p>
 
-      <ol class="roles-steps" aria-label="Déroulé conseillé">
-        <li><strong>1. Devinez</strong> — lisez la question de chaque carte et débattez en groupe avant de révéler.</li>
-        <li><strong>2. Révélez</strong> — comparez avec la réponse, le mode de désignation et la source.</li>
-        <li><strong>3. Vérifiez</strong> — passez le quiz de fin de séquence (10 questions tirées au hasard).</li>
-      </ol>
+      <!-- Le parcours : une étape affichée à la fois -->
+      <nav class="rl-parcours" aria-label="Parcours de la séquence">
+        <div class="rl-parcours-list">
+          <button type="button" data-step="1" aria-current="step"><span class="rl-parcours-n">1</span><span class="rl-parcours-t">Le syndicat<small>Qui décide ?</small></span></button>
+          <button type="button" data-step="2"><span class="rl-parcours-n">2</span><span class="rl-parcours-t">L'entreprise<small>Élu·es et mandaté·es</small></span></button>
+          <button type="button" data-step="3"><span class="rl-parcours-n">3</span><span class="rl-parcours-t">Aider les salarié·es<small>Hors de l'entreprise</small></span></button>
+          <button type="button" data-step="4"><span class="rl-parcours-n">4</span><span class="rl-parcours-t">Les chartes<small>Comment faire vivre</small></span></button>
+          <button type="button" data-step="5"><span class="rl-parcours-n">5</span><span class="rl-parcours-t">Le quiz<small>Vérifier</small></span></button>
+        </div>
+      </nav>
 
-      <div class="mode-selector" role="tablist" aria-label="Mode d'utilisation">
+      <!-- Boutons de mode pilotés par le parcours (étape 5 = quiz) -->
+      <div class="mode-selector" role="tablist" aria-label="Mode d'utilisation" hidden>
         <button id="exploration-mode" class="mode-btn active" type="button" role="tab" aria-selected="true" aria-controls="exploration-panel">Mode exploration</button>
         <button id="quiz-mode" class="mode-btn" type="button" role="tab" aria-selected="false" aria-controls="quiz-panel">Mode quiz</button>
       </div>
@@ -78,77 +84,103 @@
       </div>
     </div>
 
-    <!-- Mode exploration -->
+    <!-- Mode exploration : les étapes 1 à 4 -->
     <section id="exploration-panel" role="tabpanel" aria-labelledby="exploration-mode">
 
-      <section class="roles-schema" aria-labelledby="schema-title">
-        <h3 id="schema-title">Qui élit, qui désigne ?</h3>
-        <p class="schema-hint">Cliquez sur une case pour ouvrir la fiche correspondante.</p>
+      <!-- Étape 1 -->
+      <section class="rl-etape" data-step="1" aria-labelledby="etape1-title">
+        <div class="rl-etape-head">
+          <p class="rl-etape-num">Étape 1 sur 5</p>
+          <h3 id="etape1-title">Le syndicat : qui décide ?</h3>
+          <p class="rl-etape-consigne"><strong>Comment animer :</strong> partez du schéma, du bas vers le haut. Pour chaque carte, posez la question au groupe, laissez débattre, puis cliquez pour révéler la réponse.</p>
+        </div>
+
+        <div class="schema-flow" aria-label="Schéma : qui élit qui dans le syndicat">
+          <button type="button" class="schema-box" data-target="adherent">Les syndiqué·es</button>
+          <span class="schema-arrow">se réunissent en</span>
+          <button type="button" class="schema-box schema-box--strong" data-target="congres">Congrès / AG<small>instance souveraine</small></button>
+          <span class="schema-arrow">élit</span>
+          <div class="schema-row">
+            <button type="button" class="schema-box" data-target="ce">Commission exécutive</button>
+            <button type="button" class="schema-box" data-target="cfc">Commission financière de contrôle</button>
+          </div>
+          <span class="schema-arrow">la CE élit</span>
+          <button type="button" class="schema-box" data-target="bureau">Bureau syndical<small>ou secrétariat</small></button>
+          <span class="schema-arrow">composé au minimum de</span>
+          <div class="schema-row">
+            <button type="button" class="schema-box" data-target="sg">Secrétaire général·e</button>
+            <button type="button" class="schema-box" data-target="tresorier">Trésorier·ère</button>
+            <button type="button" class="schema-box schema-box--optional" data-target="org">Orga<small>selon les statuts</small></button>
+          </div>
+          <p class="schema-note">Chaque niveau rend compte à celui qui l'a élu. La CFC, élue hors de la CE, contrôle les finances et rend compte à la CE et au congrès.<br><em>Source : modèle de statuts de syndicat CGT, art. 7 à 10.</em></p>
+        </div>
+
+        <div class="roles-grid" id="grid-syndicat"></div>
+      </section>
+
+      <!-- Étape 2 -->
+      <section class="rl-etape" data-step="2" aria-labelledby="etape2-title" hidden>
+        <div class="rl-etape-head">
+          <p class="rl-etape-num">Étape 2 sur 5</p>
+          <h3 id="etape2-title">Dans l'entreprise : élu·es et mandaté·es</h3>
+          <p class="rl-etape-consigne"><strong>Comment animer :</strong> demandez d'abord « Qui choisit les candidat·es CGT au CSE ? ». Réponse attendue : <strong>les syndiqué·es, dans le syndicat</strong>. Les salarié·es votent ensuite pour la liste. Puis passez aux cartes.</p>
+        </div>
+
         <div class="schema-columns">
           <div class="schema-col">
-            <h4>Dans le syndicat</h4>
-            <button type="button" class="schema-box" data-target="adherent">Adhérent·es</button>
-            <span class="schema-arrow">se réunissent en</span>
-            <button type="button" class="schema-box schema-box--strong" data-target="congres">Congrès / AG<small>instance souveraine</small></button>
-            <span class="schema-arrow">élit</span>
+            <h4>🗳️ Les élu·es</h4>
+            <span class="schema-box schema-box--static">Les syndiqué·es, dans le syndicat</span>
+            <span class="schema-arrow">choisissent les candidat·es et construisent la liste CGT</span>
+            <span class="schema-box schema-box--static schema-box--liste">Liste CGT<small>représentative de tous les collèges</small></span>
+            <span class="schema-arrow">les salarié·es votent</span>
+            <button type="button" class="schema-box schema-box--strong" data-target="cse">Élu·es au CSE<small>titulaires et suppléant·es</small></button>
+            <span class="schema-arrow">le CSE désigne parmi ses membres</span>
             <div class="schema-row">
-              <button type="button" class="schema-box" data-target="ce">Commission exécutive</button>
-              <button type="button" class="schema-box" data-target="cfc">Commission financière de contrôle</button>
+              <button type="button" class="schema-box" data-target="cssct">CSSCT</button>
+              <button type="button" class="schema-box" data-target="rp">Représentant·es de proximité</button>
             </div>
-            <span class="schema-arrow">la CE élit</span>
-            <button type="button" class="schema-box" data-target="bureau">Bureau syndical<small>ou secrétariat</small></button>
-            <span class="schema-arrow">composé au minimum de</span>
-            <div class="schema-row">
-              <button type="button" class="schema-box" data-target="sg">Secrétaire général·e</button>
-              <button type="button" class="schema-box" data-target="tresorier">Trésorier·ère</button>
-              <button type="button" class="schema-box schema-box--optional" data-target="org">Orga<small>selon les statuts</small></button>
-            </div>
-            <p class="schema-note">Chaque niveau rend compte à celui qui l'a élu. La CFC, élue hors de la CE, contrôle les finances et rend compte à la CE et au congrès.<br><em>Source : modèle de statuts de syndicat CGT, art. 7 à 10.</em></p>
           </div>
 
           <div class="schema-col">
-            <h4>Dans l'entreprise</h4>
-            <div class="schema-row">
-              <div class="schema-branch">
-                <span class="schema-box schema-box--static">Le syndicat</span>
-                <span class="schema-arrow">désigne</span>
-                <button type="button" class="schema-box" data-target="ds">Délégué·e syndical·e</button>
-                <button type="button" class="schema-box" data-target="rss">RSS</button>
-                <button type="button" class="schema-box" data-target="rscse">RS au CSE</button>
-              </div>
-              <div class="schema-branch">
-                <span class="schema-box schema-box--static">Les salarié·es</span>
-                <span class="schema-arrow">élisent</span>
-                <button type="button" class="schema-box" data-target="cse">Élu·es au CSE</button>
-                <span class="schema-arrow">le CSE désigne</span>
-                <button type="button" class="schema-box" data-target="cssct">CSSCT</button>
-                <button type="button" class="schema-box" data-target="rp">Représentant·es de proximité</button>
-              </div>
-            </div>
-            <p class="schema-note">Élu·e = choisi·e par les salarié·es, sur une liste décidée par les syndiqué·es. Mandaté·e = désigné·e par le syndicat, devant qui il ou elle rend compte. <a href="#charte-elus">Voir la charte de l'élu·e et mandaté·e ↓</a></p>
+            <h4>📜 Les mandaté·es</h4>
+            <span class="schema-box schema-box--static">Le syndicat</span>
+            <span class="schema-arrow">désigne directement</span>
+            <button type="button" class="schema-box" data-target="ds">Délégué·e syndical·e<small>en priorité parmi les candidat·es ayant fait 10 %</small></button>
+            <button type="button" class="schema-box" data-target="rss">RSS<small>si le syndicat n'est pas représentatif</small></button>
+            <button type="button" class="schema-box" data-target="rscse">RS au CSE</button>
           </div>
+        </div>
+        <p class="schema-note schema-note--key"><strong>Tout mandat part du syndicat.</strong> Les candidatures aux élections comme les mandats sont décidés par les syndiqué·es. Les élu·es sont ensuite choisi·es par les salarié·es ; les mandaté·es sont désigné·es directement par le syndicat. Toutes et tous rendent compte au syndicat. <em>Charte de l'élu·e et mandaté·e CGT (2025).</em></p>
+
+        <div class="roles-grid" id="grid-entreprise"></div>
+      </section>
+
+      <!-- Étape 3 -->
+      <section class="rl-etape" data-step="3" aria-labelledby="etape3-title" hidden>
+        <div class="rl-etape-head">
+          <p class="rl-etape-num">Étape 3 sur 5</p>
+          <h3 id="etape3-title">Aider les salarié·es, hors de l'entreprise</h3>
+          <p class="rl-etape-consigne"><strong>Comment animer :</strong> demandez « Un·e salarié·e d'une petite entreprise sans représentant·e est convoqué·e à un entretien de licenciement : qui peut l'aider ? Et devant les prud'hommes ? »</p>
+        </div>
+        <div class="roles-grid" id="grid-appui"></div>
+      </section>
+
+      <!-- Étape 4 -->
+      <section class="rl-etape" data-step="4" aria-labelledby="etape4-title" hidden>
+        <div class="rl-etape-head">
+          <p class="rl-etape-num">Étape 4 sur 5</p>
+          <h3 id="etape4-title">Les chartes CGT : comment faire vivre ces rôles</h3>
+          <p class="rl-etape-consigne"><strong>Comment animer :</strong> les statuts disent qui fait quoi ; les chartes disent comment le faire vivre. Même méthode : la question d'abord, la réponse ensuite.</p>
+        </div>
+        <div id="charte" class="charte">
+          <div id="charte-groups"></div>
         </div>
       </section>
 
-      <div class="roles-filters" role="group" aria-label="Filtrer les rôles">
-        <button type="button" class="filter-btn active" data-filter="all" aria-pressed="true">Tous</button>
-        <button type="button" class="filter-btn" data-filter="syndicat" aria-pressed="false">Instances du syndicat</button>
-        <button type="button" class="filter-btn" data-filter="responsables" aria-pressed="false">Responsables</button>
-        <button type="button" class="filter-btn" data-filter="entreprise" aria-pressed="false">Mandats dans l'entreprise</button>
-        <button type="button" class="filter-btn" data-filter="appui" aria-pressed="false">Appui aux salarié·es</button>
-      </div>
-
-      <div class="roles-grid" id="roles-grid"></div>
-
-      <section id="charte" class="charte" aria-labelledby="charte-title">
-        <h3 id="charte-title">Les chartes CGT</h3>
-        <p class="charte-intro">Les statuts disent qui fait quoi ; les chartes disent comment le faire vivre. Devinez, puis révélez.</p>
-        <div id="charte-groups"></div>
-      </section>
-
-      <div class="roles-actions">
-        <button id="reveal-all-btn" type="button">Révéler tous les rôles</button>
-        <button id="hide-all-btn" type="button">Masquer tous les rôles</button>
+      <div class="rl-etape-actions">
+        <button id="reveal-all-btn" type="button">Révéler les cartes de l'étape</button>
+        <button id="hide-all-btn" type="button">Tout masquer</button>
+        <button id="etape-next" class="rl-etape-next" type="button">Étape suivante →</button>
       </div>
     </section>
 
