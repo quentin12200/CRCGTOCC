@@ -1,0 +1,134 @@
+/* ============================================================
+   Activités des modules « AG et congrès » et « Cotisations »
+   (en complément de roles.css : parcours, cartes, quiz)
+   ============================================================ */
+
+.section-intro { text-align: left; max-width: none; }
+
+/* Boutons d'activité */
+.diag-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 4px; }
+.diag-actions button {
+  font: inherit; font-weight: 700; padding: 10px 18px; border-radius: 6px; cursor: pointer;
+  border: 0; background: var(--cgt-red); color: #fff;
+}
+.diag-actions button + button { background: var(--bg-light); color: var(--text-dark); border: 1px solid rgba(0,0,0,.15); }
+html[data-theme="dark"] .diag-actions button + button { border-color: rgba(255,255,255,.2); }
+
+/* ── Autodiagnostic des 7 critères ─────────────────────────── */
+.diag { list-style: none; counter-reset: crit; margin: 18px 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.diag li {
+  counter-increment: crit; position: relative; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px 16px; align-items: center;
+  background: var(--card-bg); border: 1px solid rgba(0,0,0,.1); border-radius: 10px; padding: 12px 14px 12px 58px;
+}
+html[data-theme="dark"] .diag li { border-color: rgba(255,255,255,.12); }
+.diag li::before {
+  content: counter(crit); position: absolute; left: 14px; top: 50%; transform: translateY(-50%); width: 32px; height: 32px; border-radius: 50%;
+  background: var(--cgt-red); color: #fff; font-weight: 700; display: flex; align-items: center; justify-content: center;
+}
+.diag h4 { margin: 0 0 3px; font-size: 1rem; }
+.diag p { margin: 0; font-size: .9rem; opacity: .85; }
+.diag .diag-q { margin-top: 4px; font-style: italic; opacity: 1; }
+.diag-choices { display: flex; gap: 6px; flex-wrap: wrap; }
+.diag-choices button {
+  font: inherit; font-size: .85rem; font-weight: 600; padding: 7px 12px; border-radius: 999px; cursor: pointer;
+  background: var(--bg-light); color: var(--text-dark); border: 2px solid rgba(0,0,0,.12);
+}
+.diag-choices button[aria-pressed="true"][data-v="2"] { background: #E6F4EA; border-color: #2E8B4A; color: #1E6B34; }
+.diag-choices button[aria-pressed="true"][data-v="1"] { background: #FFF6D6; border-color: #C9A200; color: #6B5300; }
+.diag-choices button[aria-pressed="true"][data-v="0"] { background: #FDECEE; border-color: #E2001A; color: #A1000B; }
+.diag-result, .vote-result, .calc-result {
+  margin-top: 16px; padding: 16px 18px; border-radius: 10px; background: var(--bg-light); border-top: 4px solid var(--cgt-red);
+}
+.diag-result h3, .vote-result h3, .calc-result h3 { margin: 0 0 8px; }
+.diag-result ul { margin: 6px 0 0; padding-left: 20px; line-height: 1.6; }
+.diag-score { display: flex; gap: 16px; flex-wrap: wrap; font-weight: 700; margin: 6px 0 10px; }
+.diag-note { margin-top: 10px !important; }
+
+/* ── Vote du groupe en AG ──────────────────────────────────── */
+.vote-board { display: flex; flex-direction: column; gap: 16px; padding: 20px; border-radius: 10px; background: var(--bg-light); }
+.vote-field { display: flex; flex-direction: column; gap: 6px; font-weight: 700; font-size: .9rem; }
+.vote-field input[type="text"] {
+  font: inherit; font-weight: 400; font-size: 1rem; padding: 10px 12px; border-radius: 8px;
+  border: 1px solid rgba(0,0,0,.2); background: var(--card-bg); color: var(--text-dark);
+}
+.vote-rule { display: flex; gap: 8px; flex-wrap: wrap; }
+.vote-rule button {
+  font: inherit; font-weight: 600; font-size: .9rem; padding: 8px 14px; border-radius: 999px; cursor: pointer;
+  background: var(--card-bg); color: var(--text-dark); border: 2px solid rgba(0,0,0,.15);
+}
+.vote-rule button small { font-weight: 400; opacity: .75; }
+.vote-rule button[aria-pressed="true"] { border-color: var(--oc-accent, #1A5FAD); background: var(--oc-accent, #1A5FAD); color: #fff; }
+.vote-counts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.vote-count {
+  display: flex; flex-direction: column; gap: 6px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; font-size: .85rem;
+  background: var(--card-bg); border-radius: 10px; padding: 12px; border-top: 5px solid #2E8B4A;
+}
+.vote-count--contre { border-top-color: var(--cgt-red); }
+.vote-count--abst { border-top-color: #7D8FA8; }
+.vote-count input {
+  font: 400 2rem/1.1 'Anton', sans-serif; width: 100%; padding: 6px 8px; border-radius: 6px; text-align: center;
+  border: 1px solid rgba(0,0,0,.2); background: var(--bg-light); color: var(--text-dark);
+}
+.vote-result { background: var(--card-bg); margin-top: 0; }
+.vote-result--ok { border-top-color: #2E8B4A; }
+.vote-bar { margin: 8px 0; font-size: .9rem; }
+.vote-bar-track { height: 12px; border-radius: 6px; background: var(--bg-light); overflow: hidden; margin-top: 4px; }
+.vote-bar-fill { height: 100%; background: #2E8B4A; transition: width .5s ease; }
+.vote-bar--contre .vote-bar-fill { background: var(--cgt-red); }
+.vote-bar--abst .vote-bar-fill { background: #7D8FA8; }
+.vote-note { margin: 0; font-size: .85rem; opacity: .85; }
+
+/* ── Calculateur de cotisation ─────────────────────────────── */
+.calc { display: flex; flex-direction: column; gap: 14px; padding: 20px; border-radius: 10px; background: var(--bg-light); }
+.calc label { display: flex; flex-direction: column; gap: 6px; font-weight: 700; max-width: 320px; }
+.calc input {
+  font: inherit; font-size: 1.1rem; padding: 10px 12px; border-radius: 8px;
+  border: 1px solid rgba(0,0,0,.2); background: var(--card-bg); color: var(--text-dark);
+}
+.calc-result { background: var(--card-bg); margin-top: 0; }
+.calc-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; }
+.calc-grid div { background: var(--bg-light); border-radius: 8px; padding: 10px 12px; }
+.calc-grid b { display: block; font: 400 1.6rem/1.2 'Anton', sans-serif; color: var(--cgt-red); }
+.calc-grid span { font-size: .85rem; }
+.quote-statuts {
+  margin: 18px 0 0; padding: 14px 18px; border-radius: 0 10px 10px 0; line-height: 1.6;
+  background: var(--card-bg); border-left: 5px solid var(--cgt-red); font-style: italic;
+}
+.quote-statuts cite { display: block; margin-top: 6px; font-style: normal; font-weight: 700; font-size: .85rem; opacity: .8; }
+
+/* ── Circuit et répartition ────────────────────────────────── */
+.circuit { list-style: none; margin: 0 0 20px; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; counter-reset: circ; }
+.circuit li {
+  counter-increment: circ; position: relative; background: var(--card-bg); border-radius: 10px; padding: 14px 14px 14px 52px;
+  border: 1px solid rgba(0,0,0,.1); line-height: 1.4;
+}
+html[data-theme="dark"] .circuit li { border-color: rgba(255,255,255,.12); }
+.circuit li::before {
+  content: counter(circ); position: absolute; left: 12px; top: 14px; width: 30px; height: 30px; border-radius: 50%;
+  background: var(--cgt-red); color: #fff; font-weight: 700; display: flex; align-items: center; justify-content: center;
+}
+.circuit strong { display: block; }
+.circuit span { font-size: .88rem; opacity: .85; }
+.repartition { padding: 18px; border-radius: 10px; background: var(--bg-light); margin-bottom: 20px; }
+.repartition h4 { margin: 0 0 10px; }
+.repart-bar { display: flex; height: 2.6rem; border-radius: 8px; overflow: hidden; background: var(--card-bg); }
+.repart-bar div {
+  width: 0; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; font-size: .85rem;
+  white-space: nowrap; overflow: hidden; transition: width .8s ease;
+}
+.repart-legend { display: flex; flex-wrap: wrap; gap: .3rem 1rem; font-size: .88rem; margin: 10px 0 0; padding: 0; list-style: none; }
+.repart-legend i { display: inline-block; width: .8rem; height: .8rem; border-radius: 3px; margin-right: .35rem; vertical-align: -1px; }
+.repartition[data-shown="false"] .repart-legend { visibility: hidden; }
+.repartition .diag-actions { margin-top: 12px; }
+
+@media (max-width: 760px) {
+  .diag li { grid-template-columns: 1fr; }
+  .vote-counts { grid-template-columns: 1fr; }
+  .circuit { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 420px) { .circuit { grid-template-columns: 1fr; } }
+@media print {
+  .vote-board, .calc, .diag-actions { display: none !important; }
+  .repartition[data-shown="false"] .repart-legend { visibility: visible; }
+}
+.repartition[data-shown="true"] .diag-actions { display: none; }

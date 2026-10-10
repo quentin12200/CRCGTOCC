@@ -1659,7 +1659,7 @@ html[data-theme="dark"] .rep-bar[style*="#0F0F0F"] { background: #E6ECF5 !import
 .rl-parcours { margin: 6px auto 0; max-width: 1000px; scroll-margin-top: 90px; }
 .rl-parcours-list {
   list-style: none; margin: 0; padding: 0; counter-reset: none;
-  display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px;
+  display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 8px;
 }
 .rl-parcours button {
   width: 100%; height: 100%; font: inherit; cursor: pointer; text-align: left;
@@ -1710,12 +1710,13 @@ html[data-theme="dark"] .rl-etape-consigne { background: #2E2810; color: #F3E3A3
 }
 .rl-etape-actions button { cursor: pointer; }
 .rl-etape-actions .rl-etape-next {
-  margin-left: auto; font-weight: 700; font-size: 16px; padding: 12px 22px; border-radius: 10px;
+  margin-left: auto; font-weight: 700 !important; font-size: .9rem !important; padding: .8rem 1.4rem !important; border-radius: 8px !important;
   background: var(--cgt-red) !important; color: #fff !important; border: 0 !important;
 }
+.rl-etape-actions .rl-etape-next:hover { background: #B80015 !important; }
 
 @media (max-width: 760px) {
-  .rl-parcours-list { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 4px; }
+  .rl-parcours-list { gap: 4px; }
   .rl-parcours button { flex-direction: column; justify-content: flex-start; gap: 4px; padding: 6px 2px; text-align: center; }
   .rl-parcours-t { font-size: 10.5px; letter-spacing: -.01em; }
   .rl-parcours-t small { display: none; }
@@ -1725,5 +1726,5 @@ html[data-theme="dark"] .rl-etape-consigne { background: #2E2810; color: #F3E3A3
 
 @media print {
   .rl-parcours, .rl-etape-consigne, .rl-etape-actions, .rl-etape-num { display: none !important; }
-  .roles-container .rl-etape[hidden], .roles-container #exploration-panel[hidden] { display: block !important; }
+  .roles-container .rl-etape[hidden]:not(.classement), .roles-container #exploration-panel[hidden] { display: block !important; }
 }

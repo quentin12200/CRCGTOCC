@@ -447,10 +447,80 @@
     });
   }
 
+  /* ---------- Parcours en étapes ---------- */
+  // Une seule étape affichée à la fois : boutons .rl-parcours [data-step],
+  // sections .rl-etape[data-step], bouton #etape-next. La dernière étape est le
+  // quiz : elle bascule en mode quiz. Les boutons #reveal-all-btn et
+  // #hide-all-btn agissent sur les cartes de l'étape affichée.
+  function initParcours({ modes }) {
+    const etapes = Array.from(document.querySelectorAll('.rl-etape'));
+    const btns = Array.from(document.querySelectorAll('.rl-parcours button[data-step]'));
+    const nextBtn = document.getElementById('etape-next');
+    const revealBtn = document.getElementById('reveal-all-btn');
+    const hideBtn = document.getElementById('hide-all-btn');
+    const last = btns.length;
+    let step = 1;
+
+    const cards = () => {
+      const e = etapes.find(x => !x.hidden);
+      return e && !modes.isQuiz() ? e.querySelectorAll('.role-card') : [];
+    };
+
+    function go(n, scroll) {
+      step = n;
+      btns.forEach(b => {
+        const k = +b.dataset.step;
+        if (k === n) b.setAttribute('aria-current', 'step'); else b.removeAttribute('aria-current');
+        b.classList.toggle('done', k < n);
+      });
+      if (n === last) {
+        document.getElementById('quiz-mode').click();
+      } else {
+        modes.setMode('exploration');
+        etapes.forEach(e => { e.hidden = +e.dataset.step !== n; });
+        const hasCards = cards().length > 0;
+        revealBtn.hidden = hideBtn.hidden = !hasCards;
+        nextBtn.textContent = n === last - 1 ? 'Passer au quiz →' : 'Étape suivante →';
+      }
+      if (scroll !== false) document.querySelector('.rl-parcours').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    btns.forEach(b => b.addEventListener('click', () => go(+b.dataset.step)));
+    nextBtn.addEventListener('click', () => go(Math.min(step + 1, last)));
+
+    // Lien vers une ancre (sommaire) : ouvre l'étape qui la contient
+    function fromHash() {
+      const target = location.hash.length > 1 && document.getElementById(decodeURIComponent(location.hash.slice(1)));
+      const e = target && target.closest('.rl-etape');
+      if (!e) return;
+      go(+e.dataset.step, false);
+      target.scrollIntoView({ block: 'start' });
+    }
+    window.addEventListener('hashchange', fromHash);
+    fromHash();
+    revealBtn.addEventListener('click', () => {
+      cards().forEach(card => setExpanded(card, true));
+    });
+    hideBtn.addEventListener('click', () => {
+      cards().forEach(card => setExpanded(card, false));
+    });
+
+    return {
+      current: () => step,
+      cards,
+      // Affiche l'étape qui contient cet élément (fiche ouverte depuis le quiz ou un schéma)
+      show(node) {
+        const e = node.closest('.rl-etape');
+        if (e && (e.hidden || modes.isQuiz())) go(+e.dataset.step, false);
+      }
+    };
+  }
+
   window.FK = {
     shuffle, el, drawQuestions,
     setExpanded, buildCard, highlightCard,
     initModes, createQuiz, initToc, initTheme,
+    initParcours,
     initProjection, renderCardSlide, renderQuizSlide, listAnswer
   };
 })();

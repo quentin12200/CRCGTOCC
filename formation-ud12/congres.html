@@ -5,274 +5,10 @@
   <script>try{var t=localStorage.getItem('cgt_theme');if(t==='dark'||t==='light'){localStorage.setItem('theme',t);document.documentElement.setAttribute('data-theme',t);}}catch(e){}</script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AG et Congrès - Formation CGT</title>
+  <title>AG et congrès CGT</title>
   <link rel="stylesheet" href="css/styles.css">
-  <style>
-    :root {
-      --cgt-red: #E30613;
-      --cgt-light-red: #ffebee;
-      --card-bg: #ffffff;
-      --bg-light: #f5f5f5;
-      --text-dark: #333333;
-      --text-light: #ffffff;
-      --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
-    
-    body.dark-theme {
-      --card-bg: #2d2d2d;
-      --bg-light: #1a1a1a;
-      --text-dark: #f0f0f0;
-      --text-light: #ffffff;
-      --shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-    }
-    
-    body {
-      font-family: 'Montserrat', sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: var(--bg-light);
-      color: var(--text-dark);
-    }
-    
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 20px;
-    }
-    
-    header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 20px;
-      background-color: var(--card-bg);
-      box-shadow: var(--shadow);
-      margin-bottom: 30px;
-    }
-    
-    header img {
-      height: 60px;
-    }
-    
-    .header-text {
-      flex-grow: 1;
-      text-align: center;
-    }
-    
-    h1 {
-      color: var(--cgt-red);
-      margin: 0;
-      font-size: 1.8rem;
-    }
-    
-    h2 {
-      margin: 0;
-      font-size: 1.4rem;
-    }
-    
-    .congres-container {
-      display: flex;
-      flex-direction: column;
-      gap: 30px;
-    }
-    
-    .congres-section {
-      background-color: var(--card-bg);
-      border-radius: 10px;
-      box-shadow: var(--shadow);
-      padding: 20px;
-      transition: transform 0.3s ease;
-    }
-    
-    .congres-section:hover {
-      transform: translateY(-5px);
-    }
-    
-    .congres-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 2px solid var(--cgt-red);
-      padding-bottom: 10px;
-      margin-bottom: 20px;
-    }
-    
-    .congres-actions {
-      display: flex;
-      gap: 10px;
-    }
-    
-    .congres-actions button {
-      background-color: var(--bg-light);
-      color: var(--text-dark);
-      border: none;
-      padding: 8px 12px;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 0.9em;
-      transition: all 0.2s;
-    }
-    
-    .congres-actions button:hover {
-      background-color: var(--cgt-red);
-      color: var(--text-light);
-    }
-
-    .vote-simulation {
-      margin-top: 30px;
-    }
-    
-    .vote-options {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 15px;
-      margin-top: 15px;
-    }
-    
-    .vote-option {
-      flex: 1;
-      min-width: 200px;
-      background-color: var(--bg-light);
-      padding: 15px;
-      border-radius: 5px;
-      text-align: center;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-    
-    .vote-option:hover {
-      background-color: var(--cgt-light-red);
-      transform: scale(1.02);
-    }
-    
-    .vote-option.selected {
-      background-color: var(--cgt-light-red);
-      border: 2px solid var(--cgt-red);
-    }
-    
-    .vote-results {
-      margin-top: 20px;
-      padding: 15px;
-      background-color: var(--bg-light);
-      border-radius: 5px;
-      display: none;
-    }
-    
-    .progress-bar {
-      height: 20px;
-      background-color: #e0e0e0;
-      border-radius: 10px;
-      margin-top: 5px;
-      overflow: hidden;
-    }
-    
-    .progress-fill {
-      height: 100%;
-      background-color: var(--cgt-red);
-      width: 0;
-      transition: width 1s ease-in-out;
-    }
-    
-    .back-button {
-      display: inline-block;
-      margin-top: 30px;
-      padding: 10px 20px;
-      background-color: var(--cgt-red);
-      color: white;
-      text-decoration: none;
-      border-radius: 5px;
-      transition: background-color 0.3s;
-    }
-    
-    .back-button:hover {
-      background-color: #c30000;
-    }
-    
-    /* Overlay pour la table des matières */
-    .toc-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.5);
-      backdrop-filter: blur(3px);
-      z-index: 999;
-      display: none;
-    }
-    
-    .toc-overlay.active {
-      display: block;
-    }
-    
-    /* Table des matières */
-    .toc {
-      position: fixed;
-      top: 0;
-      right: 0;
-      width: 350px;
-      height: 100%;
-      background-color: var(--card-bg);
-      color: var(--text-dark);
-      z-index: 1000;
-      transition: transform 0.3s ease;
-      box-shadow: var(--shadow);
-      overflow-y: auto;
-      transform: translateX(100%);
-      padding: 0;
-    }
-    
-    .toc.active {
-      transform: translateX(0);
-    }
-    
-    @media (max-width: 768px) {
-      .congres-header {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-      
-      .congres-actions {
-        margin-top: 10px;
-        flex-direction: column;
-        width: 100%;
-      }
-      
-      .congres-actions button {
-        width: 100%;
-      }
-    }
-    /* Autodiagnostic des 7 critères de représentativité */
-    .diag-consigne { background: var(--bg-light); border-left: 4px solid #C9A200; padding: 10px 14px; border-radius: 0 8px 8px 0; }
-    .diag { list-style: none; counter-reset: crit; margin: 18px 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
-    .diag li {
-      counter-increment: crit; position: relative; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px 16px; align-items: center;
-      background: var(--card-bg); border: 1px solid rgba(0,0,0,.1); border-radius: 10px; padding: 12px 14px 12px 58px;
-    }
-    .diag li::before {
-      content: counter(crit); position: absolute; left: 14px; top: 50%; transform: translateY(-50%); width: 32px; height: 32px; border-radius: 50%;
-      background: var(--cgt-red); color: #fff; font-weight: 700; display: flex; align-items: center; justify-content: center;
-    }
-    .diag h4 { margin: 0 0 3px; font-size: 1rem; }
-    .diag p { margin: 0; font-size: .9rem; opacity: .85; }
-    .diag .diag-q { margin-top: 4px; font-style: italic; opacity: 1; }
-    .diag-choices { display: flex; gap: 6px; flex-wrap: wrap; }
-    .diag-choices button {
-      font: inherit; font-size: .85rem; font-weight: 600; padding: 7px 12px; border-radius: 999px; cursor: pointer;
-      background: var(--bg-light); color: var(--text-dark); border: 2px solid rgba(0,0,0,.12);
-    }
-    .diag-choices button[aria-pressed="true"][data-v="2"] { background: #E6F4EA; border-color: #2E8B4A; color: #1E6B34; }
-    .diag-choices button[aria-pressed="true"][data-v="1"] { background: #FFF6D6; border-color: #C9A200; color: #6B5300; }
-    .diag-choices button[aria-pressed="true"][data-v="0"] { background: #FDECEE; border-color: #E2001A; color: #A1000B; }
-    .diag-actions { display: flex; gap: 10px; flex-wrap: wrap; }
-    .diag-actions button { font: inherit; font-weight: 700; padding: 10px 18px; border-radius: 6px; cursor: pointer; border: 0; background: var(--cgt-red); color: #fff; }
-    .diag-actions #diag-reset { background: var(--bg-light); color: var(--text-dark); border: 1px solid rgba(0,0,0,.15); }
-    .diag-result { margin-top: 16px; padding: 16px 18px; border-radius: 10px; background: var(--bg-light); border-top: 4px solid var(--cgt-red); }
-    .diag-result h3 { margin: 0 0 8px; }
-    .diag-result ul { margin: 6px 0 0; padding-left: 20px; line-height: 1.6; }
-    .diag-score { display: flex; gap: 16px; flex-wrap: wrap; font-weight: 700; margin: 6px 0 10px; }
-    @media (max-width: 700px) { .diag li { grid-template-columns: 1fr; } }
-  </style>
+  <link rel="stylesheet" href="css/roles.css">
+  <link rel="stylesheet" href="css/modules.css">
   <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -281,356 +17,182 @@
 </head>
 <body>
   <header>
-    <img src="img/logo-cgt.png" alt="Logo CGT Aveyron">
-    <div class="header-text">
-      <h1>Formation : fonctionnement statutaire</h1>
-      <h2>AG et congrès : lieux de souveraineté</h2>
+    <div class="logo">
+      <img src="img/logo-cgt.png" alt="Logo CGT">
     </div>
-    <!-- Sélecteur de thème -->
-    <div class="theme-switch-wrapper">
-      <label class="theme-switch" for="checkbox">
-        <input type="checkbox" id="checkbox" />
+    <h1>Formation CGT - AG et congrès</h1>
+    <div class="theme-toggle">
+      <label class="switch">
+        <input type="checkbox" id="theme-switch" aria-label="Activer le thème sombre">
         <div class="slider"></div>
       </label>
-      <span class="theme-icon">🌙</span>
+      <span class="theme-icon" aria-hidden="true">🌙</span>
     </div>
   </header>
-  
-  <!-- Overlay pour la table des matières -->
-  <div id="toc-overlay" class="toc-overlay"></div>
-  
+
+  <div class="org-info">Organisée par l'Union Départementale des Syndicats CGT de l'Aveyron</div>
+
   <!-- Table des matières -->
-  <div id="table-of-contents" class="toc">
+  <nav class="toc" id="table-of-contents" aria-label="Sommaire" aria-hidden="true">
     <div class="toc-header">
-      <h2>Sommaire</h2>
-      <button id="close-toc" class="close-toc">×</button>
+      <h3>Sommaire</h3>
+      <button class="close-toc" id="close-toc" type="button" aria-label="Fermer le sommaire">&times;</button>
     </div>
     <div class="toc-content">
       <ul>
-        <li><a href="index.html">Retour à la formation principale</a></li>
-        <li><a href="index.html#slide-5">Retour à la slide AG et congrès</a></li>
+        <li><a href="#instances">Le congrès et l'assemblée générale</a></li>
         <li><a href="#representativite">Les 7 critères de représentativité</a></li>
-        <li><a href="#simulation-vote">Simulation de vote</a></li>
+        <li><a href="#vote">Voter en AG</a></li>
+        <li><a href="index.html#slide-5">Retour à la slide « AG et congrès »</a></li>
         <li><a href="statuts.html">Module : Fonctionnement statutaire</a></li>
         <li><a href="roles.html">Module : Rôles dans le syndicat</a></li>
         <li><a href="cotisations.html">Module : Cotisations</a></li>
       </ul>
     </div>
-  </div>
-  
-  <div class="container">
-    <div class="congres-container">
-      <div id="representativite" class="congres-section">
-        <div class="congres-header">
-          <h2>Les 7 critères de représentativité : où en est notre syndicat ?</h2>
-          <div class="congres-actions">
-            <button class="toc-button" type="button" onclick="toggleTOC()">📋 Sommaire</button>
-          </div>
+  </nav>
+  <div class="toc-overlay" id="toc-overlay"></div>
+
+  <main class="roles-container">
+    <div class="roles-intro">
+      <h2>AG et congrès : lieux de souveraineté</h2>
+      <p>Où et comment les syndiqué·es décident-ils, et qu'est-ce qui fait la représentativité du syndicat ? On avance <strong>étape par étape</strong> : commencez par l'étape 1.</p>
+
+      <!-- Le parcours : une étape affichée à la fois -->
+      <nav class="rl-parcours" aria-label="Parcours de la séquence">
+        <div class="rl-parcours-list">
+          <button type="button" data-step="1" aria-current="step"><span class="rl-parcours-n">1</span><span class="rl-parcours-t">Congrès et AG<small>Qui décide, comment</small></span></button>
+          <button type="button" data-step="2"><span class="rl-parcours-n">2</span><span class="rl-parcours-t">Les 7 critères<small>Autodiagnostic</small></span></button>
+          <button type="button" data-step="3"><span class="rl-parcours-n">3</span><span class="rl-parcours-t">Voter en AG<small>Le groupe vote</small></span></button>
+          <button type="button" data-step="4"><span class="rl-parcours-n">4</span><span class="rl-parcours-t">Le quiz<small>Vérifier</small></span></button>
         </div>
+      </nav>
 
-        <p>Pour être reconnu représentatif, et donc pouvoir négocier et signer des accords, un syndicat doit remplir <strong>7 critères cumulatifs</strong> (Code du travail, art. L2121-1). Faire vivre ses statuts, tenir ses AG et ses congrès, publier ses comptes : c'est déjà en remplir plusieurs.</p>
-        <p class="diag-consigne">En groupe, pour chaque critère, répondez : <strong>oui</strong>, <strong>en partie</strong> ou <strong>non</strong>. Le bilan indique ce qu'il faut renforcer.</p>
+      <!-- Boutons de mode pilotés par le parcours (dernière étape = quiz) -->
+      <div class="mode-selector" role="tablist" aria-label="Mode d'utilisation" hidden>
+        <button id="exploration-mode" class="mode-btn active" type="button" role="tab" aria-selected="true" aria-controls="exploration-panel">Mode exploration</button>
+        <button id="quiz-mode" class="mode-btn" type="button" role="tab" aria-selected="false" aria-controls="quiz-panel">Mode quiz</button>
+      </div>
 
+      <div class="slide-actions">
+        <button class="toc-button" type="button" aria-controls="table-of-contents" aria-expanded="false">📋 Sommaire</button>
+        <button class="presentation-button" type="button" aria-controls="projection" aria-expanded="false">🖥️ Mode projection</button>
+        <button class="print-button" type="button">🖨️ Imprimer la fiche-mémo</button>
+      </div>
+    </div>
+
+    <!-- Mode exploration : les étapes avant le quiz -->
+    <section id="exploration-panel" role="tabpanel" aria-labelledby="exploration-mode">
+
+      <!-- Étape 1 -->
+      <section id="instances" class="rl-etape" data-step="1" aria-labelledby="instances-title">
+        <div class="rl-etape-head">
+          <p class="rl-etape-num">Étape 1 sur 4</p>
+          <h3 id="instances-title">Le congrès et l'assemblée générale</h3>
+          <p class="rl-etape-consigne"><strong>Comment animer :</strong> demandez à chacun·e « Quand ont eu lieu le dernier congrès et la dernière AG de mon syndicat ? Combien de syndiqué·es y étaient ? Qu'y a-t-on décidé ? ». Partez des réponses, puis révélez les cartes.</p>
+        </div>
+        <div class="roles-grid" id="instances-grid"></div>
+      </section>
+
+      <!-- Étape 2 -->
+      <section id="representativite" class="rl-etape" data-step="2" aria-labelledby="representativite-title" hidden>
+        <div class="rl-etape-head">
+          <p class="rl-etape-num">Étape 2 sur 4</p>
+          <h3 id="representativite-title">Les 7 critères de représentativité : où en est notre syndicat ?</h3>
+          <p class="rl-etape-consigne"><strong>Comment animer :</strong> par syndicat ou par petits groupes, répondez pour chaque critère : <strong>oui</strong>, <strong>en partie</strong> ou <strong>non</strong>. Le bilan liste ce qu'il faut renforcer : chaque groupe repart avec au moins une action.</p>
+        </div>
+        <p class="section-intro">Pour être reconnu représentatif, et donc pouvoir négocier et signer des accords, un syndicat doit remplir <strong>7 critères cumulatifs</strong> (Code du travail, art. L2121-1). Faire vivre ses statuts, tenir ses AG et ses congrès, publier ses comptes : c'est déjà en remplir plusieurs.</p>
         <ol class="diag" id="diag"></ol>
-
         <div class="diag-actions">
           <button type="button" id="diag-bilan">📊 Voir le bilan</button>
           <button type="button" id="diag-reset">🔄 Recommencer</button>
         </div>
         <div class="diag-result" id="diag-result" aria-live="polite" hidden></div>
-      </div>
+      </section>
 
-      <div id="simulation-vote" class="congres-section">
-        <div class="congres-header">
-          <h2>Simulation d'un vote</h2>
-          <div class="congres-actions">
-            <button class="toc-button" type="button" onclick="toggleTOC()">📋 Sommaire</button>
-          </div>
+      <!-- Étape 3 -->
+      <section id="vote" class="rl-etape" data-step="3" aria-labelledby="vote-title" hidden>
+        <div class="rl-etape-head">
+          <p class="rl-etape-num">Étape 3 sur 4</p>
+          <h3 id="vote-title">Voter en AG : à vous de jouer</h3>
+          <p class="rl-etape-consigne"><strong>Comment animer :</strong> le groupe joue une AG. Désignez un·e président·e de séance et un·e secrétaire qui tient le procès-verbal. Présentez la motion, débattez quelques minutes, puis votez à main levée et saisissez le résultat.</p>
         </div>
-        
-        <p>Les votes sont des moments clés dans la vie démocratique d'un syndicat. Ils permettent de prendre des décisions collectives et d'élire les représentants.</p>
-        
-        <div class="vote-simulation">
-          <h3>Simulation : Adoption du rapport d'activité</h3>
-          
-          <p>En tant que syndiqué·e, comment votez-vous sur le rapport d'activité présenté ?</p>
-          
-          <div class="vote-options">
-            <div class="vote-option" onclick="selectVote('pour')">
-              <h4>POUR</h4>
-              <p>J'approuve le rapport d'activité</p>
-            </div>
-            
-            <div class="vote-option" onclick="selectVote('contre')">
-              <h4>CONTRE</h4>
-              <p>Je n'approuve pas le rapport d'activité</p>
-            </div>
-            
-            <div class="vote-option" onclick="selectVote('abstention')">
-              <h4>ABSTENTION</h4>
-              <p>Je ne me prononce pas</p>
+
+        <div class="vote-board">
+          <label class="vote-field vote-field--motion">Motion soumise au vote
+            <input type="text" id="vote-motion" value="Adoption du rapport d'activité">
+          </label>
+          <div class="vote-field">Règle de majorité
+            <div class="vote-rule" role="group" aria-label="Règle de majorité">
+              <button type="button" data-rule="simple" aria-pressed="true">Majorité simple</button>
+              <button type="button" data-rule="deux-tiers" aria-pressed="false">Deux tiers <small>modification des statuts</small></button>
             </div>
           </div>
-          
-          <button onclick="simulateVote()" style="margin-top: 20px; padding: 10px 20px; background-color: var(--cgt-red); color: white; border: none; border-radius: 5px; cursor: pointer;">Voter</button>
-          
-          <div class="vote-results" id="vote-results">
-            <h3>Résultats du vote :</h3>
-            
-            <div>
-              <p>Pour : <span id="pour-percent">0</span>% (<span id="pour-count">0</span> votes)</p>
-              <div class="progress-bar">
-                <div class="progress-fill" id="pour-bar"></div>
-              </div>
-            </div>
-            
-            <div style="margin-top: 10px;">
-              <p>Contre : <span id="contre-percent">0</span>% (<span id="contre-count">0</span> votes)</p>
-              <div class="progress-bar">
-                <div class="progress-fill" id="contre-bar"></div>
-              </div>
-            </div>
-            
-            <div style="margin-top: 10px;">
-              <p>Abstention : <span id="abstention-percent">0</span>% (<span id="abstention-count">0</span> votes)</p>
-              <div class="progress-bar">
-                <div class="progress-fill" id="abstention-bar"></div>
-              </div>
-            </div>
-            
-            <div style="margin-top: 20px;">
-              <p id="vote-conclusion"></p>
-            </div>
+          <div class="vote-counts">
+            <label class="vote-count vote-count--pour">Pour<input type="number" id="vote-pour" min="0" inputmode="numeric" value="0"></label>
+            <label class="vote-count vote-count--contre">Contre<input type="number" id="vote-contre" min="0" inputmode="numeric" value="0"></label>
+            <label class="vote-count vote-count--abst">Abstention<input type="number" id="vote-abst" min="0" inputmode="numeric" value="0"></label>
           </div>
+          <div class="diag-actions">
+            <button type="button" id="vote-result-btn">🗳️ Proclamer le résultat</button>
+            <button type="button" id="vote-reset">🔄 Nouveau vote</button>
+          </div>
+          <div class="vote-result" id="vote-result" aria-live="polite" hidden></div>
+          <p class="vote-note">Ici, la motion est adoptée si les « pour » dépassent les « contre » (suffrages exprimés), ou atteignent les deux tiers pour une modification des statuts. Vérifiez les règles prévues par <strong>vos</strong> statuts.</p>
         </div>
+      </section>
+
+      <div class="rl-etape-actions roles-actions">
+        <button id="reveal-all-btn" type="button">Révéler les cartes de l'étape</button>
+        <button id="hide-all-btn" type="button">Tout masquer</button>
+        <button id="etape-next" class="rl-etape-next" type="button">Étape suivante →</button>
+      </div>
+    </section>
+
+    <!-- Mode quiz -->
+    <section id="quiz-panel" class="quiz-container" role="tabpanel" aria-labelledby="quiz-mode" hidden>
+      <div class="quiz-progress" aria-hidden="true"><div class="quiz-progress-bar" id="quiz-progress-bar"></div></div>
+      <div class="quiz-question">
+        <h3 id="quiz-title">Question</h3>
+        <p id="quiz-text" class="quiz-text"></p>
+        <div id="quiz-options" class="quiz-options" role="group" aria-labelledby="quiz-text"></div>
+        <div id="quiz-feedback" class="quiz-feedback" aria-live="polite"></div>
+        <div class="quiz-controls">
+          <button id="quiz-check" type="button" disabled>Vérifier</button>
+          <button id="quiz-next" type="button" disabled>Question suivante</button>
+        </div>
+      </div>
+    </section>
+
+    <div class="roles-footer-actions">
+      <a class="back-link" href="index.html#slide-5">← Retour aux slides</a>
+    </div>
+  </main>
+
+  <!-- Mode projection : diaporama plein écran pour l'animateur -->
+  <div id="projection" class="projection" role="dialog" aria-modal="true" aria-label="Mode projection" hidden>
+    <div class="proj-bar">
+      <div class="proj-tabs" role="tablist" aria-label="Contenu projeté">
+        <button type="button" class="proj-tab active" role="tab" aria-selected="true" data-deck="instances">Congrès et AG</button>
+        <button type="button" class="proj-tab" role="tab" aria-selected="false" data-deck="criteres">7 critères</button>
+        <button type="button" class="proj-tab" role="tab" aria-selected="false" data-deck="quiz">Quiz en groupe</button>
+      </div>
+      <span id="proj-counter" class="proj-counter" aria-live="polite"></span>
+      <div class="proj-tools">
+        <button type="button" id="proj-fullscreen" title="Plein écran (F)">⛶ Plein écran</button>
+        <button type="button" id="proj-close" title="Quitter (Échap)">✖ Quitter</button>
       </div>
     </div>
-    
-    <a href="index.html" class="back-button">← Retour à la formation principale</a>
+    <div id="proj-stage" class="proj-stage" aria-live="polite"></div>
+    <div class="proj-bar proj-bar--bottom">
+      <button type="button" id="proj-prev">◀ Précédent</button>
+      <button type="button" id="proj-reveal" class="proj-reveal">Révéler la réponse</button>
+      <button type="button" id="proj-next">Suivant ▶</button>
+      <p class="proj-help">→ / PageDown : révéler puis avancer · ← : reculer · Espace : révéler · F : plein écran · Échap : quitter</p>
+    </div>
   </div>
-  
-  <script>
-    // Gestion du thème sombre
-    const checkbox = document.getElementById('checkbox');
-    
-    // Vérifier si un thème est enregistré
-    if (localStorage.getItem('theme') === 'dark') {
-      document.body.classList.add('dark-theme');
-      checkbox.checked = true;
-      document.querySelector('.theme-icon').textContent = '☀️';
-    }
-    
-    checkbox.addEventListener('change', function() {
-      if (this.checked) {
-        document.body.classList.add('dark-theme');
-        localStorage.setItem('theme', 'dark');
-        document.querySelector('.theme-icon').textContent = '☀️';
-      } else {
-        document.body.classList.remove('dark-theme');
-        localStorage.setItem('theme', 'light');
-        document.querySelector('.theme-icon').textContent = '🌙';
-      }
-    });
-    
-    // Autodiagnostic des 7 critères de représentativité (Code du travail, art. L2121-1)
-    const CRITERES = [
-      { t: "Le respect des valeurs républicaines", d: "Liberté d'opinion, refus de toute discrimination et de tout racisme.", q: "Nos statuts et nos pratiques les affirment-ils clairement ?", conseil: "Reprendre le préambule des statuts confédéraux dans nos statuts et le faire vivre dans nos actions." },
-      { t: "L'indépendance", d: "Notamment vis-à-vis de l'employeur.", q: "Le syndicat vit-il de ses cotisations, sans dépendre de l'employeur ?", conseil: "Développer le prélèvement automatique et faire de la cotisation la ressource principale." },
-      { t: "La transparence financière", d: "Comptes établis, approuvés et publiés chaque année.", q: "Nos comptes sont-ils arrêtés par le bureau, approuvés par la CE et publiés ?", conseil: "Calendrier annuel : arrêté des comptes, approbation en CE (procès-verbal), contrôle de la CFC, publication." },
-      { t: "Une ancienneté minimale de 2 ans", d: "Dans le champ professionnel et géographique, à compter du dépôt des statuts.", q: "Nos statuts sont-ils déposés en mairie et à jour de notre périmètre ?", conseil: "Vérifier le dépôt en mairie et préciser dans le préambule toute modification, tout regroupement ou toute extension." },
-      { t: "L'audience", d: "Au moins 10 % des suffrages au 1er tour des élections du CSE (8 % dans la branche et au niveau national).", q: "Présentons-nous des listes complètes, construites avec les syndiqué·es ?", conseil: "Préparer les élections tôt, avec les syndiqué·es de chaque collège, et faire campagne." },
-      { t: "L'influence", d: "Caractérisée en priorité par l'activité et l'expérience.", q: "Le syndicat est-il visible et actif auprès des salarié·es (tracts, réunions, actions) ?", conseil: "Un plan de travail : heures d'information, tracts réguliers, permanences, actions revendicatives." },
-      { t: "Les effectifs d'adhérent·es et les cotisations", d: "Le nombre de syndiqué·es et le versement régulier des cotisations.", q: "Le nombre de syndiqué·es progresse-t-il ? Les cotisations sont-elles reversées régulièrement ?", conseil: "Faire de la syndicalisation l'affaire de toutes et tous : proposer l'adhésion, suivre chaque parcours (CoGiTiel)." }
-    ];
-    const LABELS = [["2", "✅ Oui"], ["1", "🟡 En partie"], ["0", "❌ Non"]];
-    const diagEl = document.getElementById('diag');
-    const answers = {};
-    function renderDiag() {
-      diagEl.innerHTML = '';
-      CRITERES.forEach((c, i) => {
-        const li = document.createElement('li');
-        const txt = document.createElement('div');
-        txt.innerHTML = '<h4></h4><p></p><p class="diag-q"></p>';
-        txt.querySelector('h4').textContent = c.t;
-        txt.querySelectorAll('p')[0].textContent = c.d;
-        txt.querySelectorAll('p')[1].textContent = c.q;
-        const choices = document.createElement('div');
-        choices.className = 'diag-choices';
-        choices.setAttribute('role', 'group');
-        choices.setAttribute('aria-label', 'Réponse pour : ' + c.t);
-        LABELS.forEach(([v, label]) => {
-          const b = document.createElement('button');
-          b.type = 'button'; b.dataset.v = v; b.textContent = label;
-          b.setAttribute('aria-pressed', String(answers[i] === v));
-          b.addEventListener('click', () => {
-            answers[i] = v;
-            choices.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
-          });
-          choices.appendChild(b);
-        });
-        li.appendChild(txt); li.appendChild(choices);
-        diagEl.appendChild(li);
-      });
-    }
-    document.getElementById('diag-bilan').addEventListener('click', () => {
-      const res = document.getElementById('diag-result');
-      const counts = { '2': 0, '1': 0, '0': 0 };
-      const aRenforcer = [];
-      CRITERES.forEach((c, i) => {
-        if (answers[i] === undefined) return;
-        counts[answers[i]]++;
-        if (answers[i] !== '2') aRenforcer.push(c);
-      });
-      const repondu = counts['2'] + counts['1'] + counts['0'];
-      res.innerHTML = '';
-      const h = document.createElement('h3');
-      h.textContent = repondu === 0 ? 'Répondez d\'abord aux critères ci-dessus.'
-        : counts['2'] === 7 ? 'Bravo : les 7 critères sont remplis.'
-        : 'Bilan : ' + counts['2'] + ' critère(s) rempli(s) sur 7';
-      res.appendChild(h);
-      if (repondu) {
-        const score = document.createElement('div');
-        score.className = 'diag-score';
-        score.textContent = '✅ ' + counts['2'] + ' · 🟡 ' + counts['1'] + ' · ❌ ' + counts['0'] + (repondu < 7 ? ' · ' + (7 - repondu) + ' sans réponse' : '');
-        res.appendChild(score);
-      }
-      if (aRenforcer.length) {
-        const p = document.createElement('p');
-        p.innerHTML = '<strong>À renforcer dans notre syndicat :</strong>';
-        res.appendChild(p);
-        const ul = document.createElement('ul');
-        aRenforcer.forEach(c => {
-          const li = document.createElement('li');
-          li.innerHTML = '<strong></strong> ';
-          li.querySelector('strong').textContent = c.t + ' : ';
-          li.appendChild(document.createTextNode(c.conseil));
-          ul.appendChild(li);
-        });
-        res.appendChild(ul);
-      }
-      const note = document.createElement('p');
-      note.style.marginTop = '10px';
-      note.textContent = 'Ces critères sont cumulatifs : il faut tous les remplir pour être représentatif.';
-      res.appendChild(note);
-      res.hidden = false;
-      res.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    });
-    document.getElementById('diag-reset').addEventListener('click', () => {
-      Object.keys(answers).forEach(k => delete answers[k]);
-      document.getElementById('diag-result').hidden = true;
-      renderDiag();
-    });
-    renderDiag();
 
-    // Simulation de vote
-    let selectedVote = null;
-    
-    function selectVote(vote) {
-      selectedVote = vote;
-      
-      // Réinitialiser toutes les options
-      document.querySelectorAll('.vote-option').forEach(option => {
-        option.classList.remove('selected');
-      });
-      
-      // Sélectionner l'option choisie
-      document.querySelector(`.vote-option:nth-child(${vote === 'pour' ? 1 : vote === 'contre' ? 2 : 3})`).classList.add('selected');
-    }
-    
-    function simulateVote() {
-      if (!selectedVote) {
-        alert('Veuillez sélectionner une option de vote');
-        return;
-      }
-      
-      // Simuler les résultats du vote
-      const totalVotes = Math.floor(Math.random() * 30) + 20; // Entre 20 et 50 votes
-      let pourVotes, contreVotes, abstentionVotes;
-      
-      // Influencer légèrement les résultats en fonction du vote de l'utilisateur
-      if (selectedVote === 'pour') {
-        pourVotes = Math.floor(Math.random() * (totalVotes * 0.4)) + Math.floor(totalVotes * 0.4); // 40-80%
-        contreVotes = Math.floor(Math.random() * (totalVotes - pourVotes) * 0.7);
-        abstentionVotes = totalVotes - pourVotes - contreVotes;
-      } else if (selectedVote === 'contre') {
-        contreVotes = Math.floor(Math.random() * (totalVotes * 0.4)) + Math.floor(totalVotes * 0.3); // 30-70%
-        pourVotes = Math.floor(Math.random() * (totalVotes - contreVotes) * 0.7);
-        abstentionVotes = totalVotes - pourVotes - contreVotes;
-      } else {
-        abstentionVotes = Math.floor(Math.random() * (totalVotes * 0.3)) + Math.floor(totalVotes * 0.2); // 20-50%
-        pourVotes = Math.floor(Math.random() * (totalVotes - abstentionVotes) * 0.6);
-        contreVotes = totalVotes - pourVotes - abstentionVotes;
-      }
-      
-      // Calculer les pourcentages
-      const pourPercent = Math.round((pourVotes / totalVotes) * 100);
-      const contrePercent = Math.round((contreVotes / totalVotes) * 100);
-      const abstentionPercent = Math.round((abstentionVotes / totalVotes) * 100);
-      
-      // Mettre à jour l'affichage des résultats
-      document.getElementById('pour-percent').textContent = pourPercent;
-      document.getElementById('pour-count').textContent = pourVotes;
-      document.getElementById('pour-bar').style.width = `${pourPercent}%`;
-      
-      document.getElementById('contre-percent').textContent = contrePercent;
-      document.getElementById('contre-count').textContent = contreVotes;
-      document.getElementById('contre-bar').style.width = `${contrePercent}%`;
-      
-      document.getElementById('abstention-percent').textContent = abstentionPercent;
-      document.getElementById('abstention-count').textContent = abstentionVotes;
-      document.getElementById('abstention-bar').style.width = `${abstentionPercent}%`;
-      
-      // Conclusion du vote
-      let conclusion;
-      if (pourVotes > contreVotes) {
-        conclusion = 'Le rapport d\'activité est <strong>ADOPTÉ</strong> à la majorité.';
-      } else if (pourVotes < contreVotes) {
-        conclusion = 'Le rapport d\'activité est <strong>REJETÉ</strong> à la majorité.';
-      } else {
-        conclusion = 'Le vote est à égalité. Selon les statuts, un nouveau débat et un nouveau vote peuvent être nécessaires.';
-      }
-      
-      document.getElementById('vote-conclusion').innerHTML = conclusion;
-      
-      // Afficher les résultats
-      document.getElementById('vote-results').style.display = 'block';
-    }
-    
-    // Gestion de la table des matières
-    function toggleTOC() {
-      const tocElement = document.getElementById('table-of-contents');
-      const tocOverlay = document.getElementById('toc-overlay');
-      
-      if (tocElement) {
-        tocElement.classList.toggle("active");
-        
-        // Gérer l'overlay
-        if (tocOverlay) {
-          tocOverlay.classList.toggle("active", tocElement.classList.contains("active"));
-          
-          // Ajouter un gestionnaire de clic sur l'overlay pour fermer la TOC
-          if (tocElement.classList.contains("active")) {
-            tocOverlay.onclick = function() {
-              tocElement.classList.remove("active");
-              tocOverlay.classList.remove("active");
-            };
-          }
-        }
-        
-        // Ajouter un gestionnaire pour la touche Escape
-        if (tocElement.classList.contains("active")) {
-          document.addEventListener('keydown', function closeTOCOnEscape(e) {
-            if (e.key === "Escape") {
-              tocElement.classList.remove("active");
-              tocOverlay.classList.remove("active");
-              document.removeEventListener('keydown', closeTOCOnEscape);
-            }
-          });
-        }
-      }
-    }
-    
-  </script>
+  <script src="js/formation-kit.js"></script>
+  <script src="js/congres.js"></script>
   <script src="js/occitanie.js"></script>
 </body>
 </html>
