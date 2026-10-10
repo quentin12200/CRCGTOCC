@@ -120,7 +120,7 @@ document.addEventListener("DOMContentLoaded", function() {
     if (tocElement && 
         tocElement.classList.contains('active') && 
         !tocElement.contains(e.target) && 
-        !e.target.classList.contains('toc-button')) {
+        !e.target.closest('.toc-button, #toc-btn')) {
       tocElement.classList.remove('active');
       const tocOverlay = document.getElementById('toc-overlay');
       if (tocOverlay) {

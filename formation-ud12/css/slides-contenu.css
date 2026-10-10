@@ -1,0 +1,160 @@
+/* ============================================================
+   Contenus enrichis des slides (formation « Fonctionnement statutaire »)
+   Cartes, encadrés « À retenir », schéma CE / bureau / SG,
+   7 critères de représentativité, citation de l'article 21,
+   navigation basse et sommaire.
+   ============================================================ */
+
+.slide-block { margin: 1.4rem 0 0; }
+.slide-block > h3 {
+  display: flex; align-items: center; gap: .6rem;
+  font-size: 1.05rem; margin: 0 0 .75rem; color: var(--oc-texte);
+}
+.slide-block > h3::after { content: ''; flex: 1; height: 1px; background: var(--oc-border); }
+
+/* Cartes d'information */
+.info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: .8rem; }
+.info-grid--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.info-card {
+  background: var(--oc-fond); border: 1px solid var(--oc-border-card); border-top: 4px solid var(--oc-rouge);
+  border-radius: 10px; padding: .9rem 1rem; line-height: 1.5;
+}
+.info-card--bleu { border-top-color: var(--oc-accent); }
+.info-card--vert { border-top-color: #2E8B4A; }
+.info-card--jaune { border-top-color: #C9A200; }
+.info-card h4 { margin: 0 0 .4rem; font-size: 1rem; display: flex; align-items: center; gap: .45rem; color: var(--oc-texte); }
+.info-card .ico { font-size: 1.35rem; line-height: 1; }
+.info-card p { margin: 0; font-size: .93rem; }
+.info-card ul { margin: .2rem 0 0; padding-left: 1.1rem; font-size: .93rem; }
+.info-card li { margin-bottom: .25rem; }
+
+/* Encadrés */
+.kp {
+  background: var(--oc-fond-card); border: 1px solid var(--oc-border-card); border-left: 5px solid #C9A200;
+  border-radius: 0 10px 10px 0; padding: .9rem 1.1rem;
+}
+.kp h3 { margin: 0 0 .45rem; font-size: 1rem; }
+.kp ul { margin: 0; padding-left: 1.15rem; line-height: 1.6; }
+.ask {
+  background: #FFF6D6; color: #4A3800; border-radius: 10px; padding: .75rem 1rem; font-weight: 600;
+  display: flex; gap: .6rem; align-items: flex-start;
+}
+html[data-theme="dark"] .ask { background: #2E2810; color: #F3E3A3; }
+.supports { display: flex; flex-wrap: wrap; align-items: center; gap: .45rem; font-size: .9rem; }
+.supports strong { margin-right: .2rem; }
+.supports span {
+  background: var(--oc-accent-muted); color: var(--oc-accent-dark); border-radius: 999px; padding: .25rem .7rem; font-weight: 600;
+}
+html[data-theme="dark"] .supports span { color: #DCE8F7; }
+.module-link {
+  display: inline-flex; align-items: center; gap: .45rem; font-weight: 700; color: var(--oc-accent);
+  text-decoration: none; border-bottom: 2px solid currentColor;
+}
+
+/* Citation (article 21) */
+.quote {
+  position: relative; margin: 0; padding: 1.1rem 1.3rem 1.1rem 3.2rem; border-radius: 10px;
+  background: var(--oc-fond); border: 1px solid var(--oc-border-card); border-left: 5px solid var(--oc-rouge);
+  font-size: 1.05rem; line-height: 1.6; font-style: italic;
+}
+.quote::before { content: "«"; position: absolute; left: .9rem; top: .35rem; font-size: 2.6rem; color: var(--oc-rouge); font-style: normal; line-height: 1; }
+.quote cite { display: block; margin-top: .5rem; font-size: .88rem; font-style: normal; font-weight: 700; color: var(--oc-texte-muted); }
+
+/* Programme cliquable (slide d'accueil) */
+.programme { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: .45rem; }
+.programme button {
+  width: 100%; font: inherit; text-align: left; cursor: pointer; display: flex; align-items: center; gap: .7rem;
+  background: var(--oc-fond); color: var(--oc-texte); border: 1px solid var(--oc-border-card); border-radius: 8px; padding: .55rem .8rem;
+}
+.programme button:hover { border-color: var(--oc-accent); background: var(--oc-fond-hover); }
+.programme .h { font-weight: 700; color: var(--oc-rouge); min-width: 3.6rem; font-variant-numeric: tabular-nums; }
+
+/* Schéma : CE ⊃ bureau ⊃ SG, et la CFC à côté */
+.orga { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); gap: 1rem; align-items: center; }
+.orga-ce {
+  aspect-ratio: 1; max-width: 360px; width: 100%; margin: 0 auto; border-radius: 50%;
+  border: 4px solid var(--oc-rouge); background: rgba(226, 0, 26, .06);
+  display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding-top: 9%; text-align: center;
+}
+.orga-bureau {
+  width: 62%; aspect-ratio: 1; margin-top: 6%; border-radius: 50%; border: 4px solid var(--oc-accent);
+  background: rgba(26, 95, 173, .08); display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding-top: 12%;
+}
+.orga-sg {
+  width: 56%; aspect-ratio: 1; margin-top: 8%; border-radius: 50%; background: #FFD200; color: #3a2e00;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,.15);
+}
+.orga strong { font-size: .98rem; line-height: 1.2; }
+.orga small { font-size: .78rem; line-height: 1.25; opacity: .85; padding: 0 .4rem; }
+.orga-side { display: flex; flex-direction: column; gap: .7rem; }
+
+/* 7 critères de représentativité */
+.criteres { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: .7rem; counter-reset: crit; }
+.criteres li {
+  counter-increment: crit; position: relative; background: var(--oc-fond); border: 1px solid var(--oc-border-card);
+  border-radius: 10px; padding: .8rem .9rem .8rem 3.1rem; line-height: 1.45; font-size: .92rem;
+}
+.criteres li::before {
+  content: counter(crit); position: absolute; left: .7rem; top: .75rem; width: 1.9rem; height: 1.9rem; border-radius: 50%;
+  background: var(--oc-rouge); color: #fff; font-family: 'Anton', sans-serif; display: flex; align-items: center; justify-content: center; font-size: 1.05rem;
+}
+.criteres strong { display: block; color: var(--oc-texte); font-size: .98rem; margin-bottom: .15rem; }
+.criteres em { display: block; margin-top: .35rem; font-style: normal; font-size: .85rem; color: var(--oc-accent); font-weight: 600; }
+html[data-theme="dark"] .criteres em { color: #9CC2EE; }
+
+/* Chiffres clés */
+.chiffres { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: .7rem; }
+.chiffre { background: var(--oc-fond); border: 1px solid var(--oc-border-card); border-radius: 10px; padding: .8rem; text-align: center; }
+.chiffre b { display: block; font-family: 'Anton', sans-serif; font-weight: 400; font-size: 2rem; color: var(--oc-rouge); line-height: 1.1; }
+.chiffre span { font-size: .88rem; }
+.repart { display: flex; height: 2.4rem; border-radius: 8px; overflow: hidden; margin: .4rem 0; }
+.repart div { display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; font-size: .82rem; white-space: nowrap; overflow: hidden; }
+.repart-legend { display: flex; flex-wrap: wrap; gap: .3rem 1rem; font-size: .85rem; margin: 0; padding: 0; list-style: none; }
+.repart-legend i { display: inline-block; width: .8rem; height: .8rem; border-radius: 3px; margin-right: .35rem; vertical-align: -1px; }
+
+/* Deux branches */
+.branches { display: grid; grid-template-columns: 1fr 1fr; gap: .8rem; }
+.branche { border-radius: 10px; padding: .9rem 1rem; line-height: 1.5; }
+.branche--pro { background: var(--oc-accent-muted); border-left: 5px solid var(--oc-accent); }
+.branche--terr { background: #E6F4EA; border-left: 5px solid #2E8B4A; }
+html[data-theme="dark"] .branche--terr { background: #13301E; }
+.branche h4 { margin: 0 0 .3rem; }
+.branche .chemin { font-weight: 700; margin: 0 0 .35rem; }
+.branches-sommet { grid-column: 1 / -1; text-align: center; background: var(--oc-fond); border: 2px solid var(--oc-rouge); border-radius: 10px; padding: .7rem; font-weight: 700; }
+
+/* ── Navigation basse ─────────────────────────────────────── */
+.modules-navigation .modules-intro { margin: -.3rem 0 1rem; color: var(--oc-texte-muted); font-size: .92rem; }
+.module-nav-button { align-items: flex-start !important; }
+.module-nav-button .module-text { display: flex; flex-direction: column; gap: .15rem; }
+.module-nav-button .module-desc { font-size: .8rem; font-weight: 400; color: var(--oc-texte-muted); line-height: 1.35; }
+.controls .controls-counter {
+  align-self: center; font-weight: 700; font-size: .85rem; color: var(--oc-texte-muted);
+  padding: 0 .4rem; font-variant-numeric: tabular-nums; min-width: 3.5rem; text-align: center;
+}
+.controls .controls-sep { width: 1px; align-self: stretch; background: var(--oc-border); margin: 0 .2rem; }
+
+/* ── Sommaire groupé ──────────────────────────────────────── */
+.toc-content .toc-group {
+  border: 0 !important; margin: 1rem 0 .3rem !important; padding: 0 !important;
+  font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--oc-rouge);
+}
+.toc-content .toc-group:first-child { margin-top: 0 !important; }
+.toc-content .toc-time { display: inline-block; min-width: 3.3rem; font-weight: 700; color: var(--oc-texte-muted); font-size: .82rem; font-variant-numeric: tabular-nums; }
+
+@media (max-width: 760px) {
+  .info-grid--3, .orga, .branches { grid-template-columns: 1fr; }
+  .orga-ce { max-width: 300px; }
+  .controls .controls-sep { display: none; }
+}
+@media print {
+  .programme button { border: 1px solid #ccc; }
+  .slide-block, .criteres li, .info-card { break-inside: avoid; }
+}
+
+/* Barre d'actions de séquence : retour à la ligne sur mobile (bouton ⏱ Minuteur) */
+.slide-actions { flex-wrap: wrap; }
+
+/* Sommaire fermé : retiré du rendu (évite le défilement horizontal sur mobile) */
+.toc { max-width: 100vw; visibility: hidden; transition: transform .3s ease, visibility 0s linear .3s; }
+.toc.active { visibility: visible; transition: transform .3s ease; }
+html { overflow-x: hidden; }
