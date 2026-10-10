@@ -42,7 +42,7 @@
       <ul>
         <li><a href="#instances">Le congrès et l'assemblée générale</a></li>
         <li><a href="#representativite">Les 7 critères de représentativité</a></li>
-        <li><a href="#vote">Voter en AG</a></li>
+        <li><a href="#ag-salaries">AG de syndiqué·es, AG de salarié·es</a></li>
         <li><a href="index.html#slide-5">Retour à la slide « AG et congrès »</a></li>
         <li><a href="statuts.html">Module : Fonctionnement statutaire</a></li>
         <li><a href="roles.html">Module : Rôles dans le syndicat</a></li>
@@ -62,7 +62,7 @@
         <div class="rl-parcours-list">
           <button type="button" data-step="1" aria-current="step"><span class="rl-parcours-n">1</span><span class="rl-parcours-t">Congrès et AG<small>Qui décide, comment</small></span></button>
           <button type="button" data-step="2"><span class="rl-parcours-n">2</span><span class="rl-parcours-t">Les 7 critères<small>Autodiagnostic</small></span></button>
-          <button type="button" data-step="3"><span class="rl-parcours-n">3</span><span class="rl-parcours-t">Voter en AG<small>Le groupe vote</small></span></button>
+          <button type="button" data-step="3"><span class="rl-parcours-n">3</span><span class="rl-parcours-t">Deux AG<small>Syndiqué·es, salarié·es</small></span></button>
           <button type="button" data-step="4"><span class="rl-parcours-n">4</span><span class="rl-parcours-t">Le quiz<small>Vérifier</small></span></button>
         </div>
       </nav>
@@ -110,35 +110,20 @@
       </section>
 
       <!-- Étape 3 -->
-      <section id="vote" class="rl-etape" data-step="3" aria-labelledby="vote-title" hidden>
+      <section id="ag-salaries" class="rl-etape" data-step="3" aria-labelledby="ag-salaries-title" hidden>
         <div class="rl-etape-head">
           <p class="rl-etape-num">Étape 3 sur 4</p>
-          <h3 id="vote-title">Voter en AG : à vous de jouer</h3>
-          <p class="rl-etape-consigne"><strong>Comment animer :</strong> le groupe joue une AG. Désignez un·e président·e de séance et un·e secrétaire qui tient le procès-verbal. Présentez la motion, débattez quelques minutes, puis votez à main levée et saisissez le résultat.</p>
+          <h3 id="ag-salaries-title">AG de syndiqué·es, AG de salarié·es</h3>
+          <p class="rl-etape-consigne"><strong>Comment animer :</strong> demandez « Quelle différence entre une AG de syndiqué·es et une AG de salarié·es ? Laquelle se tient en premier, et pourquoi ? ». Laissez débattre, puis révélez les cartes. Terminez par l'enchaînement ci-dessous.</p>
         </div>
-
-        <div class="vote-board">
-          <label class="vote-field vote-field--motion">Motion soumise au vote
-            <input type="text" id="vote-motion" value="Adoption du rapport d'activité">
-          </label>
-          <div class="vote-field">Règle de majorité
-            <div class="vote-rule" role="group" aria-label="Règle de majorité">
-              <button type="button" data-rule="simple" aria-pressed="true">Majorité simple</button>
-              <button type="button" data-rule="deux-tiers" aria-pressed="false">Deux tiers <small>modification des statuts</small></button>
-            </div>
-          </div>
-          <div class="vote-counts">
-            <label class="vote-count vote-count--pour">Pour<input type="number" id="vote-pour" min="0" inputmode="numeric" value="0"></label>
-            <label class="vote-count vote-count--contre">Contre<input type="number" id="vote-contre" min="0" inputmode="numeric" value="0"></label>
-            <label class="vote-count vote-count--abst">Abstention<input type="number" id="vote-abst" min="0" inputmode="numeric" value="0"></label>
-          </div>
-          <div class="diag-actions">
-            <button type="button" id="vote-result-btn">🗳️ Proclamer le résultat</button>
-            <button type="button" id="vote-reset">🔄 Nouveau vote</button>
-          </div>
-          <div class="vote-result" id="vote-result" aria-live="polite" hidden></div>
-          <p class="vote-note">Ici, la motion est adoptée si les « pour » dépassent les « contre » (suffrages exprimés), ou atteignent les deux tiers pour une modification des statuts. Vérifiez les règles prévues par <strong>vos</strong> statuts.</p>
-        </div>
+        <div class="roles-grid" id="ag-grid"></div>
+        <h4 class="ag-ordre-titre">Toujours dans cet ordre</h4>
+        <ol class="circuit">
+          <li><strong>AG de syndiqué·es</strong><span>le syndicat construit ses propositions avec ses syndiqué·es</span></li>
+          <li><strong>AG de salarié·es</strong><span>le syndicat soumet ses propositions ; les salarié·es débattent et décident</span></li>
+          <li><strong>L'action</strong><span>revendications portées, mobilisation, négociation</span></li>
+          <li><strong>Le bilan avec les syndiqué·es</strong><span>on évalue, on décide des suites, on propose l'adhésion</span></li>
+        </ol>
       </section>
 
       <div class="rl-etape-actions roles-actions">
@@ -174,6 +159,7 @@
       <div class="proj-tabs" role="tablist" aria-label="Contenu projeté">
         <button type="button" class="proj-tab active" role="tab" aria-selected="true" data-deck="instances">Congrès et AG</button>
         <button type="button" class="proj-tab" role="tab" aria-selected="false" data-deck="criteres">7 critères</button>
+        <button type="button" class="proj-tab" role="tab" aria-selected="false" data-deck="ag">Deux AG</button>
         <button type="button" class="proj-tab" role="tab" aria-selected="false" data-deck="quiz">Quiz en groupe</button>
       </div>
       <span id="proj-counter" class="proj-counter" aria-live="polite"></span>
