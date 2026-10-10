@@ -1,7 +1,7 @@
 /**
  * Formation CGT - Module « AG et congrès »
  * Parcours : 1. congrès et AG (cartes) · 2. autodiagnostic des 7 critères de
- * représentativité · 3. vote du groupe en AG · 4. quiz.
+ * représentativité · 3. AG de syndiqué·es et AG de salarié·es · 4. quiz.
  */
 
 const MODELE = "Modèle de statuts de syndicat CGT (2024)";
@@ -74,6 +74,62 @@ const INSTANCES = [
   }
 ];
 
+// AG de syndiqué·es et AG de salarié·es (« AG ouvrière ») : la seconde vient toujours après la première
+const DEUX_AG = [
+  {
+    id: "ag-syndiques",
+    icon: "🧑‍🤝‍🧑",
+    title: "L'AG de syndiqué·es",
+    question: "Qui participe à une AG de syndiqué·es, et que décide-t-elle ?",
+    points: [
+      "Elle réunit les syndiqué·es, et seulement elles et eux",
+      "C'est la démocratie du syndicat : les syndiqué·es sont propriétaires de leur organisation",
+      "Elles et ils analysent la situation et construisent ensemble les propositions de revendications et d'action",
+      "Elles et ils décident de la vie du syndicat : orientation, candidatures, mandats"
+    ],
+    source: MODELE + ", art. 7 ; Charte de la vie syndicale"
+  },
+  {
+    id: "ag-salaries",
+    icon: "🏭",
+    title: "L'AG de salarié·es, dite « AG ouvrière »",
+    question: "Qui participe à une AG de salarié·es, et que décide-t-elle ?",
+    points: [
+      "Elle réunit tous les salarié·es concerné·es, syndiqué·es ou non",
+      "Le syndicat y soumet les propositions construites avec ses syndiqué·es",
+      "Les salarié·es débattent et décident ensemble de leurs revendications et de leur action : grève, pétition, délégation…",
+      "C'est aussi un moment pour proposer l'adhésion à la CGT"
+    ],
+    source: "Charte de la vie syndicale"
+  },
+  {
+    id: "ag-ordre",
+    icon: "🔁",
+    title: "Pourquoi l'AG de syndiqué·es d'abord ?",
+    question: "Pourquoi l'AG de syndiqué·es se tient-elle toujours avant l'AG de salarié·es ?",
+    points: [
+      "Le syndicat arrive devant les salarié·es avec des propositions décidées collectivement, pas celles de quelques militant·es",
+      "On respecte la souveraineté des syndiqué·es : rien ne se décide au nom du syndicat sans elles et eux",
+      "Les syndiqué·es portent ensuite ces propositions sur le terrain, auprès de leurs collègues",
+      "Après l'action, on revient vers les syndiqué·es pour faire le bilan et décider des suites"
+    ],
+    source: "Charte de la vie syndicale"
+  },
+  {
+    id: "ag-qui-decide",
+    icon: "⚖️",
+    title: "Qui décide quoi ?",
+    question: "Dans chacune des deux AG, qui décide, et de quoi ?",
+    points: [
+      "Les syndiqué·es décident de la vie et des propositions de leur syndicat",
+      "Les salarié·es décident de leurs revendications et de leurs actions",
+      "Le syndicat éclaire, propose et organise : il ne décide pas à la place des salarié·es",
+      "Ne pas confondre les deux : chacune a son rôle, et elles se complètent"
+    ],
+    source: "Charte de la vie syndicale"
+  }
+];
+
 // Autodiagnostic des 7 critères de représentativité (Code du travail, art. L2121-1)
 const CRITERES = [
   { t: "Le respect des valeurs républicaines", d: "Liberté d'opinion, refus de toute discrimination et de tout racisme.", q: "Nos statuts et nos pratiques les affirment-ils clairement ?", conseil: "Reprendre le préambule des statuts confédéraux dans nos statuts et le faire vivre dans nos actions." },
@@ -123,6 +179,25 @@ const QUIZ_POOL = [
     question: "En congrès, le vote peut avoir lieu à mains levées ou à bulletins secrets.",
     answer: "Vrai",
     explanation: "Le modèle de statuts prévoit les deux modes de vote (art. 7)." },
+  { role: "ag-syndiques", type: "qcm",
+    question: "Qui participe à une AG de syndiqué·es ?",
+    options: ["Les syndiqué·es seulement", "Tous les salarié·es de l'entreprise", "Les élu·es du CSE seulement", "L'employeur et les élu·es"],
+    answer: "Les syndiqué·es seulement",
+    explanation: "L'AG de syndiqué·es est la démocratie du syndicat : elle réunit ses syndiqué·es." },
+  { role: "ag-salaries", type: "qcm",
+    question: "Qui participe à une AG de salarié·es (« AG ouvrière ») ?",
+    options: ["Tous les salarié·es concerné·es, syndiqué·es ou non", "Les syndiqué·es seulement", "Le bureau du syndicat", "Les cadres seulement"],
+    answer: "Tous les salarié·es concerné·es, syndiqué·es ou non",
+    explanation: "L'AG de salarié·es est ouverte à tous les salarié·es concerné·es : ce sont elles et eux qui décident de leur action." },
+  { role: "ag-ordre", type: "qcm",
+    question: "Dans quel ordre se tiennent les deux assemblées générales ?",
+    options: ["D'abord l'AG de syndiqué·es, puis l'AG de salarié·es", "D'abord l'AG de salarié·es, puis l'AG de syndiqué·es", "Les deux en même temps", "L'ordre n'a pas d'importance"],
+    answer: "D'abord l'AG de syndiqué·es, puis l'AG de salarié·es",
+    explanation: "Le syndicat construit d'abord ses propositions avec ses syndiqué·es, puis les soumet aux salarié·es." },
+  { role: "ag-qui-decide", type: "vf",
+    question: "En AG de salarié·es, c'est le syndicat qui décide de l'action à la place des salarié·es.",
+    answer: "Faux",
+    explanation: "Le syndicat propose et organise ; ce sont les salarié·es qui décident de leurs revendications et de leur action." },
   { role: "representativite", type: "qcm",
     question: "Combien de critères faut-il remplir pour qu'un syndicat soit représentatif ?",
     options: ["Les 7, ils sont cumulatifs", "Au moins 4 sur 7", "Seulement l'audience", "Un seul suffit"],
@@ -159,6 +234,11 @@ document.addEventListener('DOMContentLoaded', function() {
   const grid = document.getElementById('instances-grid');
   INSTANCES.forEach(item => grid.appendChild(FK.buildCard({
     id: item.id, icon: item.icon, label: 'Congrès et assemblée générale',
+    title: item.title, question: item.question, body: listBody(item)
+  })));
+  const agGrid = document.getElementById('ag-grid');
+  DEUX_AG.forEach(item => agGrid.appendChild(FK.buildCard({
+    id: item.id, icon: item.icon, label: 'Deux assemblées générales',
     title: item.title, question: item.question, body: listBody(item)
   })));
 
@@ -232,52 +312,6 @@ document.addEventListener('DOMContentLoaded', function() {
   });
   renderDiag();
 
-  /* ---------- Étape 3 : le groupe vote en AG ---------- */
-
-  let rule = 'simple';
-  const ruleBtns = document.querySelectorAll('.vote-rule button');
-  ruleBtns.forEach(b => b.addEventListener('click', () => {
-    rule = b.dataset.rule;
-    ruleBtns.forEach(x => x.setAttribute('aria-pressed', String(x === b)));
-  }));
-
-  const num = id => Math.max(0, parseInt(document.getElementById(id).value, 10) || 0);
-  const voteResult = document.getElementById('vote-result');
-
-  document.getElementById('vote-result-btn').addEventListener('click', () => {
-    const pour = num('vote-pour'), contre = num('vote-contre'), abst = num('vote-abst');
-    const exprimes = pour + contre;
-    const total = exprimes + abst;
-    const motion = document.getElementById('vote-motion').value.trim() || 'La motion';
-    voteResult.innerHTML = '';
-    if (!total) {
-      voteResult.appendChild(el('h3', { text: 'Saisissez d\'abord le décompte des mains levées.' }));
-      voteResult.hidden = false;
-      return;
-    }
-    const adopte = rule === 'simple' ? pour > contre : exprimes > 0 && pour * 3 >= exprimes * 2;
-    const pct = n => total ? Math.round(n * 100 / total) : 0;
-    const bar = (cls, label, n) => el('div', { className: 'vote-bar ' + cls }, [
-      el('span', { text: label + ' : ' + n + ' (' + pct(n) + ' %)' }),
-      el('div', { className: 'vote-bar-track' }, [el('div', { className: 'vote-bar-fill', style: 'width:' + pct(n) + '%' })])
-    ]);
-    voteResult.className = 'vote-result ' + (adopte ? 'vote-result--ok' : 'vote-result--ko');
-    voteResult.append(
-      el('h3', { text: (adopte ? '✅ Adoptée : ' : '❌ Rejetée : ') + motion }),
-      bar('vote-bar--pour', 'Pour', pour),
-      bar('vote-bar--contre', 'Contre', contre),
-      bar('vote-bar--abst', 'Abstention', abst),
-      el('p', { text: 'Suffrages exprimés : ' + exprimes + (rule === 'deux-tiers' ? ' · deux tiers requis : ' + Math.ceil(exprimes * 2 / 3) + ' voix pour' : '') + '. À reporter au procès-verbal.' })
-    );
-    voteResult.hidden = false;
-    voteResult.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-  });
-
-  document.getElementById('vote-reset').addEventListener('click', () => {
-    ['vote-pour', 'vote-contre', 'vote-abst'].forEach(id => { document.getElementById(id).value = 0; });
-    voteResult.hidden = true;
-  });
-
   /* ---------- Parcours, quiz et projection ---------- */
 
   const quiz = FK.createQuiz({
@@ -298,12 +332,19 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   FK.initProjection({
-    initialDeck: () => modes.isQuiz() ? 'quiz' : (parcours.current() === 2 ? 'criteres' : 'instances'),
+    initialDeck: () => modes.isQuiz() ? 'quiz' : ({ 2: 'criteres', 3: 'ag' }[parcours.current()] || 'instances'),
     decks: {
       instances: {
         build: () => INSTANCES,
         render: (stage, item, revealed) => FK.renderCardSlide(stage, {
           icon: item.icon, cat: 'Congrès et assemblée générale', title: item.title,
+          question: item.question, answer: FK.listAnswer(item.points, item.source)
+        }, revealed)
+      },
+      ag: {
+        build: () => DEUX_AG,
+        render: (stage, item, revealed) => FK.renderCardSlide(stage, {
+          icon: item.icon, cat: 'Deux assemblées générales', title: item.title,
           question: item.question, answer: FK.listAnswer(item.points, item.source)
         }, revealed)
       },

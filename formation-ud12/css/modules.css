@@ -36,47 +36,18 @@ html[data-theme="dark"] .diag li { border-color: rgba(255,255,255,.12); }
 .diag-choices button[aria-pressed="true"][data-v="2"] { background: #E6F4EA; border-color: #2E8B4A; color: #1E6B34; }
 .diag-choices button[aria-pressed="true"][data-v="1"] { background: #FFF6D6; border-color: #C9A200; color: #6B5300; }
 .diag-choices button[aria-pressed="true"][data-v="0"] { background: #FDECEE; border-color: #E2001A; color: #A1000B; }
-.diag-result, .vote-result, .calc-result {
+.diag-result, .calc-result {
   margin-top: 16px; padding: 16px 18px; border-radius: 10px; background: var(--bg-light); border-top: 4px solid var(--cgt-red);
 }
-.diag-result h3, .vote-result h3, .calc-result h3 { margin: 0 0 8px; }
+.diag-result h3, .calc-result h3 { margin: 0 0 8px; }
 .diag-result ul { margin: 6px 0 0; padding-left: 20px; line-height: 1.6; }
 .diag-score { display: flex; gap: 16px; flex-wrap: wrap; font-weight: 700; margin: 6px 0 10px; }
 .diag-note { margin-top: 10px !important; }
 
-/* ── Vote du groupe en AG ──────────────────────────────────── */
-.vote-board { display: flex; flex-direction: column; gap: 16px; padding: 20px; border-radius: 10px; background: var(--bg-light); }
-.vote-field { display: flex; flex-direction: column; gap: 6px; font-weight: 700; font-size: .9rem; }
-.vote-field input[type="text"] {
-  font: inherit; font-weight: 400; font-size: 1rem; padding: 10px 12px; border-radius: 8px;
-  border: 1px solid rgba(0,0,0,.2); background: var(--card-bg); color: var(--text-dark);
-}
-.vote-rule { display: flex; gap: 8px; flex-wrap: wrap; }
-.vote-rule button {
-  font: inherit; font-weight: 600; font-size: .9rem; padding: 8px 14px; border-radius: 999px; cursor: pointer;
-  background: var(--card-bg); color: var(--text-dark); border: 2px solid rgba(0,0,0,.15);
-}
-.vote-rule button small { font-weight: 400; opacity: .75; }
-.vote-rule button[aria-pressed="true"] { border-color: var(--oc-accent, #1A5FAD); background: var(--oc-accent, #1A5FAD); color: #fff; }
-.vote-counts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
-.vote-count {
-  display: flex; flex-direction: column; gap: 6px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; font-size: .85rem;
-  background: var(--card-bg); border-radius: 10px; padding: 12px; border-top: 5px solid #2E8B4A;
-}
-.vote-count--contre { border-top-color: var(--cgt-red); }
-.vote-count--abst { border-top-color: #7D8FA8; }
-.vote-count input {
-  font: 400 2rem/1.1 'Anton', sans-serif; width: 100%; padding: 6px 8px; border-radius: 6px; text-align: center;
-  border: 1px solid rgba(0,0,0,.2); background: var(--bg-light); color: var(--text-dark);
-}
-.vote-result { background: var(--card-bg); margin-top: 0; }
-.vote-result--ok { border-top-color: #2E8B4A; }
-.vote-bar { margin: 8px 0; font-size: .9rem; }
-.vote-bar-track { height: 12px; border-radius: 6px; background: var(--bg-light); overflow: hidden; margin-top: 4px; }
-.vote-bar-fill { height: 100%; background: #2E8B4A; transition: width .5s ease; }
-.vote-bar--contre .vote-bar-fill { background: var(--cgt-red); }
-.vote-bar--abst .vote-bar-fill { background: #7D8FA8; }
-.vote-note { margin: 0; font-size: .85rem; opacity: .85; }
+/* ── Deux AG ───────────────────────────────────────────────── */
+.ag-ordre-titre { margin: 26px 0 12px; font-size: 1.05rem; }
+#ag-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+@media (max-width: 760px) { #ag-grid { grid-template-columns: 1fr; } }
 
 /* ── Calculateur de cotisation ─────────────────────────────── */
 .calc { display: flex; flex-direction: column; gap: 14px; padding: 20px; border-radius: 10px; background: var(--bg-light); }
@@ -123,12 +94,11 @@ html[data-theme="dark"] .circuit li { border-color: rgba(255,255,255,.12); }
 
 @media (max-width: 760px) {
   .diag li { grid-template-columns: 1fr; }
-  .vote-counts { grid-template-columns: 1fr; }
   .circuit { grid-template-columns: 1fr 1fr; }
 }
 @media (max-width: 420px) { .circuit { grid-template-columns: 1fr; } }
 @media print {
-  .vote-board, .calc, .diag-actions { display: none !important; }
+  .calc, .diag-actions { display: none !important; }
   .repartition[data-shown="false"] .repart-legend { visibility: visible; }
 }
 .repartition[data-shown="true"] .diag-actions { display: none; }
