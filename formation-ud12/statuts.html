@@ -55,15 +55,21 @@
   <main class="roles-container">
     <div class="roles-intro">
       <h2>Pourquoi un fonctionnement statutaire ?</h2>
-      <p>Les statuts sont la règle commune que les syndiqué·es se donnent. Comprenez à quoi ils servent, comment ils naissent et vivent, et ce que dit chaque article du modèle de statuts de la CGT.</p>
+      <p>Les statuts sont la règle commune que les syndiqué·es se donnent. On avance <strong>étape par étape</strong> : commencez par l'étape 1. Idéalement, chaque stagiaire a apporté <strong>les statuts de son syndicat</strong>.</p>
 
-      <ol class="roles-steps" aria-label="Déroulé conseillé">
-        <li><strong>1. Devinez</strong> — lisez la question de chaque carte et débattez en groupe avant de révéler.</li>
-        <li><strong>2. Révélez</strong> — comparez avec la réponse et repérez les points de vigilance.</li>
-        <li><strong>3. Vérifiez</strong> — classez les instances, puis passez le quiz (10 questions tirées au hasard).</li>
-      </ol>
+      <!-- Le parcours : une étape affichée à la fois -->
+      <nav class="rl-parcours" aria-label="Parcours de la séquence">
+        <div class="rl-parcours-list">
+          <button type="button" data-step="1" aria-current="step"><span class="rl-parcours-n">1</span><span class="rl-parcours-t">Pourquoi ?<small>À quoi servent les statuts</small></span></button>
+          <button type="button" data-step="2"><span class="rl-parcours-n">2</span><span class="rl-parcours-t">Leur vie<small>De la rédaction à la révision</small></span></button>
+          <button type="button" data-step="3"><span class="rl-parcours-n">3</span><span class="rl-parcours-t">Les articles<small>Comparer avec nos statuts</small></span></button>
+          <button type="button" data-step="4"><span class="rl-parcours-n">4</span><span class="rl-parcours-t">Activité<small>Classer les instances</small></span></button>
+          <button type="button" data-step="5"><span class="rl-parcours-n">5</span><span class="rl-parcours-t">Le quiz<small>Vérifier</small></span></button>
+        </div>
+      </nav>
 
-      <div class="mode-selector" role="tablist" aria-label="Mode d'utilisation">
+      <!-- Boutons de mode pilotés par le parcours (étape 5 = quiz) -->
+      <div class="mode-selector" role="tablist" aria-label="Mode d'utilisation" hidden>
         <button id="exploration-mode" class="mode-btn active" type="button" role="tab" aria-selected="true" aria-controls="exploration-panel">Mode exploration</button>
         <button id="quiz-mode" class="mode-btn" type="button" role="tab" aria-selected="false" aria-controls="quiz-panel">Mode quiz</button>
       </div>
@@ -75,35 +81,47 @@
       </div>
     </div>
 
-    <!-- Mode exploration -->
+    <!-- Mode exploration : les étapes 1 à 4 -->
     <section id="exploration-panel" role="tabpanel" aria-labelledby="exploration-mode">
 
-      <section id="pourquoi" class="module-section" aria-labelledby="pourquoi-title">
-        <h3 id="pourquoi-title">Pourquoi des statuts ?</h3>
-        <p class="section-intro">Quatre raisons qui font des statuts bien plus qu'une formalité.</p>
+      <!-- Étape 1 -->
+      <section id="pourquoi" class="rl-etape" data-step="1" aria-labelledby="pourquoi-title">
+        <div class="rl-etape-head">
+          <p class="rl-etape-num">Étape 1 sur 5</p>
+          <h3 id="pourquoi-title">Pourquoi des statuts ?</h3>
+          <p class="rl-etape-consigne"><strong>Comment animer :</strong> en binômes, demandez « Un syndicat bien organisé, c'est quoi ? Peut-on décider sans cadre commun ? ». Notez les idées au tableau, puis révélez les quatre cartes pour compléter.</p>
+        </div>
         <div class="roles-grid" id="pourquoi-grid"></div>
       </section>
 
-      <section id="etapes" class="module-section" aria-labelledby="etapes-title">
-        <h3 id="etapes-title">La vie des statuts, étape par étape</h3>
-        <p class="section-intro">De la rédaction à la révision : ce qu'il faut faire, dans l'ordre.</p>
+      <!-- Étape 2 -->
+      <section id="etapes" class="rl-etape" data-step="2" aria-labelledby="etapes-title" hidden>
+        <div class="rl-etape-head">
+          <p class="rl-etape-num">Étape 2 sur 5</p>
+          <h3 id="etapes-title">La vie des statuts : de la rédaction à la révision</h3>
+          <p class="rl-etape-consigne"><strong>Comment animer :</strong> avant de révéler, demandez à chacun·e « Où en est mon syndicat ? Nos statuts sont-ils déposés en mairie ? À jour ? Quand a eu lieu notre dernier congrès ? ». Puis suivez les étapes dans l'ordre.</p>
+        </div>
         <ol class="etapes" id="etapes-list"></ol>
       </section>
 
-      <section id="articles" class="module-section" aria-labelledby="articles-title">
-        <h3 id="articles-title">Le modèle de statuts, article par article</h3>
+      <!-- Étape 3 -->
+      <section id="articles" class="rl-etape" data-step="3" aria-labelledby="articles-title" hidden>
+        <div class="rl-etape-head">
+          <p class="rl-etape-num">Étape 3 sur 5</p>
+          <h3 id="articles-title">Le modèle de statuts, article par article</h3>
+          <p class="rl-etape-consigne"><strong>Comment animer :</strong> par petits groupes, les stagiaires comparent les statuts de leur syndicat avec le modèle. Qu'est-ce qui manque ? Qu'est-ce qui n'est plus appliqué ? Chaque groupe présente un article et son point de vigilance.</p>
+        </div>
         <p class="section-intro">Le modèle confédéral est une « épure » : il donne le contenu minimum, que chaque syndicat précise sans contredire les statuts et les chartes de la CGT. <em>Source : modèle de statuts de syndicat CGT, Espace Vie syndicale, 2024.</em></p>
         <div class="roles-grid" id="articles-grid"></div>
       </section>
 
-      <div class="roles-actions">
-        <button id="reveal-all-btn" type="button">Révéler toutes les cartes</button>
-        <button id="hide-all-btn" type="button">Masquer toutes les cartes</button>
-      </div>
-
-      <section id="classement" class="module-section classement" aria-labelledby="classement-title">
-        <h3 id="classement-title">Activité : classer les instances</h3>
-        <p class="section-intro">Touchez une étiquette, puis « Ranger ici » dans la bonne case. Pour la déplacer, touchez-la à nouveau.</p>
+      <!-- Étape 4 -->
+      <section id="classement" class="rl-etape classement" data-step="4" aria-labelledby="classement-title" hidden>
+        <div class="rl-etape-head">
+          <p class="rl-etape-num">Étape 4 sur 5</p>
+          <h3 id="classement-title">Activité : classer les instances</h3>
+          <p class="rl-etape-consigne"><strong>Comment animer :</strong> le groupe range ensemble chaque étiquette, en justifiant son choix. Touchez une étiquette, puis « Ranger ici » dans la bonne case ; touchez-la à nouveau pour la déplacer. Vérifiez à la fin.</p>
+        </div>
         <div class="classement-pool-box">
           <div class="classement-pool" id="classement-pool" aria-label="Étiquettes à ranger"></div>
           <button type="button" class="zone-target" id="classement-pool-target">Remettre ici</button>
@@ -115,6 +133,12 @@
           <button id="classement-reset" type="button">Recommencer</button>
         </div>
       </section>
+
+      <div class="rl-etape-actions roles-actions">
+        <button id="reveal-all-btn" type="button">Révéler les cartes de l'étape</button>
+        <button id="hide-all-btn" type="button">Tout masquer</button>
+        <button id="etape-next" class="rl-etape-next" type="button">Étape suivante →</button>
+      </div>
     </section>
 
     <!-- Mode quiz -->

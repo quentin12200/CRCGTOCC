@@ -1710,9 +1710,10 @@ html[data-theme="dark"] .rl-etape-consigne { background: #2E2810; color: #F3E3A3
 }
 .rl-etape-actions button { cursor: pointer; }
 .rl-etape-actions .rl-etape-next {
-  margin-left: auto; font-weight: 700; font-size: 16px; padding: 12px 22px; border-radius: 10px;
+  margin-left: auto; font-weight: 700 !important; font-size: .9rem !important; padding: .8rem 1.4rem !important; border-radius: 8px !important;
   background: var(--cgt-red) !important; color: #fff !important; border: 0 !important;
 }
+.rl-etape-actions .rl-etape-next:hover { background: #B80015 !important; }
 
 @media (max-width: 760px) {
   .rl-parcours-list { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 4px; }
@@ -1725,5 +1726,5 @@ html[data-theme="dark"] .rl-etape-consigne { background: #2E2810; color: #F3E3A3
 
 @media print {
   .rl-parcours, .rl-etape-consigne, .rl-etape-actions, .rl-etape-num { display: none !important; }
-  .roles-container .rl-etape[hidden], .roles-container #exploration-panel[hidden] { display: block !important; }
+  .roles-container .rl-etape[hidden]:not(.classement), .roles-container #exploration-panel[hidden] { display: block !important; }
 }

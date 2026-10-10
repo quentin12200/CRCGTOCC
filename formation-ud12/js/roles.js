@@ -703,50 +703,11 @@ document.addEventListener('DOMContentLoaded', function() {
     ]));
   });
 
-  const etapes = Array.from(document.querySelectorAll('.rl-etape'));
-  const stepBtns = Array.from(document.querySelectorAll('.rl-parcours button[data-step]'));
-  const nextBtn = document.getElementById('etape-next');
-  const LAST = stepBtns.length; // étape 5 = quiz
-  let step = 1;
-
-  const currentCards = () => {
-    const e = etapes.find(x => !x.hidden);
-    return e ? e.querySelectorAll('.role-card') : [];
-  };
-
-  document.getElementById('reveal-all-btn').addEventListener('click', () => {
-    currentCards().forEach(card => FK.setExpanded(card, true));
-  });
-  document.getElementById('hide-all-btn').addEventListener('click', () => {
-    currentCards().forEach(card => FK.setExpanded(card, false));
-  });
-
-  // Parcours : une seule étape affichée à la fois
-  function goStep(n, scroll) {
-    step = n;
-    stepBtns.forEach(b => {
-      const k = +b.dataset.step;
-      if (k === n) b.setAttribute('aria-current', 'step'); else b.removeAttribute('aria-current');
-      b.classList.toggle('done', k < n);
-    });
-    if (n === LAST) {
-      document.getElementById('quiz-mode').click();
-    } else {
-      modes.setMode('exploration');
-      etapes.forEach(e => { e.hidden = +e.dataset.step !== n; });
-      nextBtn.textContent = n === LAST - 1 ? 'Passer au quiz →' : 'Étape suivante →';
-    }
-    if (scroll !== false) document.querySelector('.rl-parcours').scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }
-  stepBtns.forEach(b => b.addEventListener('click', () => goStep(+b.dataset.step)));
-  nextBtn.addEventListener('click', () => goStep(Math.min(step + 1, LAST)));
-
   // Ouvre et met en évidence une fiche (depuis le schéma ou le quiz)
   function focusRole(id) {
     const card = document.getElementById('role-' + id);
     if (!card) return;
-    const etape = card.closest('.rl-etape');
-    if (etape && (etape.hidden || modes.isQuiz())) goStep(+etape.dataset.step, false);
+    parcours.show(card);
     FK.highlightCard(card);
   }
 
@@ -763,16 +724,17 @@ document.addEventListener('DOMContentLoaded', function() {
     results: { perfect: 'Sans faute ! Vous maîtrisez qui fait quoi dans le syndicat.' }
   });
   const modes = FK.initModes({ onQuiz: quiz.start });
+  const parcours = FK.initParcours({ modes });
 
   /* ---------- Mode projection ---------- */
 
   FK.initProjection({
-    initialDeck: () => modes.isQuiz() ? 'quiz' : (step === 4 ? 'charte' : 'roles'),
+    initialDeck: () => modes.isQuiz() ? 'quiz' : (parcours.current() === 4 ? 'charte' : 'roles'),
     decks: {
       roles: {
         // Les rôles de l'étape en cours (tous les rôles depuis les chartes ou le quiz)
         build: () => {
-          const ids = Array.from(currentCards()).map(c => c.id.replace('role-', ''));
+          const ids = Array.from(parcours.cards()).map(c => c.id.replace('role-', ''));
           const list = ROLES.filter(r => ids.includes(r.id));
           return list.length ? list : ROLES;
         },

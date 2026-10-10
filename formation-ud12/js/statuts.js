@@ -406,7 +406,6 @@ const QUIZ_LENGTH = 10;
 const { el } = FK;
 
 document.addEventListener('DOMContentLoaded', function() {
-  const explorationPanel = document.getElementById('exploration-panel');
 
   /* ---------- Cartes ---------- */
 
@@ -427,7 +426,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const etapesList = document.getElementById('etapes-list');
   ETAPES.forEach((item, i) => {
     const card = FK.buildCard({
-      id: item.id, icon: item.icon, label: `Étape ${i + 1} sur ${ETAPES.length}`,
+      id: item.id, icon: item.icon, label: `La vie des statuts · ${i + 1} / ${ETAPES.length}`,
       title: item.title, question: item.question, body: listBody(item)
     });
     etapesList.appendChild(el('li', { className: 'etape' }, [card]));
@@ -444,18 +443,10 @@ document.addEventListener('DOMContentLoaded', function() {
     ]))
   })));
 
-  const allCards = explorationPanel.querySelectorAll('.role-card');
-  document.getElementById('reveal-all-btn').addEventListener('click', () => {
-    allCards.forEach(card => FK.setExpanded(card, true));
-  });
-  document.getElementById('hide-all-btn').addEventListener('click', () => {
-    allCards.forEach(card => FK.setExpanded(card, false));
-  });
-
   function focusCard(id) {
     const card = document.getElementById('role-' + id);
     if (!card) return;
-    modes.setMode('exploration');
+    parcours.show(card);
     FK.highlightCard(card);
   }
 
@@ -554,6 +545,8 @@ document.addEventListener('DOMContentLoaded', function() {
     results: { perfect: 'Sans faute ! Vous maîtrisez le fonctionnement statutaire.' }
   });
   const modes = FK.initModes({ onQuiz: quiz.start });
+  const parcours = FK.initParcours({ modes });
+  const DECK_BY_STEP = { 1: 'pourquoi', 2: 'etapes', 3: 'articles' };
 
   /* ---------- Mode projection ---------- */
 
@@ -576,7 +569,7 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   FK.initProjection({
-    initialDeck: () => modes.isQuiz() ? 'quiz' : 'pourquoi',
+    initialDeck: () => modes.isQuiz() ? 'quiz' : (DECK_BY_STEP[parcours.current()] || 'pourquoi'),
     decks: {
       pourquoi: cardDeck(POURQUOI, 'Pourquoi des statuts ?'),
       etapes: cardDeck(ETAPES, item => `La vie des statuts — étape ${ETAPES.indexOf(item) + 1} sur ${ETAPES.length}`),
@@ -590,7 +583,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // La fiche-mémo imprimée montre toutes les cartes ouvertes (voir @media print)
   document.querySelector('.print-button').addEventListener('click', () => {
-    modes.setMode('exploration');
     window.print();
   });
 
