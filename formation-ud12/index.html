@@ -13,6 +13,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/occitanie.css">
   <link rel="stylesheet" href="css/outils-animation.css">
+  <link rel="stylesheet" href="css/slides-contenu.css">
 </head>
 <body>
   <header>
@@ -52,20 +53,25 @@
     </div>
     <div class="toc-content">
       <ul>
-        <li><a href="#slide-0" class="toc-link" data-slide="0">Accueil et ouverture</a></li>
-        <li><a href="#slide-1" class="toc-link" data-slide="1">Pourquoi un fonctionnement statutaire ?</a></li>
-        <li><a href="statuts.html" class="toc-link">📊 Module interactif : Fonctionnement statutaire</a></li>
-        <li><a href="#slide-2" class="toc-link" data-slide="2">Le rôle des adhérent·es</a></li>
-        <li><a href="#slide-3" class="toc-link" data-slide="3">Élu·es, mandaté·es, responsables</a></li>
-        <li><a href="#slide-4" class="toc-link" data-slide="4">CE, Bureau syndical, SG : qui fait quoi ?</a></li>
-        <li><a href="roles.html" class="toc-link">👥 Module interactif : Rôles dans le syndicat</a></li>
-        <li><a href="#slide-5" class="toc-link" data-slide="5">AG et congrès : lieux de souveraineté</a></li>
-        <li><a href="congres.html" class="toc-link">🗳️ Module interactif : AG et congrès</a></li>
-        <li><a href="#slide-6" class="toc-link" data-slide="6">Cotisations et outils CGT</a></li>
-        <li><a href="cotisations.html" class="toc-link">💰 Module interactif : Cotisations</a></li>
-        <li><a href="#slide-7" class="toc-link" data-slide="7">Articulation syndicat / UL / UD / Fédé</a></li>
-        <li><a href="#slide-8" class="toc-link" data-slide="8">Synthèse et engagements</a></li>
-        <li><a href="#slide-9" class="toc-link" data-slide="9">Glossaire CGT</a></li>
+        <li class="toc-group">La journée</li>
+        <li><a href="#slide-0" class="toc-link" data-slide="0"><span class="toc-time">9h00</span>Accueil et ouverture</a></li>
+        <li><a href="#slide-1" class="toc-link" data-slide="1"><span class="toc-time">9h30</span>Pourquoi un fonctionnement statutaire ?</a></li>
+        <li><a href="#slide-2" class="toc-link" data-slide="2"><span class="toc-time">10h15</span>Le rôle des adhérent·es</a></li>
+        <li><a href="#slide-3" class="toc-link" data-slide="3"><span class="toc-time">11h15</span>Élu·es, mandaté·es, responsables</a></li>
+        <li><a href="#slide-4" class="toc-link" data-slide="4"><span class="toc-time">12h00</span>CE, bureau syndical, SG : qui fait quoi ?</a></li>
+        <li><a href="#slide-5" class="toc-link" data-slide="5"><span class="toc-time">13h30</span>AG, congrès et représentativité</a></li>
+        <li><a href="#slide-6" class="toc-link" data-slide="6"><span class="toc-time">14h30</span>Cotisations et outils CGT</a></li>
+        <li><a href="#slide-7" class="toc-link" data-slide="7"><span class="toc-time">15h30</span>Articulation syndicat / UL / UD / fédération</a></li>
+        <li><a href="#slide-8" class="toc-link" data-slide="8"><span class="toc-time">16h15</span>Synthèse et engagements</a></li>
+        <li><a href="#slide-9" class="toc-link" data-slide="9"><span class="toc-time"></span>Glossaire CGT</a></li>
+        <li class="toc-group">Modules interactifs</li>
+        <li><a href="statuts.html" class="toc-link">📊 Les statuts article par article</a></li>
+        <li><a href="roles.html" class="toc-link">👥 Les rôles dans le syndicat</a></li>
+        <li><a href="congres.html" class="toc-link">🗳️ AG, congrès et 7 critères</a></li>
+        <li><a href="cotisations.html" class="toc-link">💰 Les cotisations</a></li>
+        <li class="toc-group">Pour aller plus loin</li>
+        <li><a href="decouvrir-cgt.html" class="toc-link">🔍 Formation « Découvrir la CGT »</a></li>
+        <li><a href="/evaluation-formation.html" class="toc-link">📝 Évaluation de la formation</a></li>
       </ul>
     </div>
   </div>
@@ -80,20 +86,18 @@
         <div class="card-header">
           <h2>Accueil et ouverture</h2>
           <div class="slide-actions">
-            <button class="toc-button" type="button" onclick="toggleTOC()">📋 Sommaire</button>
+            <button class="toc-button" type="button">📋 Sommaire</button>
             <button class="print-button" onclick="printSlide('slide-0')">🖨️ Imprimer</button>
           </div>
         </div>
         <p><strong>🕒 Séquence prévue :</strong> 9h00 - 9h30</p>
-        <div class="objectif">🎯 Objectif : accueil et ouverture de la formation ( café, chocolatine croissant), présenter les objectifs et recueillir les attentes des stagiaires.</div>
+        <div class="objectif">🎯 Objectif : Accueillir les stagiaires (café, chocolatines et croissants), créer un cadre de confiance, présenter les objectifs de la journée et recueillir les attentes.</div>
 
-        <div class="activity-container">
-          <h3>🧑‍🎓 Activité Stagiaires :</h3>
-          <div class="activity-content">
-            <p>- Présentation individuelle (prénom, syndicat, fonction, expérience)
-- Expression libre : "Pourquoi je suis venu·e aujourd'hui ?"</p>
-          </div>
-        </div>
+        <div class="slide-block"><h3>🎯 Les objectifs de la journée</h3><ul><li>Comprendre à quoi servent les statuts et pourquoi ils garantissent la démocratie syndicale</li><li>Connaître la place et le rôle de chacun·e : adhérent·e, élu·e, mandaté·e, responsable</li><li>Savoir comment le syndicat décide (AG, congrès) et ce qui fait sa représentativité</li><li>Comprendre la cotisation et l'organisation de la CGT (UL, UD, fédération, Confédération)</li><li>Repartir avec un engagement concret pour son syndicat</li></ul></div>
+        <div class="slide-block"><h3>🗓️ Le programme de la journée</h3><ul class="programme"><li><button type="button" onclick="showSlide(1)"><span class="h">9h30</span>Pourquoi un fonctionnement statutaire ?</button></li><li><button type="button" onclick="showSlide(2)"><span class="h">10h15</span>Le rôle des adhérent·es</button></li><li><button type="button" onclick="showSlide(3)"><span class="h">11h15</span>Élu·es, mandaté·es, responsables</button></li><li><button type="button" onclick="showSlide(4)"><span class="h">12h00</span>CE, bureau syndical, SG : qui fait quoi ?</button></li><li><button type="button" onclick="showSlide(5)"><span class="h">13h30</span>AG, congrès et représentativité</button></li><li><button type="button" onclick="showSlide(6)"><span class="h">14h30</span>Cotisations et outils CGT</button></li><li><button type="button" onclick="showSlide(7)"><span class="h">15h30</span>Articulation syndicat / UL / UD / fédération</button></li><li><button type="button" onclick="showSlide(8)"><span class="h">16h15</span>Synthèse et engagements</button></li></ul></div>
+        <div class="info-grid "><div class="info-card "><h4><span class="ico" aria-hidden="true">🗣️</span>La parole est libre</h4><p>Il n'y a pas de question bête. On écoute sans couper la parole.</p></div><div class="info-card info-card--bleu"><h4><span class="ico" aria-hidden="true">📵</span>Téléphones en silencieux</h4><p>Pour être pleinement présent·es ensemble.</p></div><div class="info-card info-card--jaune"><h4><span class="ico" aria-hidden="true">🤐</span>Ce qui se dit ici reste ici</h4><p>Les situations personnelles évoquées restent confidentielles.</p></div></div>
+        <div class="activity-container"><h3>🧑‍🎓 Activité stagiaires :</h3><div class="activity-content"><ul class="activity-list"><li>Tour de table : prénom, syndicat, fonction, expérience syndicale</li><li>Expression libre : « Pourquoi je suis venu·e aujourd'hui ? »</li><li>Noter les attentes au paperboard : on y reviendra en fin de journée</li></ul></div></div>
+        <div class="slide-block supports"><strong>📎 À remettre :</strong><span>Support stagiaire</span><span>Programme de la journée</span></div>
 
         <div class="time-control">
           <div class="time-input">
@@ -114,21 +118,20 @@
         <div class="card-header">
           <h2>Pourquoi un fonctionnement statutaire ?</h2>
           <div class="slide-actions">
-            <button class="toc-button" type="button" onclick="toggleTOC()">📋 Sommaire</button>
+            <button class="toc-button" type="button">📋 Sommaire</button>
             <button class="print-button" onclick="printSlide('slide-1')">🖨️ Imprimer</button>
             <button class="module-button" onclick="window.location.href='statuts.html'">📊 Module interactif</button>
           </div>
         </div>
         <p><strong>🕒 Séquence prévue :</strong> 9h30 - 10h15</p>
-        <div class="objectif">🎯 Objectif : Comprendre la finalité d'un cadre statutaire dans le syndicat et le lien avec la démocratie syndicale.</div>
+        <div class="objectif">🎯 Objectif : Comprendre la finalité d'un cadre statutaire dans le syndicat et son lien avec la démocratie syndicale.</div>
 
-        <div class="activity-container">
-          <h3>🧑‍🎓 Activité Stagiaires :</h3>
-          <div class="activity-content">
-            <p>- Travail en binôme : « C'est quoi un syndicat bien organisé pour moi ? »
-- Mise en commun au tableau : idées forces (ex : démocratie, transmission, respect des rôles…)</p>
-          </div>
-        </div>
+        <div class="info-grid "><div class="info-card "><h4><span class="ico" aria-hidden="true">📜</span>Le texte fondateur</h4><p>Objet, adhésion, instances, cotisation, affiliations, modification et dissolution : tout le fonctionnement du syndicat.</p></div><div class="info-card info-card--bleu"><h4><span class="ico" aria-hidden="true">🗳️</span>La garantie de démocratie</h4><p>Le congrès des syndiqué·es est souverain ; chaque instance est élue et rend compte.</p></div><div class="info-card info-card--jaune"><h4><span class="ico" aria-hidden="true">⚖️</span>L'existence juridique</h4><p>Déposés en mairie avec la liste des dirigeant·es, ils font exister le syndicat. Il faut 2 ans d'existence pour présenter des listes ou désigner un·e DS.</p></div><div class="info-card info-card--vert"><h4><span class="ico" aria-hidden="true">🔗</span>La cohérence confédérale</h4><p>Le syndicat adhère à une union départementale et à une fédération, et fait siens les statuts de la CGT.</p></div></div>
+        <div class="slide-block kp"><h3>📌 À retenir</h3><ul><li>Les statuts sont la règle commune que les syndiqué·es se donnent : sans cadre commun, pas de démocratie.</li><li>Ils ne se modifient qu'en congrès, à la majorité des deux tiers.</li><li>Des statuts à jour et déposés, c'est aussi la condition de la représentativité du syndicat.</li></ul></div>
+        <div class="slide-block ask"><span aria-hidden="true">💬</span><span>Pour lancer le débat : « Peut-on décider sans cadre commun ? »</span></div>
+        <div class="activity-container"><h3>🧑‍🎓 Activité stagiaires :</h3><div class="activity-content"><ul class="activity-list"><li>Travail en binôme : « C'est quoi, pour moi, un syndicat bien organisé ? »</li><li>Mise en commun au tableau des idées forces : démocratie, transmission, respect des rôles…</li></ul></div></div>
+        <div class="slide-block supports"><strong>📎 À remettre :</strong><span>Statuts du syndicat</span><span>Modèle de statuts CGT</span><span>Charte de la vie syndicale</span></div>
+        <p class="slide-block"><a class="module-link" href="statuts.html">📊 Module interactif : le modèle de statuts article par article →</a></p>
 
         <div class="time-control">
           <div class="time-input">
@@ -149,20 +152,18 @@
         <div class="card-header">
           <h2>Le rôle des adhérent·es</h2>
           <div class="slide-actions">
-            <button class="toc-button" type="button" onclick="toggleTOC()">📋 Sommaire</button>
+            <button class="toc-button" type="button">📋 Sommaire</button>
             <button class="print-button" onclick="printSlide('slide-2')">🖨️ Imprimer</button>
           </div>
         </div>
         <p><strong>🕒 Séquence prévue :</strong> 10h15 - 11h00</p>
-        <div class="objectif">🎯 Objectif : Revaloriser la place des adhérent·es dans l'organisation syndicale.</div>
+        <div class="objectif">🎯 Objectif : Revaloriser la place des adhérent·es : ce sont eux et elles qui font le syndicat et décident de ses orientations.</div>
 
-        <div class="activity-container">
-          <h3>🧑‍🎓 Activité Stagiaires :</h3>
-          <div class="activity-content">
-            <p>- Sous-groupes : « Que peut faire un·e adhérent·e CGT ? »
-- Tri en grand groupe : Droit / Devoir / Pouvoir d'intervention</p>
-          </div>
-        </div>
+        <div class="info-grid info-grid--3"><div class="info-card info-card--vert"><h4><span class="ico" aria-hidden="true">✅</span>Droits</h4><ul><li>S'exprimer librement</li><li>Être informé·e et se former</li><li>Participer à toutes les décisions d'orientation</li><li>Être candidat·e aux responsabilités</li></ul></div><div class="info-card info-card--bleu"><h4><span class="ico" aria-hidden="true">🤝</span>Devoirs</h4><ul><li>Respecter les orientations et les règles de vie de la CGT</li><li>Ne pas porter atteinte à ses intérêts ni à son image</li><li>Payer régulièrement sa cotisation (1 % net)</li></ul></div><div class="info-card "><h4><span class="ico" aria-hidden="true">✊</span>Pouvoir d'intervention</h4><ul><li>Voter en AG et en congrès</li><li>Proposer des revendications</li><li>Élire la direction du syndicat</li><li>Contrôler l'activité de ses mandaté·es</li></ul></div></div>
+        <div class="slide-block kp"><h3>📌 À retenir</h3><ul><li>« Les syndiqué·es sont égaux, libres et responsables » (modèle de statuts, art. 5).</li><li>La charte de la vie syndicale veut des syndiqué·es informé·es, formé·es et propriétaires de leur organisation.</li><li>Aucune sanction sans avoir été entendu·e, et jamais pour une simple divergence d'orientation.</li></ul></div>
+        <div class="slide-block ask"><span aria-hidden="true">💬</span><span>Pour lancer le débat : « Un·e adhérent·e a-t-il ou elle sa place dans les décisions du syndicat ? »</span></div>
+        <div class="activity-container"><h3>🧑‍🎓 Activité stagiaires :</h3><div class="activity-content"><ul class="activity-list"><li>Sous-groupes : « Que peut faire un·e adhérent·e CGT ? »</li><li>Tri en grand groupe au tableau : Droit / Devoir / Pouvoir d'intervention</li></ul></div></div>
+        <div class="slide-block supports"><strong>📎 À remettre :</strong><span>« Qu'est-ce qu'un syndicat ? »</span><span>Charte de la vie syndicale</span></div>
 
         <div class="time-control">
           <div class="time-input">
@@ -183,20 +184,19 @@
         <div class="card-header">
           <h2>Élu·es, mandaté·es, responsables</h2>
           <div class="slide-actions">
-            <button class="toc-button" type="button" onclick="toggleTOC()">📋 Sommaire</button>
+            <button class="toc-button" type="button">📋 Sommaire</button>
             <button class="print-button" onclick="printSlide('slide-3')">🖨️ Imprimer</button>
           </div>
         </div>
         <p><strong>🕒 Séquence prévue :</strong> 11h15 - 12h00</p>
-        <div class="objectif">🎯 Objectif : Clarifier les différents statuts des militant·es dans l'organisation syndicale.</div>
+        <div class="objectif">🎯 Objectif : Distinguer les différents statuts des militant·es et comprendre que tout mandat part du syndicat.</div>
 
-        <div class="activity-container">
-          <h3>🧑‍🎓 Activité Stagiaires :</h3>
-          <div class="activity-content">
-            <p>- Activité collective : tri de rôles : Élu / Mandaté / Désigné / Responsable (avec cartes)
-- Discussion : Comment ces rôles interagissent ? Quels devoirs envers le syndicat ?</p>
-          </div>
-        </div>
+        <div class="info-grid "><div class="info-card info-card--vert"><h4><span class="ico" aria-hidden="true">🗳️</span>Élu·e</h4><p>Choisi·e par les salarié·es aux élections professionnelles, sur une liste décidée par les syndiqué·es : CSE, CSA, CAP…</p></div><div class="info-card "><h4><span class="ico" aria-hidden="true">📄</span>Mandaté·e</h4><p>Désigné·e par le syndicat ou une structure de la CGT : délégué·e syndical·e, RS au CSE, conseiller·ère du salarié, défenseur·e syndical·e…</p></div><div class="info-card info-card--jaune"><h4><span class="ico" aria-hidden="true">🏷️</span>Désigné·e</h4><p>Nommé·e par une instance pour une mission : membres de la CSSCT ou représentant·es de proximité désignés par le CSE.</p></div><div class="info-card info-card--bleu"><h4><span class="ico" aria-hidden="true">🗝️</span>Responsable</h4><p>Élu·e par les instances du syndicat pour le diriger : membre de la CE, du bureau, secrétaire général·e, trésorier·ère.</p></div></div>
+        <div class="slide-block kp"><h3>📌 À retenir : la charte de l'élu·e et mandaté·e</h3><ul><li>Tout mandat part du syndicat : les candidatures sont décidées avec les syndiqué·es.</li><li>On rend compte régulièrement de son activité à la structure qui nous a désigné·e.</li><li>« Personne n'est propriétaire de son mandat » : limitation de la durée et du cumul, reversement des indemnités.</li><li>Le syndicat suit ses mandats : statuts déposés et à jour, comptes publiés, lien avec l'UD et le territoire.</li></ul></div>
+        <div class="slide-block ask"><span aria-hidden="true">💬</span><span>Pour lancer le débat : « Qui mandate ? Qui suit le mandat ? »</span></div>
+        <div class="activity-container"><h3>🧑‍🎓 Activité stagiaires :</h3><div class="activity-content"><ul class="activity-list"><li>Tri collectif au tableau : élu·e / mandaté·e / désigné·e / responsable (avec cartes)</li><li>Discussion : comment ces rôles interagissent-ils ? Quels devoirs envers le syndicat ?</li></ul></div></div>
+        <div class="slide-block supports"><strong>📎 À remettre :</strong><span>Charte de l'élu·e et mandaté·e</span><span>Charte de la vie syndicale</span><span>Charte égalité femmes-hommes</span></div>
+        <p class="slide-block"><a class="module-link" href="roles.html">👥 Module interactif : les rôles dans le syndicat →</a></p>
 
         <div class="time-control">
           <div class="time-input">
@@ -217,21 +217,20 @@
         <div class="card-header">
           <h2>CE, Bureau syndical, SG : qui fait quoi ?</h2>
           <div class="slide-actions">
-            <button class="toc-button" type="button" onclick="toggleTOC()">📋 Sommaire</button>
+            <button class="toc-button" type="button">📋 Sommaire</button>
             <button class="print-button" onclick="printSlide('slide-4')">🖨️ Imprimer</button>
             <button class="module-button" onclick="window.location.href='roles.html'">👥 Module interactif</button>
           </div>
         </div>
         <p><strong>🕒 Séquence prévue :</strong> 12h00 - 12h30</p>
-        <div class="objectif">🎯 Objectif : Comprendre les structures de direction d'un syndicat CGT.</div>
+        <div class="objectif">🎯 Objectif : Comprendre les structures de direction d'un syndicat CGT et le rôle de chacune.</div>
 
-        <div class="activity-container">
-          <h3>🧑‍🎓 Activité Stagiaires :</h3>
-          <div class="activity-content">
-            <p>- Activité "puzzle organigramme" : rôles et missions du Bureau, CE, SG, AG
-- Débat guidé : Qui impulse ? Qui décide ? Qui contrôle ?</p>
-          </div>
-        </div>
+        <div class="slide-block orga"><div class="orga-ce" role="img" aria-label="Schéma : la commission exécutive contient le bureau, qui contient le ou la secrétaire générale."><strong>Commission exécutive</strong><small>débat et décide</small><div class="orga-bureau"><strong>Bureau</strong><small>coordonne, propose, impulse</small><div class="orga-sg"><strong>SG</strong><small>anime</small></div></div></div><div class="orga-side"><div class="info-grid "><div class="info-card "><h4><span class="ico" aria-hidden="true">🧩</span>Commission exécutive</h4><p>Élue par le congrès. Dirige entre deux congrès, se réunit au moins une fois par mois, approuve les comptes.</p></div><div class="info-card info-card--bleu"><h4><span class="ico" aria-hidden="true">🗂️</span>Bureau</h4><p>Élu par la CE, au minimum un·e SG et un·e trésorier·ère. Met en œuvre les décisions, prépare la CE.</p></div><div class="info-card info-card--jaune"><h4><span class="ico" aria-hidden="true">🔎</span>Commission financière de contrôle</h4><p>Élue par le congrès hors de la CE (impair, au moins 3). Contrôle la gestion et rend compte à la CE et au congrès.</p></div></div></div></div>
+        <div class="slide-block kp"><h3>📌 À retenir</h3><ul><li>CE = débat et décisions · bureau = coordination, propose et impulse · SG = animation.</li><li>Chaque instance rend compte à celle qui l'a élue.</li><li>Les comptes sont arrêtés par le bureau, approuvés chaque année par la CE et contrôlés par la CFC.</li></ul></div>
+        <div class="slide-block ask"><span aria-hidden="true">💬</span><span>Pour lancer le débat : « Qui impulse ? Qui décide ? Qui contrôle ? »</span></div>
+        <div class="activity-container"><h3>🧑‍🎓 Activité stagiaires :</h3><div class="activity-content"><ul class="activity-list"><li>Puzzle organigramme : placer CE, bureau, SG, CFC, AG et congrès</li><li>Dessin au tableau : un grand rond CE, et à l'intérieur le bureau et le SG</li></ul></div></div>
+        <div class="slide-block supports"><strong>📎 À remettre :</strong><span>« Le rôle de chacun dans le syndicat »</span><span>Guide d'organisation</span></div>
+        <p class="slide-block"><a class="module-link" href="roles.html">👥 Module interactif : qui fait quoi dans le syndicat →</a></p>
 
         <div class="time-control">
           <div class="time-input">
@@ -252,21 +251,20 @@
         <div class="card-header">
           <h2>AG et congrès : lieux de souveraineté</h2>
           <div class="slide-actions">
-            <button class="toc-button" type="button" onclick="toggleTOC()">📋 Sommaire</button>
+            <button class="toc-button" type="button">📋 Sommaire</button>
             <button class="print-button" onclick="printSlide('slide-5')">🖨️ Imprimer</button>
             <button class="module-button" onclick="window.location.href='congres.html'">🗳️ Module interactif</button>
           </div>
         </div>
         <p><strong>🕒 Séquence prévue :</strong> 13h30 - 14h30</p>
-        <div class="objectif">🎯 Objectif : Comprendre les mécanismes de prise de décision dans la CGT.</div>
+        <div class="objectif">🎯 Objectif : Comprendre où et comment les syndiqué·es décident, et ce qui fait la représentativité du syndicat.</div>
 
-        <div class="activity-container">
-          <h3>🧑‍🎓 Activité Stagiaires :</h3>
-          <div class="activity-content">
-            <p>- En groupes : construire un ordre du jour pour un congrès syndical
-- Simulation d'un vote (ex : élection du bureau ou adoption de rapport d'activité)</p>
-          </div>
-        </div>
+        <div class="info-grid "><div class="info-card "><h4><span class="ico" aria-hidden="true">🏛️</span>Le congrès, souverain</h4><ul><li>Réunit tous les syndiqué·es à jour de cotisation</li><li>Convoqué au moins un mois avant, avec l'ordre du jour</li><li>Vote sur les rapports, élit la CE et la CFC</li><li>Seul à pouvoir modifier les statuts (2/3)</li></ul></div><div class="info-card info-card--bleu"><h4><span class="ico" aria-hidden="true">🙋</span>L'assemblée générale</h4><ul><li>Au moins une fois par an entre deux congrès</li><li>Convoquée par la CE</li><li>Un congrès extraordinaire peut être demandé par un tiers des syndiqué·es</li></ul></div></div>
+        <div class="slide-block"><h3>⚖️ Les 7 critères de représentativité <small style="font-weight:400">(Code du travail, art. L2121-1)</small></h3><p style="margin:0 0 .7rem">Pour être reconnu représentatif, un syndicat doit remplir ces critères <strong>cumulatifs</strong>. Faire vivre ses statuts, c'est déjà en remplir plusieurs.</p><ol class="criteres"><li><strong>Le respect des valeurs républicaines</strong>Liberté d'opinion, refus de toute discrimination et de tout racisme.<em>→ Le préambule de nos statuts</em></li><li><strong>L'indépendance</strong>Notamment vis-à-vis de l'employeur.<em>→ Un syndicat financé par ses cotisations</em></li><li><strong>La transparence financière</strong>Comptes établis, approuvés et publiés chaque année.<em>→ Bureau, CE et CFC</em></li><li><strong>Une ancienneté minimale de 2 ans</strong>Dans le champ professionnel et géographique, à compter du dépôt des statuts.<em>→ Des statuts déposés et à jour</em></li><li><strong>L'audience</strong>Au moins 10 % des suffrages au 1<sup>er</sup> tour des élections du CSE dans l'entreprise (8 % dans la branche et au niveau national).<em>→ Des listes construites avec les syndiqué·es</em></li><li><strong>L'influence</strong>Caractérisée en priorité par l'activité et l'expérience.<em>→ Un syndicat qui agit et se voit</em></li><li><strong>Les effectifs d'adhérent·es et les cotisations</strong><em>→ La syndicalisation, l'affaire de toutes et tous</em></li></ol></div>
+        <div class="slide-block ask"><span aria-hidden="true">💬</span><span>Pour lancer le débat : « Pourquoi respecter la forme, même quand on est peu nombreux ? » Pour respecter nos statuts, nos règles… et rester représentatif.</span></div>
+        <div class="activity-container"><h3>🧑‍🎓 Activité stagiaires :</h3><div class="activity-content"><ul class="activity-list"><li>En groupes : passer notre syndicat au crible des 7 critères. Où en sommes-nous ? Que faut-il renforcer ?</li><li>Simulation d'un vote : adoption du rapport d'activité (module interactif)</li></ul></div></div>
+        <div class="slide-block supports"><strong>📎 À remettre :</strong><span>Statuts du syndicat</span></div>
+        <p class="slide-block"><a class="module-link" href="congres.html">🗳️ Module interactif : autodiagnostic des 7 critères et simulation de vote →</a></p>
 
         <div class="time-control">
           <div class="time-input">
@@ -287,21 +285,22 @@
         <div class="card-header">
           <h2>Cotisations et outils CGT</h2>
           <div class="slide-actions">
-            <button class="toc-button" type="button" onclick="toggleTOC()">📋 Sommaire</button>
+            <button class="toc-button" type="button">📋 Sommaire</button>
             <button class="print-button" onclick="printSlide('slide-6')">🖨️ Imprimer</button>
             <button class="module-button" onclick="window.location.href='cotisations.html'">💰 Module interactif</button>
           </div>
         </div>
         <p><strong>🕒 Séquence prévue :</strong> 14h30 - 15h15</p>
-        <div class="objectif">🎯 Objectif : Comprendre les ressources du syndicat et les outils pour les gérer.</div>
+        <div class="objectif">🎯 Objectif : Comprendre les ressources du syndicat, ce qui fonde son indépendance, et les outils pour les gérer.</div>
 
-        <div class="activity-container">
-          <h3>🧑‍🎓 Activité Stagiaires :</h3>
-          <div class="activity-content">
-            <p>- Réflexion collective : « Où va l'argent de la cotisation ? »
-- Mise en commun d'idées puis explication du circuit CoGéTise</p>
-          </div>
-        </div>
+        <div class="slide-block chiffres"><div class="chiffre"><b>1 %</b><span>du salaire net, primes comprises, ou de la pension nette</span></div><div class="chiffre"><b>66 %</b><span>remboursés en crédit d'impôt, même sans être imposable</span></div><div class="chiffre"><b>6,80 €</b><span>coût réel par mois pour 20 € de cotisation</span></div></div>
+        <div class="slide-block"><h3>🔀 Où va une cotisation ?</h3><div class="repart" role="img" aria-label="Répartition : syndicat 33 %, fédération 29 %, territoire 25 %, Confédération 10 %, presse 3 %"><div style="width:33%;background:#E2001A">33 %</div><div style="width:29%;background:#1A5FAD">29 %</div><div style="width:25%;background:#2E8B4A">25 %</div><div style="width:10%;background:#0F0F0F">10 %</div><div style="width:3%;background:#7D8FA8"></div></div><ul class="repart-legend"><li><i style="background:#E2001A"></i>Syndicat</li><li><i style="background:#1A5FAD"></i>Fédération</li><li><i style="background:#2E8B4A"></i>Territoire : UL, UD, comité régional</li><li><i style="background:#0F0F0F"></i>Confédération</li><li><i style="background:#7D8FA8"></i>Presse (3 %)</li></ul></div>
+        <div class="info-grid "><div class="info-card "><h4><span class="ico" aria-hidden="true">💶</span>CoGéTise</h4><p>Le système qui répartit les cotisations : le syndicat garde sa part et reverse le reste, réparti automatiquement entre toutes les structures.</p></div><div class="info-card info-card--bleu"><h4><span class="ico" aria-hidden="true">🗃️</span>CoGiTiel</h4><p>Le fichier des syndiqué·es : suivre les adhésions, les parcours, éviter les ruptures (changement d'employeur, retraite).</p></div></div>
+        <div class="slide-block kp"><h3>📌 À retenir</h3><ul><li>L'indépendance de la CGT repose sur les cotisations de ses syndiqué·es.</li><li>Reverser régulièrement, sans rien retenir des parts dues aux autres structures : c'est la solidarité.</li><li>Des comptes approuvés et publiés : la transparence financière est un critère de représentativité.</li></ul></div>
+        <div class="slide-block ask"><span aria-hidden="true">💬</span><span>Pour lancer le débat : « Où va l'argent de la cotisation, à votre avis ? »</span></div>
+        <div class="activity-container"><h3>🧑‍🎓 Activité stagiaires :</h3><div class="activity-content"><ul class="activity-list"><li>Réflexion collective : « À quoi sert la cotisation ? »</li><li>Lecture du schéma de la plaquette CoGéTise et mise en commun</li></ul></div></div>
+        <div class="slide-block supports"><strong>📎 À remettre :</strong><span>Plaquette CoGéTise</span></div>
+        <p class="slide-block"><a class="module-link" href="cotisations.html">💰 Module interactif : calculer et comprendre la cotisation →</a></p>
 
         <div class="time-control">
           <div class="time-input">
@@ -322,20 +321,18 @@
         <div class="card-header">
           <h2>Articulation syndicat / UL / UD / Fédé</h2>
           <div class="slide-actions">
-            <button class="toc-button" type="button" onclick="toggleTOC()">📋 Sommaire</button>
+            <button class="toc-button" type="button">📋 Sommaire</button>
             <button class="print-button" onclick="printSlide('slide-7')">🖨️ Imprimer</button>
           </div>
         </div>
         <p><strong>🕒 Séquence prévue :</strong> 15h30 - 16h15</p>
-        <div class="objectif">🎯 Objectif : Comprendre la structure confédérale de la CGT.</div>
+        <div class="objectif">🎯 Objectif : Comprendre la structure confédérale de la CGT : les deux jambes, le territoire et la profession.</div>
 
-        <div class="activity-container">
-          <h3>🧑‍🎓 Activité Stagiaires :</h3>
-          <div class="activity-content">
-            <p>- Jeu de correspondance : qui fait quoi ? (cartes rôles / structures)
-- Débat guidé : vers qui se tourner en cas de besoin ?</p>
-          </div>
-        </div>
+        <div class="slide-block branches"><div class="branche branche--pro"><h4>🔧 Branche professionnelle</h4><p class="chemin">Syndicat → union professionnelle (USD, CSD, USTM…) → fédération</p><p>Avec celles et ceux qui font le même métier : conventions collectives, revendications de branche.</p></div><div class="branche branche--terr"><h4>📍 Branche territoriale et interprofessionnelle</h4><p class="chemin">Syndicat → union locale → union départementale → comité régional</p><p>Avec tous les salarié·es d'un même territoire, toutes professions confondues.</p></div><div class="branches-sommet">🏛️ La Confédération générale du travail englobe toutes les fédérations et toutes les unions départementales. Le syndicat adhère aux deux.</div></div>
+        <div class="slide-block"><h3>📜 L'article 21 des statuts confédéraux</h3><blockquote class="quote">Les organisations de la CGT « recherchent entre elles, en permanence, la coopération, la complémentarité avec les autres composantes de la CGT, la prise en compte des intérêts communs à l'ensemble des salariés ».<cite>Statuts de la CGT, article 21, cité par la charte de la vie syndicale</cite></blockquote><p style="margin:.6rem 0 0">Aucune structure ne travaille seule : le syndicat informe à la fois son UD et sa fédération ; l'UL, l'UD et la fédération sont au service des syndicats.</p></div>
+        <div class="slide-block kp"><h3>📌 À retenir</h3><ul><li>UL = le terrain, la proximité · UD = la structuration, l'interprofessionnel · fédération = le champ professionnel.</li><li>Informer autant les structures territoriales que sa fédération.</li><li>Le syndicat est la base de toute la CGT (statuts confédéraux, articles 7 à 9).</li></ul></div>
+        <div class="slide-block ask"><span aria-hidden="true">💬</span><span>Pour lancer le débat : « Vers qui se tourner en cas de besoin ? »</span></div>
+        <div class="activity-container"><h3>🧑‍🎓 Activité stagiaires :</h3><div class="activity-content"><ul class="activity-list"><li>Jeu de correspondance : qui fait quoi ? (cartes rôles / structures)</li><li>Débat guidé : l'UD et la fédération au service de leurs syndicats</li></ul></div></div>
 
         <div class="time-control">
           <div class="time-input">
@@ -356,20 +353,17 @@
         <div class="card-header">
           <h2>Synthèse et engagements</h2>
           <div class="slide-actions">
-            <button class="toc-button" type="button" onclick="toggleTOC()">📋 Sommaire</button>
+            <button class="toc-button" type="button">📋 Sommaire</button>
             <button class="print-button" onclick="printSlide('slide-8')">🖨️ Imprimer</button>
           </div>
         </div>
         <p><strong>🕒 Séquence prévue :</strong> 16h15 - 17h00</p>
-        <div class="objectif">🎯 Objectif : Fixer les acquis de la journée et favoriser l'engagement concret post-formation.</div>
+        <div class="objectif">🎯 Objectif : Fixer les acquis de la journée et favoriser un engagement concret dans son syndicat.</div>
 
-        <div class="activity-container">
-          <h3>🧑‍🎓 Activité Stagiaires :</h3>
-          <div class="activity-content">
-            <p>- Chacun écrit un engagement personnel à mettre en place dans son syndicat
-- Tour de parole libre : "Je repars avec…"</p>
-          </div>
-        </div>
+        <div class="slide-block"><h3>🧭 Les messages clés de la journée</h3><div class="info-grid "><div class="info-card "><h4><span class="ico" aria-hidden="true">📜</span>Les statuts</h4><p>Notre règle commune : à jour, déposés, vivants.</p></div><div class="info-card info-card--vert"><h4><span class="ico" aria-hidden="true">✊</span>Les adhérent·es</h4><p>Ce sont eux et elles qui décident.</p></div><div class="info-card info-card--jaune"><h4><span class="ico" aria-hidden="true">📄</span>Les mandats</h4><p>Ils partent du syndicat et lui rendent compte.</p></div><div class="info-card info-card--bleu"><h4><span class="ico" aria-hidden="true">🧩</span>Les instances</h4><p>CE, bureau, SG, CFC : chacun son rôle.</p></div><div class="info-card "><h4><span class="ico" aria-hidden="true">⚖️</span>La représentativité</h4><p>7 critères, que nos pratiques font vivre.</p></div><div class="info-card info-card--vert"><h4><span class="ico" aria-hidden="true">🔗</span>La CGT</h4><p>Deux jambes, territoire et profession, et la coopération (art. 21).</p></div></div></div>
+        <div class="slide-block"><h3>🚀 Et après ?</h3><ul><li>Inscrire l'AG annuelle et le prochain congrès au calendrier du syndicat</li><li>Vérifier que les statuts sont à jour et déposés, et que les comptes sont publiés</li><li>Proposer « Découvrir la CGT » aux salarié·es et « S'impliquer dans la CGT » aux nouveaux adhérent·es</li><li>Se former au mandat : élu·es CSE, mandaté·es, responsables</li></ul></div>
+        <div class="activity-container"><h3>🧑‍🎓 Activité stagiaires :</h3><div class="activity-content"><ul class="activity-list"><li>Chaque stagiaire écrit un engagement concret à mettre en place dans son syndicat</li><li>Retour sur les attentes du matin</li><li>Tour de parole : « Je repars avec… »</li></ul></div></div>
+        <p class="slide-block"><a class="module-link" href="/evaluation-formation.html" target="_blank" rel="noopener">📝 Questionnaire d'évaluation de la formation →</a></p>
 
         <div class="time-control">
           <div class="time-input">
@@ -390,7 +384,7 @@
         <div class="card-header">
           <h2>📚 Glossaire CGT</h2>
           <div class="slide-actions">
-            <button class="toc-button" type="button" onclick="toggleTOC()">📋 Sommaire</button>
+            <button class="toc-button" type="button">📋 Sommaire</button>
             <button class="print-button" onclick="printSlide('slide-9')">🖨️ Imprimer</button>
           </div>
         </div>
@@ -523,40 +517,41 @@
           
           <div class="glossary-item">
             <h3>Représentativité</h3>
-            <p>Capacité légale d'un syndicat à représenter les salariés, mesurée par les résultats aux élections professionnelles.</p>
+            <p>Capacité légale d'un syndicat à négocier et signer des accords, reconnue selon 7 critères cumulatifs (art. L2121-1 du Code du travail), dont l'audience aux élections professionnelles.</p>
           </div>
         </div>
       </div>
     </section>
   </div>
 
-  <!-- Bouton pour accéder aux modules interactifs -->
-  <div class="modules-navigation">
-    <h3>Modules interactifs</h3>
+  <!-- Modules interactifs et outils d'animation -->
+  <div class="modules-navigation" id="modules">
+    <h3>Modules interactifs et outils</h3>
+    <p class="modules-intro">À ouvrir pendant la séquence correspondante, ou à projeter avec leur mode projection.</p>
     <div class="modules-buttons">
       <a href="statuts.html" class="module-nav-button">
-        <span class="module-icon">📊</span>
-        <span class="module-title">Fonctionnement statutaire</span>
+        <span class="module-icon" aria-hidden="true">📊</span>
+        <span class="module-text"><span class="module-title">Les statuts</span><span class="module-desc">Pourquoi des statuts, leur vie étape par étape, le modèle article par article</span></span>
       </a>
       <a href="roles.html" class="module-nav-button">
-        <span class="module-icon">👥</span>
-        <span class="module-title">Rôles dans le syndicat</span>
+        <span class="module-icon" aria-hidden="true">👥</span>
+        <span class="module-text"><span class="module-title">Les rôles</span><span class="module-desc">16 rôles à révéler, les chartes, schéma « qui élit, qui désigne »</span></span>
       </a>
       <a href="congres.html" class="module-nav-button">
-        <span class="module-icon">🗳️</span>
-        <span class="module-title">AG et congrès</span>
+        <span class="module-icon" aria-hidden="true">🗳️</span>
+        <span class="module-text"><span class="module-title">AG, congrès et représentativité</span><span class="module-desc">Autodiagnostic des 7 critères et simulation de vote</span></span>
       </a>
       <a href="cotisations.html" class="module-nav-button">
-        <span class="module-icon">💰</span>
-        <span class="module-title">Cotisations</span>
+        <span class="module-icon" aria-hidden="true">💰</span>
+        <span class="module-text"><span class="module-title">Les cotisations</span><span class="module-desc">Calculer une cotisation et suivre le circuit CoGéTise</span></span>
       </a>
       <a href="#" class="module-nav-button" onclick="ouvrirOutils('quiz');return false;">
-        <span class="module-icon">📱</span>
-        <span class="module-title">Quiz live &amp; évaluation</span>
+        <span class="module-icon" aria-hidden="true">📱</span>
+        <span class="module-text"><span class="module-title">Quiz live et évaluation</span><span class="module-desc">Quiz en direct par QR code, questionnaire de fin de journée</span></span>
       </a>
       <a href="#" class="module-nav-button" onclick="ouvrirOutils('draw');return false;">
-        <span class="module-icon">🎲</span>
-        <span class="module-title">Tirage au sort &amp; groupes</span>
+        <span class="module-icon" aria-hidden="true">🎲</span>
+        <span class="module-text"><span class="module-title">Tirage au sort et groupes</span><span class="module-desc">Désigner un·e volontaire, former des sous-groupes</span></span>
       </a>
     </div>
   </div>
@@ -566,14 +561,18 @@
     <div id="progress-indicator" class="progress-indicator"></div>
   </div>
 
-  <div class="controls">
-    <button id="prev-btn" onclick="prev()">⬅ Précédent</button>
-    <button id="resources-btn" type="button">📚 Ressources</button>
-    <button id="glossary-btn" type="button">📖 Glossaire</button>
+  <nav class="controls" aria-label="Navigation de la formation">
+    <button id="prev-btn" type="button" onclick="prev()">⬅ Précédent</button>
+    <span class="controls-counter" aria-live="polite"><span id="controls-current">1</span> / 10</span>
+    <span class="controls-sep" aria-hidden="true"></span>
+    <button id="toc-btn" type="button" title="Sommaire de la journée">📋 Sommaire</button>
+    <button id="resources-btn" type="button" title="Documents de la formation">📚 Ressources</button>
+    <button id="glossary-btn" type="button" title="Glossaire syndical">📖 Glossaire</button>
     <button id="tools-btn" type="button" onclick="ouvrirOutils()" title="Outils d'animation (touche O)">🎲 Outils</button>
-    <button onclick="window.location.href='roles.html'" type="button">👥 Rôles</button>
-    <button id="next-btn" onclick="next()">Suivant ➡</button>
-  </div>
+    <button type="button" onclick="document.getElementById('modules').scrollIntoView({behavior:'smooth'})" title="Modules interactifs">🧩 Modules</button>
+    <span class="controls-sep" aria-hidden="true"></span>
+    <button id="next-btn" type="button" onclick="next()">Suivant ➡</button>
+  </nav>
 
   <!-- Modal des ressources -->
   <div id="resources-modal" class="modal">
@@ -590,6 +589,7 @@
               <li><a href="rsc/2023_QuestCeQueSynidcat_Livret_SR.pdf" target="_blank">Qu'est-ce qu'un syndicat ? (Livret)</a></li>
               <li><a href="rsc/GuideOrga2025UD69.pdf" target="_blank">Guide d'organisation 2025</a></li>
               <li><a href="rsc/ModledeStatutsyndicatscomment08_2024.pdf" target="_blank">Modèle de statuts syndicaux commentés (2024)</a></li>
+              <li><a href="/documents/Fiche_descriptive_Fonctionnement_statutaire.docx" download>Fiche descriptive de la formation</a></li>
               <li><a href="/documents/Support_Stagiaires_Objectifs_CGT.docx" download>Support stagiaires - Objectifs CGT</a></li>
               <li><a href="rsc/role de chacun dans le syndicats.docx" target="_blank">Rôle de chacun dans le syndicat</a></li>
             </ul>
@@ -609,7 +609,7 @@
             <ul class="resources-list">
               <li><a href="rsc/Plaquette COGETISE dijon 20-03-19.pdf" target="_blank">Plaquette COGETISE</a></li>
               <li><a href="rsc/prgrame complet dérouler de la journée à lire.docx" target="_blank">Programme complet - Déroulé de la journée</a></li>
-              <li><a href="rsc/Aide_Memoire_Formateurs_CGT_4 avril_2025.docx" target="_blank">Aide-mémoire formateurs CGT</a></li>
+              <li><a href="/documents/Aide_Memoire_Formateurs_CGT.docx" download>Aide-mémoire formateurs CGT (Word)</a></li>
             </ul>
           </div>
         </div>
@@ -768,7 +768,7 @@
             <div class="glossary-item" data-letter="R">
               <div class="glossary-term">
                 <h3>Représentativité</h3>
-                <div class="definition">Capacité légale d'un syndicat à représenter les salariés, mesurée par les résultats aux élections professionnelles.</div>
+                <div class="definition">Capacité légale d'un syndicat à négocier et signer des accords, reconnue selon 7 critères cumulatifs (art. L2121-1 du Code du travail), dont l'audience aux élections professionnelles.</div>
               </div>
             </div>
             
@@ -850,78 +850,14 @@
 
   <script src="js/script.js"></script>
   <script>
-    // Initialisation du glossaire et des boutons de sommaire
-    document.addEventListener("DOMContentLoaded", function() {
-      initGlossary();
-      
-      // Initialiser les boutons de sommaire
-      const tocBtns = document.querySelectorAll('.toc-button');
-      tocBtns.forEach(btn => {
-        btn.addEventListener('click', function(e) {
-          e.preventDefault();
-          toggleTOC();
-        });
-      });
-      
-      // Fermer la table des matières
-      const closeTocBtn = document.getElementById('close-toc');
-      if (closeTocBtn) {
-        closeTocBtn.addEventListener('click', function() {
-          const tocElement = document.getElementById('table-of-contents');
-          const tocOverlay = document.getElementById('toc-overlay');
-          if (tocElement) {
-            tocElement.classList.remove("active");
-            if (tocOverlay) {
-              tocOverlay.classList.remove("active");
-            }
-          }
-        });
-      }
-      
-      // Ajouter un gestionnaire pour fermer la TOC quand on appuie sur Escape
-      document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') {
-          const tocElement = document.getElementById('table-of-contents');
-          const tocOverlay = document.getElementById('toc-overlay');
-          if (tocElement && tocElement.classList.contains('active')) {
-            tocElement.classList.remove('active');
-            if (tocOverlay) {
-              tocOverlay.classList.remove('active');
-            }
-          }
-        }
-      });
-      
-      // Ajouter un gestionnaire pour fermer la TOC quand on clique sur l'overlay
-      const tocOverlay = document.getElementById('toc-overlay');
-      if (tocOverlay) {
-        tocOverlay.addEventListener('click', function() {
-          const tocElement = document.getElementById('table-of-contents');
-          if (tocElement) {
-            tocElement.classList.remove('active');
-            tocOverlay.classList.remove('active');
-          }
-        });
-      }
-    });
-    
-    // Fonction pour basculer l'affichage de la table des matières
-    function toggleTOC() {
-      const tocElement = document.getElementById('table-of-contents');
-      const tocOverlay = document.getElementById('toc-overlay');
-      
-      if (tocElement) {
-        tocElement.classList.toggle("active");
-        if (tocOverlay) {
-          tocOverlay.classList.toggle("active", tocElement.classList.contains("active"));
-        }
-      }
-    }
-    
-    // Fonction pour initialiser le glossaire
-    function initGlossary() {
-      // Code du glossaire...
-    }
+    // Compteur de la barre du bas, synchronisé avec le compteur du haut
+    (function () {
+      var top = document.getElementById('current-slide');
+      var bottom = document.getElementById('controls-current');
+      if (!top || !bottom) return;
+      new MutationObserver(function () { bottom.textContent = top.textContent; }).observe(top, { childList: true, characterData: true, subtree: true });
+      bottom.textContent = top.textContent;
+    })();
   </script>
   <script src="js/occitanie.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
