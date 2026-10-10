@@ -219,3 +219,4 @@ html[data-theme="dark"] .rv-hint .rv-all { color: #9CC2EE; border-color: #9CC2EE
   .controls > * { order: 2; }
   .controls #prev-btn, .controls .controls-counter, .controls #next-btn { order: 1; }
 }
+.card > .info-grid { margin-top: 1.4rem; }

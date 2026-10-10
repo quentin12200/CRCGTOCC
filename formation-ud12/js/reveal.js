@@ -18,8 +18,9 @@
   var KEY = 'cgt_reveal';
   // Conteneurs dont chaque enfant est une étape
   var GROUPS = '.info-grid, .criteres, .chiffres, .branches, .programme, .orga-side';
-  // Toujours affichés : activité stagiaires, documents à remettre, lien vers le module
-  var ALWAYS = '.activity-container, .supports';
+  // Toujours affichés : activité stagiaires, documents à remettre, lien vers le module,
+  // programme de la journée
+  var ALWAYS = '.activity-container, .supports, .programme';
   var steps = {};    // index de slide -> [éléments]
   var shown = {};    // index de slide -> pile des éléments révélés
 
@@ -30,7 +31,7 @@
 
   /* ── Repérage des étapes ─────────────────────────────────── */
   function collect(el, out) {
-    if (el.matches(ALWAYS) || el.querySelector(':scope > .module-link')) return;
+    if (el.matches(ALWAYS) || el.querySelector(':scope > .module-link, :scope > .programme')) return;
     if (el.matches(GROUPS)) {
       Array.prototype.forEach.call(el.children, function (c) { out.push(c); });
     } else if (el.querySelector(GROUPS)) {
