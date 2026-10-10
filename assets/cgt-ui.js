@@ -258,7 +258,9 @@
     document.querySelectorAll('a[href]').forEach(function(a) {
       var mod = MODS[a.getAttribute('href')];
       if (!mod || (visited[mod.key] && visited[mod.key] >= mod.date)) return;
+      if (a.querySelector('.cgt-maj')) return; // déjà badgé (init appelée deux fois)
       var b = document.createElement('span');
+      b.className = 'cgt-maj';
       b.style.cssText = 'display:inline-block;margin-left:.35rem;background:#1A5FAD;color:#fff;font-size:.6rem;font-weight:700;font-family:"Inter",sans-serif;padding:.1em .4em;border-radius:3px;vertical-align:middle;letter-spacing:.5px;text-transform:uppercase';
       b.textContent = 'MÀJ';
       a.appendChild(b);
