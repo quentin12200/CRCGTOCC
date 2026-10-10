@@ -383,6 +383,31 @@
     }
 
 
+
+    /* ── NAVIGATION RAPIDE ET FAMILLES DE MODULES ── */
+    .quick-nav { display: flex; flex-wrap: wrap; gap: .5rem; margin: 0 0 1.75rem; }
+    .quick-nav a {
+      font-size: .8rem; font-weight: 600; text-decoration: none; color: var(--texte);
+      background: var(--fond-card); border: 1px solid var(--border-card); border-radius: 999px; padding: .45rem .95rem;
+      transition: border-color .15s, color .15s;
+    }
+    .quick-nav a:hover { border-color: var(--accent); color: var(--accent); }
+    .bloc { scroll-margin-top: 1.5rem; margin-bottom: 1rem; }
+    .section-sub { font-weight: 500; letter-spacing: .04em; text-transform: none; color: var(--texte-muted); }
+    .famille { margin: 0 0 1rem; }
+    .famille-titre {
+      font-family: 'Anton', sans-serif; font-weight: 400; font-size: 1.35rem; letter-spacing: .02em; color: var(--texte);
+      padding-left: .75rem; border-left: 5px solid var(--rouge); line-height: 1.25;
+    }
+    .famille-titre .famille-sub { font-family: 'Archivo', sans-serif; font-size: .72rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--texte-muted); margin-left: .5rem; }
+    .famille-titre--sst { border-left-color: #1A9B52; }
+    .modules-grid--famille { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .famille-desc { font-size: .875rem; color: var(--texte-muted); margin: .35rem 0 0 1.05rem; }
+    .card-links { list-style: none; display: flex; flex-direction: column; gap: .35rem; border-top: 1px solid var(--border-card); padding-top: .75rem; }
+    .card-links a { font-size: .8rem; font-weight: 600; color: var(--accent); text-decoration: none; display: inline-flex; gap: .4rem; }
+    .card-links a::before { content: '→'; }
+    .card-links a:hover { text-decoration: underline; }
+
     /* ── CARD ICON ── */
     .card-icon {
       width: 100%;
@@ -510,7 +535,7 @@
 
     /* ── RESPONSIVE ── */
     @media (max-width: 640px) {
-      .modules-grid { grid-template-columns: 1fr; }
+      .modules-grid, .modules-grid--famille { grid-template-columns: 1fr; }
       .ressources-grid { grid-template-columns: 1fr; }
     }
     @media (max-width: 520px) {
@@ -615,7 +640,7 @@
   </div>
   <div class="header-divider"></div>
   <div class="header-title">
-    <h1>Espace réservé aux formateurs AT/MP</h1>
+    <h1>Espace réservé aux formateurs</h1>
     <span>CGT Occitanie — Comité Régional, secteur privé</span>
   </div>
   <div class="access-badge">Accès réservé — CGT Occitanie</div>
@@ -648,14 +673,25 @@
 
 <main>
 
+  <nav class="quick-nav" aria-label="Sur cette page">
+    <a href="#modules">📚 Modules de formation</a>
+    <a href="#outils">🎯 Outils d'animation et d'évaluation</a>
+    <a href="#ressources-atmp">⚖️ Ressources AT/MP</a>
+  </nav>
+
   <div style="background:#fff;border-left:5px solid #E2001A;padding:1.1rem 1.4rem;margin-bottom:2rem">
     <div style="font-family:'Anton',sans-serif;font-size:.85rem;letter-spacing:.06em;text-transform:uppercase;color:#E2001A;margin-bottom:.5rem">Philosophie pédagogique CGT</div>
     <p style="font-size:.875rem;color:#1A1A1A;line-height:1.7">La formation syndicale CGT n'est pas une transmission neutre de règles juridiques. Elle est un outil d'émancipation et d'action collective : chaque droit individuel devient levier collectif, chaque obligation de l'employeur est assortie de sa sanction, chaque procédure individuelle ouvre sur l'action du CSE, de la F3SCT ou de la négociation. Le formateur ne délivre pas un cours — il arme des militants. L'objectif de chaque session : que chaque participant reparte avec au moins un outil concret utilisable dès le lendemain pour défendre un·e collègue.</p>
   </div>
 
+  <section id="modules" class="bloc">
   <div class="section-label">Modules de formation</div>
 
-  <div class="modules-grid">
+  <div class="famille">
+    <h3 class="famille-titre famille-titre--vs">Vie syndicale <small class="famille-sub">UD CGT Aveyron</small></h3>
+    <p class="famille-desc">Découvrir la CGT, puis faire vivre son syndicat.</p>
+  </div>
+  <div class="modules-grid modules-grid--famille">
     <div class="card">
       <div class="card-icon" style="background:linear-gradient(135deg,#C8102E 0%,#E2001A 60%,#FFD200 140%);">
         <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -674,33 +710,47 @@
         </div>
         <h2>Découvrir la CGT</h2>
         <p>Pour les nouveaux adhérent·es et les salarié·es pas encore syndiqué·es : les métiers des stagiaires, la CGT construite en partant du syndiqué (section, syndicat, UL, unions professionnelles, UD, fédérations, Confédération), la cotisation et la formation syndicale.</p>
-        <a class="btn-ouvrir" href="/formation-ud12/decouvrir-cgt.html" target="_blank">Ouvrir <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H4M10 2V8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <ul class="card-links" aria-label="Ressources du module">
+          <li><a href="/documents/Decouvrir_la_CGT_Guide_animateur.docx">Guide de l'animateur·ice (Word)</a></li>
+        </ul>
+        <a class="btn-ouvrir" href="/formation-ud12/decouvrir-cgt.html" target="_blank">Ouvrir la formation <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H4M10 2V8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
       </div>
     </div>
-
-
     <div class="card">
-      <div class="card-icon" style="background:linear-gradient(135deg,#1A3A6B 0%,#1A5FAD 100%);">
+      <div class="card-icon" style="background:linear-gradient(135deg,#7A0010 0%,#C8102E 100%);">
         <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect x="10" y="6" width="28" height="36" rx="3" stroke="white" stroke-width="2.5"/>
-          <line x1="16" y1="14" x2="32" y2="14" stroke="#FFD200" stroke-width="2.5" stroke-linecap="round"/>
-          <line x1="16" y1="21" x2="32" y2="21" stroke="white" stroke-width="2" stroke-linecap="round"/>
-          <line x1="16" y1="27" x2="26" y2="27" stroke="white" stroke-width="2" stroke-linecap="round"/>
-          <line x1="16" y1="33" x2="28" y2="33" stroke="white" stroke-width="2" stroke-linecap="round"/>
-          <rect x="6" y="10" width="5" height="28" rx="2" fill="#FFD200"/>
+          <circle cx="24" cy="15" r="6" stroke="white" stroke-width="2.5"/>
+          <circle cx="11" cy="21" r="4.5" stroke="white" stroke-width="2"/>
+          <circle cx="37" cy="21" r="4.5" stroke="white" stroke-width="2"/>
+          <path d="M13 40c0-6.08 4.92-11 11-11s11 4.92 11 11" stroke="#FFD200" stroke-width="2.5" stroke-linecap="round"/>
+          <path d="M4 37c0-4 3-7 7-7M44 37c0-4-3-7-7-7" stroke="white" stroke-width="2" stroke-linecap="round"/>
         </svg>
       </div>
       <div class="card-body">
         <div class="card-meta">
-          <span class="tag-duree">Nouveau · Scrollable</span>
-          <span class="tag-type">Carnet de formation</span>
+          <span class="tag-duree">1 journée</span>
+          <span class="tag-type">Formation interactive</span>
         </div>
-        <h2>Carnet de formation AT/MP</h2>
-        <p>Version scrollable de la formation — projetez et scrollez librement selon votre groupe. Chaque partie : moment fort, développement, cas pratique, point syndical CGT.</p>
-        <a class="btn-ouvrir" href="/carnet-atmp.html">Ouvrir <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H4M10 2V8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <h2>Fonctionnement statutaire d'un syndicat</h2>
+        <p>Rôle des adhérent·es, élu·es et mandaté·es, CE, bureau et SG, AG et congrès, cotisations, articulation syndicat / UL / UD / Fédé. Avec 4 modules interactifs et les ressources CGT (chartes, statuts types, guides).</p>
+        <ul class="card-links" aria-label="Ressources du module">
+          <li><a href="/documents/Fiche_descriptive_Fonctionnement_statutaire.docx">Fiche descriptive (Word)</a></li>
+          <li><a href="/documents/Aide_Memoire_Formateurs_CGT.docx">Aide-mémoire formateur·ices (Word)</a></li>
+          <li><a href="/documents/Support_Stagiaires_Objectifs_CGT.docx">Support stagiaire à imprimer (Word)</a></li>
+          <li><a href="/quiz-live-host.html?set=vie-syndicale">Quiz Live — Vie syndicale</a></li>
+          <li><a href="/quiz/quiz-vie-syndicale.html">Quiz solo — Vie syndicale</a></li>
+          <li><a href="/evaluation-resultats.html?f=vie-syndicale">Évaluation — Vie syndicale</a></li>
+        </ul>
+        <a class="btn-ouvrir" href="/formation-ud12/index.html" target="_blank">Ouvrir la formation <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H4M10 2V8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
       </div>
     </div>
+  </div>
 
+  <div class="famille">
+    <h3 class="famille-titre famille-titre--sst">Santé au travail, AT/MP et protection sociale</h3>
+    <p class="famille-desc">Défendre les accidenté·es et les malades, prévenir les risques. Secteur privé et fonction publique.</p>
+  </div>
+  <div class="modules-grid modules-grid--famille">
     <div class="card">
       <div class="card-icon" style="background:linear-gradient(135deg,#8B0012 0%,#E2001A 100%);">
         <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -717,10 +767,16 @@
         </div>
         <h2>Accidents du Travail &amp; Maladies Professionnelles</h2>
         <p>Régime AT/MP, reconnaissance, réparation, droits des accidentés et malades. Module complet pour militants et élus du CSE.</p>
-        <a class="btn-ouvrir" href="/presentations/Presentation_AT-MP_CGT.html" target="_blank">Ouvrir <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H4M10 2V8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <ul class="card-links" aria-label="Ressources du module">
+          <li><a href="/carnet-atmp.html">Carnet de formation (version scrollable)</a></li>
+          <li><a href="/deroulement.html">Déroulé minuté — 2 jours</a></li>
+          <li><a href="/argumentaire.html">Livret formateur — Argumentaire</a></li>
+          <li><a href="/exercices-atmp.html">Exercices &amp; ateliers</a></li>
+          <li><a href="/quiz-atmp.html">Quiz AT/MP solo</a></li>
+        </ul>
+        <a class="btn-ouvrir" href="/presentations/Presentation_AT-MP_CGT.html" target="_blank">Ouvrir la formation <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H4M10 2V8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
       </div>
     </div>
-
     <div class="card">
       <div class="card-icon" style="background:linear-gradient(135deg,#0D5C2E 0%,#1A9B52 100%);">
         <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -736,10 +792,9 @@
         </div>
         <h2>Prévention des risques — Diagnostic SST</h2>
         <p>Analyse des AT, DUER, plan de prévention, droits du CSE, droit d'alerte. Angle syndical CGT renforcé.</p>
-        <a class="btn-ouvrir" href="/presentations/Prevention_SST_CGT_Occitanie.html" target="_blank">Ouvrir <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H4M10 2V8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <a class="btn-ouvrir" href="/presentations/Prevention_SST_CGT_Occitanie.html" target="_blank">Ouvrir la formation <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H4M10 2V8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
       </div>
     </div>
-
     <div class="card">
       <div class="card-icon" style="background:linear-gradient(135deg,#5C3A0D 0%,#C87020 100%);">
         <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -755,7 +810,29 @@
         </div>
         <h2>Prévoyance &amp; Invalidité</h2>
         <p>Garanties de prévoyance collective, régimes d'invalidité, incapacité de travail et complémentaires santé en entreprise.</p>
-        <a class="btn-ouvrir" href="/presentations/Prevoyance_Invalidite_CGT_Occitanie.html" target="_blank">Ouvrir <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H4M10 2V8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <a class="btn-ouvrir" href="/presentations/Prevoyance_Invalidite_CGT_Occitanie.html" target="_blank">Ouvrir la formation <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H4M10 2V8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-icon" style="background:linear-gradient(135deg,#2D1A6B 0%,#5E35B1 100%);">
+        <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="8" y="20" width="32" height="22" rx="2" stroke="white" stroke-width="2.5"/>
+          <path d="M16 20V14a8 8 0 0 1 16 0v6" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+          <circle cx="24" cy="31" r="3" fill="#FFD200"/>
+          <line x1="24" y1="34" x2="24" y2="38" stroke="#FFD200" stroke-width="2.5" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="card-body">
+        <div class="card-meta">
+          <span class="tag-duree">Demi-journée</span>
+          <span class="tag-type">Présentation diaporama</span>
+        </div>
+        <h2>AT/MP dans la Fonction Publique</h2>
+        <p>Présentation complète FPE, FPT, FPH : accident de service, maladie professionnelle, droits, indemnisations, F3SCT, CNRACL. Angle militant CGT avec notes formateur pour chaque diapo.</p>
+        <ul class="card-links" aria-label="Ressources du module">
+          <li><a href="/guide-atmp-fp.html">Guide complet AT/MP Fonction publique</a></li>
+        </ul>
+        <a class="btn-ouvrir" href="/presentations/ATMP_Fonction_Publique_CGT.html" target="_blank">Ouvrir la formation <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H4M10 2V8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
       </div>
     </div>
 
@@ -775,114 +852,33 @@
       </a>
     </div>
     -->
-
   </div>
+  </section>
 
-  <div class="section-label">Vie syndicale — Formation UD CGT Aveyron</div>
-
-  <div class="modules-grid">
-    <div class="card">
-      <div class="card-icon" style="background:linear-gradient(135deg,#7A0010 0%,#C8102E 100%);">
-        <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="24" cy="15" r="6" stroke="white" stroke-width="2.5"/>
-          <circle cx="11" cy="21" r="4.5" stroke="white" stroke-width="2"/>
-          <circle cx="37" cy="21" r="4.5" stroke="white" stroke-width="2"/>
-          <path d="M13 40c0-6.08 4.92-11 11-11s11 4.92 11 11" stroke="#FFD200" stroke-width="2.5" stroke-linecap="round"/>
-          <path d="M4 37c0-4 3-7 7-7M44 37c0-4-3-7-7-7" stroke="white" stroke-width="2" stroke-linecap="round"/>
-        </svg>
-      </div>
-      <div class="card-body">
-        <div class="card-meta">
-          <span class="tag-duree">1 journée</span>
-          <span class="tag-type">Formation interactive</span>
-        </div>
-        <h2>Fonctionnement statutaire d'un syndicat</h2>
-        <p>Rôle des adhérent·es, élu·es et mandaté·es, CE, bureau et SG, AG et congrès, cotisations, articulation syndicat / UL / UD / Fédé. Avec 4 modules interactifs et les ressources CGT (chartes, statuts types, guides).</p>
-        <a class="btn-ouvrir" href="/formation-ud12/index.html" target="_blank">Ouvrir <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H4M10 2V8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-      </div>
-    </div>
-  </div>
-
+  <section id="outils" class="bloc">
+  <div class="section-label">Outils d'animation et d'évaluation <span class="section-sub">toutes formations</span></div>
   <div class="ressources-grid">
-    <a class="ressource-item" href="/quiz-live-host.html?set=vie-syndicale">
-      <div class="ressource-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
-      <div class="ressource-text"><span class="ressource-name">Quiz Live — Vie syndicale</span><span class="ressource-desc">15 questions · QR code · classement en direct</span></div>
-    </a>
-    <a class="ressource-item" href="/quiz/quiz-vie-syndicale.html">
-      <div class="ressource-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
-      <div class="ressource-text"><span class="ressource-name">Quiz solo — Vie syndicale</span><span class="ressource-desc">Auto-évaluation stagiaire · correction commentée</span></div>
-    </a>
-    <a class="ressource-item" href="/evaluation-resultats.html?f=vie-syndicale">
-      <div class="ressource-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v6"/><path d="m22 13-5 5-2-2"/><path d="M8 10h8M8 14h4"/></svg></div>
-      <div class="ressource-text"><span class="ressource-name">Évaluation — Vie syndicale</span><span class="ressource-desc">QR code stagiaires · résultats séparés des formations AT/MP</span></div>
-    </a>
-  </div>
-
-  <div class="section-label">Fonction publique — AT/MP des 3 versants</div>
-
-  <div class="modules-grid">
-    <div class="card">
-      <div class="card-icon" style="background:linear-gradient(135deg,#2D1A6B 0%,#5E35B1 100%);">
-        <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect x="8" y="20" width="32" height="22" rx="2" stroke="white" stroke-width="2.5"/>
-          <path d="M16 20V14a8 8 0 0 1 16 0v6" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
-          <circle cx="24" cy="31" r="3" fill="#FFD200"/>
-          <line x1="24" y1="34" x2="24" y2="38" stroke="#FFD200" stroke-width="2.5" stroke-linecap="round"/>
-        </svg>
-      </div>
-      <div class="card-body">
-        <div class="card-meta">
-          <span class="tag-duree">Demi-journée</span>
-          <span class="tag-type">Présentation diaporama</span>
-        </div>
-        <h2>AT/MP dans la Fonction Publique</h2>
-        <p>Présentation complète FPE, FPT, FPH : accident de service, maladie professionnelle, droits, indemnisations, F3SCT, CNRACL. Angle militant CGT avec notes formateur pour chaque diapo.</p>
-        <a class="btn-ouvrir" href="/presentations/ATMP_Fonction_Publique_CGT.html" target="_blank">Ouvrir <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H4M10 2V8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-      </div>
-    </div>
-  </div>
-
-  <div class="section-label">Ressources Fonction Publique</div>
-
-  <div class="ressources-grid">
-    <a class="ressource-item" href="/guide-atmp-fp.html">
-      <div class="ressource-icon">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-      </div>
-      <div class="ressource-text">
-        <span class="ressource-name">Guide complet AT/MP Fonction Publique</span>
-        <span class="ressource-desc">3 versants · procédures · droits · statistiques · contacts</span>
-      </div>
-    </a>
-  </div>
-
-  <div class="section-label">Ressources formations AT/MP</div>
-
-  <!-- Groupe 1 : Préparer l'animation -->
-  <div class="ressource-group">
-    <div class="ressource-group-header">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-      Préparer l'animation
-    </div>
-    <div class="ressources-grid">
-      <a class="ressource-item" href="/deroulement.html">
-        <div class="ressource-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
-        <div class="ressource-text"><span class="ressource-name">Déroulé AT/MP — 2 jours</span><span class="ressource-desc">Planning minuté diapo par diapo</span></div>
+    <a class="ressource-item" href="/quiz-live-host.html">
+        <div class="ressource-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+        <div class="ressource-text"><span class="ressource-name">Quiz Live — Formateur</span><span class="ressource-desc">QR code · réponses en direct · classement</span></div>
       </a>
-      <a class="ressource-item" href="/argumentaire.html">
-        <div class="ressource-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></div>
-        <div class="ressource-text"><span class="ressource-name">Livret formateur — Argumentaire</span><span class="ressource-desc">Notes et angles CGT pour chaque diapo</span></div>
+    <a class="ressource-item" href="/evaluation-resultats.html">
+        <div class="ressource-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v6"/><path d="m22 13-5 5-2-2"/><path d="M8 10h8M8 14h4"/></svg></div>
+        <div class="ressource-text"><span class="ressource-name">Évaluation formation</span><span class="ressource-desc">QR code stagiaires · notes 1–10 · résultats temps réel</span></div>
       </a>
-      <a class="ressource-item" href="/exercices-atmp.html">
-        <div class="ressource-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></div>
-        <div class="ressource-text"><span class="ressource-name">Exercices &amp; Ateliers AT/MP</span><span class="ressource-desc">Cas pratiques · Rôles · Calculs · Arbre des causes</span></div>
-      </a>
-      <a class="ressource-item" href="/calendrier-formations.html">
+    <a class="ressource-item" href="/calendrier-formations.html">
         <div class="ressource-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><rect x="7" y="14" width="3" height="3" fill="currentColor" rx="0.5"/><rect x="14" y="14" width="3" height="3" fill="currentColor" rx="0.5"/></svg></div>
         <div class="ressource-text"><span class="ressource-name">Calendrier formations — PDF A3</span><span class="ressource-desc">Planifier les sessions · export PDF · impression</span></div>
       </a>
-    </div>
+    <a class="ressource-item" href="/quiz/quiz-handicap.html">
+        <div class="ressource-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+        <div class="ressource-text"><span class="ressource-name">Quiz Handicap &amp; Emploi</span><span class="ressource-desc">Agefiph, RQTH, obligations employeur · auto-évaluation</span></div>
+      </a>
   </div>
+  </section>
+
+  <section id="ressources-atmp" class="bloc">
+  <div class="section-label">Ressources AT/MP</div>
 
   <!-- Groupe 2 : Monter le dossier -->
   <div class="ressource-group">
@@ -961,32 +957,7 @@
       </a>
     </div>
   </div>
-
-  <!-- Groupe 5 : Évaluation & Quiz -->
-  <div class="ressource-group">
-    <div class="ressource-group-header">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-      Évaluation &amp; Quiz
-    </div>
-    <div class="ressources-grid">
-      <a class="ressource-item" href="/quiz-live-host.html">
-        <div class="ressource-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
-        <div class="ressource-text"><span class="ressource-name">Quiz Live — Formateur</span><span class="ressource-desc">QR code · réponses en direct · classement</span></div>
-      </a>
-      <a class="ressource-item" href="/evaluation-resultats.html">
-        <div class="ressource-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v6"/><path d="m22 13-5 5-2-2"/><path d="M8 10h8M8 14h4"/></svg></div>
-        <div class="ressource-text"><span class="ressource-name">Évaluation formation</span><span class="ressource-desc">QR code stagiaires · notes 1–10 · résultats temps réel</span></div>
-      </a>
-      <a class="ressource-item" href="/quiz-atmp.html">
-        <div class="ressource-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
-        <div class="ressource-text"><span class="ressource-name">Quiz AT/MP solo</span><span class="ressource-desc">12 questions · auto-évaluation individuelle</span></div>
-      </a>
-      <a class="ressource-item" href="/quiz/quiz-handicap.html">
-        <div class="ressource-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
-        <div class="ressource-text"><span class="ressource-name">Quiz Handicap &amp; Emploi</span><span class="ressource-desc">Agefiph, RQTH, obligations employeur · auto-évaluation</span></div>
-      </a>
-    </div>
-  </div>
+  </section>
 
 </main>
 
