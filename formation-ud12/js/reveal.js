@@ -1,8 +1,9 @@
 /**
  * Révélation pas à pas des slides, comme un diaporama.
  *
- * En arrivant sur une séquence, seuls le titre, l'horaire et l'objectif sont
- * visibles : les contenus sont remplacés par des cadres vides. Chaque appui sur
+ * En arrivant sur une séquence, le titre, l'horaire, l'objectif, l'activité
+ * stagiaires et les documents à remettre sont visibles ; les autres contenus
+ * sont remplacés par des cadres vides. Chaque appui sur
  * « Suivant », → , Espace ou Page suivante (télécommande) révèle l'élément
  * suivant ; un clic sur un cadre le révèle directement. Quand tout est affiché,
  * « Suivant » passe à la séquence suivante. « Précédent » masque le dernier
@@ -17,6 +18,8 @@
   var KEY = 'cgt_reveal';
   // Conteneurs dont chaque enfant est une étape
   var GROUPS = '.info-grid, .criteres, .chiffres, .branches, .programme, .orga-side';
+  // Toujours affichés : activité stagiaires, documents à remettre, lien vers le module
+  var ALWAYS = '.activity-container, .supports';
   var steps = {};    // index de slide -> [éléments]
   var shown = {};    // index de slide -> pile des éléments révélés
 
@@ -27,6 +30,7 @@
 
   /* ── Repérage des étapes ─────────────────────────────────── */
   function collect(el, out) {
+    if (el.matches(ALWAYS) || el.querySelector(':scope > .module-link')) return;
     if (el.matches(GROUPS)) {
       Array.prototype.forEach.call(el.children, function (c) { out.push(c); });
     } else if (el.querySelector(GROUPS)) {
@@ -72,8 +76,14 @@
       + '<button type="button" class="rv-all">Tout afficher</button>';
     hint.querySelector('.rv-next').addEventListener('click', function () { revealNext(i); });
     hint.querySelector('.rv-all').addEventListener('click', function () { revealAll(i); });
-    var tc = card.querySelector('.time-control');
-    card.insertBefore(hint, tc || null);
+    // Juste après les contenus à révéler, avant l'activité et les documents
+    var obj = card.querySelector(':scope > .objectif');
+    var anchor = null;
+    for (var el = obj.nextElementSibling; el; el = el.nextElementSibling) {
+      if (el.querySelector('.rv-step') || el.classList.contains('rv-step')) anchor = null;
+      else if (!anchor) anchor = el;
+    }
+    card.insertBefore(hint, anchor);
   }
 
   /* ── États ───────────────────────────────────────────────── */
