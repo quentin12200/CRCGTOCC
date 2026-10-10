@@ -158,3 +158,64 @@ html[data-theme="dark"] .branche--terr { background: #13301E; }
 .toc { max-width: 100vw; visibility: hidden; transition: transform .3s ease, visibility 0s linear .3s; }
 .toc.active { visibility: visible; transition: transform .3s ease; }
 html { overflow-x: hidden; }
+
+/* ── Révélation pas à pas (js/reveal.js) ───────────────────── */
+.rv-step { scroll-margin: 90px 0 110px; }
+.rv-on .rv-step:not(.rv-in) {
+  position: relative; cursor: pointer; color: transparent !important;
+  background: transparent !important; box-shadow: none !important;
+  border: 2px dashed var(--oc-border-card) !important; border-radius: 10px;
+  min-height: 3rem; transition: border-color .2s;
+}
+.rv-on .rv-step:not(.rv-in) > *,
+.rv-on .rv-step:not(.rv-in) ::marker { visibility: hidden; }
+/* Cartes : le titre reste visible, comme une question posée au groupe */
+.rv-on .info-card.rv-step:not(.rv-in) > h4 { visibility: visible; color: var(--oc-texte); }
+/* 7 critères : le numéro reste visible */
+.rv-on .criteres li.rv-step:not(.rv-in)::before { opacity: .45; }
+.rv-on .rv-step:not(.rv-in)::after {
+  content: '?'; position: absolute; right: .8rem; bottom: .4rem;
+  font: 400 1.6rem/1 'Anton', sans-serif; color: var(--oc-texte-muted); opacity: .5;
+}
+.rv-on .rv-step:not(.rv-in):hover { border-color: var(--oc-accent) !important; }
+.rv-on .rv-step:not(.rv-in):hover::after { opacity: 1; color: var(--oc-accent); }
+.rv-on .rv-step.rv-in { animation: rv-in .45s ease both; }
+@keyframes rv-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+
+.rv-hint { display: none; }
+.rv-on .rv-hint {
+  display: flex; flex-wrap: wrap; align-items: center; gap: .6rem; margin: 1.2rem 0 0;
+  padding: .6rem .8rem; border-radius: 10px; background: var(--oc-fond); border: 1px solid var(--oc-border-card);
+}
+.rv-hint button {
+  font: inherit; font-weight: 700; cursor: pointer; border-radius: 8px; padding: .45rem .9rem;
+  border: 1px solid var(--oc-accent); background: var(--oc-accent); color: #fff;
+}
+.rv-hint .rv-all { background: transparent; color: var(--oc-accent); margin-left: auto; }
+.rv-hint .rv-count { font-size: .88rem; color: var(--oc-texte-muted); font-variant-numeric: tabular-nums; }
+.rv-hint.rv-done .rv-next, .rv-hint.rv-done .rv-all { display: none; }
+#reveal-btn[aria-pressed="true"] { background: var(--oc-accent); color: #fff; }
+html[data-theme="dark"] .rv-hint .rv-all { color: #9CC2EE; border-color: #9CC2EE; }
+
+@media (prefers-reduced-motion: reduce) { .rv-on .rv-step.rv-in { animation: none; } }
+@media print {
+  .rv-hint { display: none !important; }
+  .rv-on .rv-step:not(.rv-in) { color: inherit !important; border: 0 !important; background: none !important; }
+  .rv-on .rv-step:not(.rv-in) > *, .rv-on .rv-step:not(.rv-in) ::marker { visibility: visible; }
+  .rv-on .rv-step:not(.rv-in)::after { content: none; }
+}
+/* Mobile : barre du bas plus compacte (les modules restent accessibles en bas de page,
+   et « Tout afficher » dans chaque séquence) */
+@media (max-width: 760px) {
+  #modules-btn, #reveal-btn { display: none; }
+}
+@media (max-width: 760px) {
+  .controls { padding: .45rem .5rem !important; gap: .3rem !important; }
+  .controls button { padding: .45rem .55rem !important; letter-spacing: .02em; font-size: .7rem !important; }
+  .controls .controls-counter { min-width: 0; padding: 0 .2rem; }
+}
+@media (max-width: 760px) {
+  /* Précédent · compteur · Suivant sur la première ligne, les outils dessous */
+  .controls > * { order: 2; }
+  .controls #prev-btn, .controls .controls-counter, .controls #next-btn { order: 1; }
+}

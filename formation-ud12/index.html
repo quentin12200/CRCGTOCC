@@ -569,7 +569,8 @@
     <button id="resources-btn" type="button" title="Documents de la formation">📚 Ressources</button>
     <button id="glossary-btn" type="button" title="Glossaire syndical">📖 Glossaire</button>
     <button id="tools-btn" type="button" onclick="ouvrirOutils()" title="Outils d'animation (touche O)">🎲 Outils</button>
-    <button type="button" onclick="document.getElementById('modules').scrollIntoView({behavior:'smooth'})" title="Modules interactifs">🧩 Modules</button>
+    <button id="modules-btn" type="button" onclick="document.getElementById('modules').scrollIntoView({behavior:'smooth'})" title="Modules interactifs">🧩 Modules</button>
+    <button id="reveal-btn" type="button" aria-pressed="true">🎬 Pas à pas</button>
     <span class="controls-sep" aria-hidden="true"></span>
     <button id="next-btn" type="button" onclick="next()">Suivant ➡</button>
   </nav>
@@ -862,5 +863,6 @@
   <script src="js/occitanie.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <script src="js/outils-animation.js"></script>
+  <script src="js/reveal.js"></script>
 </body>
 </html>
