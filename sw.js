@@ -1,4 +1,4 @@
-const CACHE = 'cgt-atmp-v21';
+const CACHE = 'cgt-atmp-v22';
 const PRECACHE = [
   '/', '/index.html', '/stagiaires.html', '/carnet-atmp.html',
   '/fiche-delegue.html', '/argumentaire.html', '/lexique.html',

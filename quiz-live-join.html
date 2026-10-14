@@ -372,7 +372,7 @@
     <div class="box-header">
       <span class="cgt-badge">CGT</span>
       <h1 id="join-title">Quiz AT/MP<br>Formation en direct</h1>
-      <script>if(new URLSearchParams(location.search).get('set')==='vie-syndicale'){document.getElementById('join-title').innerHTML='Quiz Vie syndicale<br>Formation en direct';document.title='Quiz Live Vie syndicale — CGT';}</script>
+      <script>(function(){var s=new URLSearchParams(location.search).get('set');var t={'vie-syndicale':'Quiz Vie syndicale','atmp-j1':'Quiz AT/MP — Jour 1'}[s];if(t){document.getElementById('join-title').innerHTML=t+'<br>Formation en direct';document.title=t+' Live — CGT';}})();</script>
     </div>
     <div class="stripe"></div>
     <div class="box-body">
