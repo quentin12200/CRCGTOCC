@@ -1,4 +1,4 @@
-const CACHE = 'cgt-atmp-v22';
+const CACHE = 'cgt-atmp-v23';
 const PRECACHE = [
   '/', '/index.html', '/stagiaires.html', '/carnet-atmp.html',
   '/fiche-delegue.html', '/argumentaire.html', '/lexique.html',
@@ -24,13 +24,31 @@ self.addEventListener('activate', e => {
 });
 self.addEventListener('fetch', e => {
   if (e.request.method !== 'GET') return;
+  const url = new URL(e.request.url);
+
+  // Fichiers du site (pages, scripts, documents) : réseau d'abord, pour que chaque
+  // mise à jour soit visible tout de suite ; le cache ne sert que hors connexion.
+  if (url.origin === self.location.origin) {
+    e.respondWith(
+      fetch(e.request.url, { cache: 'no-cache', credentials: 'same-origin' }).then(resp => {
+        if (resp.ok) {
+          const clone = resp.clone();
+          caches.open(CACHE).then(c => c.put(e.request, clone));
+        }
+        return resp;
+      }).catch(() => caches.match(e.request).then(cached => cached || caches.match('/404.html')))
+    );
+    return;
+  }
+
+  // Ressources externes (polices, bibliothèques) : cache d'abord
   e.respondWith(
     caches.match(e.request).then(cached => cached ||
       fetch(e.request).then(resp => {
         const clone = resp.clone();
         caches.open(CACHE).then(c => c.put(e.request, clone));
         return resp;
-      }).catch(() => caches.match('/404.html'))
+      })
     )
   );
 });

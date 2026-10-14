@@ -64,7 +64,8 @@
       'atmp': { questions: QUESTIONS_ATMP, title: 'Quiz AT/MP' }
     };
     const asked = new URLSearchParams(location.search).get('set');
-    const SET = SETS[asked] ? asked : 'atmp';
+    // Si la banque demandée n'est pas chargée, on retombe sur le quiz AT/MP plutôt que de planter
+    const SET = SETS[asked] && Array.isArray(SETS[asked].questions) ? asked : 'atmp';
     const QUESTIONS = SETS[SET].questions;
     const SET_TITLE = SETS[SET].title;
     document.addEventListener('DOMContentLoaded', () => {
