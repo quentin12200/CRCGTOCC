@@ -271,7 +271,7 @@ const QUESTIONS = [
     q: "Quel est le délai pour engager une action en faute inexcusable de l'employeur ?",
     choices: ["6 mois après la consolidation", "1 an après l'accident", "2 ans (prescription biennale)", "5 ans"],
     correct: 2,
-    explication: "La prescription est de <strong>2 ans</strong> (art. L.452-1 CSS). Il faut agir rapidement — le délai peut courir à partir de la date de consolidation ou de la décision définitive de la CPAM. L'appui de l'UD CGT est indispensable."
+    explication: "La prescription est de <strong>2 ans</strong> (art. L.431-2 CSS). Il faut agir rapidement — le délai court notamment à partir de la fin du versement des indemnités journalières ou de la reconnaissance du caractère professionnel. L'appui de l'UD CGT est indispensable."
   },
   {
     q: "Si la CPAM ne prend pas de décision dans le délai légal, que se passe-t-il ?",
@@ -280,10 +280,10 @@ const QUESTIONS = [
     explication: "Le <strong>silence de la CPAM vaut acceptation</strong> (art. R.441-10 CSS). Le délai est de 30 jours dans les cas simples, porté à 90 jours en cas de réserves ou d'enquête. C'est un atout important pour la victime — mais il ne faut pas relancer inutilement la CPAM."
   },
   {
-    q: "Quelle catégorie d'invalidité correspond à un salarié ne pouvant plus travailler dans des conditions normales ?",
-    choices: ["Catégorie 1", "Catégorie 2", "Catégorie 3", "Invalidité totale hors catégorie"],
-    correct: 1,
-    explication: "La <strong>catégorie 2</strong> correspond à l'incapacité d'exercer une profession dans des conditions normales. Pension = 50 % du salaire annuel moyen. Le maintien dans l'emploi avec une adaptation significative du poste reste possible, et la pension peut être cumulée avec des revenus d'activité dans certaines limites. La catégorie 1 désigne quelqu'un capable d'exercer une activité à temps réduit (30 % du SAM). La catégorie 3 est la 2 avec nécessité d'aide d'une tierce personne."
+    q: "Après la consolidation, qui fixe le taux d'incapacité permanente partielle (IPP) ?",
+    choices: ["Le médecin-conseil de la CPAM", "Le médecin du travail", "L'employeur", "Le médecin traitant"],
+    correct: 0,
+    explication: "Le taux d'IPP est fixé par le <strong>médecin-conseil de la CPAM</strong>, à l'aide d'un barème indicatif. Il est <strong>contestable</strong> : préparer la contestation avec l'appui du syndicat et du médecin traitant."
   },
   {
     q: "Qu'est-ce que la faute inexcusable de l'employeur ouvre comme droits supplémentaires ?",
@@ -305,22 +305,22 @@ const QUESTIONS = [
   },
   {
     q: "Le Document Unique d'Évaluation des Risques Professionnels (DUERP) doit être mis à jour :",
-    choices: ["Tous les 5 ans", "Uniquement après un accident grave", "Au minimum une fois par an et après tout accident grave", "À la demande de l'inspection du travail uniquement"],
+    choices: ["Tous les 5 ans", "Uniquement après un accident grave", "Au moins une fois par an (dès 11 salarié·es) et à chaque changement important", "À la demande de l'inspection du travail uniquement"],
     correct: 2,
-    explication: "Le <strong>DUERP</strong> doit être mis à jour <strong>au minimum une fois par an</strong>, ainsi qu'après tout accident grave ou modification importante des conditions de travail (art. R.4121-1 C. trav.). Le CSE doit être consulté lors de chaque mise à jour. C'est un levier essentiel pour la prévention."
+    explication: "Le <strong>DUERP</strong> est mis à jour <strong>au moins une fois par an</strong> dans les entreprises d'au moins 11 salarié·es, et dans tous les cas lors de tout changement important des conditions de travail ou quand une information nouvelle sur un risque est connue — un accident grave en fait partie (art. R.4121-2 C. trav.). Le CSE doit être consulté lors de chaque mise à jour. C'est un levier essentiel pour la prévention."
   },
-  { q: "Quel délai a l'employeur pour déclarer un AT à la CPAM ?", choices: ["24 heures", "48 heures (hors dim. et jours fériés)", "5 jours ouvrés", "8 jours calendaires"], correct: 1 },
+  { q: "Dans quel délai le salarié doit-il informer l'employeur de son accident ?", choices: ["24 heures", "48 heures", "8 jours", "1 mois"], correct: 0 },
   { q: "Combien de jours de carence pour les IJ AT/MP ?", choices: ["3 jours", "1 jour", "Aucun — dès le 1er jour", "7 jours"], correct: 2 },
   { q: "Qu'est-ce que la date de consolidation ?", choices: ["Date de l'accident", "Date de déclaration CPAM", "Date où l'état de santé est stabilisé", "Date de reprise du travail"], correct: 2 },
-  { q: "Un accident de trajet bénéficie-t-il des mêmes droits qu'un AT ?", choices: ["Oui, exactement les mêmes", "Oui sauf la faute inexcusable", "Non, remboursé comme maladie ordinaire", "Non, aucune prise en charge"], correct: 1 },
+  { q: "Un accident de trajet est-il traité comme un accident du travail ?", choices: ["Oui, exactement de la même façon", "Oui pour les soins, les IJ et la rente, mais sans la protection contre le licenciement ni la faute inexcusable", "Non, remboursé comme une maladie ordinaire", "Non, aucune prise en charge"], correct: 1 },
   { q: "Que signifie MP 'hors tableau' ?", choices: ["Maladie non reconnue", "Reconnue via CRRMP sans être listée aux tableaux", "Maladie contractée hors travail", "Non prise en charge par la SS"], correct: 1 },
-  { q: "La faute inexcusable ouvre droit à :", choices: ["Doublement des IJ uniquement", "Majoration rente + réparation préjudices personnels", "Remboursement frais d'avocat", "Mise en cause pénale automatique"], correct: 1 },
-  { q: "Quel document l'employeur remet au salarié après un AT ?", choices: ["Un certificat médical", "La feuille d'accident du travail", "Un avenant au contrat", "Une déclaration sur l'honneur"], correct: 1 },
-  { q: "Qui peut déclencher le droit d'alerte pour danger grave et imminent ?", choices: ["Uniquement le secrétaire du CSE", "Tout élu du CSE individuellement", "Le médecin du travail uniquement", "L'inspection du travail"], correct: 1 },
-  { q: "Combien de tableaux de maladies professionnelles existent (régime général) ?", choices: ["57", "99", "120", "145"], correct: 1 },
-  { q: "À quel seuil d'IPP la rente AT/MP est versée sous forme de capital ?", choices: ["En dessous de 5 %", "En dessous de 10 %", "En dessous de 20 %", "En dessous de 25 %"], correct: 1 },
+  { q: "En cas de faute inexcusable, jusqu'où la rente peut-elle être majorée ?", choices: ["De 20 % au maximum", "De 50 % au maximum", "Au maximum : calculée sur le taux d'IPP réel, sans dépasser le salaire", "Jusqu'au double du salaire annuel"], correct: 2 },
+  { q: "De combien de temps la CPAM dispose-t-elle pour statuer sur une maladie professionnelle ?", choices: ["30 jours francs", "120 jours francs", "6 mois", "1 an"], correct: 1 },
+  { q: "Qui peut déclencher le droit d'alerte pour danger grave et imminent ?", choices: ["Uniquement le secrétaire du CSE", "Tout membre de la délégation du personnel au CSE, individuellement", "Le médecin du travail uniquement", "L'inspection du travail"], correct: 1 },
+  { q: "IPP de 12 %, salaire annuel de 22 000 €. Sur quel taux la rente est-elle calculée (taux utile) ?", choices: ["6 %", "12 %", "8 %", "18 %"], correct: 0 },
+  { q: "Comment un employeur fait-il baisser durablement sa cotisation AT/MP ?", choices: ["Il ne peut pas : le taux est fixe", "En réduisant les accidents et les maladies : le taux suit sa sinistralité", "En ne déclarant pas les accidents", "En changeant de convention collective"], correct: 1 },
   { q: "L'inaptitude d'origine professionnelle entraîne :", choices: ["Licenciement automatique", "Obligation de reclassement ou licenciement avec indemnité doublée", "Mise en retraite anticipée", "Rupture conventionnelle imposée"], correct: 1 },
-  { q: "Délai de prescription pour une maladie professionnelle ?", choices: ["1 an après diagnostic", "2 ans à partir de la cessation du travail ou constatation médicale", "5 ans", "10 ans"], correct: 1 }
+  { q: "Quel est le délai pour déclarer une maladie professionnelle ?", choices: ["1 an après le diagnostic", "2 ans à partir du certificat médical qui fait le lien entre la maladie et le travail", "5 ans", "10 ans"], correct: 1 }
 ];
 
 let current = 0;
