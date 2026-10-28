@@ -32,6 +32,49 @@
     let myScore = 0;
     let totalQ = 12;
     let myLastCorrect = false;
+    let revealedQ = -1;       // évite de compter deux fois la même révélation
+    let tempsEcoule = false;  // réponses bloquées à la fin des 40 s
+
+    // Chrono : le formateur publie le temps restant, on décompte localement
+    let chrono = { phase: 'none', q: -1, duree: 0, restant: 0, pause: false, fin: 0 };
+    let chronoTick = null;
+
+    function majChrono(t) {
+      if (!t) return;
+      chrono = { ...t, fin: Date.now() + (t.restant || 0) * 1000 };
+      if (!chronoTick) chronoTick = setInterval(afficherChrono, 200);
+      afficherChrono();
+    }
+
+    function afficherChrono() {
+      const box = document.getElementById('chrono-join');
+      if (!box) return;
+      const actif = (chrono.phase === 'question' || chrono.phase === 'reveal') && chrono.q === currentQ;
+      box.classList.toggle('hidden', !actif);
+      if (!actif) return;
+      const restant = chrono.pause ? chrono.restant : Math.max(0, (chrono.fin - Date.now()) / 1000);
+      const secs = Math.ceil(restant);
+      box.classList.toggle('chrono-reveal', chrono.phase === 'reveal');
+      box.classList.toggle('chrono-urgent', chrono.phase === 'question' && secs <= 10);
+      box.classList.toggle('chrono-paused', !!chrono.pause);
+      document.getElementById('chrono-join-num').textContent = secs;
+      document.getElementById('chrono-join-label').textContent = chrono.pause
+        ? '⏸ Pause'
+        : (chrono.phase === 'reveal' ? 'Question suivante dans' : 'Temps restant');
+      document.getElementById('chrono-join-fill').style.width = (chrono.duree ? restant / chrono.duree * 100 : 0) + '%';
+      if (chrono.phase === 'question' && !chrono.pause && restant <= 0 && !answered && !tempsEcoule) bloquerReponses();
+    }
+
+    function bloquerReponses() {
+      tempsEcoule = true;
+      document.querySelectorAll('.choice-btn').forEach(b => b.disabled = true);
+      const w = document.getElementById('wait-answer');
+      const aRepondu = !!document.querySelector('.choice-btn.selected');
+      w.innerHTML = aRepondu
+        ? '<span class="wait-dot"></span> Temps écoulé — votre réponse est enregistrée.'
+        : '⏱ Temps écoulé — pas de réponse pour cette question.';
+      w.classList.remove('hidden');
+    }
 
     function uid_gen() {
       return Math.random().toString(36).substring(2, 10);
@@ -65,13 +108,16 @@
         if (data.status === 'question' && data.currentQ !== currentQ) {
           currentQ = data.currentQ;
           answered = false;
+          tempsEcoule = false;
           myLastCorrect = false;
           afficherQuestion(data);
-        } else if (data.status === 'reveal' && data.correctIndex !== undefined && data.correctIndex >= 0) {
+        } else if (data.status === 'reveal' && data.correctIndex !== undefined && data.correctIndex >= 0 && data.currentQ !== revealedQ) {
+          revealedQ = data.currentQ;
           afficherReveal(data.correctIndex, data.scores, data.participants);
         } else if (data.status === 'scoreboard') {
           afficherScore(data.scores);
         }
+        majChrono(data.timer);
       });
     }
 
@@ -97,7 +143,9 @@
           <span class="cl-text">${c}</span>
         </button>`
       ).join('');
-      document.getElementById('wait-answer').classList.add('hidden');
+      const w = document.getElementById('wait-answer');
+      w.innerHTML = '<span class="wait-dot"></span> Réponse envoyée — attendez la correction…';
+      w.classList.add('hidden');
     }
 
     function afficherReveal(correctIndex, scores, participants) {
@@ -161,7 +209,7 @@
     }
 
     async function choisir(idx) {
-      if (answered) return; // bloqué après révélation seulement
+      if (answered || tempsEcoule) return; // bloqué après révélation ou à la fin du temps
       const btns = document.querySelectorAll('.choice-btn');
       btns.forEach(b => b.classList.remove('selected'));
       btns[idx].classList.add('selected');
@@ -291,6 +339,16 @@
     }
 
     /* CHOIX — plus grands, feedback clair */
+    .chrono-join { margin: .2rem 0 .1rem; }
+    .chrono-join-head { display: flex; align-items: baseline; justify-content: space-between; font-size: .72rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--texte-muted); }
+    .chrono-join-num { font-family: 'Anton', sans-serif; font-size: 1.8rem; color: var(--accent); letter-spacing: 0; font-variant-numeric: tabular-nums; }
+    .chrono-join-track { height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; margin-top: .25rem; }
+    .chrono-join-fill { height: 100%; width: 100%; background: var(--accent); transition: width .2s linear; }
+    .chrono-join.chrono-urgent .chrono-join-num { color: var(--rouge); }
+    .chrono-join.chrono-urgent .chrono-join-fill { background: var(--rouge); }
+    .chrono-join.chrono-reveal .chrono-join-num { color: var(--vert); }
+    .chrono-join.chrono-reveal .chrono-join-fill { background: var(--vert); }
+    .chrono-join.chrono-paused .chrono-join-num, .chrono-join.chrono-paused .chrono-join-fill { opacity: .45; }
     .choices-join { display: flex; flex-direction: column; gap: .6rem; }
     .choice-btn {
       background: var(--fond); border: 2px solid var(--border);
@@ -400,6 +458,10 @@
       <div id="question-screen" class="hidden">
         <div class="q-prog-wrap"><div class="q-prog-fill" id="q-prog-fill" style="width:0%"></div></div>
         <div class="q-num-join" id="q-num-join">Question 1 / —</div>
+        <div id="chrono-join" class="chrono-join hidden">
+          <div class="chrono-join-head"><span id="chrono-join-label">Temps restant</span><span class="chrono-join-num" id="chrono-join-num">40</span></div>
+          <div class="chrono-join-track"><div class="chrono-join-fill" id="chrono-join-fill"></div></div>
+        </div>
         <div class="q-text-join" id="q-text-join"></div>
         <div class="choices-join" id="choices-join"></div>
         <div id="wait-answer" class="hidden"><span class="wait-dot"></span> Réponse envoyée — attendez la correction…</div>

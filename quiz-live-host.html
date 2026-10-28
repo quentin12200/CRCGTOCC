@@ -83,6 +83,97 @@
     let scores = {};
     let revealed = false;
 
+    // ── Chronomètre : 40 s pour répondre, puis 8 s d'affichage de la réponse avant la question suivante
+    const DUREE_QUESTION = 40;
+    const DUREE_REPONSE = 8;
+    let timerPhase = null;      // 'question' | 'reveal' | null
+    let timerDuree = 0;
+    let timerRestant = 0;       // secondes
+    let timerFin = 0;           // horodatage de fin (ms) quand le chrono tourne
+    let timerPause = false;
+    let timerTick = null;
+
+    function demarrerChrono(phase, duree) {
+      arreterChrono();
+      timerPhase = phase;
+      timerDuree = duree;
+      timerRestant = duree;
+      timerPause = false;
+      timerFin = Date.now() + duree * 1000;
+      timerTick = setInterval(tickChrono, 200);
+      afficherChrono();
+      publierChrono();
+    }
+
+    function arreterChrono() {
+      if (timerTick) clearInterval(timerTick);
+      timerTick = null;
+      timerPhase = null;
+    }
+
+    function tickChrono() {
+      if (timerPause || !timerPhase) return;
+      timerRestant = Math.max(0, (timerFin - Date.now()) / 1000);
+      afficherChrono();
+      if (timerRestant <= 0) {
+        const phase = timerPhase;
+        arreterChrono();
+        if (phase === 'question') reveler();
+        else if (phase === 'reveal') question_suivante();
+      }
+    }
+
+    function basculerPause() {
+      if (!timerPhase) return;
+      if (timerPause) {
+        timerPause = false;
+        timerFin = Date.now() + timerRestant * 1000;
+      } else {
+        timerRestant = Math.max(0, (timerFin - Date.now()) / 1000);
+        timerPause = true;
+      }
+      afficherChrono();
+      publierChrono();
+    }
+
+    function afficherChrono() {
+      const box = document.getElementById('chrono');
+      const secs = Math.ceil(timerRestant);
+      box.classList.toggle('hidden', !timerPhase);
+      box.classList.toggle('chrono-reveal', timerPhase === 'reveal');
+      box.classList.toggle('chrono-urgent', timerPhase === 'question' && secs <= 10);
+      box.classList.toggle('chrono-paused', timerPause);
+      document.getElementById('chrono-num').textContent = secs;
+      document.getElementById('chrono-label').textContent = timerPause
+        ? 'En pause'
+        : (timerPhase === 'reveal'
+            ? (currentQ < QUESTIONS.length - 1 ? 'Question suivante dans' : 'Classement dans')
+            : 'Temps pour répondre');
+      document.getElementById('chrono-fill').style.width = (timerDuree ? (timerRestant / timerDuree * 100) : 0) + '%';
+      const btn = document.getElementById('btn-pause');
+      btn.textContent = timerPause ? '▶ Reprendre' : '⏸ Pause';
+      btn.classList.toggle('hidden', !timerPhase);
+    }
+
+    // Les stagiaires recalculent le décompte localement à partir du temps restant publié
+    function publierChrono() {
+      if (!sessionId) return;
+      update(ref(db, `sessions/${sessionId}/timer`), {
+        phase: timerPhase || 'none',
+        q: currentQ,
+        duree: timerDuree,
+        restant: Math.round(timerRestant * 10) / 10,
+        pause: timerPause
+      });
+    }
+
+    document.addEventListener('keydown', e => {
+      if (e.code === 'Space' && timerPhase && e.target.tagName !== 'INPUT') {
+        e.preventDefault();
+        basculerPause();
+      }
+    });
+
     function genCode() {
       const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
       let c = 'CGT-';
@@ -195,9 +286,12 @@
         choices: q.choices,
         correctIndex: -1
       });
+      demarrerChrono('question', DUREE_QUESTION);
     }
 
     async function reveler() {
+      if (revealed) return;
+      arreterChrono();
       revealed = true;
       const q = QUESTIONS[currentQ];
       await update(ref(db, `sessions/${sessionId}`), {
@@ -223,6 +317,9 @@
 
       // Tableau des scores en cours
       renderScoreTableLive();
+
+      // 8 s pour montrer la réponse, puis passage automatique
+      demarrerChrono('reveal', DUREE_REPONSE);
     }
 
     function renderReveal() {
@@ -270,7 +367,11 @@
     }
 
     async function question_suivante() {
+      arreterChrono();
       if (currentQ >= QUESTIONS.length - 1) {
+        timerRestant = 0;
+        publierChrono();
+        afficherChrono();
         // Classement final
         await update(ref(db, `sessions/${sessionId}`), {
           status: 'scoreboard',
@@ -306,6 +407,7 @@
     window.lancerQuiz = lancerQuiz;
     window.reveler = reveler;
     window.question_suivante = question_suivante;
+    window.basculerPause = basculerPause;
   </script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -388,6 +490,21 @@
     #answer-count { font-size: .78rem; color: var(--texte-muted); white-space: nowrap; }
     #q-text-host { font-family: 'Anton', sans-serif; font-size: clamp(1.3rem, 3vw, 2rem); line-height: 1.3; background: var(--fond-card); border: 1px solid var(--border-card); padding: 1.1rem 1.25rem; border-radius: 4px; }
 
+    /* CHRONO */
+    .chrono { background: var(--fond-card); border: 1px solid var(--border-card); border-radius: 4px; padding: .7rem 1rem; }
+    .chrono-head { display: flex; align-items: center; gap: .9rem; }
+    .chrono-label { font-size: .72rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--texte-muted); flex: 1; }
+    .chrono-num { font-family: 'Anton', sans-serif; font-size: 2.4rem; line-height: 1; color: var(--accent); min-width: 2.6ch; text-align: right; font-variant-numeric: tabular-nums; }
+    .chrono-track { height: 8px; background: var(--border); border-radius: 4px; overflow: hidden; margin-top: .55rem; }
+    .chrono-fill { height: 100%; width: 100%; background: var(--accent); border-radius: 4px; transition: width .2s linear; }
+    .chrono-urgent .chrono-num { color: var(--rouge); }
+    .chrono-urgent .chrono-fill { background: var(--rouge); }
+    .chrono-reveal .chrono-num { color: var(--vert); }
+    .chrono-reveal .chrono-fill { background: var(--vert); }
+    .chrono-paused .chrono-num, .chrono-paused .chrono-fill { opacity: .45; }
+    .btn-pause { background: var(--jaune); color: #1A2540; border: none; padding: .55rem 1rem; font-family: 'Archivo', sans-serif; font-size: .82rem; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; cursor: pointer; border-radius: 3px; }
+    .btn-pause:hover { filter: brightness(.95); }
+
     /* CHOIX HOST */
     #choices-host { display: flex; flex-direction: column; gap: .45rem; }
     .choice-bar { display: flex; align-items: center; gap: .75rem; padding: .75rem 1rem; background: var(--fond-card); border: 2px solid var(--border-card); border-radius: 4px; transition: border-color .2s, background .2s; }
@@ -443,7 +560,8 @@
     <div class="big-cgt">CGT</div>
     <div id="intro-text">
       <h1 id="intro-title">Quiz AT/MP — Session en direct</h1>
-      <p>Créez une session · Les stagiaires scannent le QR code · Les résultats s'affichent en temps réel.</p>
+      <p>Créez une session · Les stagiaires scannent le QR code · Les résultats s'affichent en temps réel.<br>
+      Chaque question dure <strong>40 secondes</strong>, la réponse s'affiche <strong>8 secondes</strong> puis la question suivante démarre. Bouton <strong>Pause</strong> (ou barre d'espace) à tout moment.</p>
     </div>
     <button class="btn-primary" id="btn-creer" onclick="creerSession()">Créer une session</button>
   </div>
@@ -477,10 +595,18 @@
       <div class="answer-progress-wrap"><div class="answer-progress-fill" id="answer-progress" style="width:0%"></div></div>
       <span id="answer-count">0 / 0 réponses</span>
     </div>
+    <div id="chrono" class="chrono hidden">
+      <div class="chrono-head">
+        <span class="chrono-label" id="chrono-label">Temps pour répondre</span>
+        <span class="chrono-num" id="chrono-num">40</span>
+        <button class="btn-pause" id="btn-pause" onclick="basculerPause()" title="Pause (barre d'espace)">⏸ Pause</button>
+      </div>
+      <div class="chrono-track"><div class="chrono-fill" id="chrono-fill"></div></div>
+    </div>
     <div id="q-text-host"></div>
     <div id="choices-host"></div>
     <div class="btn-row">
-      <button class="btn-primary" id="btn-reveler" onclick="reveler()">Révéler la réponse</button>
+      <button class="btn-primary" id="btn-reveler" onclick="reveler()">Révéler maintenant</button>
       <button class="btn-primary hidden" id="btn-suivante" onclick="question_suivante()">Question suivante →</button>
     </div>
     <div id="score-table-live" class="score-table-live-wrap hidden"></div>
