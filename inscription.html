@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inscription à la formation · CGT Occitanie</title>
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getDatabase, ref, push, set } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+    const FIREBASE_CONFIG = {
+      apiKey: "AIzaSyBtu2Vmipa2CU8Pro0kXvnesqpUxf-7Z8c",
+      authDomain: "cgt-occitanie-quiz.firebaseapp.com",
+      databaseURL: "https://cgt-occitanie-quiz-default-rtdb.europe-west1.firebasedatabase.app",
+      projectId: "cgt-occitanie-quiz",
+      storageBucket: "cgt-occitanie-quiz.firebasestorage.app",
+      messagingSenderId: "420650097260",
+      appId: "1:420650097260:web:50bdd6dfcc4930a9139649"
+    };
+
+    const app = initializeApp(FIREBASE_CONFIG);
+    const db = getDatabase(app);
+
+    // ?s=… : identifiant de la session, fourni par le QR code du formateur
+    const SESSION = (new URLSearchParams(location.search).get('s') || 'sans-session').replace(/[^\w-]/g, '').slice(0, 60) || 'sans-session';
+    const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+    async function inscrire(e) {
+      e.preventDefault();
+      const f = e.target;
+      const nom = f.nom.value.trim().slice(0, 80);
+      const prenom = f.prenom.value.trim().slice(0, 80);
+      const email = f.email.value.trim().toLowerCase().slice(0, 120);
+      const err = document.getElementById('send-error');
+      err.textContent = '';
+      if (!nom || !prenom) { err.textContent = 'Merci d\'indiquer votre nom et votre prénom.'; return; }
+      if (!EMAIL_RE.test(email)) { err.textContent = 'L\'adresse email ne semble pas valide.'; f.email.focus(); return; }
+
+      const btn = document.getElementById('btn-submit');
+      btn.disabled = true;
+      btn.textContent = 'Envoi…';
+      try {
+        await set(push(ref(db, `sessions/inscriptions/${SESSION}`)), {
+          nom, prenom, email, date: new Date().toISOString()
+        });
+        document.getElementById('merci-nom').textContent = prenom;
+        document.getElementById('form-section').classList.add('hidden');
+        document.getElementById('merci-section').classList.remove('hidden');
+      } catch (ex) {
+        btn.disabled = false;
+        btn.textContent = 'Je m\'inscris';
+        err.textContent = 'Erreur lors de l\'envoi. Vérifiez votre connexion et réessayez.';
+      }
+    }
+
+    document.getElementById('form-inscription').addEventListener('submit', inscrire);
+  </script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --rouge: #E2001A; --rouge-dark: #B8001A; --jaune: #FFD200;
+      --accent: #1A5FAD;
+      --fond: #F4F6FA; --fond-card: #FFFFFF;
+      --texte: #1A2540; --texte-muted: #5A6A84; --border: #D8DEE8; --border-card: #E4E9F2;
+      --ok: #1E8E4E;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --accent: #4A8FD4; --fond: #101620; --fond-card: #172033;
+        --texte: #E6ECF5; --texte-muted: #7D8FA8; --border: #253047; --border-card: #1E2D47;
+        --ok: #2ECC71;
+      }
+    }
+    :root[data-theme="dark"] {
+      --accent: #4A8FD4; --fond: #101620; --fond-card: #172033;
+      --texte: #E6ECF5; --texte-muted: #7D8FA8; --border: #253047; --border-card: #1E2D47;
+      --ok: #2ECC71;
+    }
+    body { background: var(--fond); color: var(--texte); font-family: 'Archivo', sans-serif; min-height: 100vh; }
+    .topbar { background: var(--rouge); padding: .75rem 1.25rem; display: flex; align-items: center; gap: 1rem; }
+    .cgt-badge { font-family: 'Anton', sans-serif; font-size: 1.2rem; letter-spacing: .1em; color: var(--jaune); }
+    .topbar h1 { font-family: 'Anton', sans-serif; font-size: .95rem; letter-spacing: .04em; color: #fff; font-weight: 400; }
+    .stripe { height: 5px; background: var(--jaune); }
+
+    .scene { max-width: 480px; margin: 0 auto; padding: 2rem 1.25rem 3rem; }
+    .intro h2 { font-family: 'Anton', sans-serif; font-weight: 400; font-size: 1.6rem; letter-spacing: .02em; line-height: 1.15; }
+    .intro p { color: var(--texte-muted); font-size: .92rem; line-height: 1.6; margin-top: .6rem; }
+
+    form { margin-top: 1.75rem; background: var(--fond-card); border: 1px solid var(--border-card); border-top: 4px solid var(--rouge); border-radius: 10px; padding: 1.4rem 1.25rem; }
+    .field { margin-bottom: 1.1rem; }
+    label { display: block; font-size: .72rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--texte-muted); margin-bottom: .4rem; }
+    input {
+      width: 100%; background: var(--fond); border: 2px solid var(--border); color: var(--texte);
+      font-family: 'Archivo', sans-serif; font-size: 1rem; padding: .75rem .9rem; border-radius: 6px; outline: none;
+      transition: border-color .15s, box-shadow .15s;
+    }
+    input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(26,95,173,.18); }
+    .btn {
+      width: 100%; margin-top: .4rem; background: var(--rouge); color: #fff; border: none; border-radius: 6px;
+      font-family: 'Anton', sans-serif; font-size: 1.05rem; letter-spacing: .06em; padding: .9rem; cursor: pointer;
+      transition: background .15s, transform .1s;
+    }
+    .btn:hover { background: var(--rouge-dark); }
+    .btn:active { transform: scale(.98); }
+    .btn:disabled { opacity: .6; cursor: wait; }
+    .error { color: var(--rouge); font-size: .85rem; min-height: 1.2em; margin-top: .6rem; }
+    .rgpd { font-size: .74rem; color: var(--texte-muted); line-height: 1.5; margin-top: 1rem; }
+
+    .hidden { display: none !important; }
+    .merci { text-align: center; padding: 3rem 1rem; animation: pop .45s cubic-bezier(.22,.61,.36,1) both; }
+    .merci .check { width: 76px; height: 76px; margin: 0 auto 1.25rem; border-radius: 50%; background: var(--ok); display: flex; align-items: center; justify-content: center; }
+    .merci .check svg { width: 40px; height: 40px; stroke: #fff; stroke-width: 3; fill: none; stroke-dasharray: 40; stroke-dashoffset: 40; animation: draw .5s .25s ease-out forwards; }
+    .merci h2 { font-family: 'Anton', sans-serif; font-weight: 400; font-size: 1.7rem; }
+    .merci p { color: var(--texte-muted); margin-top: .6rem; line-height: 1.6; }
+    @keyframes pop { from { opacity: 0; transform: scale(.94); } to { opacity: 1; transform: none; } }
+    @keyframes draw { to { stroke-dashoffset: 0; } }
+    @media (prefers-reduced-motion: reduce) { .merci, .merci .check svg { animation: none; stroke-dashoffset: 0; } }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <span class="cgt-badge">CGT</span>
+    <h1>Occitanie · Inscription à la formation</h1>
+  </div>
+  <div class="stripe"></div>
+
+  <main class="scene">
+    <section id="form-section">
+      <div class="intro">
+        <h2>Bienvenue à la formation</h2>
+        <p>Indiquez vos nom, prénom et adresse email. Le formateur ou la formatrice s'en servira pour vous envoyer les supports et les documents de la formation.</p>
+      </div>
+
+      <form id="form-inscription" novalidate>
+        <div class="field">
+          <label for="nom">Nom</label>
+          <input id="nom" name="nom" type="text" autocomplete="family-name" maxlength="80" required>
+        </div>
+        <div class="field">
+          <label for="prenom">Prénom</label>
+          <input id="prenom" name="prenom" type="text" autocomplete="given-name" maxlength="80" required>
+        </div>
+        <div class="field">
+          <label for="email">Adresse email</label>
+          <input id="email" name="email" type="email" inputmode="email" autocomplete="email" maxlength="120" required>
+        </div>
+        <button id="btn-submit" class="btn" type="submit">Je m'inscris</button>
+        <div id="send-error" class="error" role="alert"></div>
+        <p class="rgpd">Ces informations ne servent qu'au suivi de cette formation par la CGT Occitanie et ne sont transmises à personne d'autre. Vous pouvez demander leur suppression à votre formateur ou formatrice.</p>
+      </form>
+    </section>
+
+    <section id="merci-section" class="merci hidden" aria-live="polite">
+      <div class="check"><svg viewBox="0 0 24 24"><polyline points="5 12.5 10 17.5 19 7.5"/></svg></div>
+      <h2>Merci <span id="merci-nom"></span> !</h2>
+      <p>Votre inscription est bien enregistrée.<br>Vous pouvez fermer cette page.</p>
+    </section>
+  </main>
+</body>
+</html>
