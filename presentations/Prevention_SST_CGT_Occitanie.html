@@ -270,6 +270,45 @@ h1,h2{font-family:var(--disp);font-weight:400;line-height:.98;letter-spacing:.01
 @media print{
   #spotlight,#bar-num{display:none!important}
 }
+
+/* ===== V3 : schémas animés, stagger étendu ===== */
+.slide.active .reveal:nth-child(7){animation-delay:.36s}
+.slide.active .reveal:nth-child(8){animation-delay:.42s}
+.slide.active .reveal:nth-child(9){animation-delay:.48s}
+.slide.active .reveal:nth-child(10){animation-delay:.54s}
+.svgcap{font-family:var(--ui);color:var(--muted);font-size:clamp(11px,1.1vw,16px);margin-top:1.2vh;max-width:90ch}
+.s-svg .svgwrap{margin-top:1.6vh}
+.s-svg .svgwrap svg{max-height:66vh}
+.svgwrap .t-title{font-family:var(--disp);text-transform:uppercase;letter-spacing:.01em}
+.svgwrap .t-ui{font-family:var(--ui);font-weight:700}
+.svgwrap .t-body{font-family:var(--body)}
+/* tracés qui se dessinent (pathLength="1") */
+.slide .a-draw{stroke-dasharray:1;stroke-dashoffset:1}
+.slide.active .a-draw{animation:drawLine .9s cubic-bezier(.4,0,.2,1) var(--d,0s) forwards}
+@keyframes drawLine{to{stroke-dashoffset:0}}
+/* éléments qui apparaissent */
+.slide .a-pop{opacity:0;transform-box:fill-box;transform-origin:center}
+.slide.active .a-pop{animation:popIn .55s cubic-bezier(.22,.61,.36,1) var(--d,0s) forwards}
+@keyframes popIn{from{opacity:0;transform:scale(.6)}to{opacity:1;transform:none}}
+.slide .a-fade{opacity:0}
+.slide.active .a-fade{animation:fadeIn .6s ease var(--d,0s) forwards}
+@keyframes fadeIn{to{opacity:1}}
+/* barres qui grandissent */
+.slide .a-growx{transform-box:fill-box;transform-origin:left center;transform:scaleX(0)}
+.slide.active .a-growx{animation:growX .9s cubic-bezier(.22,.61,.36,1) var(--d,0s) forwards}
+@keyframes growX{to{transform:scaleX(1)}}
+.slide .a-growy{transform-box:fill-box;transform-origin:center bottom;transform:scaleY(0)}
+.slide.active .a-growy{animation:growY .9s cubic-bezier(.22,.61,.36,1) var(--d,0s) forwards}
+@keyframes growY{to{transform:scaleY(1)}}
+/* pulsation d'un point d'attention */
+.slide.active .a-pulse{animation:pulseRing 1.8s ease-out calc(var(--d,0s) + .6s) infinite;transform-box:fill-box;transform-origin:center}
+@keyframes pulseRing{0%{opacity:.75;transform:scale(1)}100%{opacity:0;transform:scale(1.9)}}
+@media print{
+  .a-draw{stroke-dashoffset:0!important;animation:none!important}
+  .a-pop,.a-fade{opacity:1!important;animation:none!important;transform:none!important}
+  .a-growx,.a-growy{transform:none!important;animation:none!important}
+  .a-pulse{display:none!important}
+}
 </style>
 </head>
 <body>
@@ -330,318 +369,423 @@ function logoMark(){ return CONFIG.logo
 
 const SLIDES = [
 
-/* ═══ SLIDE 1 — TITRE ═══ */
+/* ═══ TITRE ═══ */
 {type:"title",
   eyebrow:"Formation syndicale CGT Occitanie",
   title:["Prévention des risques", "Diagnostic SST"],
   lede:"Acquérir les méthodes pour diagnostiquer la santé-sécurité et proposer des mesures de prévention — Angle syndical CGT",
   foot:"CGT Occitanie — Comité régional · Secteur privé · Adaptations FP disponibles",
-  notes:"Présenter le plan : 1. Cadre légal & acteurs · 2. Analyse des AT (a posteriori) · 3. Analyse des situations de travail (a priori) · 4. DUER & plan d'action · 5. Rôle du CSE/CSSCT · 6. Leviers militants CGT"},
+  notes:"<b>Ouvrir la journée : de la réparation à la prévention.</b> La formation AT/MP apprend à faire reconnaître et réparer. Celle-ci apprend à agir <b>avant</b> l'accident. Présenter le plan en 6 parties : 1. Cadre légal & acteurs · 2. Analyse des AT (a posteriori) · 3. Analyse des situations de travail (a priori) · 4. DUERP & plan d'action · 5. Rôle du CSE & droits militants · 6. Outils pratiques. <b>Tour de table rapide (10 min) :</b> prénom, entreprise, mandat, et « un risque de mon entreprise qui m'inquiète ». Noter les risques au tableau : ils serviront de fil rouge pour les exercices. <span class='cgt'>Fil rouge CGT de la journée : la santé au travail n'est pas une question technique réservée aux experts ni une affaire de comportements individuels. C'est l'organisation du travail, décidée par l'employeur, qui crée ou supprime les risques — et c'est donc un terrain d'action syndicale collective.</span> <span class='ref'>Durée indicative : 1 journée. Supports : DUERP anonymisé, grille d'inspection, registre DGI vierge.</span>"},
+
+/* ═══ CHIFFRES CLÉS ═══ */
+{type:"stats", kicker:"Pourquoi la prévention est une urgence", title:"Les AT/MP en France — bilan 2025",
+  items:[{p:"",v:1331,s:"",l:"morts du travail en 2025 (AT, trajet et MP)"},
+   {p:"",v:551225,s:"",l:"accidents du travail avec arrêt — la baisse s'est arrêtée"},
+   {p:"",v:52187,s:"",l:"maladies professionnelles avec arrêt (+3,1 %)"},
+   {p:"",v:1971,s:"",l:"affections psychiques reconnues — doublées en 5 ans"}],
+  source:"Source : Assurance Maladie – Risques professionnels 2025 ; communiqué CGT du 10 septembre 2026.",
+  notes:"<b>Mesurer l'ampleur pour poser l'enjeu.</b> Plus de 1 300 personnes meurent chaque année de leur travail en France — près de 4 par jour. Plus d'un demi-million d'accidents avec arrêt. Et ces chiffres ne comptent que ce qui est <b>déclaré et reconnu</b> : la sous-déclaration est massive, en particulier pour les maladies professionnelles et les troubles psychiques. Les affections psychiques reconnues ont doublé en cinq ans, signe que l'intensification du travail produit des dégâts. <b>Question au groupe :</b> combien d'accidents ont eu lieu dans votre entreprise l'an dernier ? Le savez-vous ? Le CSE dispose-t-il de ces chiffres ? <span class='cgt'>Chaque accident évité, c'est une vie ou une santé préservée — mais c'est aussi la démonstration que les accidents ne sont pas une fatalité. Derrière chaque chiffre, il y a une organisation du travail : cadences, sous-effectif, sous-traitance, précarité. Les intérimaires et les jeunes sont surreprésentés dans les accidents graves.</span> <span class='ref'>Chiffres : Assurance Maladie, rapport annuel Risques professionnels.</span>"},
 
 /* ═══ PARTIE 1 — CADRE LÉGAL & ACTEURS ═══ */
 {type:"divider", kicker:"Partie 1",
   title:["Cadre légal", "& acteurs"],
-  lede:"Obligations de l'employeur, acteurs de la prévention, rôle des IRP"},
+  lede:"Obligations de l'employeur, acteurs de la prévention, rôle des IRP",
+  notes:"<b>Poser les bases juridiques avant les méthodes.</b> Cette partie répond à deux questions : qu'est-ce que l'employeur doit faire ? Et qui peut l'y obliger ? Annoncer les 3 notions clés à retenir : l'<b>obligation de sécurité</b>, les <b>9 principes généraux de prévention</b>, le <b>DUERP</b>. <span class='cgt'>Connaître le droit, ce n'est pas faire du juridisme : c'est savoir sur quoi s'appuyer pour obliger l'employeur à agir, et laisser des traces écrites qui serviront aux salariés.</span>"},
 
-{type:"def", title:"L'obligation de sécurité de résultat",
+{type:"def", title:"L'obligation de sécurité de l'employeur",
   term:"Article L.4121-1 du Code du travail",
-  text:"L'employeur prend les mesures nécessaires pour assurer la sécurité et protéger la santé physique et mentale des travailleurs. Ces mesures comprennent des actions de prévention, d'information et de formation ainsi que la mise en place d'une organisation et de moyens adaptés.",
-  extra:"<b>Jurisprudence :</b> l'employeur est tenu à une obligation de sécurité de résultat. Le simple fait qu'un salarié soit victime d'un AT ou d'une MP suffit à engager sa responsabilité, sauf faute de la victime.",
-  notes:"<b>La base légale de toute action syndicale en prévention.</b> Depuis les arrêts amiante de 2002, l'obligation de l'employeur est une obligation de <b>résultat</b>, pas seulement de moyens : l'absence de faute volontaire ne l'exonère pas si le résultat — zéro AT évitable — n'est pas atteint. Cela renverse la charge de la preuve : c'est à l'employeur de prouver qu'il a tout mis en œuvre. <span class='cgt'>L'employeur ne peut pas se défausser sur le comportement du salarié si les mesures de prévention n'ont pas été mises en place. Argument à utiliser systématiquement face aux discours sur « l'imprudence des salariés » : la responsabilité est d'abord organisationnelle.</span> Conséquence pratique : tout document CSE (PV, alerte, courrier) qui consigne un risque non traité construit la preuve de la faute inexcusable future. <span class='ref'>Réf. L.4121-1 CT ; Cass. soc. 28 fév. 2002.</span>"},
+  text:"L'employeur prend les mesures nécessaires pour assurer la sécurité et protéger la santé physique et mentale des travailleurs : actions de prévention, d'information et de formation, organisation et moyens adaptés.",
+  extra:"<b>Jurisprudence :</b> l'employeur ne s'exonère que s'il prouve avoir pris <b>toutes</b> les mesures de prévention prévues par les articles L.4121-1 et L.4121-2 (Cass. soc. 25 nov. 2015, Air France). En cas d'AT/MP, la faute inexcusable est retenue s'il avait conscience du danger et n'a pas pris les mesures nécessaires.",
+  notes:"<b>La base légale de toute action syndicale en prévention.</b> L'obligation de sécurité pèse sur l'employeur seul : c'est lui qui organise le travail, c'est donc lui qui répond des risques. Historique à expliquer : en 2002, les arrêts « amiante » ont parlé d'obligation de <b>résultat</b>. Depuis 2015 (arrêt Air France), la Cour de cassation admet que l'employeur s'exonère s'il <b>prouve</b> avoir mis en œuvre toutes les mesures de prévention prévues par la loi. Concrètement, la charge de la preuve reste sur l'employeur : c'est à lui de démontrer qu'il a évalué, planifié, formé, protégé. <b>Faute inexcusable :</b> en cas d'AT/MP, elle est caractérisée dès lors que l'employeur avait ou aurait dû avoir conscience du danger et n'a pas pris les mesures nécessaires. Elle est même de droit si le risque lui avait été signalé par un salarié ou un élu (L.4131-4). <span class='cgt'>Conséquence pratique majeure : tout écrit du CSE qui signale un risque (PV, alerte, courrier, compte rendu d'inspection) établit la conscience du danger. C'est la meilleure protection des salariés : soit l'employeur agit, soit il engage sa responsabilité. Face au discours sur « l'imprudence des salariés », rappeler que la responsabilité est d'abord organisationnelle.</span> <span class='ref'>Réf. L.4121-1, L.4121-2, L.4131-4 CT ; Cass. soc. 28 fév. 2002 ; Cass. soc. 25 nov. 2015 n° 14-24.444 ; L.452-1 CSS.</span>"},
 
 {type:"content", title:"Les 9 principes généraux de prévention",
-  kicker:"Loi du 31 décembre 1991 — Article L.4121-2",
+  kicker:"Article L.4121-2 du Code du travail",
   bullets:[
     "<b>1.</b> Éviter les risques",
-    "<b>2.</b> Évaluer les risques qui ne peuvent être évités",
+    "<b>2.</b> Évaluer les risques qui ne peuvent pas être évités",
     "<b>3.</b> Combattre les risques à la source",
     "<b>4.</b> Adapter le travail à l'homme (conception des postes, choix des équipements, méthodes de travail)",
     "<b>5.</b> Tenir compte de l'état d'évolution de la technique",
     "<b>6.</b> Remplacer ce qui est dangereux par ce qui l'est moins",
-    "<b>7.</b> Planifier la prévention (technique, organisation, conditions de travail, relations sociales)",
+    "<b>7.</b> Planifier la prévention (technique, organisation, conditions de travail, relations sociales, harcèlement)",
     "<b>8.</b> Prioriser la protection collective sur la protection individuelle",
     "<b>9.</b> Donner les instructions appropriées aux travailleurs"
   ],
-  notes:"<b>Hiérarchie clé : lire les 9 PGP de haut en bas.</b> (1) Éviter le risque = le supprimer à la source, niveau le plus exigeant. (2) Évaluer ce qu'on ne peut pas supprimer. (3) Combattre à la source (pas après). (4) Adapter le travail à l'homme, pas l'inverse. (5) Tenir compte de l'état de la technique (progrès). (6) Remplacer ce qui est dangereux. (7) Planifier (préférer la protection collective à l'individuelle). (8) Donner les instructions. <span class='cgt'>Quand l'employeur propose uniquement des EPI (casque, gants, bouchons d'oreilles), c'est le niveau le plus bas — la protection individuelle ne doit intervenir qu'en dernier ressort. Lui opposer systématiquement les niveaux 1 à 7 : a-t-il prouvé qu'il ne peut pas supprimer ou réduire le risque à la source ? Cet argument est recevable devant l'inspection du travail et le tribunal judiciaire.</span> Exercice de groupe : choisir un risque dans l'entreprise des participants et parcourir les 9 niveaux. <span class='ref'>Réf. L.4121-2 CT.</span>"},
+  notes:"<b>Une hiérarchie, pas une liste à cocher.</b> Les 9 principes se lisent de haut en bas : on commence par chercher à <b>supprimer</b> le risque (1), puis on évalue ce qui reste (2), on agit à la source (3), on adapte le travail aux personnes et non l'inverse (4), on intègre les progrès techniques (5), on substitue ce qui est dangereux (6), on planifie en intégrant l'organisation et les relations sociales — y compris le harcèlement moral et sexuel (7), on privilégie le collectif sur l'individuel (8), et seulement en dernier lieu on donne des consignes (9). <b>Exercice (5 min) :</b> reprendre un risque noté au tour de table et parcourir les 9 niveaux : jusqu'où l'employeur est-il allé ? <span class='cgt'>Quand l'employeur répond « EPI » ou « consignes », il saute directement aux niveaux 8 et 9. Lui opposer les niveaux 1 à 7 : a-t-il démontré qu'il ne pouvait pas supprimer ou réduire le risque à la source ? Le principe 4 est central pour la CGT : c'est l'organisation (cadences, effectifs, horaires) qu'il faut adapter aux salariés, pas les salariés qu'il faut « endurcir ».</span> <span class='ref'>Réf. L.4121-2 CT (issu de la directive-cadre européenne 89/391).</span>"},
 
 {type:"two", title:"Les acteurs internes de la prévention",
   kicker:"Qui fait quoi en entreprise",
-  a:{h:"Employeur & encadrement", t:"Obligé d'évaluer les risques (DUER), de mettre en œuvre les mesures, de financer la prévention. Responsabilité pénale et civile.", style:"plain"},
-  b:{h:"CSE / CSSCT", t:"Droit d'alerte, inspection des lieux, enquête AT, consultation obligatoire sur tout projet modifiant les conditions de travail. Acteur central.", style:"black"},
-  notes:"<span class='cgt'>Le CSE n'est pas un acteur de la prévention au sens où il ne partage pas la responsabilité de l'employeur. Mais il dispose de droits réels : ne jamais les sous-estimer.</span>"},
+  a:{h:"Employeur & encadrement", t:"Évalue les risques (DUERP), met en œuvre et finance les mesures, informe et forme. Responsabilité civile et pénale. Peut désigner un salarié compétent en prévention (L.4644-1).", style:"plain"},
+  b:{h:"CSE / CSSCT", t:"Analyse les risques, inspecte, enquête après AT/MP, déclenche le droit d'alerte, recourt à l'expertise, est consulté sur tout projet modifiant les conditions de travail.", style:"black"},
+  notes:"<b>Distinguer responsabilité et pouvoir d'agir.</b> L'employeur est seul responsable de la sécurité : il ne peut pas la déléguer au CSE, ni aux salariés. Le CSE (et sa commission santé, sécurité et conditions de travail, la CSSCT, obligatoire à partir de 300 salariés et dans les sites à risques) n'est pas co-responsable : il contrôle, propose, alerte. Le salarié désigné compétent en prévention (L.4644-1) aide l'employeur mais ne le remplace pas. Dans les entreprises de 11 à 49 salariés, le CSE dispose aussi de prérogatives en santé-sécurité : il peut alerter, présenter des réclamations, saisir l'inspection du travail. <span class='cgt'>Ne jamais accepter que le CSE « valide » le DUERP ou « co-signe » une décision de prévention : ce serait partager une responsabilité qui n'appartient qu'à l'employeur. Le rôle des élus est de contrôler, d'exiger et de proposer — en toute indépendance.</span> <span class='ref'>Réf. L.4121-1 et L.4644-1 CT ; L.2312-5 (CSE &lt; 50) ; L.2312-9 et L.2312-13 (CSE ≥ 50) ; L.2315-36 (CSSCT).</span>"},
 
 {type:"content", title:"Les acteurs externes de la prévention",
   kicker:"Les alliés du militant",
   bullets:[
-    "<b>Médecin du travail (SIST)</b> — conseil, aptitude, étude des postes, fiche d'entreprise",
-    "<b>Inspection du travail (DREETS)</b> — contrôle, mise en demeure, procès-verbal, arrêt de travaux en cas de danger grave et imminent",
-    "<b>CARSAT</b> — prévention, financement (contrats de prévention, AFS), tarification AT/MP",
-    "<b>INRS</b> — ressources documentaires, fiches de données de sécurité, outils d'évaluation",
-    "<b>OPPBTP</b> (BTP) — organisme de prévention du secteur construction"
+    "<b>Service de prévention et de santé au travail (SPST)</b> — médecin du travail, infirmiers, IPRP : conseil, études de poste, fiche d'entreprise",
+    "<b>Inspection du travail (DREETS)</b> — contrôle, mise en demeure, procès-verbal, arrêt temporaire de travaux",
+    "<b>CARSAT</b> — prévention, aides financières, tarification AT/MP ; peut adresser une injonction à l'employeur",
+    "<b>INRS</b> — ressources documentaires, outils d'évaluation, fiches toxicologiques",
+    "<b>OPPBTP</b> (BTP) — organisme de prévention du secteur de la construction"
   ],
-  strip:"L'inspection du travail peut ordonner l'arrêt d'un travail en cas de danger grave et imminent. Le CSE aussi, via le droit d'alerte.",
-  notes:"<b>Clarifier les rôles pour éviter les confusions.</b> Médecin du travail : conseil et prévention (pas de soins), rédige la fiche d'entreprise (document clé pour l'évaluation des risques), peut recommander des aménagements de poste. Inspection du travail : contrôle, mise en demeure, PV, arrêt de travaux exceptionnel — peut être saisie par tout salarié ou représentant du personnel. CARSAT : prévention et tarification (audit gratuit sur site, contrats de prévention avec financement partiel). INRS : ressources documentaires, outils DUER sectoriels, fiches de données sécurité. <span class='cgt'>Ne pas hésiter à saisir l'inspection du travail : c'est un droit, pas une escalade. Un courrier recommandé à l'inspecteur est souvent plus efficace qu'une réunion CSE avec un employeur de mauvaise foi — et cela crée une trace officielle. La CARSAT peut aussi être invitée à venir en entreprise à la demande du CSE, gratuitement : excellent levier pour obtenir un diagnostic indépendant.</span> Rappel tactique : toujours mettre en copie le CSE de toute saisine d'acteur externe — cela inscrit la démarche dans le mandat institutionnel."},
+  strip:"L'inspection du travail peut ordonner l'arrêt temporaire de travaux en cas de danger grave et imminent (chute de hauteur, ensevelissement, amiante…).",
+  notes:"<b>Clarifier le rôle de chacun pour savoir qui saisir.</b> <b>Médecin du travail (SPST)</b> : conseil et prévention, pas de soins ; rédige la fiche d'entreprise (document très utile pour les élus), propose des aménagements de poste, peut être invité au CSE. <b>Inspection du travail</b> : contrôle, mise en demeure, procès-verbal, arrêt temporaire de travaux (L.4731-1) ; peut être saisie par tout salarié ou élu. <b>CARSAT</b> : ingénieurs et contrôleurs de sécurité, visites d'entreprise, aides financières, et pouvoir d'injonction suivi d'une cotisation supplémentaire si l'employeur ne fait rien. <b>INRS</b> : documentation gratuite et outils. <span class='cgt'>Saisir l'inspection du travail n'est pas une « escalade » : c'est un droit. Un courrier recommandé, avec copie au CSE, crée une trace officielle souvent plus efficace qu'une réunion avec un employeur de mauvaise foi. La CARSAT peut être invitée à venir en entreprise : un diagnostic extérieur et gratuit est un levier précieux.</span> <span class='ref'>Réf. L.4622-2 (SPST), L.4731-1 (arrêt de travaux), L.422-4 CSS (injonction CARSAT).</span>"},
 
-{type:"callout", title:"Le DUER — Document Unique d'Évaluation des Risques",
-  kicker:"L'outil central — Article R.4121-1",
+{type:"callout", title:"Le DUERP — Document unique d'évaluation des risques",
+  kicker:"L'outil central — Articles L.4121-3 et R.4121-1",
   mode:"red",
   big:"Obligatoire dès 1 salarié",
-  sub:"Mise à jour annuelle obligatoire + après tout AT grave ou changement de conditions de travail. Accessible à tous les membres du CSE, au médecin du travail et à l'inspection du travail.",
-  notes:"<b>Le DUER : l'outil central de la prévention — et du contrôle syndical.</b> Obligatoire dès 1 salarié (R.4121-1), le DUER doit couvrir toutes les unités de travail. Depuis la loi santé au travail de 2021, il doit désormais inclure un programme annuel de prévention (PAPRIPACT pour les ≥ 50 sal.). Les salariés, élus du CSE, médecin du travail, inspection et CARSAT y ont accès. <span class='cgt'>Le DUER est un droit d'accès : exiger sa communication lors de chaque réunion CSE — par écrit, dans l'ordre du jour. S'il n'existe pas ou n'est pas à jour, c'est une infraction pénale passible d'amende (contraventions R.4741-1). Consigner l'absence ou le manque de mise à jour dans le PV du CSE et saisir l'inspection par courrier recommandé. Cette traçabilité est essentielle en cas d'AT grave ultérieur : elle établit que l'employeur avait conscience du risque et n'a pas agi.</span> Question au groupe : avez-vous accès au DUER dans vos entreprises ? Est-il mis à jour après les AT ? <span class='ref'>Réf. R.4121-1, R.4121-2, L.4121-3 CT ; peine : R.4741-1.</span>"},
+  sub:"Mis à jour au moins une fois par an dans les entreprises d'au moins 11 salariés, et à chaque changement important des conditions de travail ou après une information sur un risque. Conservé 40 ans. Tenu à la disposition des salariés, du CSE, du médecin du travail et de l'inspection.",
+  notes:"<b>Le DUERP : point de départ de la prévention — et du contrôle syndical.</b> Obligatoire dès le premier salarié, il recense et évalue les risques de chaque unité de travail. Depuis la loi santé au travail du 2 août 2021 : il est conservé 40 ans dans ses versions successives, le CSE contribue à son élaboration, et il débouche sur un <b>programme annuel de prévention (PAPRIPACT)</b> dans les entreprises d'au moins 50 salariés, ou sur une liste d'actions en dessous. <b>Questions au groupe :</b> avez-vous accès au DUERP ? De quand date-t-il ? Mentionne-t-il les risques psychosociaux ? <span class='cgt'>Exiger sa communication par écrit et l'inscrire à l'ordre du jour. S'il n'existe pas ou n'est pas à jour, c'est une infraction pénale : le consigner au PV, demander une mise à jour avec un délai, puis saisir l'inspection. Un DUERP qui ignore un risque connu des salariés est une preuve que l'employeur n'a pas évalué : c'est un argument en cas de faute inexcusable.</span> <span class='ref'>Réf. L.4121-3, L.4121-3-1, R.4121-1 à R.4121-4 CT ; sanction : R.4741-1 (amende de 5e classe).</span>"},
 
 /* ═══ PARTIE 2 — ANALYSE A POSTERIORI ═══ */
 {type:"divider", kicker:"Partie 2",
   title:["Analyse des AT", "a posteriori"],
-  lede:"L'accident du travail s'analyse — méthode arbre des causes"},
+  lede:"L'accident du travail s'analyse — méthode de l'arbre des causes",
+  notes:"<b>Changer de regard sur l'accident.</b> Annoncer l'objectif : apprendre à analyser un accident non pour trouver un coupable, mais pour comprendre ce qui, dans l'organisation, l'a rendu possible. <b>Question d'ouverture :</b> « Dans votre entreprise, après un accident, quelle est la première explication donnée par la direction ? » Recueillir 2 ou 3 réponses : très souvent, « il n'a pas fait attention ». <span class='cgt'>C'est précisément ce réflexe que l'analyse syndicale doit déconstruire.</span>"},
 
-{type:"content", title:"L'AT ne doit jamais être attribué au hasard",
+{type:"content", title:"Un AT n'est jamais dû au hasard",
   kicker:"Principes de l'analyse a posteriori",
   bullets:[
     "Un AT <b>n'est jamais dû au hasard</b> — il s'explique toujours",
-    "Il est toujours <b>multi-déterminé</b> : plusieurs causes simultanées",
-    "C'est un <b>dysfonctionnement du système entreprise</b>, pas une faute individuelle",
+    "Il est toujours <b>multi-causal</b> : plusieurs facteurs se combinent",
+    "C'est un <b>dysfonctionnement du système de travail</b>, pas une faute individuelle",
     "L'analyse recherche des <b>faits</b>, pas des responsables",
-    "Elle permet d'identifier les causes organisationnelles, techniques et humaines"
+    "Elle remonte aux causes <b>organisationnelles</b>, techniques et humaines"
   ],
   strip:"Rechercher des faits, jamais des coupables : c'est la condition pour que les témoins parlent librement.",
-  notes:"<b>Déconstruire le réflexe de la faute individuelle.</b> Quand un AT survient, le premier réflexe de l'encadrement est presque toujours : « il n'a pas respecté la consigne. » C'est une explication paresseuse et souvent fausse — ou incomplète. Un AT est toujours multi-déterminé : causes techniques, humaines, organisationnelles s'enchaînent. L'analyse cherche des faits, pas des responsables. <span class='cgt'>La tendance naturelle de l'employeur est d'attribuer l'AT à l'imprudence du salarié — cela l'exonère à moindre coût. L'analyse a posteriori (arbre des causes) est un contre-pouvoir factuel : elle révèle les défaillances organisationnelles que l'employeur préfère occulter — cadences excessives, formation insuffisante, matériel défaillant, effectifs inadaptés.</span> Insister : même si le salarié a commis une erreur, l'erreur humaine est presque toujours rendue possible par une faille organisationnelle. La question n'est pas « qui a fauté ? » mais « pourquoi le système a-t-il permis que cette erreur aboutisse à un AT ? » C'est ce changement de regard que la formation doit provoquer. <span class='ref'>Méthode INRS : arbre des causes (ED 6163).</span>"},
+  notes:"<b>Déconstruire le réflexe de la faute individuelle.</b> Quand un AT survient, l'encadrement dit souvent : « il n'a pas respecté la consigne ». Explication commode, souvent fausse ou incomplète. Un accident résulte toujours d'une combinaison de facteurs : matériel, environnement, organisation, formation, charge de travail. Même lorsqu'un geste est en cause, il faut se demander pourquoi ce geste a été fait : manque de temps, outil inadapté, consigne impossible à respecter. <b>Image à donner :</b> l'erreur humaine est le point d'arrivée de l'analyse, jamais son point de départ. <span class='cgt'>Attribuer l'AT à l'imprudence du salarié exonère l'employeur à moindre coût et prépare parfois une sanction disciplinaire. L'analyse des causes est un contre-pouvoir factuel : elle met au jour cadences excessives, formation insuffisante, matériel défaillant, effectifs trop justes — c'est-à-dire des choix de gestion.</span> <span class='ref'>Méthode : INRS, « L'arbre des causes » (ED 6163).</span>"},
 
-{type:"steps", title:"Les 5 étapes de l'analyse AT",
-  kicker:"Méthode Arbre des Causes",
+{type:"svg", kicker:"Méthode de l'arbre des causes", title:"Exemple : le cariste qui percute une palette",
+  caption:"On part du fait final (à droite) et on remonte en se demandant à chaque étape : « qu'a-t-il fallu pour que ce fait se produise ? ». Les causes en noir relèvent de l'organisation du travail.",
+  svg:`<svg viewBox="0 0 1100 470" role="img" aria-label="Arbre des causes de l'accident du cariste">
+  <g fill="none" stroke="#141414" stroke-width="3">
+    <path class="a-draw" pathLength="1" style="--d:.5s" d="M690 105 C 760 105, 770 235, 840 235"/>
+    <path class="a-draw" pathLength="1" style="--d:.6s" d="M690 235 L 840 235"/>
+    <path class="a-draw" pathLength="1" style="--d:.7s" d="M690 365 C 760 365, 770 235, 840 235"/>
+    <path class="a-draw" pathLength="1" style="--d:1.3s" d="M330 50 C 420 50, 430 105, 490 105"/>
+    <path class="a-draw" pathLength="1" style="--d:1.4s" d="M330 160 C 420 160, 430 105, 490 105"/>
+    <path class="a-draw" pathLength="1" style="--d:1.5s" d="M330 235 L 490 235"/>
+    <path class="a-draw" pathLength="1" style="--d:1.6s" d="M330 330 C 420 330, 430 365, 490 365"/>
+    <path class="a-draw" pathLength="1" style="--d:1.7s" d="M330 425 C 420 425, 430 365, 490 365"/>
+  </g>
+  <g class="a-pop" style="--d:.1s"><rect x="840" y="190" width="240" height="90" rx="8" fill="#E2001A"/>
+    <text x="960" y="228" text-anchor="middle" fill="#fff" class="t-ui" font-size="19">Le cariste percute</text>
+    <text x="960" y="254" text-anchor="middle" fill="#fff" class="t-ui" font-size="19">une palette</text></g>
+  <g class="t-ui" font-size="16">
+    <g class="a-pop" style="--d:.8s"><rect x="490" y="70" width="200" height="70" rx="8" fill="#FFD200"/><text x="590" y="100" text-anchor="middle" fill="#141414">Recule sans</text><text x="590" y="122" text-anchor="middle" fill="#141414">visibilité arrière</text></g>
+    <g class="a-pop" style="--d:.9s"><rect x="490" y="200" width="200" height="70" rx="8" fill="#FFD200"/><text x="590" y="230" text-anchor="middle" fill="#141414">Palette posée</text><text x="590" y="252" text-anchor="middle" fill="#141414">dans l'allée</text></g>
+    <g class="a-pop" style="--d:1s"><rect x="490" y="330" width="200" height="70" rx="8" fill="#FFD200"/><text x="590" y="360" text-anchor="middle" fill="#141414">Pas d'alarme</text><text x="590" y="382" text-anchor="middle" fill="#141414">de recul</text></g>
+  </g>
+  <g class="t-ui" font-size="15" fill="#fff">
+    <g class="a-pop" style="--d:1.9s"><rect x="20" y="22" width="310" height="56" rx="8" fill="#141414"/><text x="175" y="56" text-anchor="middle">Cadence imposée : 280 colis/h</text></g>
+    <g class="a-pop" style="--d:2s"><rect x="20" y="132" width="310" height="56" rx="8" fill="#141414"/><text x="175" y="166" text-anchor="middle">Sous-effectif : pas de guide au sol</text></g>
+    <g class="a-pop" style="--d:2.1s"><rect x="20" y="207" width="310" height="56" rx="8" fill="#141414"/><text x="175" y="241" text-anchor="middle">Zones de stockage saturées</text></g>
+    <g class="a-pop" style="--d:2.2s"><rect x="20" y="302" width="310" height="56" rx="8" fill="#141414"/><text x="175" y="336" text-anchor="middle">Chariot acheté sans option sécurité</text></g>
+    <g class="a-pop" style="--d:2.3s"><rect x="20" y="397" width="310" height="56" rx="8" fill="#141414"/><text x="175" y="431" text-anchor="middle">Formation CACES non renouvelée</text></g>
+  </g>
+  <g class="t-ui" font-size="13" fill="#6C6A63">
+    <text class="a-fade" style="--d:2.6s" x="175" y="12" text-anchor="middle">CAUSES PROFONDES (ORGANISATION)</text>
+    <text class="a-fade" style="--d:2.6s" x="590" y="52" text-anchor="middle">CAUSES IMMÉDIATES</text>
+    <text class="a-fade" style="--d:2.6s" x="960" y="172" text-anchor="middle">FAIT FINAL</text>
+  </g>
+</svg>`,
+  notes:"<b>Faire vivre la méthode sur un exemple concret (schéma animé).</b> Laisser apparaître les éléments dans l'ordre : d'abord le fait final (en rouge), puis les causes immédiates (en jaune), enfin les causes profondes (en noir). À chaque niveau, poser la question : « qu'a-t-il fallu pour que cela arrive ? ». <b>Point clé :</b> les causes immédiates (recul sans visibilité, palette dans l'allée, absence d'alarme) sont celles que l'employeur retient spontanément. Les causes profondes (cadence, sous-effectif, stockage saturé, achat sans option, formation non renouvelée) sont des <b>décisions de gestion</b>. <b>Exercice (10 min) :</b> en binômes, construire l'arbre d'un accident vécu dans l'entreprise d'un stagiaire. <span class='cgt'>Chaque cause profonde appelle une mesure de prévention distincte et durable. Traiter seulement les causes immédiates (« rappel des consignes ») garantit que l'accident se reproduira. C'est aussi en remontant aux causes organisationnelles que l'on démontre la conscience du danger par l'employeur.</span> <span class='ref'>Réf. INRS ED 6163 ; L.4121-2 (combattre les risques à la source).</span>"},
+
+{type:"steps", title:"Les 5 étapes de l'analyse d'un AT",
+  kicker:"Méthode de l'arbre des causes",
   items:[
-    {big:"1", nm:"Recueil de l'information", ds:"Faits précis, circonstances exactes, témoignages. Formuler positivement, sans jugement."},
-    {big:"2", nm:"Organisation de l'information", ds:"Structurer par catégories : Technique, Organisation, Humain, Environnement (5M / Ishikawa)."},
-    {big:"3", nm:"Recherche de solutions", ds:"Pour chaque cause identifiée, proposer une mesure de prévention selon les 9 PGP."},
-    {big:"4", nm:"Mise en œuvre", ds:"Plan d'action avec responsable, délai et budget."},
-    {big:"5", nm:"Suivi", ds:"Vérifier l'efficacité des mesures. Réévaluer les risques. Mettre à jour le DUER."}
+    {big:"1", nm:"Recueillir les faits", ds:"Sur place, vite (24-48 h). Faits précis, sans jugement. Témoignages, photos, état du matériel."},
+    {big:"2", nm:"Construire l'arbre", ds:"Partir du fait final et remonter : « qu'a-t-il fallu pour que… ? ». Faits nécessaires et suffisants."},
+    {big:"3", nm:"Rechercher des mesures", ds:"Une mesure par cause, en suivant les 9 principes de prévention : d'abord supprimer, ensuite protéger."},
+    {big:"4", nm:"Mettre en œuvre", ds:"Plan d'action : quoi, qui, quand, avec quel budget. Inscription au DUERP."},
+    {big:"5", nm:"Suivre et vérifier", ds:"Les mesures sont-elles réalisées ? Efficaces ? Ont-elles créé d'autres risques ?"}
   ],
-  notes:"L'arbre des causes est la méthode de référence. Elle remonte des causes immédiates aux causes profondes (organisationnelles). <span class='cgt'>C'est là que se révèlent les vraies responsabilités : sous-effectif, pression de production, formation insuffisante…</span>"},
+  notes:"<b>Une méthode rigoureuse en 5 temps.</b> (1) <b>Recueil</b> : se rendre sur les lieux très vite, avant que tout soit rangé ; noter les faits observables (« le sol était mouillé ») et non les opinions (« il allait trop vite ») ; entendre la victime, les témoins, l'encadrement séparément. (2) <b>Arbre</b> : chaque fait doit être nécessaire (sans lui, l'accident n'arrive pas) ; repérer les faits inhabituels (variations par rapport au travail normal). (3) <b>Mesures</b> : pour chaque cause, chercher la mesure la plus haute dans la hiérarchie de prévention. (4) <b>Mise en œuvre</b> : un responsable, un délai, un budget, sinon rien ne se passe. (5) <b>Suivi</b> : vérifier et réévaluer. <span class='cgt'>L'étape 1 est décisive : demander que les élus soient prévenus immédiatement de tout accident pour pouvoir enquêter à chaud. Une enquête menée trois semaines après, sur la seule base du récit de la hiérarchie, ne vaut rien. Exiger que l'arbre et le plan d'action soient présentés au CSE et annexés au PV.</span> <span class='ref'>Réf. L.2312-13 CT (enquêtes du CSE) ; INRS ED 6163.</span>"},
 
 {type:"two", title:"Causes immédiates vs causes profondes",
   kicker:"Creuser jusqu'à l'organisation",
-  a:{h:"Causes immédiates (court terme)", t:"Geste inapproprié, équipement défectueux, sol glissant, EPI absent. Faciles à identifier, insuffisantes à traiter seules.", style:"plain"},
-  b:{h:"Causes profondes (organisationnelles)", t:"Pression de production, formation insuffisante, sous-effectif, politique d'achats d'équipements, management défaillant.", style:"black"},
-  source:"<b>Angle CGT :</b> toujours remonter aux causes organisationnelles. L'employeur s'arrête aux causes immédiates pour éviter de mettre en cause ses choix de gestion.",
-  notes:"<span class='cgt'>Si l'analyse ne remonte pas aux causes organisationnelles, elle ne sert qu'à culpabiliser le salarié. Insister : qui a décidé de ne pas former ? Qui a validé ce matériel ? Qui a fixé ces cadences ?</span>"},
+  a:{h:"Causes immédiates", t:"Geste inapproprié, équipement défectueux, sol glissant, EPI absent. Faciles à identifier — insuffisantes à traiter seules.", style:"plain"},
+  b:{h:"Causes profondes (organisationnelles)", t:"Pression de production, sous-effectif, formation insuffisante, politique d'achat, maintenance reportée, sous-traitance, management par objectifs.", style:"black"},
+  source:"<b>Angle CGT :</b> l'employeur s'arrête volontiers aux causes immédiates pour ne pas remettre en cause ses choix de gestion.",
+  notes:"<b>Le cœur du débat syndical sur l'accident.</b> Les causes immédiates sont visibles et proches de l'accident. Les causes profondes sont plus éloignées dans le temps et dans la hiérarchie : ce sont des décisions prises par d'autres que la victime (budget, effectifs, délais, achats, sous-traitance). <b>Questions à poser systématiquement :</b> qui a décidé de ne pas former ? Qui a validé ce matériel ? Qui a fixé ces cadences ? Pourquoi la maintenance a-t-elle été reportée ? Le poste était-il tenu par un intérimaire ou un nouvel embauché sans accompagnement ? <span class='cgt'>Si l'analyse s'arrête aux causes immédiates, elle ne sert qu'à culpabiliser le salarié et à prévoir un « rappel des consignes ». Remonter aux causes profondes, c'est remettre l'organisation du travail au centre — et c'est là que se trouvent les leviers de prévention durable comme les éléments de faute inexcusable.</span>"},
 
 {type:"quiz", title:"Quiz — Arbre des causes",
-  q:"Un cariste percute une palette en reculant. L'employeur conclut : 'imprudence du salarié'. Quelle cause organisationnelle l'arbre des causes peut-il révéler ?",
-  opts:[{k:"A",t:"Salarié non formé au CACES ou CACES périmé"},{k:"B",t:"Allées de circulation trop étroites (conception du dépôt)"},{k:"C",t:"Absence de signal sonore de recul sur le chariot"},{k:"D",t:"Les trois — et potentiellement d'autres (pression de cadences, sous-effectif...)"}],
-  ans:3,
-  explain:"Les 3 premières causes sont toutes valides — et l'arbre des causes en révèle souvent d'autres. Un AT n'a jamais une seule cause. Chaque cause identifiée doit faire l'objet d'une mesure de prévention distincte.",
-  notes:"Ce quiz illustre pourquoi l'analyse multi-causale est essentielle. <span class='cgt'>Si l'employeur s'arrête à 'imprudence du salarié', c'est souvent pour éviter d'investir dans les vraies causes — et potentiellement masquer une faute inexcusable.</span>"},
+  q:"Un cariste percute une palette en reculant. L'employeur conclut : « imprudence du salarié ». Quelle(s) cause(s) organisationnelle(s) l'arbre des causes peut-il révéler ?",
+  opts:[{k:"A",t:"Allées de circulation trop étroites (conception de l'entrepôt)"},{k:"B",t:"Absence d'alarme de recul sur le chariot"},{k:"C",t:"Les trois — et potentiellement d'autres (cadences, sous-effectif…)"},{k:"D",t:"Salarié non formé ou CACES périmé"}],
+  ans:2,
+  explain:"Les trois causes sont toutes plausibles — et l'arbre en révèle souvent d'autres. Un AT n'a jamais une seule cause : chacune doit faire l'objet d'une mesure de prévention distincte.",
+  notes:"<b>Vérifier la compréhension de la multi-causalité.</b> Laisser voter à main levée avant de révéler. Si des stagiaires choisissent une seule réponse, demander : « si on corrige seulement cette cause, l'accident peut-il se reproduire ? ». <span class='cgt'>Conclure « imprudence du salarié » permet souvent d'éviter d'investir dans les vraies causes — et peut masquer une faute inexcusable. Le rôle de l'élu est de refuser cette conclusion tant que l'analyse n'a pas été menée.</span>"},
 
 /* ═══ PARTIE 3 — ANALYSE A PRIORI ═══ */
 {type:"divider", kicker:"Partie 3",
   title:["Analyse des situations", "de travail — a priori"],
-  lede:"Identifier les risques avant l'accident"},
+  lede:"Identifier les risques avant l'accident",
+  notes:"<b>Passer de la réaction à l'anticipation.</b> L'analyse a posteriori part d'un accident ; l'analyse a priori cherche les risques avant qu'ils ne se réalisent. C'est la vraie prévention primaire. <span class='cgt'>Les élus qui attendent l'accident pour agir arrivent toujours trop tard : l'observation du travail réel doit devenir une pratique régulière du CSE.</span>"},
 
 {type:"content", title:"La démarche d'analyse a priori",
   kicker:"Observer avant que l'accident arrive",
   bullets:[
-    "Analyser le <b>travail réel</b> (pas le travail prescrit / théorique)",
+    "Analyser le <b>travail réel</b>, pas le travail prescrit",
     "Être <b>descriptif</b> et factuel, pas évaluatif",
-    "Observer : <b>Qui</b> fait quoi · <b>Comment</b> · <b>Avec quoi</b> · <b>Où</b> · <b>Quand</b>",
-    "Impliquer les <b>opérateurs</b> : ce sont eux qui connaissent les vrais risques",
-    "Distinguer <b>dangers</b> (sources de dommage) et <b>risques</b> (probabilité d'exposition au danger)"
+    "Observer : <b>qui</b> fait quoi · <b>comment</b> · <b>avec quoi</b> · <b>où</b> · <b>quand</b>",
+    "Impliquer les <b>salariés</b> : ce sont eux qui connaissent les vrais risques",
+    "Distinguer <b>danger</b> (ce qui peut causer un dommage) et <b>risque</b> (exposition à ce danger)"
   ],
-  strip:"Le travail prescrit est ce que l'employeur a prévu. Le travail réel est ce que font vraiment les salariés pour que ça marche malgré tout.",
-  notes:"<b>Observer avant l'accident : c'est la vraie prévention primaire.</b> L'analyse a priori consiste à observer le travail réel — pas les fiches de poste ou les modes opératoires théoriques, mais ce que font réellement les salariés, avec quels outils, dans quel environnement, sous quelles contraintes. Les 4 questions clés : Qui fait quoi ? Comment ? Avec quoi ? Où et quand ? <span class='cgt'>L'écart entre travail prescrit (ce que demande la procédure) et travail réel (ce que fait effectivement le salarié) est presque toujours révélateur. Les salariés développent des stratégies informelles pour compenser des dysfonctionnements que l'employeur ignore — ou feint d'ignorer : outils mal adaptés, temps insuffisant, manque d'effectifs. Ces écarts sont des risques cachés, invisibles dans le DUER tant qu'ils ne sont pas observés sur le terrain.</span> Méthode pratique pour les élus : organiser des tournées avec un binôme (élu + salarié volontaire), noter les écarts, en faire un compte rendu CSE. C'est légalement autorisé dans le cadre de l'inspection des lieux de travail. <span class='ref'>Réf. L.2312-13 CT (inspection des lieux).</span>"},
+  strip:"Le travail prescrit, c'est ce que l'employeur a prévu. Le travail réel, c'est ce que font les salariés pour que ça marche malgré tout.",
+  notes:"<b>Observer le travail réel : la base de la prévention primaire.</b> Les fiches de poste et modes opératoires décrivent un travail idéal. Le travail réel est fait d'aléas, d'outils inadaptés, de pannes, de délais intenables, que les salariés compensent par des « astuces ». Ces écarts sont des risques invisibles dans le DUERP tant que personne ne va les observer. <b>Méthode pour les élus :</b> tournée en binôme (élu + salarié du secteur), observation sans juger, questions ouvertes (« qu'est-ce qui est difficile ? », « que faites-vous quand la machine tombe en panne ? »), compte rendu écrit au CSE. <span class='cgt'>L'écart entre prescrit et réel est presque toujours révélateur d'un manque de moyens. Le faire apparaître, c'est montrer que les salariés tiennent la production en prenant des risques — et que c'est l'organisation qui doit changer, pas leur comportement.</span> <span class='ref'>Réf. L.2312-13 CT (inspections du CSE).</span>"},
 
-{type:"content", title:"Les familles de dangers",
-  kicker:"Risques mécaniques, chimiques, organisationnels...",
+{type:"content", title:"Les familles de risques",
+  kicker:"Ne rien oublier dans le DUERP",
   bullets:[
-    "<b>Mécaniques</b> — points rentrants, écrasement, cisaillement, chutes de hauteur ou de plain-pied",
-    "<b>Chimiques & biologiques</b> — CMR (cancérogènes, mutagènes, reprotoxiques), solvants, poussières, agents biologiques",
-    "<b>Physiques</b> — bruit, vibrations, températures extrêmes, rayonnements, éclairage",
-    "<b>Psychosociaux (RPS)</b> — charge de travail, pression temporelle, conflits, harcèlement, travail de nuit",
-    "<b>Organisationnels</b> — sous-effectif, travail isolé, astreintes, sous-traitance en cascade"
+    "<b>Mécaniques</b> — écrasement, coupure, happement, chutes de hauteur et de plain-pied, circulation d'engins",
+    "<b>Chimiques & biologiques</b> — agents CMR, solvants, poussières (silice, bois), fumées, agents infectieux",
+    "<b>Physiques</b> — bruit, vibrations, chaleur et froid, rayonnements, éclairage",
+    "<b>Ergonomiques (TMS)</b> — manutentions, postures pénibles, gestes répétitifs",
+    "<b>Psychosociaux (RPS)</b> — charge de travail, pression, conflits de valeurs, violences, harcèlement",
+    "<b>Organisationnels</b> — travail de nuit, horaires atypiques, travail isolé, sous-traitance, précarité"
   ],
-  notes:"<b>Connaître les 6 familles pour ne rien oublier dans le DUER.</b> Mécaniques (chutes, écrasements, coupures), Chimiques & biologiques (CMR en priorité : cancérogènes mutagènes reprotoxiques, solvants, poussières), Physiques (bruit > 80 dB → surveillance médicale, vibrations, températures, rayonnements), Psychosociaux (RPS : charge cognitive, pression temporelle, conflits, violences internes et externes, harcèlement), Organisationnels (travail de nuit, rythmes alternants, travail isolé, horaires atypiques), Ergonomiques (TMS : postures pénibles, gestes répétitifs, manutentions manuelles). <span class='cgt'>Les RPS et les risques organisationnels sont presque toujours sous-représentés ou absents des DUER d'entreprise. Exiger systématiquement qu'ils y figurent : le burn-out, le harcèlement, les injonctions contradictoires, les cadences impossibles sont des risques professionnels au même titre qu'un sol glissant. L'INRS a produit des outils d'évaluation RPS gratuits (SATIN, RPS-DU) : les proposer à l'employeur lors de l'élaboration ou la révision du DUER.</span> Cas pratique : parcourir la liste et demander à chaque groupe d'identifier les risques présents dans leur secteur — noter ceux qui sont absents de leur DUER."},
+  notes:"<b>Six familles pour un DUERP complet.</b> Parcourir chaque famille en demandant aux stagiaires des exemples de leur entreprise. Insister sur les risques <b>différés</b> (chimiques, bruit, TMS) : leurs effets apparaissent des années plus tard et ils sont sous-évalués. Repères utiles : bruit ≥ 80 dB(A) = actions d'information et protecteurs mis à disposition, ≥ 85 dB(A) = port obligatoire et programme de réduction ; agents CMR = substitution obligatoire quand elle est techniquement possible. <span class='cgt'>Les RPS et les risques organisationnels sont presque toujours absents ou minimisés dans les DUERP. Exiger qu'ils y figurent au même titre qu'un sol glissant : surcharge, injonctions contradictoires, objectifs inatteignables, violences des usagers. Pour l'évaluation des RPS, l'INRS propose des outils gratuits (RPS-DU, questionnaire SATIN).</span> <b>Exercice :</b> chaque groupe relève les risques de son secteur absents de son DUERP. <span class='ref'>Réf. R.4431-1 et s. (bruit) ; R.4412-59 et s. (CMR) ; outils INRS.</span>"},
 
-{type:"steps", title:"Méthode d'analyse d'une situation de travail",
+{type:"steps", title:"Analyser une situation de travail",
   kicker:"4 étapes clés",
   items:[
-    {big:"1", nm:"Décrire la situation", ds:"Observer le travail réel. Qui, quoi, comment, avec quoi, où, quand. Recueillir des faits."},
+    {big:"1", nm:"Décrire la situation", ds:"Observer le travail réel : qui, quoi, comment, avec quoi, où, quand. Recueillir des faits."},
     {big:"2", nm:"Repérer les dangers", ds:"Identifier les sources de dommage potentiel dans la situation observée."},
-    {big:"3", nm:"Identifier les risques", ds:"Danger + exposition = risque. Estimer la probabilité et la gravité du dommage."},
-    {big:"4", nm:"Hiérarchiser", ds:"Classer les risques par priorité (gravité × fréquence) pour construire le plan d'action."}
+    {big:"3", nm:"Identifier les risques", ds:"Danger + exposition = risque. Estimer la fréquence et la gravité du dommage."},
+    {big:"4", nm:"Hiérarchiser", ds:"Classer par priorité (gravité × fréquence) pour construire le plan d'action."}
   ],
-  notes:"La grille d'observation est l'outil pratique. <span class='cgt'>Lors d'une inspection CSE, utiliser cette grille systématiquement. Ne jamais se fier à ce que dit l'encadrement : observer directement les postes de travail.</span>"},
+  notes:"<b>La grille d'analyse que les élus peuvent utiliser dès demain.</b> (1) Décrire sans juger. (2) Repérer les dangers (la machine, le produit, la charge). (3) Caractériser le risque : qui est exposé, combien de temps, avec quelle gravité possible. (4) Hiérarchiser, mais attention : un risque rare mais mortel (chute de hauteur) doit rester prioritaire même si « il n'est jamais rien arrivé ». <span class='cgt'>Lors d'une inspection, utiliser cette grille systématiquement et ne jamais se contenter de ce que dit l'encadrement : observer les postes, parler aux salariés. La cotation des risques est souvent manipulée pour faire baisser les priorités : demander la méthode de cotation et la discuter en CSE.</span>"},
 
-/* ═══ PARTIE 4 — DUER & PLAN D'ACTION ═══ */
+/* ═══ PARTIE 4 — DUERP & PLAN D'ACTION ═══ */
 {type:"divider", kicker:"Partie 4",
-  title:["DUER", "& plan d'action"],
-  lede:"Du diagnostic au plan de prévention — Droits et leviers du CSE"},
+  title:["DUERP", "& plan d'action"],
+  lede:"Du diagnostic au plan de prévention — droits et leviers du CSE",
+  notes:"<b>Du diagnostic à l'action.</b> Un DUERP sans plan d'action est un inventaire inutile. Cette partie montre comment transformer l'évaluation en engagements écrits, datés et vérifiables. <span class='cgt'>C'est là que le CSE pèse : en exigeant un plan précis, puis en contrôlant sa réalisation.</span>"},
 
-{type:"content", title:"Le DUER — contenu et obligations",
+{type:"svg", kicker:"La démarche de prévention", title:"Un cycle qui ne s'arrête jamais",
+  caption:"Évaluer, planifier, agir, contrôler — puis réévaluer. Le CSE intervient à chaque étape.",
+  svg:`<svg viewBox="0 0 1100 470" role="img" aria-label="Cycle de la prévention">
+  <g fill="none" stroke="#141414" stroke-width="4" stroke-linecap="round">
+    <path class="a-draw" pathLength="1" style="--d:.5s" d="M620 75 A 230 190 0 0 1 760 205"/>
+    <path class="a-draw" pathLength="1" style="--d:1s" d="M760 290 A 230 190 0 0 1 620 410"/>
+    <path class="a-draw" pathLength="1" style="--d:1.5s" d="M480 410 A 230 190 0 0 1 340 290"/>
+    <path class="a-draw" pathLength="1" style="--d:2s" d="M340 205 A 230 190 0 0 1 480 75"/>
+  </g>
+  <g fill="#141414" class="a-fade" style="--d:2.4s">
+    <path d="M770 195 l-22 -6 l14 -17z"/><path d="M610 418 l20 -12 l1 21z"/><path d="M332 300 l20 8 l-15 15z"/><path d="M490 66 l-20 13 l-1 -21z"/>
+  </g>
+  <g class="a-pop" style="--d:.1s"><circle cx="550" cy="70" r="62" fill="#E2001A"/><text x="550" y="64" text-anchor="middle" fill="#fff" class="t-title" font-size="21">Évaluer</text><text x="550" y="88" text-anchor="middle" fill="#FFD200" class="t-ui" font-size="15">DUERP</text></g>
+  <g class="a-pop" style="--d:.6s"><circle cx="800" cy="248" r="62" fill="#FFD200"/><text x="800" y="242" text-anchor="middle" fill="#141414" class="t-title" font-size="21">Planifier</text><text x="800" y="266" text-anchor="middle" fill="#141414" class="t-ui" font-size="15">PAPRIPACT</text></g>
+  <g class="a-pop" style="--d:1.1s"><circle cx="550" cy="415" r="62" fill="#141414"/><text x="550" y="409" text-anchor="middle" fill="#fff" class="t-title" font-size="21">Agir</text><text x="550" y="433" text-anchor="middle" fill="#FFD200" class="t-ui" font-size="15">mesures</text></g>
+  <g class="a-pop" style="--d:1.6s"><circle cx="300" cy="248" r="62" fill="#F1EFE8" stroke="#141414" stroke-width="3"/><text x="300" y="242" text-anchor="middle" fill="#141414" class="t-title" font-size="20">Contrôler</text><text x="300" y="266" text-anchor="middle" fill="#E2001A" class="t-ui" font-size="15">suivi</text></g>
+  <g class="a-pop" style="--d:2.6s"><rect x="440" y="215" width="220" height="66" rx="33" fill="#fff" stroke="#E2001A" stroke-width="3"/><text x="550" y="243" text-anchor="middle" class="t-ui" font-size="16" fill="#141414">Le CSE</text><text x="550" y="265" text-anchor="middle" class="t-ui" font-size="16" fill="#E2001A">à chaque étape</text></g>
+  <g class="t-body" font-size="16" fill="#3b3b3b">
+    <text class="a-fade" style="--d:2.8s" x="660" y="40">Contribue à l'évaluation, exige les RPS</text>
+    <text class="a-fade" style="--d:2.9s" x="880" y="320">Amende, vote, fixe les délais</text>
+    <text class="a-fade" style="--d:3s" x="640" y="460">Vérifie sur le terrain</text>
+    <text class="a-fade" style="--d:3.1s" x="20" y="340">Inspections, enquêtes,</text>
+    <text class="a-fade" style="--d:3.1s" x="20" y="362">indicateurs, alertes</text>
+  </g>
+</svg>`,
+  notes:"<b>La prévention est un processus continu, pas un document annuel.</b> Animer le schéma étape par étape. <b>Évaluer</b> : le DUERP, élaboré avec la contribution du CSE (loi de 2021). <b>Planifier</b> : le PAPRIPACT (≥ 50 salariés) ou la liste d'actions (&lt; 50), présenté au CSE. <b>Agir</b> : mettre réellement en œuvre, avec budget et responsables. <b>Contrôler</b> : inspections, enquêtes, indicateurs, retours des salariés — puis on réévalue, et le cycle recommence. <span class='cgt'>Le piège classique : un DUERP mis à jour une fois par an « pour être en règle », sans lien avec ce qui se passe sur le terrain. Le CSE doit casser cette routine en reliant chaque étape aux constats des élus : un accident, une alerte, une inspection doivent déclencher une mise à jour du DUERP et du plan d'action.</span> <span class='ref'>Réf. L.4121-3 et L.4121-3-1 CT ; L.2312-5 et L.2312-27 (consultation annuelle).</span>"},
+
+{type:"content", title:"Le DUERP — contenu et obligations",
   kicker:"Document unique d'évaluation des risques professionnels",
   bullets:[
-    "<b>Contenu obligatoire :</b> présentation de l'entreprise, méthodologie, résultats de l'évaluation par unité de travail, plan d'action",
-    "<b>Mise à jour :</b> au minimum une fois par an + après tout AT grave + après tout changement de conditions de travail",
-    "<b>Accès :</b> membres du CSE, médecin du travail, inspection du travail, agents CARSAT",
-    "<b>Depuis 2022 (loi santé au travail) :</b> doit inclure un programme annuel de prévention (PAPRIPACT) dans les entreprises ≥ 50 salariés",
-    "<b>Sanctions :</b> absence ou non-mise à jour = contravention (amende) + circonstance aggravante en cas d'AT"
+    "<b>Contenu :</b> inventaire et évaluation des risques par unité de travail, y compris les risques psychosociaux et les facteurs de pénibilité",
+    "<b>Mise à jour :</b> au moins une fois par an (≥ 11 salariés), à chaque changement important, après toute information sur un risque",
+    "<b>Accès :</b> salariés, anciens salariés (pour leurs périodes d'emploi), CSE, médecin du travail, inspection, CARSAT",
+    "<b>Débouché :</b> PAPRIPACT (≥ 50 salariés) ou liste d'actions de prévention (< 50 salariés)",
+    "<b>Sanctions :</b> absence ou défaut de mise à jour = contravention de 5e classe ; élément de preuve en cas de faute inexcusable"
   ],
-  notes:"<b>Ce que doit contenir un DUER complet (check-list militante).</b> (1) Présentation de l'entreprise et des unités de travail. (2) Méthodologie d'évaluation utilisée. (3) Résultats : inventaire des risques, cotation (fréquence × gravité ou équivalent), hiérarchisation. (4) Programme de prévention avec actions, responsables et délais (PAPRIPACT si ≥ 50 sal.). (5) Mesures de protection collective et individuelle déjà en place. (6) Références aux PGP appliqués. <span class='cgt'>Demander le DUER à chaque réunion CSE — par écrit, dans l'ordre du jour formel. S'il n'est pas à jour ou incomplet : (a) consigner dans le PV avec la demande de mise à jour et le délai ; (b) envoyer une lettre recommandée à l'employeur ; (c) saisir l'inspection du travail si aucune réponse sous 15 jours. C'est une infraction pénale (contravention) qui peut être retenue en cas d'AT grave — et qui constitue un élément de preuve de la faute inexcusable.</span> Exercice pratique (si possible) : distribuer un extrait de DUER anonymisé et identifier ce qui manque. <span class='ref'>Réf. R.4121-1, R.4121-2, R.4741-1 CT.</span>"},
+  notes:"<b>Check-list militante d'un DUERP complet.</b> (1) Découpage en unités de travail cohérentes avec le travail réel (pas seulement l'organigramme). (2) Méthode d'évaluation expliquée. (3) Tous les risques, y compris RPS, TMS, risques chimiques différés, travail de nuit. (4) Cotation et hiérarchisation. (5) Mesures existantes et mesures à prendre. (6) Date de mise à jour. Les anciens salariés ont accès aux versions couvrant leur période d'emploi : utile pour faire reconnaître une maladie professionnelle des années plus tard. <span class='cgt'>Demander le DUERP par écrit et en faire un point permanent de l'ordre du jour. S'il est incomplet : (a) le consigner au PV avec une demande de mise à jour et un délai ; (b) courrier recommandé ; (c) saisine de l'inspection sans réponse. Un DUERP qui ignore un risque connu prouve l'absence d'évaluation.</span> <span class='ref'>Réf. L.4121-3, R.4121-1 à R.4121-4, R.4741-1 CT.</span>"},
 
-{type:"content", title:"La hiérarchie des mesures de prévention",
-  kicker:"De la suppression du danger aux EPI",
-  bullets:[
-    "<b>1er — Suppression du danger</b> : éliminer la source du risque (ex : substituer un produit CMR)",
-    "<b>2e — Suppression du risque</b> : mécaniser, automatiser pour ne plus exposer les salariés",
-    "<b>3e — Protection collective (EPC)</b> : capotage machine, aspiration à la source, garde-corps",
-    "<b>4e — Protection individuelle (EPI)</b> : gants, masques, casques — dernier recours, pas première solution",
-    "<b>5e — Signalisation & consignes</b> : information, ne supprime pas le danger"
-  ],
-  strip:"Les EPI sont le niveau le plus bas de la hiérarchie. Quand l'employeur propose d'abord des EPI, exiger qu'il démontre l'impossibilité technique de supprimer le risque à la source.",
-  notes:"<b>La hiérarchie des mesures : du plus protecteur au moins protecteur.</b> Niveau 1 — Suppression : éliminer le risque à la source (changer un produit CMR, automatiser un poste dangereux). Niveau 2 — Substitution : remplacer par quelque chose de moins dangereux (solvant moins toxique, outil moins bruyant). Niveau 3 — Protection collective : capots, ventilation aspirante, garde-corps, barrières physiques. Niveau 4 — Réorganisation : rotation des postes, pauses, changement de procédures. Niveau 5 — Formation et information. Niveau 6 — EPI en dernier recours seulement. <span class='cgt'>Ce tableau est un outil de négociation puissant. L'employeur qui ne propose que des EPI (casques, bouchons, gants) court-circuite les 4 premiers niveaux — et c'est quasi systématique dans les petites structures. Lui opposer explicitement les PGP en réunion CSE : « Avez-vous envisagé la suppression ou la substitution ? Pouvez-vous nous démontrer qu'ils sont impossibles avant de passer aux EPI ? » Cette posture est légalement fondée sur L.4121-2.</span> Un EPI défaillant ou non porté laisse le salarié sans protection — c'est la limite fondamentale de cette approche. <span class='ref'>Réf. L.4121-2 (PGP hiérarchisés), R.4313-1 et s. (EPI).</span>"},
+{type:"svg", kicker:"De la suppression du danger aux EPI", title:"La hiérarchie des mesures de prévention",
+  caption:"Plus on monte, plus la mesure est efficace et durable. Les EPI et les consignes viennent en dernier recours.",
+  svg:`<svg viewBox="0 0 1100 470" role="img" aria-label="Hiérarchie des mesures de prévention">
+  <g class="a-fade" style="--d:.2s">
+    <line x1="60" y1="440" x2="60" y2="40" stroke="#141414" stroke-width="4"/>
+    <path d="M60 22 l-14 24 h28z" fill="#141414"/>
+    <text x="40" y="250" transform="rotate(-90 40 250)" text-anchor="middle" class="t-ui" font-size="16" fill="#141414">EFFICACITÉ</text>
+  </g>
+  <g class="t-ui" font-size="20">
+    <g><rect class="a-growx" style="--d:.3s" x="100" y="40" width="960" height="66" fill="#E2001A"/><text class="a-fade" style="--d:.8s" x="125" y="81" fill="#fff">1. SUPPRIMER le danger</text><text class="a-fade" style="--d:.9s" x="1040" y="81" text-anchor="end" fill="#FFD200" font-size="16">ex. produit CMR retiré, tâche supprimée</text></g>
+    <g><rect class="a-growx" style="--d:.6s" x="100" y="122" width="860" height="66" fill="#B8001A"/><text class="a-fade" style="--d:1.1s" x="125" y="163" fill="#fff">2. SUBSTITUER / combattre à la source</text><text class="a-fade" style="--d:1.2s" x="940" y="163" text-anchor="end" fill="#FFD200" font-size="16">solvant moins toxique, outil moins bruyant</text></g>
+    <g><rect class="a-growx" style="--d:.9s" x="100" y="204" width="760" height="66" fill="#141414"/><text class="a-fade" style="--d:1.4s" x="125" y="245" fill="#fff">3. PROTECTION COLLECTIVE</text><text class="a-fade" style="--d:1.5s" x="840" y="245" text-anchor="end" fill="#FFD200" font-size="16">capotage, aspiration, garde-corps</text></g>
+    <g><rect class="a-growx" style="--d:1.2s" x="100" y="286" width="660" height="66" fill="#6C6A63"/><text class="a-fade" style="--d:1.7s" x="125" y="327" fill="#fff">4. ORGANISATION &amp; FORMATION</text><text class="a-fade" style="--d:1.8s" x="740" y="327" text-anchor="end" fill="#FFD200" font-size="16">effectifs, rythmes, rotation</text></g>
+    <g><rect class="a-growx" style="--d:1.5s" x="100" y="368" width="520" height="66" fill="#FFD200"/><text class="a-fade" style="--d:2s" x="125" y="409" fill="#141414">5. EPI &amp; consignes</text><text class="a-fade" style="--d:2.1s" x="600" y="409" text-anchor="end" fill="#E2001A" font-size="16">dernier recours</text></g>
+  </g>
+  <g class="a-pop" style="--d:2.4s"><circle cx="1000" cy="401" r="40" fill="none" stroke="#E2001A" stroke-width="4"/><circle class="a-pulse" style="--d:2.4s" cx="1000" cy="401" r="40" fill="none" stroke="#E2001A" stroke-width="3"/><text x="1000" y="397" text-anchor="middle" class="t-ui" font-size="14" fill="#E2001A">EPI seuls</text><text x="1000" y="415" text-anchor="middle" class="t-ui" font-size="14" fill="#E2001A">= alerte</text></g>
+</svg>`,
+  notes:"<b>Un outil de négociation très concret (schéma animé).</b> Les barres apparaissent de la mesure la plus efficace (supprimer) à la moins efficace (EPI et consignes). <b>Niveau 1</b> : supprimer le danger (retirer un produit CMR, supprimer une manutention par un convoyeur). <b>Niveau 2</b> : substituer ou agir à la source (produit moins toxique, machine moins bruyante). <b>Niveau 3</b> : protection collective (capotage, aspiration à la source, garde-corps). <b>Niveau 4</b> : organisation et formation (effectifs, rotation, pauses, rythmes). <b>Niveau 5</b> : EPI et consignes. Un EPI mal adapté, inconfortable ou non porté laisse le salarié sans protection : c'est la limite fondamentale de ce niveau. <span class='cgt'>Quand l'employeur ne propose que des EPI, il saute quatre étages. Question à poser en CSE : « Avez-vous étudié la suppression ou la substitution ? Pouvez-vous démontrer qu'elles sont impossibles ? ». Cette exigence est fondée sur L.4121-2 et elle est recevable devant l'inspection du travail.</span> <span class='ref'>Réf. L.4121-2 CT ; R.4321-1 et s. (équipements de travail) ; R.4323-91 et s. (EPI).</span>"},
 
 {type:"content", title:"Le plan d'action — PAPRIPACT",
-  kicker:"Programme annuel de prévention des risques",
+  kicker:"Programme annuel de prévention des risques professionnels et d'amélioration des conditions de travail",
   bullets:[
-    "Décline les actions du DUER en mesures concrètes : <b>Quoi · Comment · Qui · Délai · Budget</b>",
-    "Doit être <b>présenté et discuté au CSE</b> lors de la consultation annuelle sur la politique sociale",
-    "Comporte une <b>évaluation des risques résiduels</b> après mise en œuvre des mesures",
-    "Doit être <b>suivi</b> : le CSE vérifie que les actions prévues sont effectivement réalisées",
-    "Le non-respect du plan d'action peut constituer une <b>faute inexcusable</b> de l'employeur en cas d'AT"
+    "Décline le DUERP en mesures concrètes : <b>quoi · qui · délai · budget · indicateur</b>",
+    "Obligatoire dans les entreprises d'au moins <b>50 salariés</b> ; liste d'actions en dessous",
+    "<b>Présenté au CSE</b> lors de la consultation annuelle sur la politique sociale",
+    "Le CSE peut proposer un <b>ordre de priorité</b> et des actions supplémentaires",
+    "Un risque identifié et non traité est un élément de <b>faute inexcusable</b> en cas d'AT"
   ],
-  notes:"<b>Du diagnostic à l'action : le PAPRIPACT comme outil de suivi.</b> Programme Annuel de Prévention des Risques Professionnels et d'Amélioration des Conditions de Travail — obligatoire pour les entreprises ≥ 50 salariés depuis la loi santé au travail de 2021. Doit détailler : les actions retenues, les moyens affectés, les responsables, les délais de réalisation, les indicateurs de suivi. <span class='cgt'>Le PAPRIPACT est un engagement écrit et daté de l'employeur. Conserver tous les plans d'action des années précédentes : si un AT survient sur un risque identifié dans un PAPRIPACT antérieur et non traité (ou traité superficiellement), c'est un argument massue pour démontrer la faute inexcusable. « L'employeur savait, il avait même prévu d'agir, et il n'a pas agi. »</span> Tactique syndicale : voter contre un PAPRIPACT insuffisant en CSE et consigner les raisons dans le PV. Proposer des amendements chiffrés et datés. Rappeler les points non tenus à chaque réunion suivante — le suivi du PAPRIPACT est un ordre du jour permanent. <span class='ref'>Réf. L.4121-3-1 CT (PAPRIPACT, créé par la loi du 2 août 2021).</span>"},
+  notes:"<b>Le PAPRIPACT : un engagement écrit et daté de l'employeur.</b> Il fixe la liste détaillée des mesures pour l'année, leurs conditions d'exécution, des indicateurs de résultat, l'estimation de leur coût, les ressources mobilisées et le calendrier. Il est présenté au CSE dans le cadre de la consultation sur la politique sociale ; le CSE peut proposer un ordre de priorité et des mesures supplémentaires. <span class='cgt'>Conserver tous les plans des années précédentes. Si un accident survient sur un risque inscrit dans un plan non réalisé, l'argument est imparable : « l'employeur savait, il avait même prévu d'agir, et il n'a rien fait ». Tactique : émettre un avis motivé (négatif si besoin) sur un plan insuffisant, proposer des amendements chiffrés et datés, et faire du suivi du plan un point permanent de l'ordre du jour.</span> <span class='ref'>Réf. L.4121-3-1 CT (loi du 2 août 2021) ; L.2312-27 (consultation sur la politique sociale).</span>"},
 
 /* ═══ PARTIE 5 — RÔLE DU CSE & DROITS MILITANTS ═══ */
 {type:"divider", kicker:"Partie 5",
   title:["Rôle du CSE", "& droits militants"],
-  lede:"Droit d'alerte, enquête AT, négociation — Les leviers syndicaux"},
+  lede:"Droit d'alerte, enquêtes, expertise, négociation — les leviers syndicaux",
+  notes:"<b>Les outils pour obliger l'employeur à agir.</b> Cette partie présente les prérogatives concrètes des élus et la manière de s'en servir. <span class='cgt'>Ces droits sont réels mais sous-utilisés : beaucoup d'élus ne savent pas où se trouve le registre d'alerte, n'ont jamais demandé d'expertise ni mené d'enquête. L'objectif est que chacun reparte en sachant les activer.</span>"},
 
-{type:"content", title:"Les droits du CSE en matière de SST",
+{type:"content", title:"Les droits du CSE en santé-sécurité",
   kicker:"Pouvoirs réels, souvent sous-utilisés",
   bullets:[
-    "<b>Droit d'alerte danger grave et imminent (DGI)</b> — tout élu peut retirer les salariés d'un poste dangereux. L'employeur ne peut pas s'y opposer sans saisir le juge.",
-    "<b>Inspections des lieux de travail</b> — au moins 4 fois par an, sans que l'employeur puisse les refuser",
-    "<b>Enquête après AT/MP grave</b> — obligation légale, réalisée en binôme élu + représentant de l'employeur",
-    "<b>Recours à un expert CHSCT agréé</b> — en cas de risque grave ou de projet important, financé par l'employeur",
-    "<b>Consultation obligatoire</b> sur tout projet modifiant les conditions de travail, les méthodes de production, l'organisation"
+    "<b>Droit d'alerte pour danger grave et imminent</b> — tout élu le déclenche seul, par écrit dans le registre spécial",
+    "<b>Inspections des lieux de travail</b> — à une fréquence au moins égale à celle des réunions SSCT (4 par an minimum à partir de 50 salariés)",
+    "<b>Enquêtes</b> après accident du travail ou maladie professionnelle",
+    "<b>Expertise</b> en cas de risque grave constaté ou de projet important modifiant les conditions de travail",
+    "<b>Consultation</b> sur tout projet important modifiant les conditions de santé, de sécurité ou de travail"
   ],
-  notes:"<b>L'arsenal juridique du CSE/CSSCT en SST — connaître chaque outil.</b> (1) <b>Inspection des lieux</b> : droit de visite des locaux de travail, obligatoire avant chaque réunion ordinaire pour les CSSCT. (2) <b>Enquête AT/MP</b> : obligatoire après tout AT grave ou MP — le CSE doit y participer, pas seulement être informé. (3) <b>Droit d'alerte pour danger grave et imminent (DGI)</b> : droit individuel de chaque élu, déclenché par une consignation écrite dans le registre spécial — l'employeur doit enquêter et répondre. (4) <b>Droit de retrait</b> : individuel pour tout salarié, sans perte de salaire si motif raisonnable. (5) <b>Recours à l'expertise</b> : en cas de risque grave ou projet important, le CSE peut mandater un expert (CHSCT-E ou expertise risque grave). <span class='cgt'>Le droit d'alerte DGI est le plus puissant et le plus méconnu. C'est un droit individuel — un seul élu peut le déclencher sans attendre le vote du CSE. Former tous les élus à le connaître : le registre spécial DGI doit être accessible en permanence. En pratique, un grand nombre d'élus n'ont jamais déclenché ce droit, par méconnaissance ou crainte de représailles.</span> <span class='ref'>Réf. L.2312-13 (inspection), L.2312-59 et L.4131-1 (alerte/retrait), L.2315-94 (expertise).</span>"},
+  notes:"<b>L'arsenal du CSE — connaître chaque outil.</b> (1) <b>Alerte DGI</b> : droit individuel de chaque élu, sans vote préalable (détaillé plus loin). (2) <b>Inspections</b> : fréquence au moins égale à celle des réunions consacrées à la santé-sécurité, soit au moins 4 par an dans les entreprises d'au moins 50 salariés. (3) <b>Enquêtes</b> en matière d'AT et de MP. (4) <b>Expertise</b> : pour risque grave, identifié et actuel, révélé ou non par un accident — financée à 100 % par l'employeur ; pour projet important — financée à 80 % par l'employeur. L'expert est habilité (certifié). (5) <b>Consultation</b> préalable sur tout projet important (réorganisation, nouvelles technologies, déménagement, changement d'horaires). <span class='cgt'>L'expertise pour risque grave est un outil puissant et méconnu : elle permet un diagnostic indépendant payé par l'employeur, par exemple face à une vague de TMS, de burn-out ou d'arrêts maladie. Le délibérer en séance, avec des faits précis consignés au PV.</span> <span class='ref'>Réf. L.2312-13, L.4131-2, L.2312-8 CT ; L.2315-94 et L.2315-80 (expertise et financement) ; L.2315-27 (réunions SSCT).</span>"},
 
 {type:"two", title:"Droit de retrait et droit d'alerte — deux outils distincts",
-  kicker:"Articles L.4131-1 et L.4132-1 du Code du travail",
-  a:{h:"Droit de retrait (L.4131-1)",t:"<b>Tout salarié</b> peut se retirer d'une situation de danger grave et imminent pour sa vie ou sa santé. Pas d'accord de l'employeur nécessaire. Pas de perte de salaire si exercé de bonne foi. L'employeur ne peut sanctionner."},
-  b:{h:"Droit d'alerte CSE (L.4132-1)",t:"<b>Tout membre du CSE</b> consigne l'alerte dans un registre spécial. L'employeur doit enquêter et répondre. Si désaccord : réunion CSE d'urgence dans les 24 h. L'IT peut être saisi.",style:"black"},
-  notes:"<b>Ne pas confondre les deux dispositifs.</b> Le droit de retrait est individuel (le salarié décide lui-même de quitter le poste) ; le droit d'alerte DGI est collectif (l'élu consigne et déclenche la procédure CSE). Les deux peuvent se cumuler. <span class='cgt'>Erreur fréquente : l'employeur prétend que le droit de retrait nécessite son accord. C'est faux — L.4131-1 prévoit que le salarié se retire SANS attendre. La seule limite : exercice de mauvaise foi (risque inexistant et salarié le savait).</span> Pédagogie : dessiner la chaîne — salarié constate danger → retrait immédiat + alerte à l'élu → élu consigne dans registre + informe employeur → réunion 24h. Différence pratique : le retrait protège le salarié, l'alerte oblige l'employeur à agir. <span class='ref'>Réf. L.4131-1 à L.4131-4 CT ; L.4132-1 à L.4132-5 CT.</span>"},
+  kicker:"Articles L.4131-1 et L.4131-2 du Code du travail",
+  a:{h:"Droit de retrait (L.4131-1)",t:"<b>Tout salarié</b> alerte l'employeur et peut se retirer d'une situation dont il a un motif raisonnable de penser qu'elle présente un danger grave et imminent. Pas d'accord nécessaire. Aucune sanction ni retenue de salaire (L.4131-3)."},
+  b:{h:"Droit d'alerte du CSE (L.4131-2)",t:"<b>Tout membre du CSE</b> qui constate un danger grave et imminent alerte l'employeur et consigne l'alerte par écrit dans le registre spécial. L'employeur doit enquêter immédiatement avec lui.",style:"black"},
+  notes:"<b>Ne pas confondre les deux dispositifs.</b> Le <b>droit de retrait</b> appartient à chaque salarié : il prévient l'employeur et se retire, sans attendre d'autorisation, s'il a un motif raisonnable de penser que la situation présente un danger grave et imminent pour sa vie ou sa santé. Il ne peut être ni sanctionné ni privé de salaire ; la seule limite est l'abus (danger manifestement inexistant). Le <b>droit d'alerte</b> appartient à chaque élu du CSE : il consigne par écrit le danger constaté et déclenche une procédure qui oblige l'employeur à enquêter et à agir. Les deux se combinent souvent : le salarié se retire et prévient un élu, qui consigne l'alerte. <span class='cgt'>Erreur fréquente des directions : prétendre que le retrait exige leur accord, ou menacer de retenues. C'est faux. Autre point essentiel : si un accident survient alors que le risque avait été signalé par un salarié ou un élu, la faute inexcusable de l'employeur est de droit (L.4131-4).</span> <span class='ref'>Réf. L.4131-1 à L.4131-4 ; L.4132-1 à L.4132-5 CT.</span>"},
 
-{type:"callout", title:"Votre formation SST en tant qu'élu·e CSE",
+{type:"svg", kicker:"Procédure du danger grave et imminent", title:"Le droit d'alerte du CSE, pas à pas",
+  caption:"L'élu ne retire pas lui-même les salariés : il déclenche une procédure qui oblige l'employeur à agir, sous le contrôle de l'inspection du travail.",
+  svg:`<svg viewBox="0 0 1100 470" role="img" aria-label="Procédure du droit d'alerte DGI">
+  <g fill="none" stroke="#141414" stroke-width="4">
+    <path class="a-draw" pathLength="1" style="--d:.4s" d="M205 120 H 265"/>
+    <path class="a-draw" pathLength="1" style="--d:.8s" d="M455 120 H 515"/>
+    <path class="a-draw" pathLength="1" style="--d:1.2s" d="M705 120 H 765"/>
+    <path class="a-draw" pathLength="1" style="--d:1.6s" d="M610 165 V 245"/>
+    <path class="a-draw" pathLength="1" style="--d:2s" d="M515 300 H 455"/>
+    <path class="a-draw" pathLength="1" style="--d:2.4s" d="M265 300 H 245"/>
+  </g>
+  <g fill="#141414" class="a-fade" style="--d:2.6s"><path d="M268 120 l-14 -8 v16z"/><path d="M518 120 l-14 -8 v16z"/><path d="M768 120 l-14 -8 v16z"/><path d="M610 248 l-8 -14 h16z"/><path d="M452 300 l14 -8 v16z"/><path d="M242 300 l14 -8 v16z"/></g>
+  <g class="t-ui" font-size="16" text-anchor="middle">
+    <g class="a-pop" style="--d:.1s"><rect x="15" y="75" width="190" height="90" rx="8" fill="#E2001A"/><text x="110" y="113" fill="#fff">1. L'élu constate</text><text x="110" y="137" fill="#fff">un danger grave</text></g>
+    <g class="a-pop" style="--d:.5s"><rect x="265" y="75" width="190" height="90" rx="8" fill="#141414"/><text x="360" y="113" fill="#fff">2. Il alerte et</text><text x="360" y="137" fill="#FFD200">consigne au registre</text></g>
+    <g class="a-pop" style="--d:.9s"><rect x="515" y="75" width="190" height="90" rx="8" fill="#141414"/><text x="610" y="113" fill="#fff">3. Enquête immédiate</text><text x="610" y="137" fill="#FFD200">employeur + élu</text></g>
+    <g class="a-pop" style="--d:1.3s"><rect x="765" y="75" width="190" height="90" rx="8" fill="#FFD200"/><text x="860" y="113" fill="#141414">4a. Accord :</text><text x="860" y="137" fill="#141414">mesures prises</text></g>
+    <g class="a-pop" style="--d:1.7s"><rect x="515" y="250" width="190" height="100" rx="8" fill="#F1EFE8" stroke="#E2001A" stroke-width="3"/><text x="610" y="285" fill="#E2001A">4b. Désaccord :</text><text x="610" y="309" fill="#141414">CSE réuni d'urgence</text><text x="610" y="333" fill="#141414">sous 24 heures</text></g>
+    <g class="a-pop" style="--d:2.1s"><rect x="265" y="250" width="190" height="100" rx="8" fill="#F1EFE8" stroke="#141414" stroke-width="2"/><text x="360" y="285" fill="#141414">Inspection du travail</text><text x="360" y="309" fill="#141414">et CARSAT informées,</text><text x="360" y="333" fill="#141414">peuvent assister</text></g>
+    <g class="a-pop" style="--d:2.5s"><rect x="15" y="250" width="227" height="100" rx="8" fill="#141414"/><text x="128" y="285" fill="#FFD200">5. Désaccord persistant :</text><text x="128" y="309" fill="#fff">l'inspecteur met en</text><text x="128" y="333" fill="#fff">demeure ou saisit le juge</text></g>
+  </g>
+  <g class="a-fade" style="--d:2.9s"><rect x="15" y="395" width="1070" height="56" rx="8" fill="#FFD200"/><text x="550" y="430" text-anchor="middle" class="t-ui" font-size="17" fill="#141414">En parallèle, tout salarié peut exercer son droit de retrait (L.4131-1) — sans sanction ni perte de salaire</text></g>
+</svg>`,
+  notes:"<b>La procédure, étape par étape (schéma animé).</b> (1) Un élu constate, notamment par l'intermédiaire d'un salarié, une cause de danger grave et imminent. (2) Il alerte immédiatement l'employeur et consigne l'avis par écrit dans le registre spécial, daté et signé : nature du danger, postes concernés, noms des salariés exposés. (3) L'employeur procède <b>immédiatement</b> à une enquête avec l'élu et prend les mesures nécessaires. (4) En cas de désaccord sur la réalité du danger ou les mesures, le CSE est réuni d'urgence dans les 24 heures ; l'inspection du travail et l'agent de la CARSAT en sont informés et peuvent assister à la réunion. (5) À défaut d'accord, l'inspecteur du travail est saisi immédiatement : il peut mettre l'employeur en demeure ou saisir le juge des référés. <span class='cgt'>Ne jamais retirer une alerte sous la pression. Vérifier que le registre spécial existe, qu'il est accessible et que tous les élus savent où il se trouve. Rédiger l'alerte de façon factuelle et précise : c'est un document qui pourra être produit devant un tribunal.</span> <span class='ref'>Réf. L.4131-2 ; L.4132-2 à L.4132-4 ; D.4132-1 et D.4132-2 (registre) ; L.4732-1 (référé).</span>"},
+
+{type:"callout", title:"La formation SSCT des élus",
   kicker:"Un droit, pas un bonus",
-  body:"<b>Tous les membres du CSE ont droit à une formation en santé, sécurité et conditions de travail (SSCT)</b> — 5 jours pour le 1er mandat, 3 jours pour les mandats suivants (L.2315-18 CT). Cette formation est <b>prise en charge par l'employeur</b> (financement OPCO) et se déroule pendant le temps de travail. Elle doit être dispensée par un organisme agréé.",
-  sub:"L.2315-18 CT — financement sur budget formation de l'employeur, pas sur budget CSE",
-  notes:"<b>Faire valoir le droit à formation SST : un levier dès le premier mandat.</b> Les élus ignorent souvent que cette formation est distincte du crédit d'heures et intégralement financée par l'employeur (non imputée sur le budget du CSE). <span class='cgt'>Argument syndical : un élu non formé est un élu moins efficace pour protéger les salariés — et l'employeur ne peut pas opposer le coût ni la charge de travail comme motif de refus. En cas de refus, mettre en demeure par courrier recommandé et saisir l'IT.</span> CGT Occitanie organise ces formations — relais vers UD/UR pour les inscrire. Durée et organismes habilités : liste INRS et Direccte. <span class='ref'>Réf. L.2315-18, R.2315-9 à R.2315-11 CT.</span>"},
+  mode:"black",
+  big:"5 jours au premier mandat",
+  sub:"Tous les membres de la délégation du personnel du CSE bénéficient d'une formation en santé, sécurité et conditions de travail. Renouvellement : 3 jours (5 jours pour les membres de la CSSCT dans les entreprises d'au moins 300 salariés). Financée par l'employeur, sur le temps de travail.",
+  notes:"<b>Faire valoir le droit à la formation SSCT dès le début du mandat.</b> Depuis la loi du 2 août 2021, tous les élus du CSE (et plus seulement ceux de l'ancienne CSSCT) y ont droit : au moins 5 jours lors du premier mandat ; au moins 3 jours en cas de renouvellement, portés à 5 jours pour les membres de la CSSCT dans les entreprises d'au moins 300 salariés. La formation est prise en charge par l'employeur (dans les entreprises de moins de 50 salariés, elle peut être financée par l'OPCO), se déroule sur le temps de travail et n'est pas imputée sur les heures de délégation. L'organisme est choisi par l'élu parmi les organismes agréés ou certifiés. <span class='cgt'>Un élu non formé est un élu moins efficace pour protéger les salariés : l'employeur ne peut pas refuser au motif du coût ou de la charge de travail. Les centres de formation de la CGT dispensent cette formation : orienter les élus vers l'UD ou le comité régional pour s'inscrire.</span> <span class='ref'>Réf. L.2315-18 et R.2315-9 et s. CT.</span>"},
 
-{type:"two", title:"Le droit d'alerte — Danger Grave et Imminent",
-  kicker:"Article L.4131-1 du Code du travail",
-  a:{h:"Qui peut l'exercer ?", t:"Tout membre du CSE (titulaire ou suppléant). Aussi tout salarié, à titre individuel, pour son propre poste.", style:"red"},
-  b:{h:"Procédure", t:"1. Consigner l'alerte dans le registre DGI. 2. Informer l'employeur immédiatement. 3. L'employeur doit enquêter et prendre les mesures nécessaires sans délai.", style:"black"},
-  source:"<b>Effet :</b> l'employeur ne peut ordonner la reprise du travail qu'après avoir mis fin au danger — ou demander au juge d'établir que le danger n'existe pas.",
-  notes:"<span class='cgt'>L'employeur qui conteste l'alerte DGI doit aller au juge. La charge de la preuve lui incombe. Ne jamais retirer une alerte DGI sous pression : c'est juridiquement une erreur et politiquement une faiblesse.</span>"},
-
-{type:"content", title:"L'enquête après AT grave — rôle du CSE",
-  kicker:"Obligation légale — Article L.4441-1",
+{type:"content", title:"L'enquête après accident — rôle du CSE",
+  kicker:"Article L.2312-13 du Code du travail",
   bullets:[
-    "Obligatoire après tout <b>AT grave</b> (ITT > 8 jours) ou <b>MP</b> ou <b>incident grave</b>",
-    "Réalisée par une délégation du CSE + représentant de l'employeur en binôme",
-    "Basée sur la méthode d'analyse a posteriori (arbre des causes)",
-    "<b>Rapport d'enquête :</b> remis au CSE, consigné dans le PV, transmis à l'inspection du travail sur demande",
-    "<b>Plan d'action :</b> l'employeur doit répondre par écrit aux recommandations dans le mois qui suit"
+    "Le CSE réalise des <b>enquêtes en matière d'AT et de MP</b> ou de maladies à caractère professionnel",
+    "Une délégation du CSE mène l'enquête avec un représentant de l'employeur",
+    "Méthode : <b>arbre des causes</b>, recherche des causes organisationnelles",
+    "Le temps passé aux enquêtes après un AT grave ou des incidents répétés est payé comme du temps de travail, <b>sans s'imputer</b> sur les heures de délégation",
+    "Les conclusions sont présentées au CSE et débouchent sur un <b>plan d'action</b> intégré au DUERP"
   ],
-  notes:"<b>L'enquête AT : un droit légal qui construit aussi le dossier FI.</b> La méthode arbre des causes est la référence : elle remonte des causes immédiates (le geste, l'outil) aux causes profondes (l'organisation, la formation, les effectifs). En pratique : (1) Recueil des faits sur les lieux, idéalement dans les 24-48 h (les traces disparaissent). (2) Témoignages écrits et signés. (3) Photos du poste de travail. (4) Analyse des causes sans désigner de coupable. (5) Plan d'action avec mesures correctives, responsable et délai. <span class='cgt'>L'enquête AT est un droit légal — pas une faveur de l'employeur. Si celui-ci refuse de participer, de laisser l'accès au lieu de l'accident, ou de communiquer les informations nécessaires : le consigner immédiatement dans un PV d'incident, envoyer une lettre recommandée, saisir l'inspection du travail. Chaque enquête menée est aussi un élément de preuve pour la faute inexcusable future : elle démontre que l'employeur connaissait le risque, et qu'il s'est ou non engagé à le corriger.</span> Après l'enquête : présentation en CSE, intégration au DUER, suivi du plan d'action en ordre du jour permanent. <span class='ref'>Réf. L.2312-13 CT (enquête obligatoire en cas d'AT grave).</span>"},
+  notes:"<b>L'enquête : un droit qui protège et qui construit la preuve.</b> En pratique : (1) se rendre sur les lieux dans les 24 à 48 heures, avant que tout soit remis en ordre ; (2) recueillir des témoignages écrits et datés ; (3) photographier le poste et le matériel ; (4) construire l'arbre des causes sans désigner de coupable ; (5) proposer des mesures avec responsable et délai. Le temps passé aux enquêtes après un accident grave ou des incidents répétés ayant révélé un risque grave n'est pas déduit des heures de délégation. <span class='cgt'>Si l'employeur refuse l'enquête commune, l'accès au lieu ou la communication des informations : le consigner, adresser un courrier recommandé et saisir l'inspection du travail. Chaque enquête établit que l'employeur connaissait le risque — et s'il s'est ou non engagé à le corriger. Penser aussi aux intérimaires et aux salariés d'entreprises extérieures victimes d'un accident sur le site : le CSE de l'entreprise utilisatrice est compétent.</span> <span class='ref'>Réf. L.2312-13, L.2315-11 CT ; R.4511-1 et s. (entreprises extérieures).</span>"},
 
 {type:"content", title:"La négociation sur la prévention",
-  kicker:"Obligations de négocier — levier CGT",
+  kicker:"Les obligations de négocier — levier CGT",
   bullets:[
-    "<b>Accord QVT/QVCT</b> (qualité de vie et conditions de travail) — bloc de négociation obligatoire dans les entreprises ≥ 50 salariés",
-    "<b>Accord pénibilité</b> — obligatoire pour les entreprises exposant ≥ 25 % de leur effectif à des facteurs de pénibilité",
-    "<b>Négociation annuelle (NAO)</b> inclut les conditions de travail depuis 2017",
-    "CGT : exiger des <b>indicateurs SST</b> dans les accords (taux de fréquence, taux de gravité, taux d'absentéisme, actions DUER réalisées)",
-    "Négocier un <b>droit de retrait</b> renforcé dans l'accord d'entreprise"
+    "<b>Égalité professionnelle et qualité de vie et des conditions de travail (QVCT)</b> — négociation obligatoire dans les entreprises dotées d'un délégué syndical",
+    "<b>Accord de prévention des effets de l'exposition aux risques professionnels</b> — entreprises d'au moins 50 salariés exposant au moins 25 % de leurs effectifs, ou à forte sinistralité",
+    "<b>Droit d'expression</b> des salariés sur leurs conditions de travail",
+    "Exiger des <b>indicateurs chiffrés</b> : taux de fréquence, taux de gravité, maladies professionnelles, actions réalisées",
+    "Inscrire des <b>engagements opposables</b> : effectifs, cadences, investissements, formation"
   ],
-  notes:"<b>La prévention comme terrain de négociation collective.</b> Deux cadres légaux principaux : (1) <b>Accord QVCT</b> (Qualité de Vie et Conditions de Travail) — peut inclure des engagements sur les effectifs, les cadences, les équipements, le télétravail, la prise en charge des RPS. Il remplace les anciens accords QVT depuis la loi El Khomri. (2) <b>Programme annuel de prévention</b> (PAPRIPACT) — voté en CSE, peut être amendé par les représentants du personnel. <span class='cgt'>La prévention n'est pas qu'un sujet technique — c'est un sujet de négociation. Les accords QVCT peuvent fixer des engagements chiffrés, datés et opposables : réduction du taux de fréquence, formation de X managers, audit des postes exposés, indicateurs RPS. Sans indicateurs chiffrés dans le texte, pas de suivi ni de sanction possible. Exiger systématiquement des clauses quantitatives.</span> Levier complémentaire : lors de toute négociation (NAO, accord de branche), inclure un volet prévention SST avec des indicateurs de résultat — taux de fréquence AT, taux de gravité, taux de MP, absentéisme. Ces indicateurs servent aussi à déclencher des expertises CSSCT. <span class='ref'>Réf. L.2242-17 CT (négociation QVCT).</span>"},
+  notes:"<b>La prévention comme terrain de négociation collective.</b> (1) La négociation <b>égalité professionnelle et QVCT</b> (L.2242-17) peut porter sur l'articulation des temps, le droit à la déconnexion, la prévention des risques, les conditions de travail. (2) L'<b>accord de prévention des effets de l'exposition à certains facteurs de risques</b> (manutentions, postures, vibrations, bruit, travail de nuit, etc.) est obligatoire dans les entreprises d'au moins 50 salariés lorsque 25 % au moins des salariés sont exposés ou que la sinistralité AT/MP dépasse un seuil ; à défaut, pénalité. <span class='cgt'>Sans indicateurs chiffrés, pas de suivi ni de sanction possible : exiger des clauses quantitatives (réduction du taux de fréquence, recrutements sur les postes en tension, investissements datés). Rappeler la revendication CGT : rétablir dans le compte pénibilité (C2P) les facteurs supprimés en 2017 (manutentions, postures pénibles, vibrations, agents chimiques dangereux).</span> <span class='ref'>Réf. L.2242-17 CT ; L.4162-1 et D.4162-1 et s. (accord de prévention) ; L.2281-1 (droit d'expression).</span>"},
 
 /* ═══ PARTIE 6 — OUTILS & MÉTHODES PRATIQUES ═══ */
 {type:"divider", kicker:"Partie 6",
   title:["Outils pratiques", "pour militants"],
-  lede:"Grille d'inspection, indicateurs SST, ressources CGT"},
+  lede:"Indicateurs, grille d'inspection, ressources",
+  notes:"<b>Repartir avec des outils utilisables dès demain.</b> Présenter le contenu du dossier stagiaire : grille d'inspection, tableau de bord des indicateurs, modèles de courriers (demande de DUERP, alerte DGI, saisine de l'inspection). <span class='cgt'>L'efficacité syndicale en prévention repose sur la régularité : des outils simples, utilisés à chaque réunion, valent mieux qu'une grande action ponctuelle.</span>"},
 
-{type:"content", title:"Les indicateurs SST à suivre au CSE",
+{type:"content", title:"Les indicateurs à suivre au CSE",
   kicker:"Mesurer pour agir",
   bullets:[
-    "<b>Taux de fréquence (TF)</b> = nombre d'AT avec arrêt × 10⁶ / heures travaillées. Comparer à la branche.",
-    "<b>Taux de gravité (TG)</b> = nombre de journées perdues × 10³ / heures travaillées",
-    "<b>Taux d'absentéisme</b> — distinguer maladie ordinaire, AT, MP, longue maladie",
-    "<b>Nombre de maladies professionnelles reconnues</b> et en cours d'instruction",
-    "<b>Suivi du plan d'action DUER</b> : % d'actions réalisées dans les délais"
+    "<b>Taux de fréquence</b> = AT avec arrêt × 1 000 000 ÷ heures travaillées — à comparer à la branche",
+    "<b>Taux de gravité</b> = journées perdues × 1 000 ÷ heures travaillées",
+    "<b>Maladies professionnelles</b> déclarées, reconnues, refusées",
+    "<b>Absentéisme</b> : maladie, AT, MP, longues maladies — par service",
+    "<b>Suivi du plan d'action</b> : part des actions réalisées dans les délais"
   ],
-  strip:"Exiger ces indicateurs en réunion CSE. S'ils ne sont pas fournis, c'est un motif d'expertise.",
-  notes:"<b>Les indicateurs à surveiller et leur utilisation syndicale.</b> <b>TF (taux de fréquence)</b> = nombre d'AT avec arrêt × 10⁶ ÷ nombre d'heures travaillées. <b>TG (taux de gravité)</b> = nombre de journées perdues × 1 000 ÷ heures travaillées. <b>Indice de fréquence</b> = AT avec arrêt × 1 000 ÷ effectif. Taux de MP, taux d'absentéisme et causes, indicateurs RPS (baromètre interne si existant). <span class='cgt'>Comparer le TF et TG de l'entreprise avec les moyennes de la branche professionnelle — disponibles sur le site de la CARSAT et dans les statistiques Assurance Maladie. Un TF supérieur à la moyenne de branche est un argument béton pour exiger un plan d'action renforcé, une révision complète du DUER, voire une expertise CSSCT. Un TG élevé indique des AT graves ou des arrêts longs : orienter l'analyse sur les postes à risque élevé.</span> Méthode de suivi : constituer un tableau de bord SST mis à jour à chaque CSE, présenté par l'employeur. Si l'employeur ne le fournit pas spontanément, le demander par écrit dans l'ordre du jour — il est obligatoire dans le rapport annuel de l'employeur (bilan de la situation économique). <span class='ref'>Réf. L.2312-26 CT (rapport annuel), données CARSAT par code NACE.</span>"},
+  strip:"Exiger ces indicateurs à chaque réunion consacrée à la santé-sécurité. Les comparer à la branche (données CARSAT).",
+  notes:"<b>Les indicateurs et leur usage syndical.</b> Le <b>taux de fréquence</b> mesure le nombre d'accidents avec arrêt par million d'heures travaillées ; le <b>taux de gravité</b> mesure le nombre de journées perdues pour 1 000 heures travaillées ; l'<b>indice de fréquence</b> rapporte les accidents à 1 000 salariés. S'y ajoutent les maladies professionnelles, l'absentéisme par service, le turn-over, les inaptitudes. <span class='cgt'>Comparer les taux de l'entreprise avec ceux de la branche (statistiques de l'Assurance Maladie par code risque, compte AT/MP de l'employeur sur net-entreprises) : un taux supérieur à la moyenne est un argument fort pour exiger un plan renforcé, voire une expertise. Attention aux indicateurs « trop beaux » : une baisse des accidents déclarés peut cacher une sous-déclaration (primes « zéro accident », pressions, postes aménagés pour éviter les arrêts).</span> <span class='ref'>Réf. L.2312-27 (consultation sur la politique sociale) ; L.2312-36 (BDESE).</span>"},
 
-{type:"content", title:"La grille d'inspection des lieux — utilisation pratique",
-  kicker:"4 inspections par an minimum",
+{type:"content", title:"La grille d'inspection des lieux",
+  kicker:"Préparer · observer · écrire · suivre",
   bullets:[
-    "Préparer l'inspection : consulter le DUER, les AT récents, les alertes précédentes",
-    "Observer le <b>travail réel</b>, pas les procédures affichées",
-    "Photographier systématiquement les non-conformités (avec accord des salariés présents)",
-    "Rédiger un <b>rapport d'inspection</b> remis à l'ordre du jour du CSE suivant",
-    "Suivre les <b>actions correctives</b> demandées lors de l'inspection précédente"
+    "<b>Préparer</b> : DUERP, accidents récents, alertes et inspections précédentes",
+    "Observer le <b>travail réel</b>, pas les procédures affichées ; parler aux salariés",
+    "<b>Photographier</b> les situations à risque (avec l'accord des salariés présents)",
+    "Rédiger un <b>compte rendu écrit</b> remis à l'employeur, avec demande de réponse datée",
+    "<b>Suivre</b> les actions correctives à l'inspection suivante"
   ],
-  notes:"<b>L'inspection des lieux : méthode et rigueur.</b> Légalement, les élus du CSE ont le droit de visiter tous les lieux de travail à tout moment de la journée — y compris sans en prévenir l'employeur à l'avance (sauf pour les locaux sensibles). Méthode recommandée : binôme élu + salarié du secteur, grille pré-remplie par famille de risques, photos horodatées. Vérifier : état des sols (glissance, obstacles), balisage, éclairage, température, niveau sonore, stockage des produits chimiques, accessibilité des issues de secours, état des EPI mis à disposition, présence des EPC, affichages obligatoires. <span class='cgt'>L'inspection n'est pas une visite touristique — elle doit produire un <b>document écrit</b> remis à l'employeur avec demande de réponse chiffrée et datée. Sans écrit transmis par voie formelle (RAR ou mail tracé), l'inspection ne laisse aucune trace opposable. En cas d'AT ultérieur sur un risque identifié lors d'une inspection, ce document est une preuve directe de la conscience du danger par l'employeur.</span> Fréquence recommandée : au moins une inspection par trimestre, plus après tout AT ou incident grave. Intégrer le compte rendu d'inspection à l'ordre du jour du CSE suivant. <span class='ref'>Réf. L.2312-13 CT.</span>"},
+  notes:"<b>L'inspection : méthode et rigueur.</b> Organiser l'inspection en binôme (élu + salarié du secteur), avec une grille par famille de risques. Points à vérifier : sols et circulations, éclairage, bruit, ambiances thermiques, stockage et étiquetage des produits chimiques (fiches de données de sécurité accessibles), état et adaptation des équipements de travail, protections collectives, EPI disponibles et adaptés, issues de secours, sanitaires et vestiaires, affichages obligatoires, et surtout l'organisation (effectifs, cadences, aléas). <span class='cgt'>Une inspection sans écrit ne laisse aucune trace. Le compte rendu, transmis de façon traçable et inscrit à l'ordre du jour du CSE suivant, prouve que l'employeur a été informé du risque. En cas d'accident ultérieur, c'est une pièce maîtresse du dossier de faute inexcusable.</span> Fréquence : au moins aussi souvent que les réunions SSCT, et après chaque accident ou incident grave. <span class='ref'>Réf. L.2312-13 CT.</span>"},
 
 {type:"quiz", title:"Quiz — Droits du CSE",
-  q:"L'employeur refuse d'inscrire le point 'résultats du DUER' à l'ordre du jour du CSE, arguant que c'est déjà fait l'an dernier. Quelle est la bonne réponse du militant ?",
-  opts:[{k:"A",t:"Accepter : l'employeur fixe l'ordre du jour"},{k:"B",t:"Inscrire le point en ajout à l'OdJ : les élus ont ce droit (L.2315-29)"},{k:"C",t:"Saisir directement l'inspection du travail sans passer par le CSE"},{k:"D",t:"Demander une réunion extraordinaire sur ce seul sujet"}],
-  ans:1,
-  explain:"Les membres élus du CSE peuvent inscrire des points à l'ordre du jour (article L.2315-29). De plus, le DUER doit être actualisé chaque année : sa présentation au CSE est obligatoire. L'employeur ne peut pas s'y opposer.",
-  notes:"<span class='cgt'>Ce cas est très fréquent. Connaître L.2315-29 par cœur. Et rappeler que le DUER doit être présenté lors de la consultation annuelle sur la politique sociale (L.2312-27) — ce n'est pas optionnel.</span>"},
+  q:"L'employeur refuse d'inscrire le point « mise à jour du DUERP » à l'ordre du jour du CSE, au motif que c'était fait l'an dernier. Quelle est la bonne réponse ?",
+  opts:[{k:"A",t:"Accepter : l'employeur fixe seul l'ordre du jour"},{k:"B",t:"Saisir directement l'inspection du travail sans passer par le CSE"},{k:"C",t:"Demander une réunion extraordinaire sur ce seul sujet"},{k:"D",t:"L'ordre du jour est arrêté conjointement par le président et le secrétaire : le secrétaire peut y inscrire ce point"}],
+  ans:3,
+  explain:"L'ordre du jour est arrêté conjointement par le président et le secrétaire du CSE ; les consultations rendues obligatoires par la loi y sont inscrites de plein droit. Le DUERP doit en outre être mis à jour au moins chaque année (≥ 11 salariés).",
+  notes:"<b>Un cas très fréquent.</b> Rappeler que l'ordre du jour n'est pas la propriété du président : il est établi conjointement avec le secrétaire, et les consultations obligatoires y sont inscrites de plein droit. La réponse C n'est pas fausse en soi (une réunion supplémentaire peut être demandée par la majorité des élus), mais ce n'est pas le premier levier. <span class='cgt'>Connaître L.2315-29 et L.2312-27 : la santé-sécurité n'est pas un sujet que l'employeur peut écarter de l'ordre du jour.</span> <span class='ref'>Réf. L.2315-29, L.2315-28, L.2312-27 CT ; R.4121-2.</span>"},
 
-{type:"content", title:"Ressources et outils CGT / externes",
+{type:"content", title:"Ressources et appuis",
   kicker:"Pour aller plus loin",
   bullets:[
-    "<b>INRS (inrs.fr)</b> — fiches pratiques, outils d'évaluation des risques, aide-mémoire juridiques, gratuits",
-    "<b>CARSAT régionale</b> — diagnostic gratuit, outils d'évaluation, aides financières (AFS, contrats de prévention)",
-    "<b>Institut du Travail CGT</b> — formations syndicales, outils de négociation, jurisprudence commentée",
-    "<b>Ameli.fr (CPAM)</b> — statistiques AT/MP par secteur, reconnaissance MP, taux d'IPP",
-    "<b>Légifrance</b> — Code du travail, jurisprudence, textes conventionnels de branche"
+    "<b>INRS (inrs.fr)</b> — dossiers par risque, outils d'évaluation, brochures gratuites",
+    "<b>CARSAT</b> — visites, aides financières, statistiques par branche",
+    "<b>Service de prévention et de santé au travail</b> — fiche d'entreprise, études de poste",
+    "<b>Inspection du travail (DREETS)</b> — saisine gratuite, contrôle",
+    "<b>CGT</b> — collectifs santé-travail de l'UD, fédérations, comité régional, centres de formation"
   ],
-  notes:"<b>Les ressources à avoir en permanence sous la main.</b> <b>INRS (inrs.fr)</b> : fiches risques par secteur, outil DU-Arbre pour l'arbre des causes, grilles d'analyse des RPS (SATIN), fiches de données de sécurité (produits chimiques), publications gratuites téléchargeables. <b>CARSAT (carsat-lr.fr pour l'Occitanie)</b> : diagnostic gratuit sur site sur demande du CSE, contrats de prévention avec cofinancement partiel des mesures, statistiques AT/MP par branche et code risque. <b>Médecin du travail</b> : fiche d'entreprise disponible, peut participer aux réunions CSE sur demande des élus, peut réaliser des études de postes. <b>Inspection du travail (DREETS)</b> : saisine gratuite, réponse sous 1-2 mois généralement. <span class='cgt'>Deux ressources CGT à promouvoir : (1) Le collectif santé au travail de l'UD CGT — appui militant et juridique sur les dossiers complexes. (2) Les fiches pratiques CGT sur les droits SST (disponibles sur le site CGT). Constituer un classeur de ressources à distribuer aux stagiaires en fin de journée : grille d'inspection, tableau de bord SST vierge, modèles de courriers (demande DUER, alerte DGI).</span>"},
+  notes:"<b>Les ressources à avoir sous la main.</b> <b>INRS</b> : dossiers par risque, outils d'évaluation des RPS, fiches toxicologiques, brochures téléchargeables. <b>CARSAT</b> (en Occitanie : CARSAT Midi-Pyrénées et CARSAT Languedoc-Roussillon) : visites d'entreprise sur demande, aides financières pour les TPE-PME, statistiques par branche. <b>SPST</b> : fiche d'entreprise, études de poste, participation au CSE. <b>Inspection du travail</b> : saisine gratuite. <span class='cgt'>S'appuyer sur le réseau CGT : collectif santé-travail de l'UD pour les dossiers complexes, fédérations pour les risques propres à chaque secteur, comité régional pour les formations. Ne jamais rester seul face à un dossier grave (accident mortel, suicide, harcèlement) : l'organisation syndicale apporte un appui juridique et militant.</span>"},
 
-{type:"quiz", title:"Quiz — Cas pratique final",
-  q:"Lors d'une inspection, vous constatez que 3 salariés travaillent sans protection auditive dans un atelier bruyant (mesure > 85 dB). Le DUER mentionne le risque mais note 'EPI distribués'. Que faites-vous ?",
-  opts:[{k:"A",t:"C'est réglé : le DUER identifie le risque et des EPI ont été distribués"},{k:"B",t:"Rappeler que les EPI sont le dernier recours — exiger une étude pour réduire le bruit à la source ou mettre en place une protection collective"},{k:"C",t:"Saisir immédiatement l'inspection du travail pour non-port des EPI"},{k:"D",t:"Déclencher un droit d'alerte DGI"}],
-  ans:1,
-  explain:"Bonne réponse B : la distribution d'EPI ne dispense pas l'employeur de rechercher des mesures de niveau supérieur (suppression du risque, EPC). Le non-port des EPI est un symptôme : EPI inadaptés, inconfortables, ou salariés non formés. L'employeur doit documenter pourquoi il ne peut pas faire mieux.",
-  notes:"<span class='cgt'>Ce cas illustre le principe clé : les EPI sont un pansement, pas une solution. Opposer la hiérarchie des 9 PGP et exiger que le plan d'action intègre une étude de réduction du bruit à la source (isolation, encoffrement, rotation des postes).</span>"},
+{type:"quiz", title:"Quiz — Cas pratique",
+  q:"Lors d'une inspection, vous constatez que 3 salariés travaillent sans protection auditive dans un atelier bruyant (> 85 dB). Le DUERP mentionne le risque avec la mention « EPI distribués ». Que faites-vous ?",
+  opts:[{k:"A",t:"Rappeler que les EPI sont le dernier recours et exiger une étude de réduction du bruit à la source et une protection collective"},{k:"B",t:"C'est réglé : le risque est identifié et des EPI ont été distribués"},{k:"C",t:"Demander une sanction contre les salariés qui ne portent pas leurs EPI"},{k:"D",t:"Déclencher immédiatement un droit d'alerte DGI"}],
+  ans:0,
+  explain:"La distribution d'EPI ne dispense pas l'employeur de réduire le bruit à la source (à partir de 85 dB, un programme de réduction est obligatoire). Le non-port est un symptôme : EPI inadaptés, inconfortables, salariés non formés.",
+  notes:"<b>Ancrer la hiérarchie des mesures.</b> Au-delà de 85 dB(A), l'employeur doit établir et mettre en œuvre un programme de mesures techniques et organisationnelles pour réduire l'exposition, et le port des protecteurs devient obligatoire. Le bruit ne constitue pas, en général, un danger « imminent » justifiant une alerte DGI (réponse D), mais un risque grave à traiter dans le plan d'action. <span class='cgt'>Ne jamais tomber dans le piège de la sanction (réponse C) : se demander pourquoi les EPI ne sont pas portés (inconfort, communication impossible, chaleur, absence de formation). Exiger encoffrement, capotage, traitement acoustique, rotation, et audiogrammes dans le suivi médical.</span> <span class='ref'>Réf. R.4431-1 et s. CT (bruit).</span>"},
 
 {type:"case", title:"Mise en situation — Inspection de l'entrepôt Logisud",
-  scenario:"Logisud, entrepôt logistique de 60 salariés (colis, picking, chariots élévateurs). Vous êtes élus CSE et venez de réaliser une inspection des lieux. Observations notées : sol fissuré et gras dans la zone chariots, bruit estimé à 87 dB sans EPI disponibles, produits de nettoyage stockés sans FDS affichées, éclairage défaillant dans 2 allées, 3 postes de picking avec cadence imposée de 280 colis/h (signalements TMS x4 en 6 mois). Le DUERP date de 2021 et ne mentionne ni le bruit ni les risques chimiques. Le PAPRIPACT 2023 prévoyait 'amélioration de l'éclairage' : rien n'a été fait.",
-  questions:["Groupe A — Analysez les risques observés : classez-les par famille de dangers, cotez leur criticité (fréquence × gravité) et identifiez les 3 priorités à inscrire au DUERP.","Groupe B — Rédigez les points essentiels d'un PAPRIPACT 2025 : pour chaque risque prioritaire, proposez une mesure (en respectant la hiérarchie PGP), un responsable et un délai réaliste.","Groupe C — Préparez l'argumentaire CSE : comment présenter ces constats à l'employeur ? Quels droits activer si l'employeur refuse d'agir ? Quel rôle pour l'inspection du travail et la CARSAT ?"],
+  scenario:"Logisud, entrepôt logistique de 60 salariés (colis, picking, chariots élévateurs). Vous êtes élus du CSE et venez de réaliser une inspection. Constats : sol fissuré et gras dans la zone chariots ; bruit estimé à 87 dB sans protections disponibles ; produits de nettoyage stockés sans fiches de données de sécurité ; éclairage défaillant dans 2 allées ; 3 postes de picking à 280 colis/h (4 signalements de TMS en 6 mois). Le DUERP date de 2021 et ne mentionne ni le bruit ni le risque chimique. Le PAPRIPACT 2023 prévoyait « amélioration de l'éclairage » : rien n'a été fait.",
+  questions:["Groupe A — Classez les risques observés par famille, cotez leur criticité (fréquence × gravité) et retenez 3 priorités pour le DUERP.","Groupe B — Rédigez les points essentiels d'un PAPRIPACT : pour chaque risque prioritaire, une mesure (selon la hiérarchie de prévention), un responsable, un délai.","Groupe C — Préparez l'argumentaire CSE : comment présenter ces constats ? Quels droits activer si l'employeur refuse d'agir ? Quel rôle pour l'inspection du travail et la CARSAT ?"],
   minutes:25,
-  notes:"<b>Atelier en 3 groupes (15 min) + restitution (10 min).</b> Avec 11 stagiaires : groupes 4/4/3. Chaque groupe a un angle différent — restitution croisée en plénière. <b>Groupe A — Corrigé :</b> bruit (87 dB > 80 dB → surveillance médicale + EPC obligatoire), TMS (cadences + postures → risque grave, niveau 1-4 PGP), chimique (FDS absentes = infraction), mécanique (sol + éclairage). Cotation : TMS et bruit en criticité haute. <b>Groupe B — Corrigé PAPRIPACT :</b> Bruit : mesure de sonométrie sous 30 j (CARSAT), EPC (isolation) sous 90 j, EPI immédiats ; TMS : révision des cadences sous 60 j (étude de poste médecin du travail), rotation obligatoire ; Chimique : FDS affichées immédiatement (délai 48 h), inventaire complet sous 15 j. <b>Groupe C — Corrigé :</b> inscrire à l'ordre du jour du CSE suivant, remettre le compte rendu d'inspection à l'employeur par RAR, demander un délai de réponse de 15 j, saisir l'inspection si pas de réponse, solliciter un diagnostic CARSAT gratuit. <span class='cgt'>Point fort : le PAPRIPACT 2023 non exécuté ('éclairage') devient une preuve de conscience du danger si AT survient. Le faire inscrire au PV du CSE et réclamer formellement les explications sur le retard.</span>"},
+  notes:"<b>Atelier en 3 groupes (15 min) + restitution (10 min).</b> Chaque groupe a un angle différent : restitution croisée en plénière. <b>Groupe A — éléments de corrigé :</b> bruit (87 dB : au-delà de 85 dB, programme de réduction et port obligatoire), TMS (cadence + gestes répétitifs : priorité haute), chimique (absence de FDS : infraction), mécanique (sol, éclairage, circulation des chariots). <b>Groupe B — PAPRIPACT :</b> bruit : mesurage sous 30 jours, traitement acoustique et encoffrement sous 90 jours, protections immédiates ; TMS : étude de poste avec le médecin du travail, révision des cadences, rotation ; chimique : FDS et étiquetage sous 48 h, inventaire et substitution ; sol et éclairage : travaux datés. <b>Groupe C — argumentaire :</b> compte rendu d'inspection transmis par écrit, inscription à l'ordre du jour, délai de réponse, saisine de l'inspection et demande de visite CARSAT sans réponse ; expertise pour risque grave sur les TMS si nécessaire. <span class='cgt'>Point fort : le PAPRIPACT 2023 non réalisé prouve que l'employeur connaissait le risque d'éclairage. Le faire acter au PV et demander des explications : en cas d'accident, c'est un élément décisif.</span>"},
 
-{type:"content", title:"Synthèse — Les réflexes du militant prévention",
+{type:"content", title:"Synthèse — les réflexes du militant prévention",
   kicker:"Ce que vous pouvez faire dès demain",
   bullets:[
-    "<b>Demander le DUER</b> à chaque réunion CSE — s'il est absent ou non à jour : consigner + saisir l'inspection",
-    "<b>Utiliser la grille d'inspection</b> lors de chaque visite des lieux — produire un rapport écrit",
-    "<b>Mener l'enquête AT</b> après chaque accident grave — arbre des causes, causes organisationnelles",
-    "<b>Exiger la hiérarchie des mesures</b> — pas d'EPI sans démonstration de l'impossibilité de faire mieux",
-    "<b>Suivre le plan d'action</b> PAPRIPACT — les actions non réalisées peuvent fonder une faute inexcusable",
-    "<b>Former les élus</b> au droit d'alerte DGI — droit individuel de chaque élu, pas une décision collective"
+    "<b>Demander le DUERP</b> et le plan d'action — s'ils sont absents ou anciens : consigner et saisir l'inspection",
+    "<b>Inspecter</b> régulièrement avec une grille — et produire un compte rendu écrit",
+    "<b>Enquêter</b> après chaque accident — arbre des causes, causes organisationnelles",
+    "<b>Exiger la hiérarchie des mesures</b> — pas d'EPI sans démonstration qu'on ne peut pas faire mieux",
+    "<b>Suivre le plan d'action</b> — un risque connu et non traité engage la responsabilité de l'employeur",
+    "<b>Connaître le droit d'alerte</b> — droit individuel de chaque élu ; savoir où est le registre"
   ],
-  strip:"La prévention n'est pas un sujet technique réservé aux experts — c'est un terrain d'action syndicale à part entière.",
-  notes:"<b>Mémoriser les 5 réflexes à activer dès le retour en entreprise.</b> (1) Demander le DUER par écrit au prochain CSE et vérifier sa date de mise à jour. (2) Vérifier que le PAPRIPACT existe et que les actions des années précédentes ont été réalisées. (3) Organiser une inspection des lieux dans le mois — avec grille, photos, compte rendu écrit à l'employeur. (4) Former les élus au registre DGI et au droit de retrait — s'assurer que tous savent où est le registre. (5) Comparer les indicateurs SST de l'entreprise avec la branche — TF, TG, taux de MP. <span class='cgt'>Message final et fil rouge de la journée : agir en prévention, c'est à la fois protéger les salariés aujourd'hui et construire des éléments de preuve pour la faute inexcusable si l'employeur n'agit pas. Les deux dimensions sont indissociables : chaque inspection non réalisée, chaque alerte non consignée, chaque PAPRIPACT voté sans suivi, c'est un dossier FI affaibli demain. La prévention syndicale CGT est à la fois une protection immédiate et une stratégie juridique de long terme.</span> Tour de table de clôture : chacun énonce un engagement concret pour les 30 prochains jours."},
+  strip:"La prévention n'est pas un sujet technique réservé aux experts : c'est un terrain d'action syndicale à part entière.",
+  notes:"<b>Six réflexes à activer dès le retour en entreprise.</b> (1) Demander par écrit le DUERP et le plan d'action au prochain CSE. (2) Programmer une inspection dans le mois, avec grille, photos et compte rendu. (3) Exiger d'être prévenu de chaque accident pour enquêter à chaud. (4) Opposer la hiérarchie des mesures à toute réponse « EPI ». (5) Faire du suivi du plan d'action un point permanent. (6) Vérifier où se trouve le registre d'alerte et former tous les élus. <span class='cgt'>Message de fin : agir en prévention, c'est à la fois protéger les salariés aujourd'hui et construire la preuve si l'employeur n'agit pas. Chaque inspection écrite, chaque alerte consignée, chaque plan suivi renforce la position des salariés. La prévention syndicale CGT est une protection immédiate et une stratégie de long terme.</span> <b>Tour de table :</b> chacun énonce un engagement concret pour les 30 prochains jours."},
 
 {type:"closing",
-  title:"Prévention\n& Diagnostic SST",
+  title:"Prévention\\n& Diagnostic SST",
   sub:"Formation syndicale CGT Occitanie — Compétences de base en prévention",
   contacts:"CGT Comité Régional Occitanie · Secteur privé",
-  notes:"<b>Clôture de la journée.</b> Tour de table en deux temps : (1) « Un droit ou une méthode que je n'utilisais pas et que je vais activer. » (2) « Un risque dans mon entreprise que je vais inscrire au DUER ou au PAPRIPACT. » <span class='cgt'>Distribuer la check-list des réflexes militants imprimée. Rappeler les contacts : UD CGT, collectif santé au travail, inspection du travail. Encourager les participants à se tenir informés mutuellement dans les mois qui suivent — un réseau informel de militants prévention dans l'UD est souvent plus réactif que les structures formelles.</span> Proposer un suivi à 3 mois : retour d'expérience collectif sur ce qui a changé en CSE."}
+  notes:"<b>Clôture de la journée.</b> Tour de table en deux temps : (1) « Un droit ou une méthode que je n'utilisais pas et que je vais activer. » (2) « Un risque de mon entreprise que je vais faire inscrire au DUERP ou au plan d'action. » Faire remplir l'évaluation de la formation. <span class='cgt'>Distribuer la check-list des réflexes et les modèles de courriers. Rappeler les contacts : UD CGT, collectif santé-travail, inspection du travail. Proposer un retour d'expérience collectif à 3 mois : qu'est-ce qui a changé en CSE ? Un réseau de militants prévention dans l'UD est souvent plus réactif que les circuits formels.</span>"}
 
 ];
 /* ===================== MOTEUR ===================== */
@@ -804,6 +948,12 @@ function buildSlide(s,i){
       });
       resetBtn.addEventListener('click',()=>{clearInterval(intv);running=false;sec=total;updateArc();startBtn.textContent=`▶ Démarrer ${s.minutes} min`;});
     },100);
+  } else if(s.type==='svg'){
+    div.innerHTML=`
+      <div class="kicker reveal"><span class="dot"></span>${s.kicker||'Schéma'}</div>
+      <h2 class="title reveal" style="font-size:clamp(26px,3.8vw,62px)">${s.title}</h2>
+      <div class="svgwrap">${s.svg}</div>
+      ${s.caption?`<p class="svgcap reveal">${s.caption}</p>`:''}`;
   } else if(s.type==='closing'){
     div.innerHTML=`
       <div class="lockup reveal">${logoMark()}</div>
@@ -842,9 +992,17 @@ function goTo(n){
     if(el.dataset.animated)return;
     el.dataset.animated='1';
     const target=+el.dataset.val, pre=el.dataset.pre||'', suf=el.dataset.suf||'';
-    const t0=performance.now();
-    (function step(now){const t=Math.min(now-t0,1200);const p=Math.sqrt(t/1200);el.textContent=pre+Math.floor(p*target).toLocaleString('fr-FR')+suf;if(t<1200)requestAnimationFrame(step);})(performance.now());
+    let t0=null;
+    requestAnimationFrame(function step(now){
+      if(t0===null)t0=now;
+      const t=Math.min(Math.max(0,now-t0),1200);
+      el.textContent=pre+Math.floor(Math.sqrt(t/1200)*target).toLocaleString('fr-FR')+suf;
+      if(t<1200)requestAnimationFrame(step);
+    });
   });
+  const nsEl=document.getElementById('notes-slide-num');
+  if(nsEl)nsEl.textContent='Diapo '+(cur+1)+' / '+SLIDES.length;
+  if(typeof updatePresenter==='function')updatePresenter();
   // localStorage
   try{localStorage.setItem('cgt-cbp-slide',cur);}catch(e){}
 }
@@ -963,46 +1121,106 @@ allSlides.forEach(s=>s.addEventListener('click',e=>{
   if(x>0.6)goTo(cur+1);else if(x<0.4)goTo(cur-1);
 }));
 
-// Presenter window
+// Presenter window — même ergonomie que la présentation AT/MP
+var presWin=null, presClock=null, presStart=0;
+function plainText(h){const d=document.createElement('div');d.innerHTML=String(h||'');return d.textContent||'';}
+function slideSummary(s){
+  const T=Array.isArray(s.title)?s.title.join(' '):String(s.title||'').replace(/\\n/g,' ');
+  const k=s.kicker||s.eyebrow||'';
+  let body='';
+  if(s.bullets)body=s.bullets.map(b=>'• '+b).join('<br>');
+  else if(s.items&&s.type==='stats')body=s.items.map(it=>`<b>${it.p||''}${Number(it.v).toLocaleString('fr-FR')}${it.s||''}</b> — ${it.l}`).join('<br>');
+  else if(s.items)body=s.items.map(it=>`<b>${it.big}</b> ${it.nm} — ${it.ds}`).join('<br>');
+  else if(s.type==='two')body=`<b>${s.a.h}</b><br>${s.a.t}<br><br><b>${s.b.h}</b><br>${s.b.t}`;
+  else if(s.type==='callout')body=`<b>${s.big||''}</b><br>${s.sub||''}`;
+  else if(s.type==='def')body=`<b>${s.term}</b><br>${s.text}${s.extra?'<br><br>'+s.extra:''}`;
+  else if(s.type==='quiz')body=`${s.q}<br>`+s.opts.map((o,j)=>`${j===s.ans?'✅':'▫️'} <b>${o.k}</b> ${o.t}`).join('<br>')+(s.explain?`<br><br><i>${s.explain}</i>`:'');
+  else if(s.type==='case')body=`${s.scenario}<br><br>`+(s.questions||[]).map((q,j)=>`${j+1}. ${q}`).join('<br>');
+  else if(s.type==='svg')body=s.caption||'Schéma animé — commenter au fil de l\'apparition des éléments.';
+  else body=s.lede||s.sub||'';
+  if(s.strip)body+=`<span class="strip">${s.strip}</span>`;
+  return {T,k,body};
+}
 function openPresenter(){
-  const pw=window.open('','presenterWindow','width=800,height=600,resizable=yes');
-  if(!pw)return;
-  pw.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8">
-  <style>body{margin:0;background:#111;color:#eee;font-family:Arial,sans-serif;padding:20px}
-  #pt{font-size:32px;font-weight:bold;color:#FFD200;margin-bottom:12px}
-  #pc{font-size:16px;color:#aaa;margin-bottom:20px}
-  #pnotes{font-size:18px;line-height:1.5;background:#1a1a1a;padding:16px;border-left:4px solid #FFD200}
-  #pnext{font-size:13px;color:#888;margin-top:16px;border-top:1px solid #333;padding-top:10px}
-  #pres-next{font-size:12px;color:#666;margin-top:6px;font-style:italic}
-  #pclock{position:fixed;top:14px;right:20px;font-size:15px;color:#aaa;font-family:monospace}
-  </style></head><body>
-  <div id="pclock"></div>
-  <div id="pt">Diapo 1</div><div id="pc">1 / ${SLIDES.length}</div>
-  <div id="pnotes"></div><div id="pnext"></div><div id="pres-next"></div>
-  <script>
-  const clk=document.getElementById('pclock');
-  setInterval(()=>{const n=new Date();clk.textContent=n.toLocaleTimeString('fr-FR');},1000);
-  window.updatePres=function(cur,total,notes,nextTitle,nextType){
-    document.getElementById('pt').textContent='Diapo '+(cur+1);
-    document.getElementById('pc').textContent=(cur+1)+' / '+total;
-    document.getElementById('pnotes').innerHTML=notes||'';
-    document.getElementById('pnext').textContent=nextTitle?'▶ Suivante : '+nextTitle:'(dernière diapositive)';
-    document.getElementById('pres-next').textContent=nextType?'Type : '+nextType:'';
-  };
-  <\/script></body></html>`);
-  pw.document.close();
-  function syncPres(){
-    if(!pw.closed){
-      const n=SLIDES[cur].notes||'';
-      const nextS=SLIDES[cur+1];
-      const nextT=nextS?`${Array.isArray(nextS.title)?nextS.title[0]:nextS.title||''}`:null;
-      const nextType=nextS?nextS.type:null;
-      pw.updatePres&&pw.updatePres(cur,SLIDES.length,n,nextT,nextType);
-    }
-  }
-  const origGoTo=goTo;
-  window.goTo=function(n){origGoTo(n);syncPres();};
-  syncPres();
+  if(presWin&&!presWin.closed){presWin.focus();updatePresenter();return;}
+  presWin=window.open('','cgtPres','width=1280,height=820,menubar=no,toolbar=no,location=no,status=no');
+  if(!presWin)return;
+  presStart=Date.now();
+  const d=presWin.document;d.open();
+  d.write(`<!doctype html><html lang="fr"><head><meta charset="utf-8"><title>Présentateur · CGT</title>
+<style>
+*{margin:0;box-sizing:border-box}
+body{background:#0d0d0d;color:#e8e8e8;font-family:Archivo,Arial,sans-serif;display:grid;grid-template-rows:auto 1fr auto;height:100vh;overflow:hidden}
+.topbar{background:#161616;border-bottom:3px solid #E2001A;display:flex;align-items:center;gap:16px;padding:10px 18px}
+.cgt-badge{font-family:Anton,Impact,sans-serif;background:#E2001A;color:#FFD200;padding:3px 10px;font-size:13px;letter-spacing:.12em}
+.tb-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.15em;color:#aaa;flex:1}
+.tb-count{font-family:Anton,Impact,sans-serif;font-size:20px;color:#E2001A}
+.tb-elapsed{font-family:Anton,Impact,sans-serif;font-size:20px;color:#FFD200}
+.tb-clock{font-family:Anton,Impact,sans-serif;font-size:22px;color:#fff}
+.tb-sep{width:1px;height:24px;background:#333}
+.main{display:grid;grid-template-columns:1.1fr 1fr;min-height:0}
+.col-left{display:flex;flex-direction:column;border-right:1px solid #222;padding:20px 22px;gap:10px;overflow:hidden}
+.label{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.18em;color:#666}
+.cur-kicker{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.18em;color:#FFD200}
+.cur-title{font-family:Anton,Impact,sans-serif;font-size:clamp(22px,2.6vw,36px);text-transform:uppercase;color:#fff;line-height:1.05;margin:4px 0 6px}
+.cur-body{font-family:Georgia,serif;font-size:15px;line-height:1.6;color:#c8c8c8;overflow-y:auto;flex:1}
+.cur-body b{color:#fff}
+.cur-body .strip{display:block;margin-top:10px;background:#1e1e1e;border-left:4px solid #FFD200;padding:8px 12px;font-size:13px;color:#FFD200;font-weight:700}
+.col-right{display:flex;flex-direction:column;padding:20px 22px;gap:10px;overflow:hidden}
+.notes-area{flex:1;overflow-y:auto;background:#111;border-left:5px solid #FFD200;padding:14px 16px;border-radius:0 6px 6px 0}
+.notes-area .nbody{font-family:Georgia,serif;font-size:17px;line-height:1.65;color:#ddd}
+.notes-area .nbody b{color:#fff}
+.notes-area .nbody .cgt{display:block;margin-top:.7em;color:#FFD200;font-weight:700;background:rgba(255,210,0,.06);border-left:3px solid #FFD200;padding:.5em .8em}
+.notes-area .nbody .ref{color:#90b8ff;font-style:italic;font-size:15px}
+.next-box{background:#191919;border-left:5px solid #E2001A;padding:12px 14px;border-radius:0 6px 6px 0}
+.next-title{font-family:Anton,Impact,sans-serif;font-size:18px;text-transform:uppercase;color:#fff}
+.next-type{font-size:11px;color:#888;margin:3px 0}
+.botbar{background:#161616;border-top:1px solid #222;display:flex;align-items:center;gap:10px;padding:10px 18px}
+.nav-btn{font-weight:800;text-transform:uppercase;letter-spacing:.06em;border:2px solid #E2001A;padding:9px 20px;cursor:pointer;font-size:13px}
+.nav-btn.prev{background:transparent;color:#fff;border-color:#444}
+.nav-btn.next{background:#E2001A;color:#fff}
+.hint{font-size:11px;color:#555;margin-left:auto}
+</style></head><body>
+<div class="topbar"><span class="cgt-badge">CGT</span><span class="tb-title">Mode présentateur · Prévention SST</span>
+<span class="tb-sep"></span><span class="tb-count" id="pc">— / —</span><span class="tb-sep"></span>
+<span class="tb-elapsed" id="pe">⏱ 00:00</span><span class="tb-sep"></span><span class="tb-clock" id="pcl"></span></div>
+<div class="main">
+ <div class="col-left"><div><div class="label">Diapo en cours</div><div class="cur-kicker" id="pk"></div><div class="cur-title" id="pt"></div></div>
+  <div class="label">Contenu</div><div class="cur-body" id="pb"></div></div>
+ <div class="col-right"><div class="label">Notes du formateur</div><div class="notes-area"><div class="nbody" id="pno">—</div></div>
+  <div class="next-box"><div class="label">Diapo suivante</div><div class="next-type" id="pn-type"></div><div class="next-title" id="pn-title">—</div></div></div>
+</div>
+<div class="botbar"><button class="nav-btn prev" onclick="window.opener.goTo(window.opener.cur-1)">‹ Précédent</button>
+<button class="nav-btn next" onclick="window.opener.goTo(window.opener.cur+1)">Suivant ›</button>
+<span class="hint">← → sur cette fenêtre ou la fenêtre projetée</span></div>
+<script>document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();window.opener.goTo(window.opener.cur+1);}else if(e.key==='ArrowLeft'){e.preventDefault();window.opener.goTo(window.opener.cur-1);}});<\/script>
+</body></html>`);
+  d.close();
+  if(presClock)clearInterval(presClock);
+  presClock=setInterval(()=>{
+    if(!presWin||presWin.closed){clearInterval(presClock);return;}
+    const t=new Date();
+    const cl=presWin.document.getElementById('pcl');
+    if(cl)cl.textContent=String(t.getHours()).padStart(2,'0')+':'+String(t.getMinutes()).padStart(2,'0');
+    const sec=Math.floor((Date.now()-presStart)/1000);
+    const ee=presWin.document.getElementById('pe');
+    if(ee)ee.textContent='⏱ '+String(Math.floor(sec/60)).padStart(2,'0')+':'+String(sec%60).padStart(2,'0');
+  },1000);
+  setTimeout(updatePresenter,120);
+}
+function updatePresenter(){
+  if(!presWin||presWin.closed)return;
+  const d=presWin.document; if(!d.getElementById('pt'))return;
+  const c=slideSummary(SLIDES[cur]);
+  d.getElementById('pk').textContent=plainText(c.k);
+  d.getElementById('pt').innerHTML=c.T;
+  d.getElementById('pb').innerHTML=c.body;
+  d.getElementById('pno').innerHTML=(SLIDES[cur].notes||"<i style='color:#555'>Aucune note pour cette diapo.</i>").replace(/\n/g,'<br>');
+  d.getElementById('pc').textContent=String(cur+1).padStart(2,'0')+' / '+SLIDES.length;
+  const lab={content:'Contenu',stats:'Chiffres',steps:'Étapes',two:'Comparaison',callout:'Point clé',def:'Définition',case:'Atelier',quiz:'Quiz',divider:'Séquence',svg:'Schéma animé',closing:'Clôture',title:'Titre'};
+  const nx=SLIDES[cur+1];
+  d.getElementById('pn-title').innerHTML=nx?slideSummary(nx).T:'— Fin de la présentation —';
+  d.getElementById('pn-type').textContent=nx?(lab[nx.type]||nx.type):'';
 }
 document.getElementById('bPres').addEventListener('click',openPresenter);
 </script>

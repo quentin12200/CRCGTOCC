@@ -282,6 +282,45 @@ h1,h2{font-family:var(--disp);font-weight:400;line-height:.98;letter-spacing:.01
   .reveal{animation:none!important;opacity:1!important;transform:none!important}
   .quiz-a{opacity:1!important}
 }
+
+/* ===== V3 : schémas animés, stagger étendu ===== */
+.slide.active .reveal:nth-child(7){animation-delay:.36s}
+.slide.active .reveal:nth-child(8){animation-delay:.42s}
+.slide.active .reveal:nth-child(9){animation-delay:.48s}
+.slide.active .reveal:nth-child(10){animation-delay:.54s}
+.svgcap{font-family:var(--ui);color:var(--muted);font-size:clamp(11px,1.1vw,16px);margin-top:1.2vh;max-width:90ch}
+.s-svg .svgwrap{margin-top:1.6vh}
+.s-svg .svgwrap svg{max-height:66vh}
+.svgwrap .t-title{font-family:var(--disp);text-transform:uppercase;letter-spacing:.01em}
+.svgwrap .t-ui{font-family:var(--ui);font-weight:700}
+.svgwrap .t-body{font-family:var(--body)}
+/* tracés qui se dessinent (pathLength="1") */
+.slide .a-draw{stroke-dasharray:1;stroke-dashoffset:1}
+.slide.active .a-draw{animation:drawLine .9s cubic-bezier(.4,0,.2,1) var(--d,0s) forwards}
+@keyframes drawLine{to{stroke-dashoffset:0}}
+/* éléments qui apparaissent */
+.slide .a-pop{opacity:0;transform-box:fill-box;transform-origin:center}
+.slide.active .a-pop{animation:popIn .55s cubic-bezier(.22,.61,.36,1) var(--d,0s) forwards}
+@keyframes popIn{from{opacity:0;transform:scale(.6)}to{opacity:1;transform:none}}
+.slide .a-fade{opacity:0}
+.slide.active .a-fade{animation:fadeIn .6s ease var(--d,0s) forwards}
+@keyframes fadeIn{to{opacity:1}}
+/* barres qui grandissent */
+.slide .a-growx{transform-box:fill-box;transform-origin:left center;transform:scaleX(0)}
+.slide.active .a-growx{animation:growX .9s cubic-bezier(.22,.61,.36,1) var(--d,0s) forwards}
+@keyframes growX{to{transform:scaleX(1)}}
+.slide .a-growy{transform-box:fill-box;transform-origin:center bottom;transform:scaleY(0)}
+.slide.active .a-growy{animation:growY .9s cubic-bezier(.22,.61,.36,1) var(--d,0s) forwards}
+@keyframes growY{to{transform:scaleY(1)}}
+/* pulsation d'un point d'attention */
+.slide.active .a-pulse{animation:pulseRing 1.8s ease-out calc(var(--d,0s) + .6s) infinite;transform-box:fill-box;transform-origin:center}
+@keyframes pulseRing{0%{opacity:.75;transform:scale(1)}100%{opacity:0;transform:scale(1.9)}}
+@media print{
+  .a-draw{stroke-dashoffset:0!important;animation:none!important}
+  .a-pop,.a-fade{opacity:1!important;animation:none!important;transform:none!important}
+  .a-growx,.a-growy{transform:none!important;animation:none!important}
+  .a-pulse{display:none!important}
+}
 </style>
 </head>
 <body>
@@ -344,247 +383,395 @@ function logoMark(){ return CONFIG.logo
 const SLIDES = [
  {type:"title", eyebrow:"Formation syndicale CGT · demi-journée",
   title:["Prévoyance,","<span class='em'>invalidité</span>","& complémentaires"],
-  lede:"IJ · maintien de salaire · invalidité · IPP · rôle des négociateur·rices CGT.",
+  lede:"IJ · maintien de salaire · invalidité · IPP · prévoyance collective · rôle des négociateur·rices CGT.",
   foot:"CGT Occitanie",
-  notes:"<b>Poser le cadre.</b> Ce module complète la formation AT/MP (2 jours). On bascule du régime de réparation vers le régime de protection du revenu et de l'emploi. <span class='cgt'>Fil rouge : comment la CGT s'appuie sur ces mécanismes pour défendre les salariés et peser dans les négociations ?</span>"},
+  notes:"<b>Poser le cadre de la demi-journée.</b> Ce module complète la formation AT/MP : on passe de la reconnaissance et de la réparation à la question très concrète du <b>revenu</b> et de l'<b>emploi</b> quand la santé lâche. Qu'est-ce qui rentre sur le compte quand on est en arrêt ? Que se passe-t-il après un an, deux ans, trois ans ? Que vaut une pension d'invalidité ? Que doit couvrir un bon contrat de prévoyance ? <b>Tour de table rapide :</b> « avez-vous déjà accompagné un collègue en arrêt long ? Qu'est-ce qui l'inquiétait le plus ? » (réponse fréquente : l'argent et la peur du licenciement). <span class='cgt'>Fil rouge CGT : la protection sociale complémentaire, c'est du <b>salaire socialisé</b>. Les cotisations sont payées par et pour les salariés : la CGT doit en contrôler l'usage, négocier les garanties et veiller à ce que chaque salarié touche ce à quoi il a droit.</span>"},
 
  {type:"content", title:"Objectifs de la demi-journée",
-  bullets:["Distinguer IJ maladie / IJ AT/MP et connaître les taux.",
-   "Comprendre le maintien de salaire (conventionnel et légal).",
-   "Expliquer les trois catégories d'invalidité SS et leurs effets sur le contrat de travail.",
-   "Articuler IPP AT/MP et invalidité maladie (cumul possible).",
-   "Décoder un régime de prévoyance collective (garanties, délais, exclusions).",
+  bullets:["Distinguer IJ maladie et IJ AT/MP et connaître leurs taux.",
+   "Comprendre le maintien de salaire : loi, convention collective, accord, prévoyance.",
+   "Expliquer les trois catégories d'invalidité et leurs effets sur le contrat de travail.",
+   "Articuler rente AT/MP et pension d'invalidité.",
+   "Lire un tableau de garanties de prévoyance (franchises, définitions, exclusions).",
    "Identifier les leviers CGT de négociation et de contrôle."],
-  notes:"<b>Un module utilitaire et militant.</b> À l'issue, chaque participant doit pouvoir accompagner un·e collègue en arrêt, analyser un tableau de garanties et interpeller l'employeur sur ses obligations."},
+  notes:"<b>Un module à la fois utilitaire et militant.</b> À la fin de la demi-journée, chaque participant doit être capable : (1) de reconstituer ce que touche un collègue en arrêt et de repérer une erreur sur la fiche de paie ; (2) d'expliquer simplement l'invalidité et ce qu'elle change (ou ne change pas) au contrat de travail ; (3) de lire une notice de prévoyance et d'y trouver les pièges ; (4) de savoir quoi demander au CSE et en négociation. <b>Annoncer la méthode :</b> trois exercices de calcul sur des cas réels, des schémas animés, deux quiz. <span class='cgt'>Le délégué n'a pas besoin d'être actuaire : il doit savoir poser les bonnes questions, demander les bons documents et orienter vers l'UD pour les dossiers complexes.</span>"},
 
-{type:"two", title:"Mutuelle (frais de soins) ≠ Prévoyance (incapacité / décès)",
+{type:"two", title:"Mutuelle (frais de santé) ≠ Prévoyance (revenu, décès)",
   kicker:"Deux mécanismes souvent confondus",
-  a:{h:"Complémentaire santé (mutuelle)",t:"Rembourse les <b>frais de soins</b> : médecin, pharmacie, lunettes, dentaire. Complète le remboursement SS. Obligatoire en entreprise depuis ANI 2013. Ne verse rien en cas d'arrêt de travail."},
-  b:{h:"Prévoyance collective",t:"Verse des <b>prestations en espèces</b> en cas d'incapacité (IJ complémentaires), d'invalidité (rente), de décès (capital, rente conjoint/orphelin). Distincte de la mutuelle.",style:"black"},
-  notes:"<b>Clarifier d'emblée la distinction — c'est la confusion n°1 en salle.</b> Les deux sont souvent proposées par le même assureur (Malakoff, AG2R, etc.) dans deux contrats séparés. Un salarié peut avoir une bonne mutuelle et aucune prévoyance — il sera mal couvert en arrêt longue durée. <span class='cgt'>Argument CGT : négocier séparément les deux contrats, en exigeant des garanties de prévoyance solides — c'est là que se jouent les vraies protections en cas de coup dur (accident grave, cancer, décès). La mutuelle, c'est le quotidien ; la prévoyance, c'est la catastrophe.</span> Exemples concrets : salarié en arrêt 6 mois avec mutuelle seule = revenus chutent à 50 % ; avec prévoyance bien négociée = 90 % du net maintenu. <span class='ref'>Réf. ANI 11 janv. 2013 ; L.911-1 CSS.</span>"},
+  a:{h:"Complémentaire santé (mutuelle)",t:"Rembourse les <b>frais de soins</b> : consultations, pharmacie, optique, dentaire, hospitalisation. Obligatoire dans toutes les entreprises du privé depuis 2016, financée au moins à 50 % par l'employeur. Ne verse rien pendant un arrêt de travail."},
+  b:{h:"Prévoyance collective",t:"Verse des <b>prestations en espèces</b> : complément d'IJ en cas d'incapacité, rente en cas d'invalidité, capital et rentes en cas de décès. Pas d'obligation générale, sauf pour les cadres et selon la branche.",style:"black"},
+  notes:"<b>Lever la confusion n°1 en salle.</b> La <b>mutuelle</b> rembourse des frais de santé. La <b>prévoyance</b> remplace un revenu perdu ou protège la famille en cas de décès. Les deux sont souvent gérées par le même organisme, dans deux contrats distincts. Un salarié peut avoir une très bonne mutuelle et aucune prévoyance : en cas d'arrêt long, ses revenus chutent. <b>Obligations :</b> la complémentaire santé est obligatoire pour tous les salariés du privé depuis le 1er janvier 2016 (financement employeur ≥ 50 %). Pour la prévoyance, il n'y a pas d'obligation légale générale : les cadres bénéficient d'une obligation conventionnelle (cotisation employeur de 1,50 % sur la tranche A) ; pour les autres, tout dépend de la convention collective et des accords. <span class='cgt'>La mutuelle, c'est le quotidien ; la prévoyance, c'est le coup dur (accident grave, cancer, décès). C'est sur la prévoyance que se jouent les plus grands écarts entre salariés : exiger un régime pour tous, cadres et non-cadres, avec des garanties solides.</span> <span class='ref'>Réf. L.911-7 CSS (santé obligatoire) ; ANI du 17 nov. 2017 (prévoyance des cadres) ; L.911-1 et L.912-1 CSS.</span>"},
 
-{type:"callout", title:"Dans la fonction publique — Protection sociale complémentaire",
-  kicker:"Réforme PSC 2021-2022 : un tournant",
-  body:"Depuis la réforme PSC (ordonnance 2021-175), l'État et les collectivités doivent <b>participer financièrement</b> à la complémentaire santé et à la prévoyance de leurs agents. FPE : participation obligatoire dès 2024 (santé) et 2025 (prévoyance). FPT : participation santé dès 2026. Les agents bénéficient d'un <b>label ou référencement</b> d'organismes agréés. Le FSSCT accompagne la mise en œuvre.",
-  sub:"Ordonnance n°2021-175 du 17 fév. 2021 — décret 2022-633 FPE — décret 2022-581 FPT",
-  notes:"<b>Pour les agents publics présents.</b> Avant la réforme PSC, les agents payaient seuls leur mutuelle sans participation employeur — contrairement au privé depuis 2016. La réforme comble ce retard. <span class='cgt'>Levier syndical FP : exiger que l'accord PSC de votre collectivité/ministère couvre bien la prévoyance (incapacité, invalidité, décès) et pas seulement la santé. CGT FP a négocié des accords couvrant jusqu'à 85 % du traitement en arrêt longue durée dans certaines collectivités — servez-vous en comme référence.</span> Point pratique : en FP, pas d'IJ CPAM — la prévoyance complémentaire est donc encore plus critique pour couvrir la perte de revenus après 90 jours. <span class='ref'>Réf. Ordonnance 2021-175 ; décret 2022-633.</span>"},
+{type:"callout", mode:"black", title:"Dans la fonction publique — la PSC",
+  kicker:"Réforme de la protection sociale complémentaire",
+  big:"Les employeurs publics doivent désormais participer à la santé et à la prévoyance de leurs agents.",
+  sub:"Ordonnance n° 2021-175 du 17 février 2021 : participation obligatoire, montée en charge progressive selon le versant (État, territoriale, hospitalière), accords collectifs pouvant rendre l'adhésion obligatoire.",
+  notes:"<b>Pour les agents publics présents.</b> Longtemps, les agents ont financé seuls leur mutuelle et leur prévoyance, contrairement au privé. L'ordonnance du 17 février 2021 oblige les employeurs publics à participer. Calendrier à rappeler dans ses grandes lignes : fonction publique de l'État (santé dès 2024 avec un contrat collectif ministériel, prévoyance ensuite), territoriale (participation à la prévoyance depuis 2025 et à la santé à partir de 2026), hospitalière (en cours de déploiement). Les accords collectifs peuvent rendre l'adhésion obligatoire et fixer une participation plus élevée. <b>Particularité :</b> l'agent public en maladie ordinaire passe à demi-traitement après 3 mois (et, depuis 2025, à 90 % seulement les trois premiers mois) : la garantie « perte de traitement » de la prévoyance est donc essentielle. <span class='cgt'>Levier syndical : exiger que l'accord couvre bien la prévoyance (incapacité, invalidité, décès) et pas seulement la santé, avec une participation employeur élevée et une adhésion collective qui mutualise les risques entre jeunes et anciens, malades et bien portants.</span> <span class='ref'>Réf. Ordonnance n° 2021-175 ; décrets d'application par versant. Voir aussi le guide AT/MP fonction publique.</span>"},
 
  {type:"divider", kicker:"Séquence 1", title:["Indemnités","journalières","& maintien de salaire"],
-  notes:"Commencer par le quotidien des salariés en arrêt : qu'est-ce qui rentre dans le compte le mois prochain ?"},
+  notes:"<b>Partir du quotidien du salarié en arrêt.</b> Question d'ouverture : « un collègue est en arrêt maladie depuis trois mois : qu'est-ce qui arrive sur son compte ? ». Laisser répondre : souvent, personne ne sait. <span class='cgt'>C'est pourtant la première question que se posent les salariés, et un terrain où le syndicat peut faire la différence immédiatement : repérer une erreur de paie, un complément non versé, une prévoyance non déclenchée.</span>"},
 
- {type:"two", title:"IJ maladie vs IJ AT/MP — part CPAM",
-  a:{h:"Maladie ordinaire",t:"50 % du SDJB (moy. 3 derniers mois ÷ 91,25). 3 jours de carence. Maximum 2026 : 42,97 €/j (1,4 × SMIC juillet 2026 — source ameli.fr).",style:"plain"},
-  b:{h:"AT/MP (part Sécu uniquement)",t:"SDJB = dernier mois ÷ 30,42. Pas de carence. 60 % j1–j28 → max 240,49 €/j. 80 % à partir du 29ᵉ → max 320,66 €/j. Mais ce n’est qu’une partie du paiement total.",style:"red"},
-  notes:"<b>Attention :</b> ces taux sont ceux versés par la CPAM seule. L'employeur complète en plus via la mensualisation. La diapo suivante explique comment le salarié en AT/MP perçoit en réalité quasiment 100 % de son salaire net. <span class='ref'>Réf. L.433-1 et L.433-2 CSS.</span>"},
+ {type:"two", title:"IJ maladie vs IJ AT/MP — la part de la CPAM",
+  a:{h:"Maladie ordinaire",t:"50 % du salaire journalier de base (moyenne des 3 derniers mois ÷ 91,25). <b>3 jours de carence.</b> Salaire pris en compte plafonné à 1,4 SMIC depuis avril 2025, soit environ 42 €/jour maximum.",style:"plain"},
+  b:{h:"AT / maladie professionnelle",t:"Salaire du mois précédent ÷ 30,42. <b>Aucun jour de carence</b> : le jour de l'accident est payé par l'employeur. 60 % du 1er au 28e jour, <b>80 % à partir du 29e jour</b> (dans la limite de plafonds).",style:"red"},
+  notes:"<b>Deux régimes très différents pour la CPAM.</b> En <b>maladie ordinaire</b> : indemnité égale à 50 % du salaire journalier de base, calculé sur les trois derniers mois ; 3 jours de carence ; depuis le 1er avril 2025, le salaire retenu est plafonné à 1,4 SMIC, ce qui limite l'indemnité à environ 42 € par jour. En <b>AT/MP</b> : calcul sur le dernier mois, pas de carence, 60 % puis 80 % à partir du 29e jour, avec des plafonds bien plus élevés. Les IJ ne supportent que la CSG et la CRDS (6,7 %), pas les cotisations salariales habituelles. <b>Attention :</b> ce n'est que la part de la CPAM ; l'employeur et la prévoyance complètent (diapos suivantes). <span class='cgt'>L'écart entre les deux régimes est l'une des meilleures raisons de faire reconnaître un AT ou une maladie professionnelle : plus d'indemnités, pas de carence, protection contre le licenciement, réparation des séquelles. Ne jamais laisser un accident du travail être traité comme une maladie ordinaire.</span> <span class='ref'>Réf. L.321-1 et R.323-4 CSS (maladie) ; L.433-1, L.433-2 et R.433-1 à R.433-4 CSS (AT/MP).</span>"},
 
- {type:"steps", title:"En AT/MP : trois sources de paiement s'empilent",
-  kicker:"CPAM + Employeur + Prévoyance",
-  items:[
-   {big:"①",nm:"CPAM (IJ AT/MP)",ds:"60 % du SDJB les 28 premiers jours, 80 % à partir du 29ᵉ. Versé directement ou via subrogation."},
-   {big:"②",nm:"Employeur (L.1226-7 CT)",ds:"Complète les IJ pour atteindre 90 % du brut les 30 premiers jours, puis 2/3 du brut les 30 jours suivants (après 1 an d'ancienneté)."},
-   {big:"③",nm:"CCN / Prévoyance",ds:"Selon la branche ou l'accord d'entreprise, peut compléter jusqu'à 100 % du salaire brut pendant toute la durée de l'arrêt."}
-  ],
-  notes:"<b>La règle d'or :</b> en AT/MP, l'employeur a l'obligation légale de maintenir le salaire au-delà des seules IJ SS. La CPAM paie sa part, l'employeur complète. La prévoyance collective intervient en troisième couche. <span class='ref'>Réf. L.1226-7 CT (renvoyant à L.1226-1 pour le barème).</span>"},
+{type:"svg", kicker:"Comparaison animée", title:"Ce que verse la CPAM : maladie ou AT/MP ?",
+  caption:"Indemnités journalières de la CPAM, en % du salaire journalier de référence (hors plafonds et hors complément employeur). En AT, le jour de l'accident est intégralement payé par l'employeur.",
+  svg:`<svg viewBox="0 0 1100 470" role="img" aria-label="Comparaison des IJ maladie et AT/MP">
+  <g stroke="#E4E0D4" stroke-width="2"><line x1="120" y1="390" x2="1060" y2="390"/><line x1="120" y1="290" x2="1060" y2="290" stroke-dasharray="6 6"/><line x1="120" y1="190" x2="1060" y2="190" stroke-dasharray="6 6"/><line x1="120" y1="90" x2="1060" y2="90" stroke-dasharray="6 6"/></g>
+  <g class="t-ui" font-size="15" fill="#6C6A63" text-anchor="end"><text x="105" y="395">0 %</text><text x="105" y="295">25 %</text><text x="105" y="195">50 %</text><text x="105" y="95">75 %</text></g>
+  <g>
+    <rect class="a-growy" style="--d:.3s" x="200" y="388" width="110" height="2" fill="#6C6A63"/>
+    <rect class="a-growy" style="--d:.5s" x="330" y="150" width="110" height="240" fill="#E2001A"/>
+    <rect class="a-growy" style="--d:.8s" x="510" y="190" width="110" height="200" fill="#6C6A63"/>
+    <rect class="a-growy" style="--d:1s" x="640" y="150" width="110" height="240" fill="#E2001A"/>
+    <rect class="a-growy" style="--d:1.3s" x="820" y="190" width="110" height="200" fill="#6C6A63"/>
+    <rect class="a-growy" style="--d:1.5s" x="950" y="70" width="110" height="320" fill="#E2001A"/>
+  </g>
+  <g class="t-title" font-size="30" text-anchor="middle">
+    <text class="a-fade" style="--d:.7s" x="255" y="375" fill="#6C6A63">0 %</text>
+    <text class="a-fade" style="--d:.9s" x="385" y="138" fill="#E2001A">60 %</text>
+    <text class="a-fade" style="--d:1.2s" x="565" y="178" fill="#141414">50 %</text>
+    <text class="a-fade" style="--d:1.4s" x="695" y="138" fill="#E2001A">60 %</text>
+    <text class="a-fade" style="--d:1.7s" x="875" y="178" fill="#141414">50 %</text>
+    <text class="a-fade" style="--d:1.9s" x="1005" y="58" fill="#E2001A">80 %</text>
+  </g>
+  <g class="t-ui" font-size="17" fill="#141414" text-anchor="middle">
+    <text x="320" y="425">Jours 1 à 3</text><text x="320" y="447" font-size="14" fill="#6C6A63">carence en maladie · en AT, IJ dès le lendemain</text>
+    <text x="630" y="425">Jours 4 à 28</text>
+    <text x="940" y="425">À partir du 29e jour</text>
+  </g>
+  <g class="a-fade" style="--d:2.1s" class="t-ui" font-size="16">
+    <rect x="130" y="20" width="22" height="22" fill="#6C6A63"/><text x="162" y="38" class="t-ui">Maladie ordinaire</text>
+    <rect x="340" y="20" width="22" height="22" fill="#E2001A"/><text x="372" y="38" class="t-ui">Accident du travail / maladie professionnelle</text>
+  </g>
+</svg>`,
+  notes:"<b>Visualiser l'écart (schéma animé).</b> Les barres grises représentent la maladie ordinaire, les rouges l'AT/MP. Commenter période par période : <b>jours 1 à 3</b> : rien de la CPAM en maladie (carence), alors qu'en AT le jour de l'accident est payé intégralement par l'employeur et les IJ démarrent dès le lendemain ; <b>jours 4 à 28</b> : 50 % contre 60 % ; <b>à partir du 29e jour</b> : 50 % contre 80 %. Rappeler que les plafonds aggravent encore l'écart pour les salaires moyens et élevés : le plafond maladie est désormais très bas (1,4 SMIC). <span class='cgt'>Un salarié dont la maladie est d'origine professionnelle (TMS, lombalgie, épuisement…) et qui reste en « maladie ordinaire » perd beaucoup d'argent. Le réflexe syndical : poser la question de l'origine professionnelle à chaque arrêt long et accompagner la déclaration.</span>"},
 
- {type:"callout", mode:"red", title:"En AT/MP : quasiment 100 % du salaire net",
-  big:"80 % du brut CPAM + complément employeur ≈ salaire net habituel",
-  sub:"Pourquoi ? Les IJ ne sont pas soumises aux cotisations sociales salariales (pas de cotisations retraite, chômage, maladie). Seuls CSG/CRDS s'appliquent (6,7 % au lieu de ~22 % de cotisations habituelles). Un salarié à 2 000 € brut reçoit en AT/MP environ 1 580 € net — contre 1 560 € en temps normal.",
-  notes:"C'est l'argument clé : en AT/MP le salarié ne perd pas d'argent. Les IJ SS ne sont pas imposées aux mêmes cotisations que le salaire, donc 80 % du brut en IJ vaut autant ou plus que le salaire net habituel. C'est une des raisons majeures pour lesquelles il faut faire reconnaître l'AT/MP."},
+ {type:"svg", kicker:"CPAM + employeur + prévoyance", title:"En AT/MP, trois financeurs s'empilent",
+  caption:"Exemple : salarié avec plus d'un an d'ancienneté, accord prévoyant le maintien du salaire net. Proportions indicatives.",
+  svg:`<svg viewBox="0 0 1100 460" role="img" aria-label="Empilement CPAM, employeur, prévoyance">
+  <g class="t-ui" font-size="16" fill="#141414">
+    <text x="150" y="40" text-anchor="middle">Jours 1 à 28</text>
+    <text x="450" y="40" text-anchor="middle">Jours 29 à 90</text>
+    <text x="750" y="40" text-anchor="middle">Au-delà (prévoyance)</text>
+  </g>
+  <g>
+    <rect class="a-growy" style="--d:.3s" x="80" y="190" width="140" height="210" fill="#E2001A"/>
+    <rect class="a-growy" style="--d:.7s" x="80" y="85" width="140" height="105" fill="#141414"/>
+    <rect class="a-growy" style="--d:1s" x="380" y="120" width="140" height="280" fill="#E2001A"/>
+    <rect class="a-growy" style="--d:1.3s" x="380" y="85" width="140" height="35" fill="#141414"/>
+    <rect class="a-growy" style="--d:1.6s" x="680" y="120" width="140" height="280" fill="#E2001A"/>
+    <rect class="a-growy" style="--d:1.9s" x="680" y="85" width="140" height="35" fill="#FFD200"/>
+  </g>
+  <line class="a-draw" pathLength="1" style="--d:2.2s" x1="50" y1="80" x2="860" y2="80" stroke="#141414" stroke-width="3" stroke-dasharray="1" />
+  <g class="t-ui" font-size="15" fill="#fff" text-anchor="middle">
+    <text class="a-fade" style="--d:.6s" x="150" y="300">IJ CPAM 60 %</text>
+    <text class="a-fade" style="--d:.9s" x="150" y="142">Employeur</text>
+    <text class="a-fade" style="--d:1.2s" x="450" y="265">IJ CPAM 80 %</text>
+    <text class="a-fade" style="--d:1.8s" x="750" y="265">IJ CPAM 80 %</text>
+  </g>
+  <g class="t-ui" font-size="15">
+    <text class="a-fade" style="--d:1.5s" x="530" y="108" fill="#141414">← complément employeur</text>
+    <text class="a-fade" style="--d:2.1s" x="830" y="108" fill="#141414">← complément prévoyance</text>
+    <text class="a-fade" style="--d:2.4s" x="870" y="76" fill="#141414" font-size="16">Salaire net habituel</text>
+  </g>
+  <g class="a-pop" style="--d:2.6s"><rect x="880" y="160" width="200" height="200" rx="10" fill="#FFD200"/>
+    <text x="980" y="200" text-anchor="middle" class="t-ui" font-size="17" fill="#141414">Sans prévoyance</text>
+    <text x="980" y="225" text-anchor="middle" class="t-ui" font-size="17" fill="#141414">ni accord :</text>
+    <text x="980" y="265" text-anchor="middle" class="t-title" font-size="30" fill="#E2001A">IJ seules</text>
+    <text x="980" y="300" text-anchor="middle" class="t-ui" font-size="15" fill="#141414">après la période</text>
+    <text x="980" y="322" text-anchor="middle" class="t-ui" font-size="15" fill="#141414">de maintien légal</text></g>
+</svg>`,
+  notes:"<b>L'empilement des trois étages (schéma animé).</b> (1) La <b>CPAM</b> verse les IJ (60 % puis 80 % du salaire journalier en AT/MP). (2) L'<b>employeur</b> complète, au titre de la loi (maintien de 90 % de la rémunération brute pendant 30 jours puis 66,66 % pendant 30 jours, durées allongées avec l'ancienneté) ou, plus souvent, au titre de la convention collective, qui peut garantir 100 % plus longtemps. (3) La <b>prévoyance</b> prend le relais quand le maintien employeur s'arrête, selon le contrat : c'est elle qui protège en arrêt long. Comme les IJ ne supportent que la CSG-CRDS, un bon maintien permet de conserver l'équivalent du salaire net. <span class='cgt'>Sans accord ni prévoyance, le salarié retombe aux seules IJ une fois le maintien légal épuisé : en maladie ordinaire, c'est une chute brutale. Vérifier la convention collective et le contrat de prévoyance de l'entreprise, et revendiquer un régime qui maintient le net pendant toute la durée de l'arrêt.</span> <span class='ref'>Réf. L.1226-1 et D.1226-1 à D.1226-8 CT ; L.433-1 CSS.</span>"},
+
+ {type:"callout", mode:"red", title:"En AT/MP bien couvert : le salaire net est maintenu",
+  big:"IJ + complément employeur + prévoyance ≈ salaire net habituel",
+  sub:"Pourquoi ? Les IJ ne supportent que la CSG et la CRDS (6,7 %), pas les cotisations salariales habituelles. Avec un maintien conventionnel du salaire, le salarié en AT/MP ne perd pas de revenu — à condition que tout soit bien déclaré et versé.",
+  notes:"<b>L'argument clé, à condition d'être précis.</b> Les IJ sont soumises à la CSG (6,2 %) et à la CRDS (0,5 %), mais pas aux cotisations salariales retraite, chômage ou prévoyance. Un maintien conventionnel calculé « en net » permet donc de conserver le revenu habituel. Attention toutefois : (1) le maintien légal (90 % puis 66 % du brut) n'assure pas toujours le net ; (2) les IJ AT/MP sont imposables à 50 % ; (3) tout repose sur une déclaration correcte de l'accident et une transmission rapide des attestations de salaire. <span class='cgt'>C'est une raison de plus de faire reconnaître un AT/MP : le revenu est mieux protégé, la carence disparaît, le contrat est protégé. Et c'est un point de contrôle syndical : vérifier sur la fiche de paie que le complément employeur et la prévoyance sont effectivement versés.</span> <span class='ref'>Réf. CSG-CRDS sur les revenus de remplacement ; art. 80 quinquies CGI (imposition des IJ).</span>"},
 
  {type:"case", title:"Exercice 1 — Lucas, magasinier victime d'un AT",
-  scenario:"Lucas, 38 ans, magasinier, gagne <b>2 200 € brut/mois</b>. Ancienneté : 4 ans. Le 15 mars, il glisse sur un quai mouillé et se fracture le poignet. L'accident est déclaré en AT. Son arrêt dure 45 jours. Sa CCN (logistique) prévoit un maintien à 100 % du salaire brut pendant les 90 premiers jours. L'employeur pratique la subrogation.",
+  scenario:"Lucas, 38 ans, magasinier, gagne <b>2 200 € brut/mois</b>. Ancienneté : 4 ans. Le 15 mars, il glisse sur un quai mouillé et se fracture le poignet. L'accident est déclaré en AT. Son arrêt dure 45 jours. Sa convention collective prévoit un maintien à 100 % du salaire brut pendant les 90 premiers jours. L'employeur pratique la subrogation.",
   questions:[
-   "<b>Question 1 :</b> Calculez le Salaire Journalier de Base (SDJB) retenu par la CPAM pour un AT.",
-   "<b>Question 2 :</b> Quel montant verse la CPAM les 28 premiers jours ? Et à partir du 29ᵉ jour ?",
-   "<b>Question 3 :</b> Combien Lucas reçoit-il au total (CPAM + complément employeur) grâce à la CCN ?",
-   "<b>Question 4 :</b> Comparez son salaire net habituel (~1 640 €) avec ce qu'il touche en AT. Que constatez-vous ?"
+   "<b>Question 1 :</b> Calculez le salaire journalier de référence retenu par la CPAM pour un AT.",
+   "<b>Question 2 :</b> Quel montant verse la CPAM les 28 premiers jours ? Et à partir du 29e jour ?",
+   "<b>Question 3 :</b> Que reçoit Lucas au total, avec le maintien conventionnel et la subrogation ?",
+   "<b>Question 4 :</b> Comparez avec son salaire net habituel. Que constatez-vous ?"
   ],
   minutes:15,
   corrige:[
-   "<span class='cr-key'>SDJB AT/MP</span> = dernier mois brut ÷ 30,42 = 2 200 ÷ 30,42 = <b>72,32 €/j</b>. Attention : en AT/MP on divise par 30,42 (dernier mois seulement), pas par 91,25 comme en maladie ordinaire.",
-   "<span class='cr-key'>IJ CPAM phase 1 (j1–j28)</span> : 60 % × 72,32 = <b>43,39 €/j</b>. Pas de jour de carence en AT/MP. Sur 28 jours = 1 215 € versés par la CPAM.",
-   "<span class='cr-key'>IJ CPAM phase 2 (j29–j45)</span> : 80 % × 72,32 = <b>57,86 €/j</b>. Sur 17 jours = 983 € versés par la CPAM.",
-   "<span class='cr-key'>Complément employeur (CCN 100 %)</span> : La CCN garantit 100 % du brut pendant 90 jours. L'employeur verse la différence entre 2 200 €/mois et les IJ SS. Grâce à la subrogation, Lucas reçoit directement <b>2 200 € brut</b> chaque mois sur son bulletin — la CPAM rembourse ensuite l'employeur.",
-   "<span class='cr-key'>Net perçu en AT vs net habituel</span> : Les IJ SS ne supportent pas les cotisations salariales retraite, chômage, maladie (seulement CSG/CRDS à 6,7 %). La part IJ est donc moins prélevée. Résultat : Lucas perçoit <b>≈ 1 690–1 720 € net</b> contre <b>~1 640 € net habituel</b>. Il ne perd pas d'argent — il en gagne même légèrement. C'est l'argument central pour faire reconnaître l'AT."
+   "<span class='cr-key'>Salaire journalier AT/MP</span> = salaire brut du mois précédent ÷ 30,42 = 2 200 ÷ 30,42 = <b>72,32 €/jour</b>. En AT/MP, on retient le dernier mois (et non les 3 derniers mois ÷ 91,25 comme en maladie).",
+   "<span class='cr-key'>IJ CPAM jours 1 à 28</span> : 60 % × 72,32 = <b>43,39 €/jour</b>, sans carence (le jour de l'accident est payé par l'employeur). Sur 28 jours : environ 1 215 €.",
+   "<span class='cr-key'>IJ CPAM jours 29 à 45</span> : 80 % × 72,32 = <b>57,86 €/jour</b>. Sur 17 jours : environ 984 €.",
+   "<span class='cr-key'>Maintien conventionnel + subrogation</span> : la convention garantit 100 % du brut pendant 90 jours. L'employeur verse le salaire habituel sur la fiche de paie et perçoit les IJ à la place de Lucas (subrogation). Lucas ne subit aucune rupture de revenu.",
+   "<span class='cr-key'>Net perçu</span> : la part correspondant aux IJ ne supporte que la CSG-CRDS (6,7 %), pas les cotisations salariales. Le net de Lucas est donc au moins égal à son net habituel, souvent légèrement supérieur. Conclusion : en AT/MP bien couvert, l'arrêt ne coûte rien au salarié — d'où l'importance de faire reconnaître l'accident."
   ],
-  notes:"Message clé : en AT/MP bien couvert (CCN + subrogation), le salarié touche son salaire habituel voire plus. La reconnaissance AT/MP est d'abord un enjeu de revenu, pas seulement de droits administratifs."},
+  notes:"<b>Exercice de calcul (15 min) — travail en binômes.</b> Distribuer une calculatrice par binôme. Laisser chercher 10 minutes, puis corriger avec le bouton « corrigé ». Points d'attention : la base de calcul AT/MP (dernier mois ÷ 30,42) ; l'absence de carence ; le passage à 80 % au 29e jour ; la mécanique de la subrogation (l'employeur avance le salaire et récupère les IJ). <span class='cgt'>Message à retenir : en AT/MP avec un bon maintien conventionnel, le salarié ne perd rien. L'enjeu syndical est de s'assurer que l'accident est bien déclaré comme tel, et que le maintien prévu par la convention est réellement appliqué : vérifier la fiche de paie avec le salarié.</span> <span class='ref'>Réf. R.433-4 CSS (salaire journalier AT) ; R.323-11 CSS (subrogation).</span>"},
 
  {type:"steps", title:"Les trois étages du maintien de salaire",
-  items:[{big:"Loi",nm:"Mensualisation (L.1226-1 CT)",ds:"90 % les 30 premiers jours, 2/3 les 30 jours suivants (après 1 an d'ancienneté). Subrogation souvent obligatoire."},
-   {big:"CCN",nm:"Convention collective",ds:"Durée et taux variables selon branche. Souvent plus favorable : 100 %, 90 %, etc."},
-   {big:"Accord",nm:"Accord d'entreprise",ds:"Peut aller au-delà de la CCN. Organisme de prévoyance tiers si régime collectif."}],
-  notes:"<b>La logique d'empilement :</b> la loi est le plancher, la CCN le dépasse souvent, l'accord d'entreprise peut faire mieux encore. <span class='cgt'>Vérifier systématiquement la CCN applicable et les accords en vigueur.</span>"},
+  items:[{big:"Loi",nm:"Mensualisation (L.1226-1)",ds:"Après 1 an d'ancienneté : 90 % du brut pendant 30 jours, puis 66,66 % pendant 30 jours, durées allongées de 10 jours par tranche de 5 ans. Carence de 7 jours en maladie, aucune en AT/MP."},
+   {big:"CCN",nm:"Convention collective",ds:"Durée et taux souvent plus favorables : 100 % du salaire, carence supprimée, ancienneté requise réduite."},
+   {big:"Accord",nm:"Accord d'entreprise / prévoyance",ds:"Peut aller au-delà de la convention et organiser le relais par un organisme de prévoyance pour les arrêts longs."}],
+  notes:"<b>La logique d'empilement : la loi est un plancher.</b> <b>Loi</b> (mensualisation) : condition d'un an d'ancienneté ; 90 % de la rémunération brute (IJ comprises) pendant 30 jours puis 66,66 % pendant 30 jours ; ces durées augmentent de 10 jours par période de 5 ans d'ancienneté, dans la limite de 90 jours chacune ; carence de 7 jours en maladie ordinaire, aucune en AT/MP ; les durées s'apprécient sur 12 mois glissants. <b>Convention collective</b> : souvent bien plus favorable. <b>Accord d'entreprise et prévoyance</b> : peuvent encore améliorer. <span class='cgt'>Toujours vérifier la convention collective applicable (sur Légifrance) et les accords d'entreprise : la règle la plus favorable s'applique. Beaucoup de salariés et même de services RH ne connaissent que le minimum légal.</span> <span class='ref'>Réf. L.1226-1, D.1226-1 à D.1226-8 CT.</span>"},
 
  {type:"callout", mode:"black", title:"La subrogation",
-  big:"L'employeur avance le salaire et se fait rembourser les IJ par la CPAM.",
-  sub:"Quand elle n'est pas pratiquée, le salarié doit percevoir les IJ directement : vigilance sur les délais de versement.",
-  notes:"<b>La subrogation : mécanisme et enjeux pratiques.</b> Quand l'employeur maintient le salaire pendant l'arrêt (obligation légale au-delà d'un an d'ancienneté, L.1226-1), il « subroge » la CPAM : c'est lui qui perçoit les IJ à la place du salarié et verse le salaire complet. Le salarié touche son salaire habituel sans rupture de trésorerie. La subrogation est <b>obligatoire</b> si le maintien de salaire est au moins égal au montant des IJ — l'employeur ne peut pas choisir de ne pas subroger si cette condition est remplie. <span class='cgt'>Vérifier dans l'accord de branche ou d'entreprise : certains prévoient un maintien jusqu'à 3 ans (ex. secteur chimie), d'autres seulement 90 jours. Si le maintien est inférieur aux IJ, la subrogation est facultative. Attention aux télescopages : quand le maintien s'arrête mais que les IJ continuent, le salarié doit « récupérer » son dossier — l'informer à l'avance.</span> Cas pratique : calculer le gain net pour un salarié à 2 000 € brut en arrêt AT/MP avec subrogation vs sans subrogation. <span class='ref'>Réf. L.1226-1 CT ; R.323-11 CSS.</span>"},
+  big:"L'employeur maintient le salaire et perçoit les IJ à la place du salarié.",
+  sub:"Elle est de droit lorsque l'employeur maintient au moins l'équivalent des IJ. Sans subrogation, le salarié perçoit lui-même les IJ : vigilance sur les délais de versement.",
+  notes:"<b>La subrogation : mécanisme et enjeux pratiques.</b> Lorsque l'employeur maintient le salaire pendant l'arrêt, il est subrogé de plein droit dans les droits du salarié aux IJ, dans la limite des sommes qu'il verse : la CPAM lui verse directement les IJ et le salarié perçoit son salaire habituel sans rupture de trésorerie. Sans subrogation, le salarié reçoit les IJ de la CPAM d'un côté et le complément de l'employeur de l'autre, souvent avec retard. <b>Point de vigilance :</b> à la fin du maintien employeur, la subrogation s'arrête ; le salarié doit alors percevoir les IJ directement, et la prévoyance doit avoir été déclarée pour prendre le relais. <span class='cgt'>Anticiper ces bascules avec le salarié : le prévenir avant la fin du maintien, vérifier que l'attestation de salaire a été transmise à la CPAM et que le dossier de prévoyance est ouvert. Beaucoup de pertes de revenus viennent de déclarations oubliées.</span> <span class='ref'>Réf. R.323-11 CSS ; L.1226-1 CT.</span>"},
+
+ {type:"svg", kicker:"Maladie ordinaire, minimum légal", title:"Ce que garantit la loi au fil d'un arrêt maladie",
+  caption:"Salarié avec 1 à 5 ans d'ancienneté, sans convention ni prévoyance plus favorables. En % du salaire brut (IJ + complément employeur).",
+  svg:`<svg viewBox="0 0 1100 470" role="img" aria-label="Revenu garanti au fil d'un arrêt maladie">
+  <g stroke="#E4E0D4" stroke-width="2"><line x1="110" y1="380" x2="1070" y2="380"/><line x1="110" y1="290" x2="1070" y2="290" stroke-dasharray="6 6"/><line x1="110" y1="200" x2="1070" y2="200" stroke-dasharray="6 6"/><line x1="110" y1="110" x2="1070" y2="110" stroke-dasharray="6 6"/></g>
+  <g class="t-ui" font-size="15" fill="#6C6A63" text-anchor="end"><text x="98" y="385">0 %</text><text x="98" y="295">25 %</text><text x="98" y="205">50 %</text><text x="98" y="115">75 %</text><text x="98" y="25">100 %</text></g>
+  <line x1="110" y1="20" x2="1070" y2="20" stroke="#E4E0D4" stroke-width="2" stroke-dasharray="6 6"/>
+  <g>
+    <rect class="a-growy" style="--d:.3s" x="120" y="378" width="120" height="2" fill="#141414"/>
+    <rect class="a-growy" style="--d:.5s" x="250" y="200" width="120" height="180" fill="#6C6A63"/>
+    <rect class="a-growy" style="--d:.8s" x="380" y="56" width="240" height="324" fill="#E2001A"/>
+    <rect class="a-growy" style="--d:1.1s" x="630" y="140" width="240" height="240" fill="#B8001A"/>
+    <rect class="a-growy" style="--d:1.4s" x="880" y="200" width="180" height="180" fill="#6C6A63"/>
+  </g>
+  <g class="t-title" text-anchor="middle" font-size="28">
+    <text class="a-fade" style="--d:.6s" x="180" y="365" fill="#141414">0</text>
+    <text class="a-fade" style="--d:.8s" x="310" y="188" fill="#141414">50 %</text>
+    <text class="a-fade" style="--d:1.1s" x="500" y="45" fill="#E2001A">90 %</text>
+    <text class="a-fade" style="--d:1.4s" x="750" y="128" fill="#B8001A">66 %</text>
+    <text class="a-fade" style="--d:1.7s" x="970" y="188" fill="#141414">50 %</text>
+  </g>
+  <g class="t-ui" font-size="15" fill="#141414" text-anchor="middle">
+    <text x="180" y="405">J1 à J3</text><text x="180" y="425" font-size="13" fill="#6C6A63">carence CPAM</text>
+    <text x="310" y="405">J4 à J7</text><text x="310" y="425" font-size="13" fill="#6C6A63">IJ seules</text>
+    <text x="500" y="405">J8 à J37</text><text x="500" y="425" font-size="13" fill="#6C6A63">maintien 90 %</text>
+    <text x="750" y="405">J38 à J67</text><text x="750" y="425" font-size="13" fill="#6C6A63">maintien 66,66 %</text>
+    <text x="970" y="405">Au-delà</text><text x="970" y="425" font-size="13" fill="#6C6A63">IJ seules (plafonnées)</text>
+  </g>
+  <g class="a-pop" style="--d:2s"><rect x="660" y="445" width="410" height="22" fill="none"/><text x="1065" y="462" text-anchor="end" class="t-ui" font-size="15" fill="#E2001A">→ Sans prévoyance, la chute est brutale</text></g>
+</svg>`,
+  notes:"<b>La « falaise » du maintien légal (schéma animé).</b> Pour un salarié ayant entre 1 et 5 ans d'ancienneté, en maladie ordinaire, sans convention plus favorable : <b>J1 à J3</b> : carence de la CPAM, et carence de 7 jours du maintien employeur ; <b>J4 à J7</b> : seules les IJ (50 %) ; <b>J8 à J37</b> : maintien employeur à 90 % du brut ; <b>J38 à J67</b> : 66,66 % ; <b>au-delà</b> : retour aux seules IJ, plafonnées. Avec plus d'ancienneté, les périodes de maintien s'allongent. <b>Question au groupe :</b> « dans votre convention collective, quel est le maintien prévu ? ». <span class='cgt'>Ce schéma montre pourquoi la prévoyance et les accords comptent : sans eux, un salarié malade perd la moitié de son revenu au bout de deux mois. La revendication CGT : suppression des jours de carence, maintien du salaire net pour toute la durée de l'arrêt, financé par l'employeur et un régime de prévoyance mutualisé.</span> <span class='ref'>Réf. L.1226-1, D.1226-1 et s. CT ; R.323-1 CSS (carence de 3 jours).</span>"},
 
  {type:"content", title:"Les pièges à éviter",
-  bullets:["La durée de maintien légale repart à zéro tous les 12 mois glissants.",
-   "Le délai de carence légal (3 jours) peut être supprimé par accord.",
-   "Un salarié à temps partiel voit ses IJ calculées sur une base réduite.",
-   "En AT/MP, le jour de l'accident est payé en salaire par l'employeur."],
-  strip:"Vérifier chaque situation au cas par cas : la règle générale masque souvent une exception favorable.",
-  notes:"<b>Les 4 pièges les plus fréquents — à connaître pour alerter.</b> (1) <b>Rupture du maintien légal sans prévenir le salarié :</b> après 12 mois de maintien légal, les IJ seules restent — mais l'employeur ne le dit pas toujours. Le salarié découvre sa fiche de paie réduite de moitié. (2) <b>Délai de carence de la prévoyance :</b> certains contrats ne déclenchent le complément qu'après 30, 60 ou 90 jours d'arrêt continu — le salarié peut être à découvert pendant cette période. (3) <b>Exclusions de garantie cachées :</b> les contrats de prévoyance excluent parfois les maladies préexistantes, les arrêts partiels, les maladies psychiques — à vérifier dans la notice. (4) <b>Accumulation des arrêts successifs :</b> un salarié qui a plusieurs arrêts courts recommence le délai de carence à chaque fois. <span class='cgt'>Le délégué CGT doit être capable de lire une fiche de paie d'un salarié en arrêt et de repérer si le complément de prévoyance est déclenché, si la subrogation fonctionne, et si le taux de maintien correspond à ce que prévoit la CCN. Souvent, des droits ne sont pas versés faute de déclaration à l'assureur.</span>"},
+  bullets:["Les durées de maintien s'apprécient sur <b>12 mois glissants</b> : plusieurs arrêts dans l'année les épuisent.",
+   "La <b>franchise</b> du contrat de prévoyance (souvent 90 jours) peut laisser un trou si le maintien employeur s'arrête avant.",
+   "Le salaire de référence d'un <b>temps partiel</b> ou d'un salarié aux revenus variables est souvent mal calculé.",
+   "La prévoyance ne paie <b>que si elle est déclarée</b> : l'employeur doit ouvrir le dossier auprès de l'organisme."],
+  strip:"Vérifier chaque situation au cas par cas : la règle générale masque souvent une exception favorable — ou une erreur.",
+  notes:"<b>Les quatre pièges les plus fréquents.</b> (1) <b>Arrêts successifs</b> : les durées de maintien légal s'apprécient sur 12 mois ; un salarié souvent arrêté découvre que son maintien est épuisé. (2) <b>Trou entre maintien et prévoyance</b> : si la prévoyance démarre au 91e jour et que le maintien légal s'arrête au 67e, le salarié reste plusieurs semaines aux seules IJ ; vérifier la cohérence entre convention et contrat. (3) <b>Bases de calcul</b> : primes, heures supplémentaires, temps partiel thérapeutique, revenus variables, souvent mal intégrés. (4) <b>Déclaration à l'assureur</b> : faute de dossier ouvert par l'employeur, l'organisme ne verse rien. Autres pièges : exclusions (maladies antérieures à l'adhésion, affections psychiques mal définies) et définitions restrictives de l'invalidité. <span class='cgt'>Le délégué doit savoir lire une fiche de paie d'un salarié en arrêt : complément employeur présent ? IJ subrogées ? prévoyance déclenchée ? taux conforme à la convention ? Des droits restent souvent non versés faute de déclaration : c'est là que l'action syndicale rapporte immédiatement.</span>"},
 
  {type:"case", title:"Exercice 2 — Fatima, ouvrière en arrêt maladie longue durée",
-  scenario:"Fatima, 41 ans, ouvrière de confection, souffre de TMS (tendinite bilatérale). Elle est en <b>arrêt maladie ordinaire</b> depuis 4 mois. Salaire : <b>1 600 € brut/mois</b>. Ancienneté : 3 ans. CCN habillement (TH) : maintien à 100 % pendant 60 jours. Elle vous appelle, inquiète : le 1ᵉʳ mois elle touchait ~1 400 €, et maintenant au 4ᵉ mois elle ne reçoit plus que ~1 100 €. Elle ne comprend pas pourquoi ça a baissé.",
+  scenario:"Fatima, 41 ans, ouvrière de confection, souffre de TMS (tendinites aux deux poignets). Elle est en <b>arrêt maladie ordinaire</b> depuis 4 mois. Salaire : <b>1 900 € brut/mois</b>. Ancienneté : 3 ans. Sa convention collective prévoit un maintien à 100 % du salaire pendant 60 jours, après une carence de 3 jours. Elle vous appelle : le premier mois, elle touchait environ 1 450 € net ; ce mois-ci, elle reçoit beaucoup moins et ne comprend pas pourquoi.",
   questions:[
-   "<b>Question 1 :</b> Calculez le SDJB en maladie ordinaire et le montant des IJ CPAM. Pourquoi y a-t-il 3 jours de carence ?",
-   "<b>Question 2 :</b> Quel est le maintien légal (L.1226-1 CT) pour les 2 premiers mois ? Comment la CCN s'articule-t-elle ?",
-   "<b>Question 3 :</b> Reconstituez ce que Fatima perçoit mois par mois (mois 1, 2, 3, 4). Expliquez pourquoi ça a baissé.",
-   "<b>Question 4 :</b> Les TMS étant probablement d'origine professionnelle — quel conseil donnez-vous pour améliorer sa situation financière ?"
+   "<b>Question 1 :</b> Calculez le salaire journalier de base en maladie et le montant de l'IJ de la CPAM.",
+   "<b>Question 2 :</b> Comment s'articulent le maintien légal et le maintien conventionnel ?",
+   "<b>Question 3 :</b> Reconstituez ce que Fatima perçoit mois par mois et expliquez la baisse.",
+   "<b>Question 4 :</b> Les TMS sont probablement d'origine professionnelle : quel conseil donnez-vous ?"
   ],
   minutes:15,
   corrige:[
-   "<span class='cr-key'>SDJB maladie</span> = (salaire des 3 derniers mois) ÷ 91,25 = (1 600 × 3) ÷ 91,25 = <b>52,60 €/j</b>. IJ CPAM = 50 % × 52,60 = <b>26,30 €/j</b>. Le délai de carence de 3 jours s'applique en maladie ordinaire : la SS ne paie qu'à partir du 4ᵉ jour d'arrêt (sauf si accord d'entreprise supprime ce délai).",
-   "<span class='cr-key'>Maintien légal L.1226-1</span> (ancienneté ≥ 1 an) : 90 % du brut les 30 premiers jours = 1 440 €/mois, puis 2/3 les 30 jours suivants = 1 066 €/mois. La CCN habillement prévoit 100 % pendant 60 jours : elle améliore le légal. Résultat : <b>mois 1 et 2 = 1 600 € brut ≈ 1 400 € net</b> (cohérent avec ce qu'elle décrit).",
-   "<span class='cr-key'>Mécanique mois par mois</span> — Mois 1 (j1–j30) : CCN 100 % → 1 600 € brut ≈ 1 400 € net ✓. Mois 2 (j31–j60) : CCN 100 % maintenu → 1 600 € brut ≈ 1 400 € net. Mois 3 (j61–j90) : CCN épuisée, maintien légal 2/3 → 1 066 € brut ≈ 940 € net. Mois 4 (j91–j120) : plus de maintien légal ni CCN → <b>IJ SS seules = 26,30 × 30 = 789 €/mois</b>. Si elle perçoit ~1 100 €, c'est peut-être qu'un régime de prévoyance complémente — à vérifier.",
-   "<span class='cr-key'>Conseil CGT : faire reconnaître les TMS comme MP</span>. Les TMS sont au tableau 57 des MP (membres supérieurs). Si reconnus, les IJ passent en AT/MP : SDJB = dernier mois ÷ 30,42 (même base), mais taux 60 % puis 80 % <b>sans carence</b>, et le maintien employeur s'applique sur une base AT (L.1226-7 CT). Résultat = plusieurs centaines d'euros de plus par mois. Aussi : vérifier l'existence d'un régime de prévoyance couvrant l'incapacité longue durée."
+   "<span class='cr-key'>Salaire journalier de base</span> = (1 900 × 3) ÷ 91,25 = <b>62,47 €/jour</b>. IJ CPAM = 50 % = <b>31,23 €/jour</b>, versée à partir du 4e jour (3 jours de carence). Le plafond de 1,4 SMIC n'est pas atteint ici.",
+   "<span class='cr-key'>Maintien</span> : la loi garantirait 90 % puis 66,66 % du brut pendant 30 + 30 jours après 7 jours de carence. La convention est plus favorable (100 % pendant 60 jours après 3 jours) : c'est elle qui s'applique.",
+   "<span class='cr-key'>Mois par mois</span> — Mois 1 et 2 : maintien conventionnel à 100 % (hors 3 jours de carence) ≈ salaire habituel. Mois 3 et 4 : le maintien est épuisé ; il ne reste que l'IJ de la CPAM ≈ 31,23 × 30 ≈ <b>937 € par mois</b>, moins la CSG-CRDS. D'où la chute brutale. Si un régime de prévoyance existe, il devrait prendre le relais : vérifier qu'il a été déclaré.",
+   "<span class='cr-key'>Conseil CGT</span> : (1) faire déclarer les TMS en <b>maladie professionnelle</b> (tableau 57 du régime général : syndrome du canal carpien, tendinites…). Si elle est reconnue, les IJ passent au régime AT/MP (60 % puis 80 %, pas de carence) et le contrat est protégé. (2) Vérifier la prévoyance et l'ouverture du dossier. (3) Demander une visite de pré-reprise auprès du médecin du travail pour préparer un aménagement de poste."
   ],
-  notes:"<b>Cas Fatima : maladie ordinaire longue durée — glissement progressif des revenus.</b> Fil du cas : J1-90 = maintien légal (plein puis demi-salaire selon ancienneté) + IJ SS ; J91 et au-delà = IJ SS seulement (60 % du SDJB) sauf prévoyance complémentaire. Après 3 ans d'arrêt : risque de basculer en invalidité SS (cat. 1 ou 2 selon la capacité résiduelle). <span class='cgt'>L'enjeu CGT sur ce cas : repérer si la pathologie de Fatima (TMS, lombalgies, RPS) n'est pas en réalité une MP non déclarée. Si oui : accompagner la reconnaissance pour basculer en AT/MP — le gain de revenu est immédiat et significatif (IJ à 60 puis 80 % vs 50 % en maladie ordinaire + pas de carence). C'est un des actes syndicaux les plus impactants financièrement pour le salarié.</span> Question au groupe : comment identifier qu'une pathologie longue durée pourrait être une MP ? Quels éléments recueillir auprès de Fatima ? (exposition, poste, durée, tableau de MP)"},
+  notes:"<b>Cas Fatima : la chute des revenus en maladie ordinaire.</b> Ce cas reproduit une situation très fréquente : un salarié qui touche son salaire pendant deux mois, puis découvre une baisse de moitié. Faire reconstituer la chronologie au tableau. <b>Points clés :</b> carence ; maintien conventionnel puis fin du maintien ; IJ seules ; absence de relais par la prévoyance (contrat absent ou non déclaré). <span class='cgt'>L'enjeu syndical : repérer que la pathologie de Fatima (TMS liés à des gestes répétitifs) relève très probablement d'une maladie professionnelle non déclarée. La faire reconnaître change tout : meilleures indemnités, protection contre le licenciement, rente en cas de séquelles. C'est l'un des actes syndicaux les plus utiles financièrement.</span> <b>Question au groupe :</b> quels éléments recueillir auprès de Fatima pour la déclaration de MP ? (poste, gestes, cadences, durée d'exposition, certificat médical). <span class='ref'>Réf. tableau n° 57 du régime général ; L.461-1 CSS.</span>"},
 
  {type:"divider", kicker:"Séquence 2", title:["L'invalidité","de la Sécurité","sociale"],
-  notes:"Changer de registre : on quitte l'arrêt de travail temporaire pour entrer dans la stabilisation et la vie avec des séquelles."},
+  notes:"<b>Changer de registre.</b> On quitte l'arrêt temporaire pour une situation durable : l'état de santé est stabilisé mais la capacité de travail reste fortement réduite. <b>Question d'ouverture :</b> « que se passe-t-il au bout de trois ans d'arrêt maladie ? ». Réponse : les IJ s'arrêtent ; si la capacité de travail est réduite d'au moins deux tiers, une pension d'invalidité peut prendre le relais. <span class='cgt'>L'invalidité n'est pas une sortie de l'entreprise : le contrat continue, et c'est le médecin du travail, pas la CPAM, qui se prononce sur l'aptitude au poste.</span>"},
 
- {type:"def", title:"L'invalidité SS — définition",
-  term:"Art. L.341-1 CSS",
-  text:"État d'invalidité reconnu après consolidation médicale, réduisant la capacité de travail ou de gain des 2/3.",
-  extra:"Constatée par le médecin-conseil. Ouvre droit à une pension d'invalidité selon trois catégories.",
-  notes:"<b>Invalidité SS : les 3 catégories et leurs droits.</b> Catégorie 1 (invalide partiel) : peut exercer une activité rémunérée — pension = 30 % du salaire annuel moyen des 10 meilleures années (SAM). Catégorie 2 (invalide total) : ne peut plus exercer aucune activité — pension = 50 % du SAM. Catégorie 3 (invalide total + assistance de tierce personne) : pension catégorie 2 + majoration de 40 % (plafonnée à un certain montant). Condition commune : âge < 60 ans, cotisations suffisantes (800 h dans les 12 mois précédents, ou cotisations sur les 3 dernières années). <span class='cgt'>Vigilance : la catégorie est fixée par le médecin-conseil et peut être sous-évaluée. Une catégorie 1 à la place d'une catégorie 2 = écart de 30 % à 50 % du SAM. Demander systématiquement à consulter le rapport médical et, si contestation, saisir la commission médicale de recours amiable (CMRA) dans les 2 mois.</span> La pension est revalorisée chaque année (revalorisation ORIV). Elle cesse à 60 ans et bascule automatiquement en pension de retraite à taux plein pour inaptitude. <span class='ref'>Réf. L.341-1, R.341-2, R.341-3 CSS.</span>"},
+ {type:"def", title:"L'invalidité — définition",
+  term:"Article L.341-1 du Code de la sécurité sociale",
+  text:"L'assuré a droit à une pension d'invalidité lorsque son état de santé réduit d'au moins deux tiers sa capacité de travail ou de gain.",
+  extra:"Reconnue par le médecin-conseil, à la fin des IJ, après stabilisation de l'état de santé, ou à la demande de l'assuré. Conditions : ne pas avoir atteint l'âge légal de la retraite, justifier de 12 mois d'immatriculation et d'un minimum d'heures travaillées ou de cotisations.",
+  notes:"<b>L'invalidité de la Sécurité sociale : définition et conditions.</b> Elle concerne les maladies et accidents <b>non professionnels</b> (pour les AT/MP, c'est le taux d'incapacité permanente qui s'applique). Elle suppose une réduction d'au moins deux tiers de la capacité de travail ou de gain, appréciée par le médecin-conseil en tenant compte de l'état de santé, de l'âge, des capacités restantes, de la formation et du métier. <b>Conditions administratives</b> : avoir moins que l'âge légal de départ en retraite ; être immatriculé depuis au moins 12 mois ; avoir travaillé au moins 600 heures ou cotisé sur un salaire suffisant au cours des 12 mois précédant l'arrêt. La demande peut être faite par l'assuré lui-même, sans attendre la fin des IJ. <span class='cgt'>Ne pas attendre passivement la décision de la caisse : accompagner le salarié, rassembler les certificats médicaux, demander à consulter le rapport médical, et contester si la catégorie est sous-évaluée (commission médicale de recours amiable dans les 2 mois).</span> <span class='ref'>Réf. L.341-1 à L.341-4, R.341-2 et R.313-5 CSS ; L.142-6 (contestations médicales).</span>"},
 
- {type:"steps", title:"Les trois catégories d'invalidité",
-  items:[{big:"1",nm:"Capable de travailler",ds:"Peut exercer une activité rémunérée. Pension = 30 % du salaire annuel moyen (SAM)."},
-   {big:"2",nm:"Incapacité d'exercer une profession",ds:"Ne peut plus travailler dans des conditions normales. Pension = 50 % du SAM. Le maintien dans l'emploi reste possible avec adaptation significative du poste. Cumul pension + revenus d'activité autorisé dans certaines limites."},
-   {big:"3",nm:"Nécessite l'aide d'une tierce personne",ds:"Majoration tierce personne (40 % de la pension, minimum légal)."}],
-  notes:"<b>SAM = salaire annuel moyen des 10 meilleures années.</b> Pensions plafonnées et soumises à CSG/CRDS. <span class='cgt'>Très souvent, la pension seule ne permet pas de vivre : c'est là qu'intervient la prévoyance collective.</span> <span class='ref'>Réf. L.341-3 et L.341-4.</span>"},
+ {type:"svg", kicker:"Les trois catégories", title:"Combien rapporte une pension d'invalidité ?",
+  caption:"Pension calculée sur le salaire annuel moyen (SAM) des 10 meilleures années, avec un minimum garanti et un plafond (30 % ou 50 % du plafond de la Sécurité sociale).",
+  svg:`<svg viewBox="0 0 1100 460" role="img" aria-label="Catégories d'invalidité">
+  <g class="t-ui" font-size="18" fill="#141414">
+    <text x="20" y="95">Catégorie 1</text><text x="20" y="117" font-size="14" fill="#6C6A63">peut exercer une activité</text>
+    <text x="20" y="235">Catégorie 2</text><text x="20" y="257" font-size="14" fill="#6C6A63">ne peut plus exercer d'activité</text>
+    <text x="20" y="375">Catégorie 3</text><text x="20" y="397" font-size="14" fill="#6C6A63">+ besoin d'une tierce personne</text>
+  </g>
+  <g>
+    <rect x="290" y="70" width="760" height="56" fill="#F1EFE8"/>
+    <rect x="290" y="210" width="760" height="56" fill="#F1EFE8"/>
+    <rect x="290" y="350" width="760" height="56" fill="#F1EFE8"/>
+    <rect class="a-growx" style="--d:.3s" x="290" y="70" width="228" height="56" fill="#6C6A63"/>
+    <rect class="a-growx" style="--d:.7s" x="290" y="210" width="380" height="56" fill="#E2001A"/>
+    <rect class="a-growx" style="--d:1.1s" x="290" y="350" width="380" height="56" fill="#E2001A"/>
+    <rect class="a-growx" style="--d:1.6s" x="670" y="350" width="250" height="56" fill="#FFD200"/>
+  </g>
+  <g class="t-title" font-size="30">
+    <text class="a-fade" style="--d:.8s" x="300" y="109" fill="#fff">30 %</text>
+    <text class="a-fade" style="--d:1.2s" x="300" y="249" fill="#fff">50 %</text>
+    <text class="a-fade" style="--d:1.6s" x="300" y="389" fill="#fff">50 %</text>
+  </g>
+  <g class="t-ui" font-size="16">
+    <text class="a-fade" style="--d:.9s" x="530" y="105" fill="#141414">du SAM</text>
+    <text class="a-fade" style="--d:1.3s" x="680" y="245" fill="#141414">du SAM</text>
+    <text class="a-fade" style="--d:2s" x="682" y="384" fill="#141414">+ majoration tierce personne</text>
+  </g>
+  <g class="t-ui" font-size="15" fill="#6C6A63"><text x="290" y="40">0</text><text x="1050" y="40" text-anchor="end">100 % du salaire annuel moyen</text></g>
+</svg>`,
+  notes:"<b>Les trois catégories (schéma animé).</b> <b>Catégorie 1</b> : invalide capable d'exercer une activité rémunérée — pension de 30 % du salaire annuel moyen (SAM) des 10 meilleures années. <b>Catégorie 2</b> : invalide absolument incapable d'exercer une profession quelconque — 50 % du SAM. <b>Catégorie 3</b> : comme la catégorie 2, avec en plus l'obligation de recourir à une tierce personne pour les actes ordinaires de la vie — 50 % du SAM + une majoration pour tierce personne (montant forfaitaire, de l'ordre de 1 200 € par mois). Les pensions sont plafonnées (30 % ou 50 % du plafond mensuel de la Sécurité sociale) et un montant minimum est garanti. <span class='cgt'>Le classement en catégorie 1 plutôt que 2 fait passer la pension de 30 % à 50 % : vérifier le classement et contester s'il ne correspond pas à la réalité. Rappeler aussi qu'une pension de 30 % ou 50 % ne permet presque jamais de vivre : c'est la prévoyance collective qui doit compléter.</span> <span class='ref'>Réf. L.341-4, R.341-4 et s., L.355-1 CSS (majoration tierce personne).</span>"},
 
- {type:"two", title:"Pension d'invalidité — montants 2024",
-  a:{h:"Catégorie 1 — 30 % du SAM",t:"Minimum : 321,05 €/mois. Maximum : 1 204,37 €/mois (PMSS 2026 = 4 005 €)."},
-  b:{h:"Catégories 2 et 3 — 50 % du SAM",t:"Minimum : 310,67 €/mois. Maximum : 1 932,24 €/mois. Majoration tierce personne cat. 3 : +1 135,35 €/mois.",style:"red"},
-  source:"Source : Assurance Maladie – barème 2024 (à actualiser annuellement).",
-  notes:"<b>La pension SS ne couvre qu'une fraction du salaire antérieur.</b> L'objectif d'un bon régime de prévoyance est de compléter jusqu'à 75–80 % du brut."},
+ {type:"two", title:"Pension d'invalidité — ordres de grandeur",
+  a:{h:"Catégorie 1 — 30 % du SAM",t:"Plafond : 30 % du plafond mensuel de la Sécurité sociale (environ 1 200 €/mois). Un minimum est garanti. Cumulable avec un salaire, dans certaines limites."},
+  b:{h:"Catégories 2 et 3 — 50 % du SAM",t:"Plafond : 50 % du plafond mensuel de la Sécurité sociale (environ 2 000 €/mois). Catégorie 3 : + majoration forfaitaire pour tierce personne.",style:"red"},
+  source:"Montants revalorisés chaque 1er avril : consulter ameli.fr avant de chiffrer un dossier.",
+  notes:"<b>Donner des ordres de grandeur, pas des montants figés.</b> Les montants sont revalorisés chaque année au 1er avril : toujours vérifier sur ameli.fr avant de chiffrer un dossier. Retenir : la pension dépend du salaire des 10 meilleures années ; elle est plafonnée ; elle est soumise à la CSG, à la CRDS et à l'impôt sur le revenu. <b>Cumul avec un salaire :</b> possible, dans la limite d'un plafond fondé sur le salaire antérieur ; au-delà, la pension est réduite. <span class='cgt'>L'objectif d'un bon régime de prévoyance est de compléter la pension pour atteindre au moins 75 à 80 % du salaire antérieur — et plus pour les bas salaires, pour qui chaque euro compte. C'est un axe de négociation prioritaire.</span> <span class='ref'>Réf. R.341-4 et s. CSS ; L.341-12 (cumul avec une activité).</span>"},
 
  {type:"content", title:"Effets de la pension d'invalidité sur le contrat",
-  bullets:["La pension d'invalidité ne rompt PAS le contrat de travail.",
-   "Le salarié peut reprendre une activité à mi-temps thérapeutique (cat. 1 ou 2).",
-   "En cas de licenciement pour inaptitude, les règles de protection s'appliquent.",
-   "La pension cesse à l'âge légal de départ à la retraite (64 ans depuis la réforme 2023 pour les assurés nés à compter du 1ᵉʳ sept. 1961) — retraite pour invalidité au taux plein automatique."],
+  bullets:["La pension d'invalidité <b>ne rompt pas</b> le contrat de travail.",
+   "Seul le <b>médecin du travail</b> se prononce sur l'aptitude au poste : classement en invalidité ≠ inaptitude.",
+   "Une reprise est possible, éventuellement à temps partiel, avec cumul pension + salaire dans certaines limites.",
+   "L'employeur ne peut pas licencier au motif de l'état de santé ou de l'invalidité (discrimination).",
+   "À l'âge légal de la retraite, la pension est remplacée par une retraite pour inaptitude au taux plein."],
   strip:"L'invalidité n'est pas une porte de sortie de l'entreprise : c'est un droit qui se défend.",
-  notes:"<b>Point militant clé :</b> l'employeur ne peut pas licencier au seul motif de la pension d'invalidité. La décision du médecin du travail reste le pivot. <span class='ref'>Réf. L.341-15 CSS, L.1132-1 CT.</span>"},
+  notes:"<b>Point militant clé : invalidité et emploi.</b> Le classement en invalidité, même en catégorie 2, ne rompt pas le contrat et ne vaut pas inaptitude. Si le salarié souhaite reprendre, il passe une visite de reprise : le médecin du travail se prononce sur l'aptitude, propose des aménagements ou constate l'inaptitude. Un licenciement fondé sur l'état de santé ou l'invalidité est discriminatoire et nul. En cas d'inaptitude, l'employeur doit rechercher un reclassement avant tout licenciement. À l'âge légal, la pension cesse et le salarié perçoit une retraite au taux plein pour inaptitude, sauf s'il poursuit une activité. <span class='cgt'>Ne jamais laisser croire à un salarié qu'il « doit » démissionner ou qu'il est « automatiquement » licencié parce qu'il est en invalidité. Le contrat suspendu continue d'ouvrir des droits, notamment à la prévoyance.</span> <span class='ref'>Réf. L.1132-1 et L.1226-2 CT ; L.341-15 et L.341-16 CSS.</span>"},
 
- {type:"divider", kicker:"Séquence 3", title:["IPP AT/MP","vs Invalidité","maladie"],
-  notes:"Un salarié peut cumuler les deux régimes. Expliquer la logique et les règles d'articulation."},
+ {type:"divider", kicker:"Séquence 3", title:["Rente AT/MP","et invalidité","maladie"],
+  notes:"<b>Deux régimes, deux logiques, parfois les deux à la fois.</b> Un salarié peut avoir eu un accident du travail (rente AT/MP) et développer par ailleurs une maladie invalidante (pension d'invalidité). <span class='cgt'>Bien distinguer les deux évite des erreurs de conseil coûteuses : la reconnaissance en AT/MP ouvre des droits plus protecteurs.</span>"},
 
  {type:"two", title:"Deux régimes, deux logiques",
-  a:{h:"IPP AT/MP",t:"Indemnise une atteinte à l'intégrité physique après un accident du travail ou une maladie professionnelle. Rente ou capital.",style:"plain"},
-  b:{h:"Invalidité SS",t:"Compense la perte de capacité de travail ou de gain, suite à une maladie ou accident ordinaire (ou aggravation).",style:"black"},
-  notes:"<b>Deux prestations distinctes, deux financeurs distincts.</b> Branche AT/MP finance l'IPP ; branche maladie finance la pension d'invalidité."},
+  a:{h:"Rente AT/MP (incapacité permanente)",t:"Répare les séquelles d'un accident du travail ou d'une maladie professionnelle. Capital si le taux est inférieur à 10 %, <b>rente viagère</b> au-delà. Non imposable.",style:"plain"},
+  b:{h:"Pension d'invalidité",t:"Compense la perte de capacité de travail ou de gain due à une maladie ou un accident non professionnel. Cesse à l'âge légal de la retraite. Imposable.",style:"black"},
+  notes:"<b>Deux prestations distinctes, deux branches de la Sécurité sociale.</b> La <b>branche AT/MP</b>, financée par les seuls employeurs, répare les séquelles d'un accident ou d'une maladie d'origine professionnelle : taux d'incapacité permanente fixé à la consolidation ; capital en dessous de 10 %, rente viagère à partir de 10 %, calculée sur le salaire des 12 derniers mois multiplié par un « taux utile » ; non imposable ; à vie. La <b>branche maladie</b> verse la pension d'invalidité pour les maladies et accidents de la vie : fondée sur la perte de capacité de gain, calculée sur les 10 meilleures années, imposable, remplacée par la retraite à l'âge légal. <span class='cgt'>La rente AT/MP est à vie et peut être majorée en cas de faute inexcusable de l'employeur : encore une raison de toujours faire reconnaître l'origine professionnelle quand elle existe.</span> <span class='ref'>Réf. L.434-1, L.434-2, R.434-2 CSS (rente AT/MP) ; L.341-1 et s. (invalidité).</span>"},
 
  {type:"callout", mode:"black", title:"Le cumul est possible",
-  big:"Un salarié peut percevoir simultanément une rente IPP AT/MP et une pension d'invalidité SS.",
-  sub:"Les règles d'imputation varient selon la catégorie d'invalidité. À étudier au cas par cas.",
-  notes:"<b>Le médecin-conseil tient compte de l'IPP pour fixer la catégorie d'invalidité.</b> En pratique : si l'IPP AT/MP est élevée, la pension d'invalidité peut être réduite en proportion. Important à anticiper lors du montage du dossier."},
+  big:"Une rente AT/MP et une pension d'invalidité peuvent se cumuler.",
+  sub:"Lorsque l'invalidité résulte d'une autre affection que l'AT/MP, les deux sont versées. Quand elles portent sur les mêmes séquelles, des règles d'articulation s'appliquent : faire simuler le dossier avant toute démarche.",
+  notes:"<b>Cumul : le principe et ses limites.</b> Une personne peut être titulaire d'une rente AT/MP (pour un accident du travail ancien) et d'une pension d'invalidité (pour une maladie sans lien avec le travail) : les deux sont versées. Lorsque l'état d'invalidité est en partie lié aux séquelles de l'AT/MP, le médecin-conseil en tient compte et des règles de coordination limitent le cumul. En pratique, chaque dossier est particulier. <span class='cgt'>Ne jamais conseiller « au jugé » : faire simuler les deux scénarios (avec l'appui de l'UD) avant toute démarche, et vérifier ce que prévoit le contrat de prévoyance, qui peut lui aussi tenir compte de la rente et de la pension pour calculer son complément.</span> <span class='ref'>Réf. L.341-1 et s. et L.434-2 CSS.</span>"},
+
+ {type:"svg", kicker:"Après un arrêt long", title:"Le parcours : de l'arrêt à la reprise ou à l'inaptitude",
+  caption:"À chaque étape, un droit à faire valoir — et un rendez-vous où l'accompagnement syndical compte.",
+  svg:`<svg viewBox="0 0 1100 460" role="img" aria-label="Parcours après un arrêt long">
+  <g fill="none" stroke="#141414" stroke-width="4">
+    <path class="a-draw" pathLength="1" style="--d:.4s" d="M200 90 H 260"/>
+    <path class="a-draw" pathLength="1" style="--d:.8s" d="M450 90 C 500 90, 500 60, 550 60"/>
+    <path class="a-draw" pathLength="1" style="--d:.9s" d="M450 90 C 500 90, 500 190, 550 190"/>
+    <path class="a-draw" pathLength="1" style="--d:1.4s" d="M740 60 C 800 60, 800 300, 860 300"/>
+    <path class="a-draw" pathLength="1" style="--d:1.5s" d="M740 190 C 800 190, 800 300, 860 300"/>
+    <path class="a-draw" pathLength="1" style="--d:2s" d="M960 345 V 380"/>
+  </g>
+  <g class="t-ui" font-size="16" text-anchor="middle">
+    <g class="a-pop" style="--d:.1s"><rect x="10" y="45" width="190" height="90" rx="8" fill="#141414"/><text x="105" y="83" fill="#fff">Arrêt de travail</text><text x="105" y="107" fill="#FFD200" font-size="13">IJ, maintien, prévoyance</text></g>
+    <g class="a-pop" style="--d:.5s"><rect x="260" y="45" width="190" height="90" rx="8" fill="#E2001A"/><text x="355" y="83" fill="#fff">Consolidation /</text><text x="355" y="107" fill="#fff">stabilisation</text></g>
+    <g class="a-pop" style="--d:1s"><rect x="550" y="20" width="190" height="80" rx="8" fill="#FFD200"/><text x="645" y="53" fill="#141414">AT / MP :</text><text x="645" y="77" fill="#141414">taux d'IPP → rente</text></g>
+    <g class="a-pop" style="--d:1.1s"><rect x="550" y="150" width="190" height="80" rx="8" fill="#F1EFE8" stroke="#141414" stroke-width="2"/><text x="645" y="183" fill="#141414">Maladie :</text><text x="645" y="207" fill="#141414">invalidité cat. 1-2-3</text></g>
+    <g class="a-pop" style="--d:1.7s"><rect x="860" y="255" width="200" height="90" rx="8" fill="#141414"/><text x="960" y="293" fill="#fff">Médecin du travail</text><text x="960" y="317" fill="#FFD200">visite de reprise</text></g>
+    <g class="a-pop" style="--d:2.2s"><rect x="660" y="380" width="200" height="66" rx="8" fill="#F1EFE8" stroke="#1A7340" stroke-width="3"/><text x="760" y="408" fill="#141414">Apte / aménagement</text><text x="760" y="430" fill="#1A7340" font-size="13">temps partiel, poste adapté</text></g>
+    <g class="a-pop" style="--d:2.4s"><rect x="880" y="380" width="200" height="66" rx="8" fill="#F1EFE8" stroke="#E2001A" stroke-width="3"/><text x="980" y="408" fill="#141414" font-size="15">Inapte : reclassement</text><text x="980" y="430" fill="#E2001A">ou licenciement</text></g>
+  </g>
+  <g class="a-fade" style="--d:2.7s" class="t-ui">
+    <rect x="10" y="250" width="610" height="110" rx="8" fill="#FFD200"/>
+    <text x="30" y="285" class="t-ui" font-size="17" fill="#141414">Tout au long du parcours :</text>
+    <text x="30" y="312" class="t-body" font-size="16" fill="#141414">• visite de pré-reprise pendant l'arrêt pour préparer le retour</text>
+    <text x="30" y="337" class="t-body" font-size="16" fill="#141414">• prévoyance déclarée • contestation du taux ou de la catégorie</text>
+  </g>
+</svg>`,
+  notes:"<b>Le parcours d'un salarié après un arrêt long (schéma animé).</b> Pendant l'arrêt : IJ, maintien de salaire, prévoyance ; et la possibilité de demander une <b>visite de pré-reprise</b> au médecin du travail (à l'initiative du salarié, de son médecin traitant ou du médecin-conseil), essentielle pour préparer le retour. À la stabilisation : en <b>AT/MP</b>, la consolidation et la fixation du taux d'incapacité permanente (rente ou capital) ; en <b>maladie</b>, éventuellement une pension d'invalidité. Au retour : la <b>visite de reprise</b> auprès du médecin du travail, qui conclut à l'aptitude (avec ou sans aménagement) ou à l'inaptitude. En cas d'inaptitude : recherche de reclassement, puis licenciement si aucun poste ne convient ; en cas d'origine professionnelle, indemnités doublées. <span class='cgt'>La visite de pré-reprise est sous-utilisée : elle permet d'anticiper un aménagement (temps partiel thérapeutique, adaptation du poste) au lieu de subir une inaptitude. L'élu peut informer le salarié de ce droit et, avec son accord, appuyer les demandes d'aménagement.</span> <span class='ref'>Réf. R.4624-29 à R.4624-34 CT (pré-reprise et reprise) ; L.1226-2 et L.1226-10 CT (reclassement).</span>"},
 
  {type:"content", title:"Articulation pratique",
-  bullets:["Taux d'IPP ≥ 2/3 : souvent assimilé à la catégorie 2 d'invalidité.",
-   "Cumul IPP + pension d'invalidité : montant total plafonné au salaire antérieur.",
-   "La prévoyance collective doit être coordonnée pour éviter les doublons et couvrir le reste.",
-   "Anticiper la retraite pour invalidité (taux plein automatique à l'âge légal — 64 ans depuis la réforme 2023)."],
-  notes:"<b>Choisir entre deux logiques : rente AT/MP vs pension invalidité SS.</b> Les deux peuvent coexister mais avec des règles d'articulation strictes. Rente AT/MP : calculée sur le salaire annuel × taux utile IPP — viagère, revalorisée, non imposable. Pension invalidité SS : calculée sur le SAM des 10 meilleures années — soumise à l'impôt (cat. 2 et 3) ou non (cat. 1 dans certains cas). Si une rente AT/MP est versée, le médecin-conseil tient compte de l'IPP pour fixer la catégorie d'invalidité : un taux IPP de 50 % conduit généralement à une invalidité catégorie 2. Les deux se cumulent mais la pension peut être réduite si la rente est élevée. <span class='cgt'>Prévenir les salariés concernés : les simuler sur les deux régimes avant toute démarche — la pension SS peut être demandée dès l'arrêt prolongé, sans attendre la consolidation AT/MP. L'UD CGT peut accompagner le calcul : le gain net dépend fortement du salaire, de l'ancienneté, du taux d'IPP et de la CCN. Ne jamais conseiller sans avoir calculé les deux scénarios.</span> <span class='ref'>Réf. L.341-15, R.341-8 CSS (articulation invalidité/AT/MP).</span>"},
+  bullets:["La rente AT/MP est calculée sur un <b>taux utile</b> : moitié du taux jusqu'à 50 %, une fois et demie au-delà.",
+   "La pension d'invalidité tient compte des <b>10 meilleures années</b> ; la rente AT/MP, des 12 derniers mois de salaire.",
+   "La prévoyance collective doit être <b>coordonnée</b> avec ces prestations pour couvrir ce qui manque.",
+   "À l'âge légal, la pension d'invalidité laisse place à la <b>retraite pour inaptitude</b> ; la rente AT/MP continue à vie."],
+  notes:"<b>Les mécanismes à connaître pour accompagner.</b> <b>Rente AT/MP</b> : taux d'incapacité permanente fixé par le médecin-conseil ; « taux utile » = moitié du taux jusqu'à 50 %, puis une fois et demie pour la part au-delà de 50 % ; rente = salaire annuel de référence × taux utile. Exemple : IPP de 60 % → taux utile = 25 % + 15 % = 40 %. <b>Pension d'invalidité</b> : 30 % ou 50 % du salaire annuel moyen des 10 meilleures années. La <b>prévoyance</b> intervient en complément, souvent en garantissant un pourcentage du salaire « sous déduction » des prestations de la Sécurité sociale. <span class='cgt'>Le taux d'incapacité fixé par la caisse est souvent sous-évalué, en particulier le « taux professionnel » (perte d'emploi, déclassement) : accompagner le salarié, contester devant la commission médicale de recours amiable, puis le tribunal. Chaque point de taux compte pour la rente à vie.</span> <span class='ref'>Réf. R.434-2 CSS (taux utile) ; R.434-32 ; L.142-6 (contestation).</span>"},
 
  {type:"divider", kicker:"Séquence 4", title:["La prévoyance","collective","en entreprise"],
-  notes:"Entrer dans le cœur du sujet CGT : c'est ici qu'on négocie et qu'on contrôle."},
+  notes:"<b>Le cœur du sujet CGT : c'est ici qu'on négocie et qu'on contrôle.</b> Rappeler le chiffre souvent ignoré : les régimes de prévoyance collectifs représentent des milliards d'euros de cotisations chaque année, dont une partie payée par les salariés. <span class='cgt'>C'est du salaire socialisé : les représentants des salariés ont toute légitimité pour en exiger la transparence et pour peser sur les garanties.</span>"},
 
- {type:"def", title:"La prévoyance collective obligatoire",
-  term:"Art. L.911-7 CSS — ANI du 11 janvier 2013, loi du 14 juin 2013",
-  text:"Couverture minimale décès pour tous les salariés. Les cadres bénéficient d'une obligation conventionnelle (CCN du 14 mars 1947).",
-  extra:"Au-delà : les garanties incapacité, invalidité et dépendance résultent d'accords de branche ou d'entreprise.",
-  notes:"<b>Cadres :</b> CCN 1947 impose un capital décès = 1 an de salaire (financé à 100 % par l'employeur). <b>Non-cadres :</b> minima légaux + CCN de branche + accord d'entreprise. <span class='cgt'>C'est un terrain de négociation CGT.</span>"},
+ {type:"def", title:"Les obligations en matière de protection sociale complémentaire",
+  term:"Code de la sécurité sociale — ANI du 17 novembre 2017",
+  text:"Complémentaire santé obligatoire pour tous les salariés (L.911-7). Prévoyance obligatoire pour les cadres : cotisation employeur d'au moins 1,50 % de la tranche A, affectée en priorité au décès.",
+  extra:"Pour les autres salariés, les garanties incapacité, invalidité et décès dépendent de la convention collective, des accords d'entreprise ou d'une décision de l'employeur.",
+  notes:"<b>Ce qui est obligatoire — et ce qui ne l'est pas.</b> <b>Santé</b> : tous les employeurs du privé doivent proposer une complémentaire santé collective (panier minimal, financement employeur d'au moins 50 %). <b>Prévoyance des cadres</b> : l'ANI du 17 novembre 2017 (qui reprend l'ancien article 7 de la convention de 1947) impose à l'employeur une cotisation d'au moins 1,50 % sur la tranche A des cadres, affectée en priorité à la garantie décès ; en cas de manquement, l'employeur doit verser aux ayants droit un capital égal à trois fois le plafond annuel de la Sécurité sociale. <b>Autres salariés</b> : pas d'obligation légale générale ; tout dépend de la branche (beaucoup de conventions prévoient un régime) et des accords. <span class='cgt'>Cette inégalité entre cadres et non-cadres est un terrain de lutte : exiger un régime de prévoyance pour tous, avec des garanties au moins équivalentes. Une cotisation patronale « cadres » sans équivalent pour les ouvriers et employés n'est pas justifiable.</span> <span class='ref'>Réf. L.911-1, L.911-7, L.912-1 CSS ; ANI du 17 nov. 2017.</span>"},
 
- {type:"steps", title:"Les garanties typiques d'un régime de prévoyance",
-  items:[{big:"Décès",nm:"Capital décès",ds:"Généralement 1 à 3 ans de salaire brut, versé aux ayants droit. Majoration enfants à charge."},
-   {big:"Incap.",nm:"Incapacité temporaire",ds:"Complète les IJ SS pour atteindre 75–80 % du brut. Définitions variées selon contrat."},
-   {big:"Inval.",nm:"Invalidité permanente",ds:"Rente mensuelle complémentaire selon catégorie. Objectif : maintenir 75–80 % du net."}],
-  notes:"<b>Lire les définitions contractuelles !</b> La notion d'« incapacité » varie : l'impossibilité d'exercer toute activité, ou seulement son métier ? La deuxième définition est plus favorable."},
+ {type:"steps", title:"Les garanties d'un régime de prévoyance",
+  items:[{big:"Décès",nm:"Capital et rentes",ds:"Capital (souvent 1 à 3 ans de salaire), majoré par enfant ; rente éducation ; rente de conjoint."},
+   {big:"Incap.",nm:"Incapacité temporaire",ds:"Complément des IJ après la franchise (souvent 90 jours), pour maintenir 80 à 100 % du salaire."},
+   {big:"Inval.",nm:"Invalidité permanente",ds:"Rente complémentaire selon la catégorie ou le taux d'incapacité, jusqu'à la retraite."}],
+  notes:"<b>Lire les définitions contractuelles : chaque mot compte.</b> La garantie <b>décès</b> protège la famille (capital, rentes éducation et conjoint). La garantie <b>incapacité</b> complète les IJ après une franchise. La garantie <b>invalidité</b> complète la pension ou la rente jusqu'à la retraite. Questions à poser : l'invalidité est-elle définie par référence à la Sécurité sociale (catégories, taux) ou par une définition propre à l'assureur, plus restrictive ? Les arrêts à temps partiel thérapeutique sont-ils couverts ? Les rentes sont-elles revalorisées ? <span class='cgt'>Préférer les contrats qui s'alignent sur les décisions de la Sécurité sociale : une définition « maison » de l'invalidité permet à l'assureur de refuser de payer alors que la CPAM a reconnu l'invalidité.</span> <span class='ref'>Réf. loi Évin n° 89-1009 du 31 déc. 1989 (art. 7 : maintien des prestations en cours) ; L.912-1 CSS.</span>"},
 
- {type:"content", title:"Analyser un tableau de garanties — les points clés",
-  bullets:["Le délai de carence (franchise) de l'organisme prévoyance.",
-   "La base de calcul : salaire brut, net, tranches A/B/C.",
-   "Les exclusions : maladies préexistantes, fait intentionnel, sport extrême.",
-   "La portabilité : maintien des garanties après rupture du contrat (jusqu'à 12 mois).",
-   "La revalorisation des rentes en cours de service."],
+ {type:"content", title:"Lire un tableau de garanties — les points clés",
+  bullets:["La <b>franchise</b> : à partir de quel jour d'arrêt l'organisme intervient-il ?",
+   "La <b>base de calcul</b> : salaire brut, net, tranches A/B ; primes incluses ?",
+   "Les <b>définitions</b> : invalidité alignée sur la Sécurité sociale ou définition propre ?",
+   "Les <b>exclusions</b> : maladies antérieures, affections psychiques, sports…",
+   "La <b>portabilité</b>, la <b>revalorisation</b> des rentes et le maintien en cas de résiliation."],
   strip:"Un tableau de garanties se lit comme un contrat : chaque mot compte.",
-  notes:"<b>Lire un tableau de garanties : les 8 points à vérifier.</b> (1) Délai de carence (jours d'arrêt avant déclenchement). (2) Taux de maintien global (SS + prévoyance) en % du salaire net. (3) Assiette de calcul (salaire brut, net, net fiscal ?). (4) Durée maximale de versement. (5) Définition de l'invalidité retenue (SS ou contractuelle). (6) Exclusions (maladies préexistantes, tentatives de suicide, addictions). (7) Prestations décès : capital, rente éducation, rente conjoint. (8) Conditions de maintien pendant la portabilité. <span class='cgt'>Exiger la notice d'information — obligation légale (L.141-4 C. assur.) : l'assureur doit la remettre, l'employeur doit l'afficher. Sans notice, les salariés ne connaissent pas leurs droits. Comparer avec les minima de branche et dénoncer les exclusions abusives lors de la négociation annuelle sur la prévoyance. Les exclusions « maladies psychiques » ou « maladie non objectivable » sont particulièrement discriminatoires pour les RPS — à contester.</span> <span class='ref'>Réf. L.141-4 C. assur. ; L.912-1 CSS (branches) ; L.911-7 CSS (obligation employeurs).</span>"},
+  notes:"<b>Les points à vérifier dans un contrat de prévoyance.</b> (1) Franchise et cohérence avec le maintien employeur (éviter le « trou »). (2) Niveau garanti en % du salaire, brut ou net, et base de calcul (primes, tranches). (3) Durée de versement. (4) Définition de l'invalidité. (5) Exclusions (maladies antérieures à l'embauche, affections psychiques, tentative de suicide, etc.) : les exclusions visant les troubles psychiques sont particulièrement pénalisantes alors que les RPS explosent. (6) Garanties décès. (7) Portabilité après la rupture du contrat. (8) Revalorisation des rentes et maintien des prestations en cours en cas de changement d'assureur (loi Évin). <span class='cgt'>Exiger la notice d'information : l'organisme doit la remettre à l'employeur, qui doit la distribuer à chaque salarié. Sans notice, les salariés ne connaissent pas leurs droits. Comparer avec les minima de la branche et contester les exclusions abusives lors des renégociations.</span> <span class='ref'>Réf. L.932-6 CSS ; L.141-4 C. assur. ; L.221-6 C. mutualité (notice) ; loi Évin, art. 2, 7 et 7-1.</span>"},
 
- {type:"callout", mode:"red", title:"La portabilité — art. L.911-8 CSS",
-  big:"Après rupture du contrat (hors faute lourde), maintien des garanties à titre gratuit pendant la durée du chômage, au max 12 mois.",
-  sub:"L'employeur doit informer le salarié dans le certificat de travail.",
-  notes:"<b>Piège classique :</b> le salarié licencié qui ne connaît pas son droit à la portabilité et se retrouve sans couverture. Le délégué CGT doit systématiquement informer. <span class='ref'>Réf. L.911-8 CSS.</span>"},
+ {type:"callout", mode:"red", title:"La portabilité — article L.911-8 CSS",
+  big:"Après la rupture du contrat, les garanties santé et prévoyance sont maintenues gratuitement, jusqu'à 12 mois.",
+  sub:"Si la rupture ouvre droit à l'assurance chômage (et n'est pas consécutive à une faute lourde). Durée égale à celle du dernier contrat, dans la limite de 12 mois. L'employeur doit en informer le salarié.",
+  notes:"<b>Un droit très concret, souvent ignoré.</b> En cas de licenciement, rupture conventionnelle, fin de CDD, etc., le salarié indemnisé par l'assurance chômage conserve gratuitement ses garanties santé et prévoyance pendant une durée égale à celle de son dernier contrat, dans la limite de 12 mois. L'employeur doit l'en informer, notamment dans le certificat de travail, et signaler la cessation du contrat à l'organisme. <b>Après la portabilité</b>, la loi Évin (article 4) permet aux anciens salariés (retraités, invalides, chômeurs) de conserver la complémentaire santé, avec un tarif encadré. <span class='cgt'>Le piège classique : un salarié licencié pour inaptitude, en arrêt ou en invalidité, qui ne sait pas que sa prévoyance continue. Le délégué doit systématiquement l'informer et vérifier que l'organisme a bien été prévenu.</span> <span class='ref'>Réf. L.911-8 CSS ; loi Évin, art. 4.</span>"},
 
  {type:"divider", kicker:"Séquence 5", title:["Le rôle CGT","dans la négociation","et le contrôle"],
-  notes:"Passer du savoir au pouvoir d'agir : comment s'emparer de ces sujets en section syndicale et au CSE ?"},
+  notes:"<b>Passer du savoir au pouvoir d'agir.</b> Comment la section syndicale et les élus du CSE s'emparent de ces sujets ? <span class='cgt'>Trois leviers : la négociation (branche et entreprise), le contrôle (CSE, comptes du régime), l'accompagnement individuel (dossiers de salariés). Les trois se nourrissent : les difficultés rencontrées par les salariés alimentent les revendications.</span>"},
 
  {type:"content", title:"Les leviers de négociation",
-  bullets:["Accords de branche : peser sur les minima garantis (taux, délais de carence, définitions).",
-   "Accords d'entreprise : améliorer les garanties pour tous, cadres et non-cadres.",
-   "Choix de l'organisme : appel d'offres, critères de qualité (réseau de soins, gestion des sinistres).",
-   "Comité de surveillance du régime de prévoyance (paritaire) : analyser les comptes techniques."],
-  strip:"La prévoyance collective, c'est du salaire différé : défendre les garanties, c'est défendre le pouvoir d'achat.",
-  notes:"<b>Les leviers concrets en négociation prévoyance.</b> (1) Exiger le rapport annuel de l'assureur (résultats techniques : cotisations perçues, prestations versées, ratio sinistres/primes). Si le ratio est très favorable à l'assureur, revendiquer une amélioration des garanties ou une baisse des cotisations. (2) Comparer avec les minima de branche et les meilleures CCN du secteur. (3) Demander l'ouverture de négociation sur : réduction du délai de carence, relèvement du taux de maintien à 100 % du net, couverture des temps partiels thérapeutiques, extension aux RPS. (4) Mettre en concurrence les assureurs lors du renouvellement — le CSE peut demander à être consulté sur le choix de l'organisme assureur. <span class='cgt'>Argument CGT fondamental : les cotisations salariales à la prévoyance sont du <b>salaire socialisé différé</b> — les salariés en ont le droit légitime de savoir comment il est géré et d'exiger des garanties efficaces. Un contrat de prévoyance avantageux pour l'assureur et défavorable aux salariés est un transfert de richesse inacceptable. Lors des NAO, inscrire la prévoyance comme un axe à part entière, pas un sujet technique annexe.</span>"},
+  bullets:["<b>Branche</b> : peser sur les garanties minimales, le haut degré de solidarité, le choix recommandé d'un organisme.",
+   "<b>Entreprise</b> : améliorer les garanties pour tous, cadres et non-cadres ; réduire les franchises.",
+   "<b>Choix de l'organisme</b> : institutions de prévoyance paritaires, mutuelles, assureurs — critères de qualité de gestion.",
+   "<b>Suivi du régime</b> : comptes de résultats, ratio prestations/cotisations, réserves, fonds social."],
+  strip:"La prévoyance collective, c'est du salaire socialisé : défendre les garanties, c'est défendre le pouvoir d'achat.",
+  notes:"<b>Les leviers concrets de la négociation prévoyance.</b> (1) Exiger les comptes du régime : cotisations encaissées, prestations versées, provisions, frais de gestion. Si les prestations représentent une faible part des cotisations, revendiquer de meilleures garanties ou une baisse des cotisations salariales. (2) Comparer avec la branche et les meilleures conventions du secteur. (3) Revendiquer : suppression ou réduction des franchises, maintien du net, couverture du temps partiel thérapeutique, définitions alignées sur la Sécurité sociale, absence d'exclusion des troubles psychiques. (4) Préférer les organismes à but non lucratif et à gestion paritaire (institutions de prévoyance), où les représentants des salariés siègent. (5) Le « haut degré de solidarité » des accords de branche finance des actions sociales (aides aux salariés en difficulté, prévention). <span class='cgt'>Argument fondamental : les cotisations sont du salaire socialisé. Un contrat très bénéficiaire pour l'assureur et peu protecteur pour les salariés est un transfert de richesse inacceptable. Inscrire la prévoyance comme un axe à part entière des négociations, pas comme un sujet technique annexe.</span> <span class='ref'>Réf. L.912-1 et R.912-1 et s. CSS (haut degré de solidarité) ; L.2242-1 et s. CT.</span>"},
 
  {type:"content", title:"Le contrôle par le CSE",
-  bullets:["Consultation annuelle obligatoire sur la politique sociale : régimes de prévoyance compris.",
-   "Demander le rapport annuel de l'organisme assureur (résultats techniques).",
-   "Vérifier les affiliations effectives et les bordereaux de cotisations.",
-   "Signaler les salariés qui n'ont pas reçu leur notice d'information."],
-  notes:"<b>Les droits d'information du CSE sur la prévoyance — et comment les exercer.</b> (1) <b>Consultation annuelle</b> : l'employeur doit soumettre les comptes annuels du régime de prévoyance — rapport de l'assureur, sinistralité, résultats techniques. (2) <b>Accès à la notice d'information</b> : document que l'assureur est obligé de fournir et que l'employeur doit remettre aux salariés — le CSE peut en demander communication. (3) <b>Négociation du régime</b> : tout renouvellement ou modification substantielle du contrat doit être soumis à consultation du CSE. (4) <b>Données nominatives</b> : le CSE peut demander l'état des sinistres agrégés (anonymisés) pour vérifier que les prestations sont effectivement versées. <span class='cgt'>En pratique : beaucoup de CSE ignorent ces droits et n'ont jamais vu le rapport annuel de l'assureur. Inscrire dès la prochaine réunion une question à l'employeur : « Pouvez-vous nous communiquer le dernier rapport annuel du régime de prévoyance et le taux de sinistralité ? » C'est le premier pas — et souvent révélateur d'une opacité que l'employeur préfère maintenir.</span> <span class='ref'>Réf. L.2312-26 CT (informations économiques et sociales) ; L.912-1 CSS.</span>"},
+  bullets:["La mise en place ou la modification d'un régime de prévoyance est une <b>consultation</b> du CSE.",
+   "Demander le <b>rapport annuel</b> de l'organisme : cotisations, prestations, résultats.",
+   "Vérifier les <b>affiliations</b> (y compris CDD, temps partiels, apprentis) et la distribution des <b>notices</b>.",
+   "Utiliser les <b>activités sociales et culturelles</b> et le fonds social du régime pour aider les salariés en difficulté."],
+  notes:"<b>Les droits d'information du CSE — et comment les exercer.</b> (1) Toute mise en place ou modification importante du régime relève de la consultation du CSE (dans les entreprises d'au moins 50 salariés). (2) L'organisme établit un rapport annuel sur les comptes du contrat collectif : le demander et l'inscrire à l'ordre du jour. (3) Vérifier que tous les salariés relevant du régime sont bien affiliés et ont reçu la notice. (4) Recenser, de façon anonyme, les difficultés de prise en charge rencontrées par les salariés. <span class='cgt'>Beaucoup de CSE n'ont jamais vu le rapport annuel de l'organisme. Poser la question dès la prochaine réunion : « Pouvez-vous nous communiquer le dernier rapport annuel du régime de prévoyance ? ». C'est souvent révélateur d'une opacité que l'employeur préfère maintenir — et le point de départ d'une renégociation.</span> <span class='ref'>Réf. L.2312-8 CT (consultation) ; L.932-6 CSS et art. 15 loi Évin (rapport annuel).</span>"},
 
  {type:"quiz", title:"Quiz — Vrai ou faux ?",
-  q:"Un salarié en invalidité catégorie 2 peut reprendre une activité professionnelle.",
-  opts:[{k:"A",t:"Vrai — sous conditions"},{k:"B",t:"Faux — l'invalidité cat. 2 interdit toute activité"},{k:"C",t:"Ça dépend du médecin-conseil"},{k:"D",t:"Ça dépend de la convention collective"}],
-  ans:0,
-  explain:"VRAI sous conditions : la catégorie 1 désigne quelqu'un capable d'exercer une activité à temps réduit. La catégorie 2 désigne quelqu'un qui ne peut plus travailler dans des conditions normales — mais le maintien dans l'emploi avec adaptation significative du poste reste possible. La pension peut être cumulée avec des revenus d'activité dans certaines limites fixées par la CPAM.",
-  notes:"Ce quiz vise à déstabiliser les idées reçues. <span class='cgt'>Beaucoup de salariés pensent que la pension d'invalidité est incompatible avec toute reprise : c'est faux, et ça peut servir leur intérêt.</span>"},
+  q:"Un salarié classé en invalidité catégorie 2 peut-il reprendre une activité professionnelle ?",
+  opts:[{k:"A",t:"Non : la catégorie 2 interdit toute activité"},{k:"B",t:"Oui, sous conditions : le contrat n'est pas rompu, le médecin du travail se prononce, et la pension se cumule avec le salaire dans certaines limites"},{k:"C",t:"Seulement si la convention collective le prévoit"},{k:"D",t:"Seulement après accord de l'employeur"}],
+  ans:1,
+  explain:"Le classement en invalidité ne rompt pas le contrat et ne vaut pas inaptitude. Une reprise est possible après visite de reprise, souvent avec aménagement ; la pension se cumule avec le salaire dans la limite d'un plafond.",
+  notes:"<b>Bousculer une idée reçue.</b> Beaucoup de salariés et d'employeurs pensent que l'invalidité catégorie 2 interdit tout travail. C'est faux : la catégorie décrit une capacité de gain réduite, mais la reprise reste possible, souvent à temps partiel et sur un poste adapté, après avis du médecin du travail. La pension est alors maintenue tant que le cumul ne dépasse pas un plafond lié au salaire antérieur. <span class='cgt'>Cette possibilité peut servir l'intérêt du salarié (revenu, lien social, droits à la retraite). L'élu doit la connaître pour contrer les pressions à la sortie de l'entreprise.</span> <span class='ref'>Réf. L.341-12 CSS.</span>"},
 
- {type:"quiz", title:"Quiz — Lequel est plus favorable ?",
-  q:"Un salarié blessé au travail est en arrêt depuis 35 jours. Son taux d'IJ est de :",
-  opts:[{k:"A",t:"50 % du salaire journalier de base (maladie ordinaire)"},{k:"B",t:"60 % du SDJB (AT, 28 premiers jours)"},{k:"C",t:"80 % du SDJB (AT, à partir du 29ᵉ jour)"},{k:"D",t:"100 % du salaire net"}],
-  ans:2,
-  explain:"Bonne réponse C : à partir du 29ᵉ jour d'arrêt AT, les IJ passent à 80 % du salaire journalier de base, sans jour de carence. C'est nettement plus favorable qu'une maladie ordinaire.",
-  notes:"Ce quiz ancre concrètement l'intérêt de la reconnaissance AT/MP sur le revenu de remplacement."},
+ {type:"quiz", title:"Quiz — Quel taux d'indemnisation ?",
+  q:"Un salarié blessé au travail est en arrêt depuis 35 jours. Quel est le taux de son indemnité journalière versée par la CPAM ?",
+  opts:[{k:"A",t:"80 % du salaire journalier de référence (AT, à partir du 29e jour)"},{k:"B",t:"60 % du salaire journalier (AT, 28 premiers jours)"},{k:"C",t:"50 % du salaire journalier de base (maladie ordinaire)"},{k:"D",t:"100 % du salaire net"}],
+  ans:0,
+  explain:"À partir du 29e jour d'arrêt pour AT/MP, l'IJ passe à 80 % du salaire journalier de référence, sans aucun jour de carence. C'est nettement plus favorable que la maladie ordinaire (50 %).",
+  notes:"<b>Ancrer l'intérêt financier de la reconnaissance AT/MP.</b> Faire le parallèle avec l'exercice de Fatima : en maladie ordinaire, elle aurait eu 50 % ; en maladie professionnelle reconnue, 60 % puis 80 %, sans carence. La réponse D (100 % du net) peut être vraie pour le revenu total grâce au maintien employeur et à la prévoyance, mais pas pour la seule part de la CPAM. <span class='cgt'>Chaque arrêt lié au travail mal déclaré, c'est de l'argent perdu pour le salarié et un coût reporté sur l'assurance maladie au lieu des employeurs.</span>"},
 
  {type:"case", title:"Exercice 3 — Robert, AT grave, IPP 25 %, contrat menacé",
-  scenario:"Robert, 54 ans, monteur-câbleur, <b>salaire brut 2 800 €/mois</b>, ancienneté 18 ans. Il a chuté de 3 m sur un chantier : AT grave reconnu, consolidation après 8 mois d'arrêt. Le médecin de la CPAM fixe son IPP à <b>25 %</b>. Il reprend en mi-temps thérapeutique mais le médecin du travail le déclare inapte à son poste. Son employeur envisage un licenciement pour inaptitude. Robert vous demande ce qu'il peut espérer financièrement et quelles sont ses protections.",
+  scenario:"Robert, 54 ans, monteur-câbleur, <b>salaire brut 2 800 €/mois</b>, ancienneté 18 ans. Il a chuté de 3 m sur un chantier : AT reconnu, consolidation après 8 mois d'arrêt. Le médecin-conseil fixe son taux d'incapacité permanente à <b>25 %</b>. À la visite de reprise, le médecin du travail le déclare inapte à son poste. Son employeur envisage un licenciement pour inaptitude. Robert vous demande ce qu'il peut espérer financièrement et quelles sont ses protections.",
   questions:[
-   "<b>Question 1 :</b> Calculez le montant approximatif de la rente IPP que Robert va percevoir (formule du taux utile).",
-   "<b>Question 2 :</b> Une pension d'invalidité SS peut-elle s'y ajouter ? Quelle catégorie probable et à quel montant ?",
-   "<b>Question 3 :</b> Que devez-vous vérifier dans le régime de prévoyance de son entreprise ?",
-   "<b>Question 4 :</b> S'il est licencié pour inaptitude d'origine professionnelle, quelles sont ses protections spécifiques par rapport à un licenciement ordinaire ?"
+   "<b>Question 1 :</b> Calculez le montant approximatif de sa rente AT (méthode du taux utile).",
+   "<b>Question 2 :</b> Une pension d'invalidité peut-elle s'y ajouter ?",
+   "<b>Question 3 :</b> Que faut-il vérifier dans le régime de prévoyance de l'entreprise ?",
+   "<b>Question 4 :</b> En cas de licenciement pour inaptitude d'origine professionnelle, quelles sont ses protections ?"
   ],
   minutes:20,
   corrige:[
-   "<span class='cr-key'>Rente IPP 25 % — formule du taux utile :</span> La partie du taux jusqu'à 50 % est divisée par 2 ; la partie au-delà de 50 % est multipliée par 1,5 (R.434-2 CSS). Ici, 25 % → taux utile = 25 ÷ 2 = <b>12,5 %</b>. Salaire annuel de référence (SAR) = 2 800 × 12 = 33 600 €. <b>Rente annuelle = 12,5 % × 33 600 = 4 200 €/an = 350 €/mois.</b>",
-   "<span class='cr-key'>Pension d'invalidité SS :</span> L'IPP AT/MP de 25 % ne signifie pas automatiquement invalide SS (critères différents). Mais après 8 mois d'arrêt et séquelles, le médecin-conseil peut reconnaître une invalidité. Avec une IPP de 25 %, Robert garde des capacités mais doit adapter son activité → probable <b>catégorie 1</b> (peut exercer une activité à temps réduit). Pension cat. 1 = 30 % du SAM (10 meilleures années). Environ 30 % × 2 800 × 12 = <b>1 008 €/an = 84 €/mois</b> (minimum 310 €/mois garanti). <b>Cumul rente IPP + pension invalidité possible</b>, dans la limite du salaire antérieur.",
-   "<span class='cr-key'>Prévoyance à vérifier :</span> (1) Le délai de carence : prend-il effet avant ou après la consolidation ? (2) La définition de l'invalidité dans le contrat : inapte à <em>son poste</em> ou inapte à <em>toute activité</em> ? La première est plus favorable. (3) Le taux de rente complémentaire prévu (objectif 75–80 % du brut cumulé SS + prévoyance). (4) La <b>portabilité art. L.911-8 CSS</b> : si Robert est licencié, ses garanties prévoyance sont maintenues gratuitement pendant la durée de son chômage, <b>maximum 12 mois</b>. L'employeur doit l'informer dans le certificat de travail.",
-   "<span class='cr-key'>Licenciement pour inaptitude d'origine professionnelle (L.1226-14 CT) :</span> (1) <b>Obligation préalable de reclassement</b> : l'employeur doit rechercher un poste adapté avant de licencier. (2) <b>Indemnité spéciale de licenciement = 2 × l'indemnité légale</b> : pour 18 ans d'ancienneté, indemnité légale ≈ 18 × (2 800/4) × seuil = environ 12 600 €, donc indemnité spéciale ≈ <b>25 200 €</b>. (3) <b>Pas de préavis effectué</b> mais indemnité compensatrice versée. (4) Si l'employeur ne respecte pas l'obligation de reclassement, le licenciement est sans cause réelle et sérieuse → dommages-intérêts supplémentaires."
+   "<span class='cr-key'>Rente AT</span> : taux utile = 25 % ÷ 2 = <b>12,5 %</b> (moitié du taux jusqu'à 50 %). Salaire annuel de référence ≈ 2 800 × 12 = 33 600 €. Rente annuelle ≈ 12,5 % × 33 600 = <b>4 200 €/an, soit 350 €/mois</b>, à vie, non imposable. À contester si le taux paraît sous-évalué (notamment le taux professionnel, compte tenu de la perte de son métier).",
+   "<span class='cr-key'>Pension d'invalidité</span> : elle couvre la perte de capacité due à une maladie ou un accident <b>non professionnel</b>. Ici, les séquelles viennent d'un AT : c'est la rente AT qui les répare. Une pension d'invalidité ne serait envisageable que pour une autre affection, sans lien avec l'accident, réduisant sa capacité de gain d'au moins deux tiers.",
+   "<span class='cr-key'>Prévoyance</span> : (1) la garantie invalidité prévoit-elle une rente en cas d'incapacité permanente d'origine professionnelle, à partir de quel taux (souvent 33 % ou 66 %) ? (2) La définition est-elle alignée sur la Sécurité sociale ? (3) Les indemnités versées pendant les 8 mois d'arrêt ont-elles bien été complétées après la franchise ? (4) En cas de licenciement : <b>portabilité</b> gratuite jusqu'à 12 mois.",
+   "<span class='cr-key'>Inaptitude d'origine professionnelle</span> : (1) obligation de recherche de reclassement, après avis du CSE ; (2) en cas de licenciement, <b>indemnité spéciale = double de l'indemnité légale</b> : indemnité légale = 1/4 de mois par année jusqu'à 10 ans + 1/3 au-delà = 7 000 + 7 467 ≈ 14 467 € → indemnité spéciale ≈ <b>28 900 €</b> ; (3) <b>indemnité compensatrice</b> égale au préavis ; (4) indemnité temporaire d'inaptitude versée par la CPAM pendant le mois de recherche de reclassement ; (5) si le reclassement n'a pas été sérieusement recherché : licenciement sans cause réelle et sérieuse, avec dommages-intérêts."
   ],
-  notes:"Cas synthèse multi-régimes : rente IPP + invalidité SS + prévoyance + protection inaptitude pro. L'articulation est complexe mais chaque brique peut être vérifiée par le délégué CGT. C'est souvent dans ces situations que l'accompagnement syndical fait la différence financière."},
+  notes:"<b>Cas de synthèse (20 min) : rente AT + prévoyance + inaptitude.</b> Faire travailler par groupes de 3 ou 4, chaque groupe prenant une question, puis restitution. <b>Points de vigilance du corrigé :</b> le taux utile (25 % → 12,5 %) ; la distinction rente AT / pension d'invalidité (ici, l'accident du travail relève de la rente) ; le calcul de l'indemnité légale (1/4 de mois par an jusqu'à 10 ans, 1/3 au-delà) puis son doublement ; l'indemnité compensatrice de préavis ; l'indemnité temporaire d'inaptitude. Évoquer aussi la <b>faute inexcusable</b> : une chute de 3 m sur un chantier pose immédiatement la question des protections collectives contre les chutes de hauteur ; si elle est reconnue, la rente est majorée et les préjudices réparés. <span class='cgt'>C'est dans ces situations multi-régimes que l'accompagnement syndical fait la différence financière : ne jamais laisser le salarié seul face à l'employeur et à la caisse. Orienter vers l'UD et un avocat spécialisé pour la faute inexcusable.</span> <span class='ref'>Réf. R.434-2 CSS ; L.1226-10, L.1226-14, R.1234-2 CT ; D.433-2 et s. CSS (indemnité temporaire d'inaptitude) ; L.452-1 CSS.</span>"},
 
  {type:"content", title:"Synthèse — les réflexes militants",
-  bullets:["Tout arrêt > 30 jours : vérifier maintien (légal, CCN, accord) et subrogation.",
-   "Consolidation : accompagner le salarié dans la fixation du taux d'IPP.",
-   "Invalidité SS : demander la notice de prévoyance et simuler les garanties.",
-   "Rupture du contrat : rappeler la portabilité dès le certificat de travail.",
-   "En négociation : exiger des définitions larges, pas de carence, et la portabilité maintenue."],
+  bullets:["Tout arrêt long : vérifier le maintien (loi, convention, accord), la subrogation et la déclaration à la prévoyance.",
+   "Poser la question de l'<b>origine professionnelle</b> : TMS, lombalgies, épuisement…",
+   "Consolidation : accompagner la fixation du taux d'incapacité et contester s'il est sous-évalué.",
+   "Invalidité : vérifier la catégorie, la prévoyance, et rappeler que le contrat n'est pas rompu.",
+   "Rupture du contrat : informer sur la portabilité.",
+   "En négociation : franchises réduites, maintien du net, définitions alignées, régime pour tous."],
   strip:"Ces droits ne s'appliquent que si quelqu'un les fait valoir : c'est le rôle du syndicat.",
-  notes:"<span class='cgt'>Message clé à emporter :</span> la prévoyance n'est pas un luxe ni une faveur — c'est du salaire différé. Défendre les garanties, c'est défendre le niveau de vie de tous les salariés."},
+  notes:"<b>Six réflexes à emporter.</b> (1) Arrêt long : reconstituer avec le salarié ce qu'il touche et ce qu'il devrait toucher. (2) Origine professionnelle : la question à poser systématiquement, parce qu'elle change tout. (3) Consolidation : ne pas laisser passer un taux sous-évalué. (4) Invalidité : vérifier la catégorie et la prévoyance, défendre le maintien dans l'emploi. (5) Rupture : portabilité. (6) Négociation : améliorer le régime pour tous. <span class='cgt'>Message de fin : la prévoyance n'est ni un luxe ni une faveur, c'est du salaire différé. La défendre, c'est défendre le niveau de vie de tous les salariés quand la santé lâche — et c'est aussi faire reculer la logique qui fait payer aux salariés malades le prix de l'organisation du travail.</span>"},
 
- {type:"closing", title:"Prévoyance,\\ninvalidité,\\ncomplém.",
+ {type:"closing", title:"Prévoyance,\\ninvalidité,\\ncomplémentaires",
   sub:"Module complémentaire — Formation syndicale CGT Occitanie",
   contacts:"CGT Comité Régional Occitanie · Secteur privé · Réforme PSC fonction publique couverte",
-  notes:"<b>Clôture de la demi-journée — ancrer les acquis.</b> Tour de table en deux questions : (1) « Un droit ou un mécanisme que vous ne connaissiez pas et que vous allez vérifier dans votre entreprise. » (2) « Un cas concret — collègue en arrêt, négociation prévoyance — sur lequel vous vous sentez mieux armé·e. » <span class='cgt'>Distribuer le mémo des réflexes militants : vérifier la subrogation, lire la notice de prévoyance, calculer les droits avant de conseiller, orienter vers l'UD pour les cas complexes (invalidité + IPP + prévoyance = dossier multi-régimes). Rappeler que la CGT a un réseau d'appui juridique : ne pas laisser un·e salarié·e gérer seul·e un dossier d'invalidité ou de faute inexcusable.</span>"}
+  notes:"<b>Clôture de la demi-journée — ancrer les acquis.</b> Tour de table en deux questions : (1) « un droit ou un mécanisme que je ne connaissais pas et que je vais vérifier dans mon entreprise » ; (2) « un cas concret (collègue en arrêt, négociation prévoyance) sur lequel je me sens mieux armé·e ». Faire remplir l'évaluation. <span class='cgt'>Distribuer le mémo des réflexes : lire la fiche de paie d'un salarié en arrêt, demander la notice et le rapport annuel du régime, calculer avant de conseiller, orienter vers l'UD pour les dossiers complexes (invalidité, rente AT, faute inexcusable). Ne jamais laisser un salarié gérer seul un dossier d'inaptitude ou d'invalidité.</span>"}
 ];
 
 /* ===================== MOTEUR ===================== */
@@ -761,6 +948,12 @@ function buildSlide(s,i){
         startBtn.textContent=`▶ Démarrer ${s.minutes} min`;
       });
     },100);
+  } else if(s.type==='svg'){
+    div.innerHTML=`
+      <div class="kicker reveal"><span class="dot"></span>${s.kicker||'Schéma'}</div>
+      <h2 class="title reveal" style="font-size:clamp(26px,3.8vw,62px)">${s.title}</h2>
+      <div class="svgwrap">${s.svg}</div>
+      ${s.caption?`<p class="svgcap reveal">${s.caption}</p>`:''}`;
   } else if(s.type==='closing'){
     div.innerHTML=`
       <div class="lockup reveal">${logoMark()}</div>
@@ -794,7 +987,8 @@ function goTo(n){
   const barNum=document.getElementById('bar-num');
   if(barNum) barNum.textContent=`${cur+1} / ${SLIDES.length}`;
   notesBody.innerHTML=(SLIDES[cur].notes||'<em>Aucune note pour cette diapositive.</em>').replace(/\n/g,'<br>');
-  document.getElementById('notes-slide-num').textContent=`Diapo ${cur+1}`;
+  document.getElementById('notes-slide-num').textContent=`Diapo ${cur+1} / ${SLIDES.length}`;
+  if(typeof updatePresenter==='function')updatePresenter();
   // counter anim (stats)
   allSlides[cur].querySelectorAll('[data-val]:not([data-animated])').forEach(el=>{
     el.dataset.animated='1';
@@ -926,48 +1120,106 @@ allSlides.forEach(s=>s.addEventListener('click',e=>{
   if(x>0.6)goTo(cur+1);else if(x<0.4)goTo(cur-1);
 }));
 
-// Presenter window
+// Presenter window — même ergonomie que la présentation AT/MP
+var presWin=null, presClock=null, presStart=0;
+function plainText(h){const d=document.createElement('div');d.innerHTML=String(h||'');return d.textContent||'';}
+function slideSummary(s){
+  const T=Array.isArray(s.title)?s.title.join(' '):String(s.title||'').replace(/\\n/g,' ');
+  const k=s.kicker||s.eyebrow||'';
+  let body='';
+  if(s.bullets)body=s.bullets.map(b=>'• '+b).join('<br>');
+  else if(s.items&&s.type==='stats')body=s.items.map(it=>`<b>${it.p||''}${Number(it.v).toLocaleString('fr-FR')}${it.s||''}</b> — ${it.l}`).join('<br>');
+  else if(s.items)body=s.items.map(it=>`<b>${it.big}</b> ${it.nm} — ${it.ds}`).join('<br>');
+  else if(s.type==='two')body=`<b>${s.a.h}</b><br>${s.a.t}<br><br><b>${s.b.h}</b><br>${s.b.t}`;
+  else if(s.type==='callout')body=`<b>${s.big||''}</b><br>${s.sub||''}`;
+  else if(s.type==='def')body=`<b>${s.term}</b><br>${s.text}${s.extra?'<br><br>'+s.extra:''}`;
+  else if(s.type==='quiz')body=`${s.q}<br>`+s.opts.map((o,j)=>`${j===s.ans?'✅':'▫️'} <b>${o.k}</b> ${o.t}`).join('<br>')+(s.explain?`<br><br><i>${s.explain}</i>`:'');
+  else if(s.type==='case')body=`${s.scenario}<br><br>`+(s.questions||[]).map((q,j)=>`${j+1}. ${q}`).join('<br>');
+  else if(s.type==='svg')body=s.caption||'Schéma animé — commenter au fil de l\'apparition des éléments.';
+  else body=s.lede||s.sub||'';
+  if(s.strip)body+=`<span class="strip">${s.strip}</span>`;
+  return {T,k,body};
+}
 function openPresenter(){
-  const pw=window.open('','presenterWindow','width=800,height=600,resizable=yes');
-  if(!pw)return;
-  pw.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8">
-  <style>body{margin:0;background:#111;color:#eee;font-family:Arial,sans-serif;padding:20px}
-  #pt{font-size:32px;font-weight:bold;color:#FFD200;margin-bottom:12px}
-  #pc{font-size:16px;color:#aaa;margin-bottom:20px}
-  #pnotes{font-size:18px;line-height:1.5;background:#1a1a1a;padding:16px;border-left:4px solid #FFD200}
-  #pres-next{font-size:13px;color:#888;margin-top:16px;background:#1a1a1a;padding:10px 14px;border-left:3px solid #444}
-  #pres-next span{color:#FFD200;font-weight:bold}
-  #pclock{position:fixed;top:14px;right:20px;font-size:15px;color:#aaa;font-family:monospace}
-  </style></head><body>
-  <div id="pclock"></div>
-  <div id="pt">Diapo 1</div><div id="pc">1 / ${SLIDES.length}</div>
-  <div id="pnotes"></div>
-  <div id="pres-next"></div>
-  <script>
-  const clk=document.getElementById('pclock');
-  setInterval(()=>{const n=new Date();clk.textContent=n.toLocaleTimeString('fr-FR');},1000);
-  window.updatePres=function(cur,total,notes,nextType,nextTitle){
-    document.getElementById('pt').textContent='Diapo '+(cur+1);
-    document.getElementById('pc').textContent=(cur+1)+' / '+total;
-    document.getElementById('pnotes').innerHTML=notes||'';
-    const pn=document.getElementById('pres-next');
-    if(nextTitle){pn.innerHTML='Suivante &rarr; <span>['+nextType+']</span> '+nextTitle;}
-    else{pn.textContent='';}
-  };
-  <\/script></body></html>`);
-  pw.document.close();
-  function syncPres(){
-    if(!pw.closed){
-      const n=SLIDES[cur].notes||'';
-      const nx=SLIDES[cur+1];
-      const nextT=nx?(Array.isArray(nx.title)?nx.title[0]:nx.title||''):null;
-      const nextType=nx?nx.type:'';
-      pw.updatePres&&pw.updatePres(cur,SLIDES.length,n,nextType,nextT);
-    }
-  }
-  const origGoTo=goTo;
-  window.goTo=function(n){origGoTo(n);syncPres();};
-  syncPres();
+  if(presWin&&!presWin.closed){presWin.focus();updatePresenter();return;}
+  presWin=window.open('','cgtPres','width=1280,height=820,menubar=no,toolbar=no,location=no,status=no');
+  if(!presWin)return;
+  presStart=Date.now();
+  const d=presWin.document;d.open();
+  d.write(`<!doctype html><html lang="fr"><head><meta charset="utf-8"><title>Présentateur · CGT</title>
+<style>
+*{margin:0;box-sizing:border-box}
+body{background:#0d0d0d;color:#e8e8e8;font-family:Archivo,Arial,sans-serif;display:grid;grid-template-rows:auto 1fr auto;height:100vh;overflow:hidden}
+.topbar{background:#161616;border-bottom:3px solid #E2001A;display:flex;align-items:center;gap:16px;padding:10px 18px}
+.cgt-badge{font-family:Anton,Impact,sans-serif;background:#E2001A;color:#FFD200;padding:3px 10px;font-size:13px;letter-spacing:.12em}
+.tb-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.15em;color:#aaa;flex:1}
+.tb-count{font-family:Anton,Impact,sans-serif;font-size:20px;color:#E2001A}
+.tb-elapsed{font-family:Anton,Impact,sans-serif;font-size:20px;color:#FFD200}
+.tb-clock{font-family:Anton,Impact,sans-serif;font-size:22px;color:#fff}
+.tb-sep{width:1px;height:24px;background:#333}
+.main{display:grid;grid-template-columns:1.1fr 1fr;min-height:0}
+.col-left{display:flex;flex-direction:column;border-right:1px solid #222;padding:20px 22px;gap:10px;overflow:hidden}
+.label{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.18em;color:#666}
+.cur-kicker{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.18em;color:#FFD200}
+.cur-title{font-family:Anton,Impact,sans-serif;font-size:clamp(22px,2.6vw,36px);text-transform:uppercase;color:#fff;line-height:1.05;margin:4px 0 6px}
+.cur-body{font-family:Georgia,serif;font-size:15px;line-height:1.6;color:#c8c8c8;overflow-y:auto;flex:1}
+.cur-body b{color:#fff}
+.cur-body .strip{display:block;margin-top:10px;background:#1e1e1e;border-left:4px solid #FFD200;padding:8px 12px;font-size:13px;color:#FFD200;font-weight:700}
+.col-right{display:flex;flex-direction:column;padding:20px 22px;gap:10px;overflow:hidden}
+.notes-area{flex:1;overflow-y:auto;background:#111;border-left:5px solid #FFD200;padding:14px 16px;border-radius:0 6px 6px 0}
+.notes-area .nbody{font-family:Georgia,serif;font-size:17px;line-height:1.65;color:#ddd}
+.notes-area .nbody b{color:#fff}
+.notes-area .nbody .cgt{display:block;margin-top:.7em;color:#FFD200;font-weight:700;background:rgba(255,210,0,.06);border-left:3px solid #FFD200;padding:.5em .8em}
+.notes-area .nbody .ref{color:#90b8ff;font-style:italic;font-size:15px}
+.next-box{background:#191919;border-left:5px solid #E2001A;padding:12px 14px;border-radius:0 6px 6px 0}
+.next-title{font-family:Anton,Impact,sans-serif;font-size:18px;text-transform:uppercase;color:#fff}
+.next-type{font-size:11px;color:#888;margin:3px 0}
+.botbar{background:#161616;border-top:1px solid #222;display:flex;align-items:center;gap:10px;padding:10px 18px}
+.nav-btn{font-weight:800;text-transform:uppercase;letter-spacing:.06em;border:2px solid #E2001A;padding:9px 20px;cursor:pointer;font-size:13px}
+.nav-btn.prev{background:transparent;color:#fff;border-color:#444}
+.nav-btn.next{background:#E2001A;color:#fff}
+.hint{font-size:11px;color:#555;margin-left:auto}
+</style></head><body>
+<div class="topbar"><span class="cgt-badge">CGT</span><span class="tb-title">Mode présentateur · Prévoyance & invalidité</span>
+<span class="tb-sep"></span><span class="tb-count" id="pc">— / —</span><span class="tb-sep"></span>
+<span class="tb-elapsed" id="pe">⏱ 00:00</span><span class="tb-sep"></span><span class="tb-clock" id="pcl"></span></div>
+<div class="main">
+ <div class="col-left"><div><div class="label">Diapo en cours</div><div class="cur-kicker" id="pk"></div><div class="cur-title" id="pt"></div></div>
+  <div class="label">Contenu</div><div class="cur-body" id="pb"></div></div>
+ <div class="col-right"><div class="label">Notes du formateur</div><div class="notes-area"><div class="nbody" id="pno">—</div></div>
+  <div class="next-box"><div class="label">Diapo suivante</div><div class="next-type" id="pn-type"></div><div class="next-title" id="pn-title">—</div></div></div>
+</div>
+<div class="botbar"><button class="nav-btn prev" onclick="window.opener.goTo(window.opener.cur-1)">‹ Précédent</button>
+<button class="nav-btn next" onclick="window.opener.goTo(window.opener.cur+1)">Suivant ›</button>
+<span class="hint">← → sur cette fenêtre ou la fenêtre projetée</span></div>
+<script>document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();window.opener.goTo(window.opener.cur+1);}else if(e.key==='ArrowLeft'){e.preventDefault();window.opener.goTo(window.opener.cur-1);}});<\/script>
+</body></html>`);
+  d.close();
+  if(presClock)clearInterval(presClock);
+  presClock=setInterval(()=>{
+    if(!presWin||presWin.closed){clearInterval(presClock);return;}
+    const t=new Date();
+    const cl=presWin.document.getElementById('pcl');
+    if(cl)cl.textContent=String(t.getHours()).padStart(2,'0')+':'+String(t.getMinutes()).padStart(2,'0');
+    const sec=Math.floor((Date.now()-presStart)/1000);
+    const ee=presWin.document.getElementById('pe');
+    if(ee)ee.textContent='⏱ '+String(Math.floor(sec/60)).padStart(2,'0')+':'+String(sec%60).padStart(2,'0');
+  },1000);
+  setTimeout(updatePresenter,120);
+}
+function updatePresenter(){
+  if(!presWin||presWin.closed)return;
+  const d=presWin.document; if(!d.getElementById('pt'))return;
+  const c=slideSummary(SLIDES[cur]);
+  d.getElementById('pk').textContent=plainText(c.k);
+  d.getElementById('pt').innerHTML=c.T;
+  d.getElementById('pb').innerHTML=c.body;
+  d.getElementById('pno').innerHTML=(SLIDES[cur].notes||"<i style='color:#555'>Aucune note pour cette diapo.</i>").replace(/\n/g,'<br>');
+  d.getElementById('pc').textContent=String(cur+1).padStart(2,'0')+' / '+SLIDES.length;
+  const lab={content:'Contenu',stats:'Chiffres',steps:'Étapes',two:'Comparaison',callout:'Point clé',def:'Définition',case:'Atelier',quiz:'Quiz',divider:'Séquence',svg:'Schéma animé',closing:'Clôture',title:'Titre'};
+  const nx=SLIDES[cur+1];
+  d.getElementById('pn-title').innerHTML=nx?slideSummary(nx).T:'— Fin de la présentation —';
+  d.getElementById('pn-type').textContent=nx?(lab[nx.type]||nx.type):'';
 }
 document.getElementById('bPres').addEventListener('click',openPresenter);
 </script>
