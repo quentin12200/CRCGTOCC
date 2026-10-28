@@ -1122,6 +1122,8 @@ allSlides.forEach(s=>s.addEventListener('click',e=>{
 }));
 
 // Presenter window — même ergonomie que la présentation AT/MP
+// cur est déclaré avec let : invisible via window.cur, d'où ces fonctions exposées à la fenêtre présentateur
+window.__next=()=>goTo(cur+1); window.__prev=()=>goTo(cur-1);
 var presWin=null, presClock=null, presStart=0;
 function plainText(h){const d=document.createElement('div');d.innerHTML=String(h||'');return d.textContent||'';}
 function slideSummary(s){
@@ -1190,10 +1192,10 @@ body{background:#0d0d0d;color:#e8e8e8;font-family:Archivo,Arial,sans-serif;displ
  <div class="col-right"><div class="label">Notes du formateur</div><div class="notes-area"><div class="nbody" id="pno">—</div></div>
   <div class="next-box"><div class="label">Diapo suivante</div><div class="next-type" id="pn-type"></div><div class="next-title" id="pn-title">—</div></div></div>
 </div>
-<div class="botbar"><button class="nav-btn prev" onclick="window.opener.goTo(window.opener.cur-1)">‹ Précédent</button>
-<button class="nav-btn next" onclick="window.opener.goTo(window.opener.cur+1)">Suivant ›</button>
+<div class="botbar"><button class="nav-btn prev" onclick="window.opener.__prev()">‹ Précédent</button>
+<button class="nav-btn next" onclick="window.opener.__next()">Suivant ›</button>
 <span class="hint">← → sur cette fenêtre ou la fenêtre projetée</span></div>
-<script>document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();window.opener.goTo(window.opener.cur+1);}else if(e.key==='ArrowLeft'){e.preventDefault();window.opener.goTo(window.opener.cur-1);}});<\/script>
+<script>document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();window.opener.__next();}else if(e.key==='ArrowLeft'){e.preventDefault();window.opener.__prev();}});<\/script>
 </body></html>`);
   d.close();
   if(presClock)clearInterval(presClock);

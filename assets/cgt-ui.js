@@ -510,8 +510,19 @@
     document.body.appendChild(btn);
   }
 
+  /* ── Animations communes (assets/motion.js) ─────────────── */
+  function loadMotion() {
+    if (window.__cgtMotion || document.querySelector('script[src*="motion.js"]')) return;
+    var me = document.querySelector('script[src*="cgt-ui.js"]');
+    var s = document.createElement('script');
+    s.src = me ? me.getAttribute('src').replace('cgt-ui.js', 'motion.js') : '/assets/motion.js';
+    s.defer = true;
+    document.head.appendChild(s);
+  }
+
   /* ── Init ──────────────────────────────────────────────── */
   injectLoader();
+  loadMotion();
 
   document.addEventListener('DOMContentLoaded', function () {
     injectIcons();
