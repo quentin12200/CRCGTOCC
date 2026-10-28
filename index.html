@@ -567,6 +567,49 @@
       .ressource-item { padding: 0.8rem; }
       .section-label { font-size: 0.63rem; margin-bottom: 1rem; }
     }
+
+    /* ── Inscription des stagiaires (QR code) ── */
+    .insc-wrap { display: grid; grid-template-columns: 260px 1fr; gap: 1.5rem; background: var(--fond-card); border: 1px solid var(--border-card); border-top: 4px solid var(--rouge); padding: 1.25rem; margin-bottom: 1.5rem; }
+    .insc-qr-col { display: flex; flex-direction: column; align-items: center; gap: .7rem; }
+    .insc-qr { background: #fff; padding: 12px; border: 1px solid var(--border); line-height: 0; }
+    .insc-qr img, .insc-qr canvas { display: block; }
+    .insc-url { font-size: .7rem; color: var(--texte-muted); word-break: break-all; text-align: center; }
+    .insc-actions { display: flex; flex-wrap: wrap; gap: .4rem; justify-content: center; }
+    .insc-btn { background: var(--rouge); color: #fff; border: 1px solid var(--rouge); font-family: 'Archivo', sans-serif; font-size: .78rem; font-weight: 600; padding: .45rem .8rem; cursor: pointer; }
+    .insc-btn:hover { background: var(--rouge-dark); }
+    .insc-btn-ghost { background: transparent; color: var(--accent); border-color: var(--accent); }
+    .insc-btn-ghost:hover { background: var(--accent); color: #fff; }
+    .insc-btn-danger { background: transparent; color: var(--rouge); }
+    .insc-btn-danger:hover { color: #fff; }
+    .insc-label { display: block; font-size: .7rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--texte-muted); margin-bottom: .3rem; }
+    .insc-input { width: 100%; max-width: 360px; padding: .5rem .7rem; border: 2px solid var(--border); background: var(--fond); color: var(--texte); font-family: inherit; font-size: .9rem; }
+    .insc-input:focus { outline: none; border-color: var(--accent); }
+    .insc-hint { font-size: .74rem; color: var(--texte-muted); margin: .35rem 0 1rem; }
+    .insc-head { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: .5rem; margin-bottom: .6rem; }
+    .insc-head .insc-actions { justify-content: flex-end; }
+    .insc-table-wrap { max-height: 320px; overflow: auto; border: 1px solid var(--border-card); }
+    .insc-table { width: 100%; border-collapse: collapse; font-size: .83rem; }
+    .insc-table th { position: sticky; top: 0; background: var(--fond); text-align: left; font-size: .68rem; text-transform: uppercase; letter-spacing: .06em; color: var(--texte-muted); padding: .5rem .6rem; }
+    .insc-table td { padding: .45rem .6rem; border-top: 1px solid var(--border-card); word-break: break-word; }
+    .insc-table tr.insc-new td { animation: inscNew 1.6s ease-out; }
+    @keyframes inscNew { from { background: rgba(255,210,0,.45); } to { background: transparent; } }
+    .insc-login { border: 1px dashed var(--accent); padding: .8rem; margin-bottom: .8rem; font-size: .82rem; }
+    .insc-login[hidden] { display: none; }
+    .insc-login-row { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .5rem; }
+    .insc-login-row .insc-input { flex: 1 1 180px; max-width: none; }
+    .insc-compte { font-size: .74rem; color: var(--texte-muted); margin-top: .4rem; }
+    .insc-compte button { background: none; border: none; color: var(--accent); text-decoration: underline; cursor: pointer; font: inherit; }
+    .insc-vide { color: var(--texte-muted); text-align: center; font-style: italic; }
+    .insc-msg { font-size: .78rem; color: var(--accent); min-height: 1.1em; margin-top: .5rem; }
+    .insc-overlay { position: fixed; inset: 0; z-index: 10001; background: rgba(10,14,22,.92); display: flex; align-items: center; justify-content: center; padding: 1rem; }
+    .insc-overlay[hidden] { display: none; }
+    .insc-overlay-box { background: #fff; color: #1A2540; text-align: center; padding: 2rem 2.5rem; border-top: 8px solid var(--rouge); max-width: 95vw; }
+    .insc-overlay-box h2 { font-family: 'Anton', sans-serif; font-weight: 400; font-size: clamp(1.4rem, 3.5vw, 2.4rem); }
+    .insc-overlay-box p { color: #5A6A84; margin: .4rem 0 1.2rem; }
+    #insc-qr-grand { display: inline-block; line-height: 0; }
+    #insc-qr-grand img, #insc-qr-grand canvas { width: min(60vh, 80vw) !important; height: auto !important; }
+    .insc-overlay-count { font-family: 'Anton', sans-serif; font-size: 1.4rem; margin: 1rem 0; color: var(--rouge); }
+    @media (max-width: 720px) { .insc-wrap { grid-template-columns: 1fr; } }
   </style>
   <link rel="manifest" href="/manifest.json">
   <meta name="theme-color" content="#E2001A">
@@ -690,6 +733,7 @@
   <nav class="quick-nav" aria-label="Sur cette page">
     <a href="#modules">📚 Modules de formation</a>
     <a href="#outils">🎯 Outils d'animation et d'évaluation</a>
+    <a href="#inscriptions">📲 Inscription des stagiaires (QR code)</a>
     <a href="#ressources-atmp">⚖️ Ressources AT/MP</a>
   </nav>
 
@@ -942,6 +986,58 @@
   </div>
   </section>
 
+  <section id="inscriptions" class="bloc">
+  <div class="section-label">Inscription des stagiaires <span class="section-sub">QR code à projeter en début de formation</span></div>
+  <div class="insc-wrap">
+    <div class="insc-qr-col">
+      <div id="insc-qr" class="insc-qr" aria-label="QR code d'inscription"></div>
+      <div class="insc-url" id="insc-url"></div>
+      <div class="insc-actions">
+        <button type="button" class="insc-btn" id="insc-plein-ecran">Projeter en plein écran</button>
+        <button type="button" class="insc-btn insc-btn-ghost" id="insc-copier-lien">Copier le lien</button>
+      </div>
+    </div>
+    <div class="insc-list-col">
+      <label class="insc-label" for="insc-session">Session</label>
+      <input id="insc-session" class="insc-input" type="text" maxlength="60" spellcheck="false">
+      <p class="insc-hint">Un nom par formation : chaque session a son propre QR code et sa propre liste.</p>
+      <div class="insc-head">
+        <strong><span id="insc-count">0</span> inscrit·e(s)</strong>
+        <div class="insc-actions">
+          <button type="button" class="insc-btn insc-btn-ghost" id="insc-copier-emails">Copier les emails</button>
+          <button type="button" class="insc-btn insc-btn-ghost" id="insc-csv">Exporter CSV</button>
+          <button type="button" class="insc-btn insc-btn-danger" id="insc-vider">Vider</button>
+        </div>
+      </div>
+      <form class="insc-login" id="insc-login" hidden>
+        <p><strong>Liste protégée.</strong> Connectez-vous avec le compte formateur Firebase pour voir les inscrits.</p>
+        <div class="insc-login-row">
+          <input class="insc-input" id="insc-login-email" type="email" placeholder="Email du compte formateur" autocomplete="username" required>
+          <input class="insc-input" id="insc-login-mdp" type="password" placeholder="Mot de passe" autocomplete="current-password" required>
+          <button type="submit" class="insc-btn">Se connecter</button>
+        </div>
+      </form>
+      <div class="insc-table-wrap">
+        <table class="insc-table">
+          <thead><tr><th>Nom</th><th>Prénom</th><th>Email</th><th>Heure</th></tr></thead>
+          <tbody id="insc-liste"><tr><td colspan="4" class="insc-vide">En attente des premières inscriptions…</td></tr></tbody>
+        </table>
+      </div>
+      <div class="insc-msg" id="insc-msg" role="status"></div>
+      <div class="insc-compte" id="insc-compte" hidden>Connecté·e : <span id="insc-compte-email"></span> · <button type="button" id="insc-deconnexion">Se déconnecter</button></div>
+    </div>
+  </div>
+  <div class="insc-overlay" id="insc-overlay" hidden>
+    <div class="insc-overlay-box">
+      <h2>Inscrivez-vous à la formation</h2>
+      <p>Scannez ce QR code avec l'appareil photo de votre téléphone</p>
+      <div id="insc-qr-grand"></div>
+      <div class="insc-overlay-count"><span id="insc-count-grand">0</span> inscrit·e(s)</div>
+      <button type="button" class="insc-btn" id="insc-fermer">Fermer (Échap)</button>
+    </div>
+  </div>
+  </section>
+
   <section id="ressources-atmp" class="bloc">
   <div class="section-label">Ressources AT/MP</div>
 
@@ -1123,5 +1219,127 @@
 })();
 </script>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script type="module">
+  // Inscription des stagiaires : QR code vers /inscription.html?s=<session> et liste en direct
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { getDatabase, ref, onValue, remove } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+  import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+  const app = initializeApp({
+    apiKey: "AIzaSyBtu2Vmipa2CU8Pro0kXvnesqpUxf-7Z8c",
+    authDomain: "cgt-occitanie-quiz.firebaseapp.com",
+    databaseURL: "https://cgt-occitanie-quiz-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "cgt-occitanie-quiz",
+    storageBucket: "cgt-occitanie-quiz.firebasestorage.app",
+    messagingSenderId: "420650097260",
+    appId: "1:420650097260:web:50bdd6dfcc4930a9139649"
+  });
+  const db = getDatabase(app);
+  const auth = getAuth(app);
+  const $ = id => document.getElementById(id);
+  const esc = t => String(t || '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+  let session = '', url = '', inscrits = [], connus = new Set(), stop = null;
+
+  function slug(t) {
+    return t.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^\w-]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 60);
+  }
+  function qr(el, size) {
+    el.innerHTML = '';
+    // Bibliothèque QR non chargée (hors ligne) : la liste et le lien restent utilisables
+    if (!window.QRCode) { el.innerHTML = '<p style="line-height:1.4;font-size:.8rem;color:#5A6A84;max-width:180px">QR code indisponible hors connexion : utilisez le lien ci-dessous.</p>'; return; }
+    new window.QRCode(el, { text: url, width: size, height: size, colorDark: '#1A1A1A', colorLight: '#FFFFFF', correctLevel: window.QRCode.CorrectLevel.M });
+  }
+  function msg(t) { $('insc-msg').textContent = t; setTimeout(() => { if ($('insc-msg').textContent === t) $('insc-msg').textContent = ''; }, 3000); }
+
+  function render() {
+    $('insc-count').textContent = $('insc-count-grand').textContent = inscrits.length;
+    const tb = $('insc-liste');
+    if (!inscrits.length) { tb.innerHTML = '<tr><td colspan="4" class="insc-vide">En attente des premières inscriptions…</td></tr>'; return; }
+    tb.innerHTML = inscrits.map(i => `<tr${connus.size && !connus.has(i.id) ? ' class="insc-new"' : ''}>
+      <td>${esc(i.nom).toUpperCase()}</td><td>${esc(i.prenom)}</td><td><a href="mailto:${esc(i.email)}">${esc(i.email)}</a></td>
+      <td>${i.date ? new Date(i.date).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }) : ''}</td></tr>`).join('');
+    connus = new Set(inscrits.map(i => i.id));
+  }
+
+  function choisirSession(nom) {
+    session = slug(nom) || 'formation';
+    try { localStorage.setItem('cgt_insc_session', nom); } catch (e) {}
+    url = `${location.origin}/inscription.html?s=${encodeURIComponent(session)}`;
+    $('insc-url').textContent = url;
+    qr($('insc-qr'), 200);
+    if (!$('insc-overlay').hidden) qr($('insc-qr-grand'), 512);
+    if (stop) stop();
+    inscrits = []; connus = new Set();
+    stop = onValue(ref(db, `sessions/inscriptions/${session}`), snap => {
+      const v = snap.val() || {};
+      inscrits = Object.entries(v).map(([id, x]) => ({ id, ...x })).sort((a, b) => (a.date || '').localeCompare(b.date || ''));
+      $('insc-login').hidden = true;
+      render();
+    }, () => {
+      // Lecture refusée par les règles Firebase : il faut le compte formateur
+      stop = null;
+      $('insc-login').hidden = false;
+      $('insc-liste').innerHTML = '<tr><td colspan="4" class="insc-vide">Connexion formateur requise pour afficher la liste.</td></tr>';
+    });
+  }
+
+  // Compte formateur Firebase : seul compte autorisé à lire et vider les inscriptions
+  onAuthStateChanged(auth, user => {
+    $('insc-compte').hidden = !user;
+    $('insc-compte-email').textContent = user ? user.email : '';
+    if (user && session) choisirSession($('insc-session').value);
+  });
+  $('insc-login').addEventListener('submit', async e => {
+    e.preventDefault();
+    try {
+      await signInWithEmailAndPassword(auth, $('insc-login-email').value.trim(), $('insc-login-mdp').value);
+      $('insc-login-mdp').value = '';
+    } catch (ex) {
+      msg('Connexion refusée : vérifiez l\'email et le mot de passe du compte formateur.');
+    }
+  });
+  $('insc-deconnexion').onclick = () => signOut(auth).then(() => choisirSession($('insc-session').value));
+
+  function emails() { return [...new Set(inscrits.map(i => i.email).filter(Boolean))]; }
+
+  const saisie = $('insc-session');
+  let defaut = '';
+  try { defaut = localStorage.getItem('cgt_insc_session') || ''; } catch (e) {}
+  saisie.value = defaut || ('formation-' + new Date().toISOString().slice(0, 10));
+  let t;
+  saisie.addEventListener('input', () => { clearTimeout(t); t = setTimeout(() => choisirSession(saisie.value), 500); });
+  choisirSession(saisie.value);
+
+  $('insc-copier-lien').onclick = () => navigator.clipboard.writeText(url).then(() => msg('Lien copié.'));
+  $('insc-copier-emails').onclick = () => {
+    const l = emails();
+    if (!l.length) return msg('Aucune adresse à copier.');
+    navigator.clipboard.writeText(l.join('; ')).then(() => msg(l.length + ' adresse(s) copiée(s) : à coller dans le champ « Cci » de votre messagerie.'));
+  };
+  $('insc-csv').onclick = () => {
+    if (!inscrits.length) return msg('Aucune inscription à exporter.');
+    const cell = v => '"' + String(v || '').replace(/"/g, '""') + '"';
+    const csv = '\ufeff' + ['Nom;Prénom;Email;Date'].concat(inscrits.map(i =>
+      [i.nom, i.prenom, i.email, i.date ? new Date(i.date).toLocaleString('fr-FR') : ''].map(cell).join(';'))).join('\r\n');
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
+    a.download = `inscrits-${session}.csv`;
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+  };
+  $('insc-vider').onclick = async () => {
+    if (!inscrits.length) return;
+    if (!confirm(`Supprimer les ${inscrits.length} inscription(s) de la session « ${session} » ? Cette action est irréversible.`)) return;
+    await remove(ref(db, `sessions/inscriptions/${session}`));
+    msg('Liste vidée.');
+  };
+  const fermer = () => { $('insc-overlay').hidden = true; };
+  $('insc-plein-ecran').onclick = () => { $('insc-overlay').hidden = false; qr($('insc-qr-grand'), 512); };
+  $('insc-fermer').onclick = fermer;
+  $('insc-overlay').addEventListener('click', e => { if (e.target.id === 'insc-overlay') fermer(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') fermer(); });
+</script>
 </body>
 </html>
