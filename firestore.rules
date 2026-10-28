@@ -1,13 +1,12 @@
 rules_version = '2';
 // Règles Firestore du projet CROCC (crocc-b499f)
 // À coller dans la console Firebase : Firestore > Règles, puis « Publier ».
-// Remplacer REMPLACER_PAR_UID_FORMATEUR par l'UID du compte formateur
-// (Authentication > Users).
+// UID du compte formateur : Authentication > Users.
 service cloud.firestore {
   match /databases/{database}/documents {
 
     function formateur() {
-      return request.auth != null && request.auth.uid == 'REMPLACER_PAR_UID_FORMATEUR';
+      return request.auth != null && request.auth.uid == 'qmtsJuK0gUPVYUPLWAClDWNSF3H2';
     }
 
     // Calendrier des formations (calendrier-formations.html) : inchangé, ouvert

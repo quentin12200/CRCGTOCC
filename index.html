@@ -598,6 +598,7 @@
     .insc-login-row { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .5rem; }
     .insc-login-row .insc-input { flex: 1 1 180px; max-width: none; }
     .insc-compte { font-size: .74rem; color: var(--texte-muted); margin-top: .4rem; }
+    .insc-btn[hidden] { display: none; }
     .insc-compte button { background: none; border: none; color: var(--accent); text-decoration: underline; cursor: pointer; font: inherit; }
     .insc-vide { color: var(--texte-muted); text-align: center; font-style: italic; }
     .insc-msg { font-size: .78rem; color: var(--accent); min-height: 1.1em; margin-top: .5rem; }
@@ -690,6 +691,18 @@
 <script src="/assets/cgt-ui.js"></script>
 <script>(function(){var t=localStorage.getItem('cgt_theme');if(t==='dark'||t==='light'){document.documentElement.setAttribute('data-theme',t);}})();</script>
 <script>if(localStorage.getItem('cgt_auth')!=='ok'){location.replace('/login.html?from='+encodeURIComponent(location.pathname));}</script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  var b = document.getElementById('btn-deconnexion');
+  if (!b) return;
+  b.addEventListener('click', function () {
+    if (!confirm('Se déconnecter de l\'espace formateur ?')) return;
+    try { localStorage.removeItem('cgt_auth'); } catch (e) {}
+    Promise.resolve(window.cgtDeconnexionFirebase && window.cgtDeconnexionFirebase())
+      .then(function () { location.replace('/login.html'); });
+  });
+});
+</script>
 
 <header>
   <div class="logo-wrap">
@@ -705,6 +718,10 @@
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
     Recherche
   </a>
+  <button type="button" id="btn-deconnexion" title="Se déconnecter de l'espace formateur" style="color:#fff;background:none;cursor:pointer;font-family:'Anton',sans-serif;font-size:.88rem;letter-spacing:.05em;padding:.3rem .75rem;border:1px solid rgba(255,255,255,.35);border-radius:4px;display:flex;align-items:center;gap:.4rem;white-space:nowrap">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+    Déconnexion
+  </button>
   <button id="theme-toggle" aria-label="Basculer thème sombre/clair" onclick="(function(){var html=document.documentElement;var next=html.getAttribute('data-theme')==='dark'?'light':'dark';html.setAttribute('data-theme',next);localStorage.setItem('cgt_theme',next);})()">
     <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
     <svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
@@ -1007,6 +1024,7 @@
           <button type="button" class="insc-btn insc-btn-ghost" id="insc-copier-emails">Copier les emails</button>
           <button type="button" class="insc-btn insc-btn-ghost" id="insc-csv">Exporter CSV</button>
           <button type="button" class="insc-btn insc-btn-danger" id="insc-vider">Vider</button>
+          <button type="button" class="insc-btn insc-btn-ghost" id="insc-deconnexion" hidden>Se déconnecter</button>
         </div>
       </div>
       <form class="insc-login" id="insc-login" hidden>
@@ -1024,7 +1042,7 @@
         </table>
       </div>
       <div class="insc-msg" id="insc-msg" role="status"></div>
-      <div class="insc-compte" id="insc-compte" hidden>Connecté·e : <span id="insc-compte-email"></span> · <button type="button" id="insc-deconnexion">Se déconnecter</button></div>
+      <div class="insc-compte" id="insc-compte" hidden>Connecté·e au compte formateur : <strong id="insc-compte-email"></strong></div>
     </div>
   </div>
   <div class="insc-overlay" id="insc-overlay" hidden>
@@ -1286,7 +1304,7 @@
 
   // Compte formateur Firebase : seul compte autorisé à lire et vider les inscriptions
   onAuthStateChanged(auth, user => {
-    $('insc-compte').hidden = !user;
+    $('insc-compte').hidden = $('insc-deconnexion').hidden = !user;
     $('insc-compte-email').textContent = user ? user.email : '';
     if (user && session) choisirSession($('insc-session').value);
   });
@@ -1299,7 +1317,9 @@
       msg('Connexion refusée : vérifiez l\'email et le mot de passe du compte formateur.');
     }
   });
-  $('insc-deconnexion').onclick = () => signOut(auth).then(() => choisirSession($('insc-session').value));
+  $('insc-deconnexion').onclick = () => signOut(auth).then(() => { msg('Déconnecté·e du compte formateur.'); choisirSession($('insc-session').value); });
+  // Déconnexion de l'espace formateur (bouton de l'en-tête) : ferme aussi la session Firebase
+  window.cgtDeconnexionFirebase = () => signOut(auth).catch(() => {});
 
   function emails() { return [...new Set(inscrits.map(i => i.email).filter(Boolean))]; }
 
