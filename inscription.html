@@ -8,20 +8,20 @@
   <link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import { getDatabase, ref, push, set } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+    import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
+    // Projet Firebase CROCC (Firestore), comme le calendrier des formations
     const FIREBASE_CONFIG = {
-      apiKey: "AIzaSyBtu2Vmipa2CU8Pro0kXvnesqpUxf-7Z8c",
-      authDomain: "cgt-occitanie-quiz.firebaseapp.com",
-      databaseURL: "https://cgt-occitanie-quiz-default-rtdb.europe-west1.firebasedatabase.app",
-      projectId: "cgt-occitanie-quiz",
-      storageBucket: "cgt-occitanie-quiz.firebasestorage.app",
-      messagingSenderId: "420650097260",
-      appId: "1:420650097260:web:50bdd6dfcc4930a9139649"
+      apiKey: "AIzaSyCFPpNMQ5iJldJmRZgPgA5RQ90vr8j4GbA",
+      authDomain: "crocc-b499f.firebaseapp.com",
+      projectId: "crocc-b499f",
+      storageBucket: "crocc-b499f.firebasestorage.app",
+      messagingSenderId: "821380640870",
+      appId: "1:821380640870:web:06ad904523d2452ada3da7"
     };
 
     const app = initializeApp(FIREBASE_CONFIG);
-    const db = getDatabase(app);
+    const db = getFirestore(app);
 
     // ?s=… : identifiant de la session, fourni par le QR code du formateur
     const SESSION = (new URLSearchParams(location.search).get('s') || 'sans-session').replace(/[^\w-]/g, '').slice(0, 60) || 'sans-session';
@@ -42,8 +42,8 @@
       btn.disabled = true;
       btn.textContent = 'Envoi…';
       try {
-        await set(push(ref(db, `sessions/inscriptions/${SESSION}`)), {
-          nom, prenom, email, date: new Date().toISOString()
+        await addDoc(collection(db, 'inscriptions'), {
+          session: SESSION, nom, prenom, email, date: new Date().toISOString()
         });
         document.getElementById('merci-nom').textContent = prenom;
         document.getElementById('form-section').classList.add('hidden');
