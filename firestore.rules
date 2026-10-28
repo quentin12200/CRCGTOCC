@@ -9,16 +9,11 @@ service cloud.firestore {
       return request.auth != null && request.auth.uid == 'qmtsJuK0gUPVYUPLWAClDWNSF3H2';
     }
 
-    // Calendrier des formations (calendrier-formations.html) : inchangé, ouvert
-    match /calendrier/{docId} {
-      allow read, write: if true;
-    }
-
     // Veille juridique : lecture publique ; l'écriture passe par /api/veille-sync
     // (compte de service, non concerné par ces règles)
-    match /veille/{docId} {
+    match /veille/{doc} {
       allow read: if true;
-      allow write: if formateur();
+      allow write: if false;
     }
 
     // Inscriptions des stagiaires (inscription.html) :
@@ -31,7 +26,13 @@ service cloud.firestore {
         && request.resource.data.email is string && request.resource.data.email.size() <= 120
         && request.resource.data.email.matches('^[^@ ]+@[^@ ]+[.][^@ ]+$')
         && request.resource.data.date is string && request.resource.data.date.size() <= 40;
-      allow read, delete: if formateur();
+    }
+
+    // Tout le reste (dont la lecture des inscriptions) : compte formateur uniquement.
+    // N'importe qui peut se créer un compte Firebase avec la clé publique du site :
+    // « request.auth != null » ne suffit donc pas à protéger les données.
+    match /{document=**} {
+      allow read, write: if formateur();
     }
   }
 }
