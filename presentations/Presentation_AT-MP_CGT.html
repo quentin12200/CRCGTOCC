@@ -1038,12 +1038,14 @@ function runCounters(sl){
     if(el.dataset.animated==="1")return;
     el.dataset.animated="1";
     const v=+el.dataset.v, p=el.dataset.p||"", suf=el.dataset.s||"";
-    const dur=1200, t0=performance.now();
+    const dur=1200; let t0=null;
     function step(t){
-      const elapsed=t-t0;
-      let k=Math.min(1,Math.sqrt(elapsed/dur));
-      const val=Math.round(v*k);
-      el.textContent=p+val.toLocaleString("fr-FR")+suf;
+      // Le temps de départ est pris sur le premier horodatage de requestAnimationFrame :
+      // comparé à performance.now(), il peut être antérieur, ce qui donnait une racine
+      // carrée négative (NaN) et figeait l'affichage sur « NaN ».
+      if(t0===null)t0=t;
+      const k=Math.min(1,Math.sqrt(Math.max(0,t-t0)/dur));
+      el.textContent=p+Math.round(v*k).toLocaleString("fr-FR")+suf;
       if(k<1)requestAnimationFrame(step);
     }
     requestAnimationFrame(step);
