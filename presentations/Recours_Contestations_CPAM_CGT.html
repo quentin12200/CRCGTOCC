@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>CGT · Recours & contestations face à la CPAM</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;600;700;800&family=Spectral:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --red:#E2001A; --red-d:#A60012; --yellow:#FFD200; --ink:#141414;
+  --paper:#FBFAF6; --card:#F1EFE8; --line:#E4E0D4; --muted:#6C6A63; --white:#fff;
+  --disp:'Anton', 'Arial Narrow', Impact, sans-serif;
+  --ui:'Archivo','Helvetica Neue',Arial,sans-serif;
+  --body:'Spectral', Georgia, 'Times New Roman', serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;overflow:hidden;background:#0c0c0c;color:var(--ink);font-family:var(--body)}
+body{-webkit-font-smoothing:antialiased}
+#deck{position:fixed;top:0;right:0;bottom:0;left:0}
+.slide{position:absolute;top:0;right:0;bottom:0;left:0;display:flex;flex-direction:column;justify-content:center;
+  padding:3.5vh 7vw;opacity:0;visibility:hidden;pointer-events:none;overflow:hidden;
+  transform:translateY(14px) scale(.995);transition:opacity .45s ease, transform .45s ease;
+  background:var(--paper);
+  background-image:radial-gradient(rgba(20,20,20,.035) 1px, transparent 1px);background-size:22px 22px;}
+.slide.active{opacity:1;visibility:visible;pointer-events:auto;transform:none;z-index:2}
+.slide::before{content:"";position:absolute;left:0;top:0;bottom:0;width:14px;background:var(--red)}
+.slide.dark::before{background:var(--yellow)}
+.kicker{font-family:var(--ui);font-weight:800;letter-spacing:.22em;text-transform:uppercase;
+  font-size:clamp(11px,1.25vw,18px);color:var(--red);margin-bottom:1.4vh;display:flex;align-items:center;gap:.8em}
+.kicker .dot{width:.6em;height:.6em;background:var(--yellow);display:inline-block;transform:rotate(45deg)}
+h1,h2{font-family:var(--disp);font-weight:400;line-height:.98;letter-spacing:.01em;text-transform:uppercase}
+.title{font-size:clamp(34px,6.2vw,104px);color:var(--ink)}
+.title .em{color:var(--red)}
+.lede{font-size:clamp(15px,1.9vw,26px);max-width:64ch;margin-top:1.6vh;color:#2b2b2b}
+.foot{font-family:var(--ui);font-weight:700;color:var(--red);margin-top:auto;font-size:clamp(14px,1.6vw,22px);
+  text-transform:uppercase;letter-spacing:.12em}
+.slide.active .reveal{animation:rise .5s cubic-bezier(.22,.61,.36,1) both}
+.slide.active .reveal:nth-child(2){animation-delay:.06s}
+.slide.active .reveal:nth-child(3){animation-delay:.12s}
+.slide.active .reveal:nth-child(4){animation-delay:.18s}
+.slide.active .reveal:nth-child(5){animation-delay:.24s}
+.slide.active .reveal:nth-child(6){animation-delay:.30s}
+@keyframes rise{from{opacity:0;transform:translateY(28px) scale(.98)}to{opacity:1;transform:none}}
+.s-title .title{font-size:clamp(40px,7.4vw,128px)}
+.s-title .accent{height:14px;width:min(42vw,520px);background:var(--yellow);margin:3vh 0}
+.slide.s-divider{background:var(--ink);color:var(--white);
+  background-image:radial-gradient(rgba(255,255,255,.05) 1px,transparent 1px);background-size:24px 24px}
+.s-divider .kicker{color:var(--yellow)}
+.s-divider .title{color:var(--yellow);font-size:clamp(40px,8vw,132px)}
+.s-divider .lede{color:#e8e8e8}
+.s-divider .barline{height:10px;width:min(36vw,440px);background:var(--red);margin-top:3vh}
+.bullets{list-style:none;margin-top:1.2vh;display:flex;flex-direction:column;gap:.85vh;max-width:76ch}
+.bullets li{position:relative;padding-left:1.3em;font-size:clamp(14px,1.6vw,22px);line-height:1.45}
+.bullets li::before{content:"";position:absolute;left:0;top:.52em;width:.55em;height:.55em;background:var(--red);transform:rotate(45deg)}
+/* Densité : 5–6 bullets */
+.bullets.md{gap:.6vh;max-width:80ch}
+.bullets.md li{font-size:clamp(13px,1.42vw,20px);line-height:1.4}
+/* Densité : 7+ bullets → 2 colonnes */
+.bullets.dense{display:grid;grid-template-columns:1fr 1fr;gap:.65vh 2.5vw;max-width:100ch;margin-top:1vh;align-items:start}
+.bullets.dense li{font-size:clamp(12px,1.28vw,18px);line-height:1.35}
+.note-strip{margin-top:1.2vh;background:var(--ink);color:var(--yellow);font-family:var(--ui);font-weight:600;
+  padding:.8vh 1.4vw;font-size:clamp(12px,1.3vw,17px);max-width:80ch;border-left:8px solid var(--yellow);line-height:1.45}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1.6vw;margin-top:3vh}
+.stat{background:var(--white);border:1px solid var(--line);border-top:7px solid var(--red);
+  padding:3vh 1.4vw;display:flex;flex-direction:column;justify-content:center;box-shadow:0 18px 40px -30px rgba(0,0,0,.4)}
+.stat .num{font-family:var(--disp);color:var(--red);font-size:clamp(34px,5.6vw,92px);line-height:.9}
+.stat .lab{font-family:var(--body);color:#2b2b2b;font-size:clamp(12px,1.3vw,19px);margin-top:1.4vh;line-height:1.25}
+.source{font-family:var(--ui);color:var(--muted);font-size:clamp(11px,1.1vw,16px);margin-top:2.4vh}
+.steps{display:grid;gap:1.2vw;margin-top:2vh}
+.steps.n3{grid-template-columns:repeat(3,1fr)} .steps.n4{grid-template-columns:repeat(4,1fr)}
+.steps.n5{grid-template-columns:repeat(5,1fr)}
+.steps.n5 .step{padding:1.4vh .9vw}
+.steps.n5 .step .big{font-size:clamp(22px,3vw,50px)}
+.steps.n5 .step .nm{font-size:clamp(11px,1.2vw,17px)}
+.steps.n5 .step .ds{font-size:clamp(10px,1.1vw,15px)}
+.step{background:var(--card);border:1px solid var(--line);padding:2vh 1.2vw;position:relative;
+  transition:transform .25s ease, box-shadow .25s ease}
+.step:hover{transform:translateY(-6px);box-shadow:0 22px 44px -28px rgba(0,0,0,.45)}
+.step .big{font-family:var(--disp);color:var(--red);font-size:clamp(26px,3.6vw,60px);line-height:.9}
+.step .nm{font-family:var(--ui);font-weight:800;text-transform:uppercase;letter-spacing:.04em;
+  font-size:clamp(13px,1.4vw,21px);margin-top:1.2vh}
+.step .ds{font-size:clamp(12px,1.25vw,19px);color:#333;margin-top:.7vh;line-height:1.3}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:1.6vw;margin-top:1.6vh}
+.tc{padding:1.8vh 1.6vw;border:1px solid var(--line);background:var(--card)}
+.tc.red{background:var(--red);color:#fff;border-color:var(--red)}
+.tc.black{background:var(--ink);color:#fff;border-color:var(--ink)}
+.tc h3{font-family:var(--ui);font-weight:800;text-transform:uppercase;letter-spacing:.03em;
+  font-size:clamp(17px,2.1vw,32px)}
+.tc.red h3,.tc.black h3{color:var(--yellow)}
+.tc.plain h3{color:var(--red)}
+.tc p{font-size:clamp(13px,1.4vw,20px);margin-top:1.2vh;line-height:1.42}
+.callout{margin-top:2vh;padding:3.5vh 2.5vw;display:flex;flex-direction:column;gap:1.4vh;max-width:82ch}
+.callout.black{background:var(--ink)} .callout.red{background:var(--red)}
+.callout .big{font-family:var(--disp);text-transform:uppercase;line-height:1;
+  font-size:clamp(24px,3.6vw,58px)}
+.callout.black .big{color:var(--yellow)} .callout.red .big{color:#fff}
+.callout .sub{font-size:clamp(15px,1.8vw,26px)} .callout.black .sub{color:#fff} .callout.red .sub{color:#fff}
+.defbox{margin-top:1.4vh;background:var(--card);border-left:12px solid var(--red);padding:1.8vh 2.2vw;max-width:84ch}
+.defbox .term{font-family:var(--ui);font-weight:800;color:var(--red);text-transform:uppercase;letter-spacing:.03em;
+  font-size:clamp(16px,1.9vw,28px)}
+.defbox .txt{font-size:clamp(17px,2.1vw,30px);margin-top:1.4vh;line-height:1.3}
+.defextra{margin-top:2.2vh;background:var(--ink);color:var(--yellow);font-family:var(--ui);font-weight:600;
+  padding:1.4vh 1.6vw;border-left:8px solid var(--yellow);font-size:clamp(14px,1.6vw,23px);max-width:82ch}
+.quiz-q{font-size:clamp(18px,2.4vw,36px);font-weight:600;margin-top:2vh;max-width:60ch}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:1.2vw;margin-top:3vh;max-width:90ch}
+.opt{font-family:var(--ui);text-align:left;background:var(--white);border:2px solid var(--line);
+  padding:1.8vh 1.4vw;font-size:clamp(14px,1.6vw,23px);cursor:pointer;transition:.2s;display:flex;gap:.7em;align-items:center}
+.opt:hover{border-color:var(--ink);transform:translateY(-3px)}
+.opt .k{font-weight:800;color:var(--red)}
+.opt.good{background:var(--yellow);border-color:var(--ink);color:var(--ink)}
+.opt.good .k{color:var(--ink)}
+.opt.bad{opacity:.45;border-style:dashed}
+.quiz-a{margin-top:2.4vh;font-family:var(--ui);font-weight:700;color:var(--red);
+  font-size:clamp(14px,1.7vw,24px);opacity:0;transition:.3s}
+.quiz-a.show{opacity:1}
+.case-sc{background:var(--ink);color:#eee;border-left:5px solid var(--yellow);padding:1.4vh 1.8vw;
+  font-size:clamp(13px,1.4vw,20px);margin-top:.8vh;max-width:96ch;line-height:1.45;border-radius:0 6px 6px 0;
+  position:relative}
+.case-sc::before{content:"Scénario";position:absolute;top:-1px;left:-1px;background:var(--yellow);color:var(--ink);
+  font-family:var(--ui);font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;
+  padding:2px 8px;line-height:1.6}
+.case-ctx{font-size:clamp(11px,1.05vw,14px);color:#6a8fa8;margin-top:.6vh;padding:.4vh 1vw;
+  border-left:2px solid #334;max-width:96ch;line-height:1.5;font-style:italic;background:rgba(100,160,220,.05);border-radius:0 3px 3px 0}
+.case-ctx::before{content:"Guide d'animation · ";font-weight:700;color:#4a7090;font-style:normal}
+.case-q{margin-top:1.2vh;display:flex;flex-direction:column;gap:.7vh}
+.case-q li{font-size:clamp(12px,1.35vw,19px) !important;list-style:none;padding:.5vh .8vw .5vh 2.8vw;
+  background:rgba(0,0,0,.04);border:1px solid rgba(0,0,0,.08);border-radius:5px;
+  position:relative;line-height:1.3;color:var(--ink)}
+.case-q li::before{content:none}
+.case-q li .qi{position:absolute;left:.6vw;top:.45vh;font-family:var(--disp);color:var(--yellow);font-size:clamp(14px,1.5vw,21px);line-height:1}
+.timer{display:flex;align-items:center;gap:1.2vw;margin-top:auto;padding-top:2.4vh}
+.tmr-display{font-family:var(--disp);font-size:clamp(34px,5vw,80px);color:var(--ink);line-height:.9;min-width:3.4ch}
+.tmr-display.run{color:var(--red)} .tmr-display.done{color:var(--red);animation:flash 1s steps(2) infinite}
+@keyframes flash{50%{opacity:.25}}
+.tbtn{font-family:var(--ui);font-weight:700;text-transform:uppercase;letter-spacing:.05em;
+  border:2px solid var(--ink);background:var(--ink);color:#fff;padding:1.1vh 1.4vw;cursor:pointer;font-size:clamp(12px,1.2vw,17px)}
+.tbtn.ghost{background:transparent;color:var(--ink)}
+.tbtn:hover{background:var(--red);border-color:var(--red);color:#fff}
+.slide.s-closing{background:var(--ink);color:#fff;justify-content:center}
+.s-closing .title{color:var(--yellow);font-size:clamp(54px,11vw,180px)}
+.s-closing .sub{font-size:clamp(16px,2vw,30px);color:#eee;margin-top:2vh}
+.s-closing .contacts{font-family:var(--ui);color:#bbb;margin-top:3vh;font-size:clamp(13px,1.4vw,20px);line-height:1.6}
+.s-closing::before{background:var(--red)}
+.svgwrap{margin-top:2.2vh;flex:1 1 auto;display:flex;align-items:center;justify-content:center;min-height:0}
+.svgwrap svg{width:100%;max-width:1100px;max-height:72vh;height:auto;display:block}
+.svgwrap text{font-family:var(--ui)}
+#ink{position:fixed;top:0;right:0;bottom:0;left:0;z-index:55;pointer-events:none;touch-action:none}
+#ink.on{pointer-events:auto;cursor:crosshair}
+#inktools{position:fixed;left:50%;transform:translateX(-50%);bottom:16px;z-index:58;display:none;gap:8px;
+  background:rgba(18,18,18,.94);padding:9px;border-radius:14px;box-shadow:0 14px 40px -16px rgba(0,0,0,.6)}
+#inktools.on{display:flex}
+.it{width:44px;height:44px;border-radius:10px;border:2px solid transparent;background:#2a2a2a;color:#fff;cursor:pointer;
+  display:grid;place-items:center;font-size:18px;font-family:var(--ui);font-weight:800;transition:.15s}
+.it:hover{background:#3a3a3a}
+.it.act{border-color:#fff;background:#000}
+.it.pen{color:var(--red)} .it.hl{color:var(--yellow)}
+#bar{position:fixed;top:0;left:0;height:6px;background:rgba(0,0,0,.12);width:100%;z-index:50}
+#bar i{display:block;height:100%;background:var(--yellow);width:0;transition:width .35s ease}
+.hud{position:fixed;z-index:50;font-family:var(--ui);font-weight:700}
+#count{left:24px;bottom:18px;color:var(--muted);font-size:14px;letter-spacing:.1em}
+#count b{color:var(--red)}
+#ctrl{right:18px;bottom:14px;display:flex;gap:8px}
+.cb{width:42px;height:42px;border:1.5px solid rgba(0,0,0,.18);background:rgba(255,255,255,.7);backdrop-filter:blur(6px);
+  border-radius:10px;cursor:pointer;display:grid;place-items:center;color:var(--ink);transition:.2s;font-size:18px}
+.cb:hover{background:var(--red);color:#fff;border-color:var(--red)}
+#brand{position:fixed;right:26px;top:16px;z-index:50;font-family:var(--disp);font-size:24px;color:var(--red);letter-spacing:.02em;
+  background:var(--yellow);padding:2px 10px 0;line-height:1.25}
+/* notes */
+#notes{position:fixed;left:0;right:0;bottom:0;z-index:60;background:rgba(10,10,10,.97);color:#f4f4f4;
+  transform:translateY(102%);transition:transform .35s cubic-bezier(.4,0,.2,1), height .25s ease;
+  height:50vh;display:flex;flex-direction:column;
+  border-top:3px solid var(--yellow);font-family:var(--ui);box-shadow:0 -8px 40px rgba(0,0,0,.6)}
+#notes.show{transform:none}
+#notes.mini{height:54px}
+#notes.mini #notes-body{display:none}
+#notes.mini #notes-min{transform:rotate(180deg)}
+
+/* handle de drag pour resize */
+#notes-handle{height:18px;cursor:ns-resize;display:flex;align-items:center;justify-content:center;flex-shrink:0;user-select:none}
+#notes-handle::before{content:"";width:36px;height:4px;border-radius:2px;background:rgba(255,255,255,.18)}
+#notes-handle:hover::before{background:var(--yellow)}
+
+#notes-head{display:flex;align-items:center;gap:10px;padding:0 20px 10px;flex-shrink:0;border-bottom:1px solid rgba(255,255,255,.07)}
+#notes-head .n-label{color:var(--yellow);font-size:11px;letter-spacing:.2em;text-transform:uppercase;font-weight:800;flex:1}
+#notes-head .n-slide{color:#666;font-size:11px;font-weight:600;letter-spacing:.05em;background:rgba(255,255,255,.06);padding:2px 8px;border-radius:3px}
+.notes-btn{background:none;border:1.5px solid #3a3a3a;color:#aaa;width:28px;height:28px;border-radius:6px;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.15s;flex-shrink:0;padding:0;line-height:1}
+.notes-btn:hover{background:var(--yellow);border-color:var(--yellow);color:#000}
+#notes-close:hover{background:var(--red)!important;border-color:var(--red)!important;color:#fff!important}
+
+#notes-body{overflow-y:auto;padding:16px 22px 20px;flex:1;scrollbar-width:thin;scrollbar-color:#333 transparent}
+#notes .nbody{font-family:var(--body,'Georgia',serif);font-size:clamp(14px,1.35vw,18px);line-height:1.75;max-width:110ch;color:#ccc}
+#notes .nbody b{color:#fff;font-weight:700}
+#notes .nbody br+b,#notes .nbody>b:first-child{display:inline-block;margin-top:1em;color:var(--yellow);font-size:.78em;letter-spacing:.08em;text-transform:uppercase;border-bottom:1px solid rgba(255,210,0,.2);padding-bottom:.2em;width:100%}
+#notes .nbody .cgt{color:#FFD200;font-weight:600;display:block;margin-top:.8em;padding:.6em 1em;background:rgba(255,210,0,.06);border-left:3px solid var(--yellow);border-radius:0 4px 4px 0;font-family:var(--ui);font-size:.92em;line-height:1.5}
+#notes .nbody .ref{color:#7aabff;font-style:italic;font-size:.84em;display:inline-block;margin-top:.4em}
+#ov{position:fixed;top:0;right:0;bottom:0;left:0;z-index:70;background:rgba(12,12,12,.97);overflow:auto;padding:70px 5vw 60px;
+  display:none;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:18px;align-content:start}
+#ov.show{display:grid}
+.ovc{background:#1b1b1b;border:1px solid #2c2c2c;border-left:5px solid var(--red);padding:16px 16px 18px;cursor:pointer;
+  color:#eaeaea;transition:.18s;min-height:120px;display:flex;flex-direction:column;gap:6px}
+.ovc:hover{background:#262626;transform:translateY(-4px);border-left-color:var(--yellow)}
+.ovc.div{border-left-color:var(--yellow);background:#000}
+.ovc .n{font-family:var(--ui);font-weight:800;color:var(--red);font-size:12px;letter-spacing:.1em}
+.ovc .k{font-family:var(--ui);font-weight:700;color:var(--yellow);font-size:11px;letter-spacing:.12em;text-transform:uppercase}
+.ovc .t{font-family:var(--disp);font-size:19px;line-height:1.02;text-transform:uppercase;color:#fff}
+#ovhead{position:fixed;top:18px;left:5vw;z-index:71;color:#fff;font-family:var(--ui);font-weight:800;letter-spacing:.18em;
+  text-transform:uppercase;font-size:13px;display:none}
+#ov.show ~ #ovhead{display:block}
+#help{position:fixed;top:0;right:0;bottom:0;left:0;z-index:80;background:rgba(10,10,10,.9);display:none;place-items:center}
+#help.show{display:grid}
+.helpcard{background:#fff;max-width:520px;width:90%;padding:34px 38px;border-top:10px solid var(--red)}
+.helpcard h3{font-family:var(--disp);font-size:30px;color:var(--red);text-transform:uppercase;margin-bottom:18px}
+.helpcard dl{display:grid;grid-template-columns:auto 1fr;gap:10px 18px;font-family:var(--ui);font-size:15px}
+.helpcard dt{font-weight:800;color:var(--ink)}
+.helpcard kbd{background:var(--ink);color:#fff;padding:2px 9px;border-radius:5px;font-family:var(--ui);font-size:13px}
+.wordmark{font-family:var(--disp);background:var(--yellow);color:var(--red);padding:2px 10px 0;line-height:1.25;display:inline-block}
+.logo-img{display:block;height:100%}
+#brand.haslogo{background:transparent;padding:0;height:46px}
+.lockup{display:flex;align-items:center;gap:16px;margin-bottom:2.4vh}
+.lockup .wordmark{font-size:clamp(26px,3vw,40px)}
+.lockup .logo-img{height:clamp(46px,6vw,84px)}
+.s-title .lockup .logo-img{height:clamp(110px,15vh,190px)}
+.s-closing .lockup .logo-img{height:clamp(90px,12vh,150px)}
+#brand.haslogo{height:clamp(74px,9.5vh,112px)}
+@media print{
+  @page{size:landscape;margin:0}
+  html,body{height:auto!important;overflow:visible!important;background:#fff!important}
+  #bar,#ctrl,#brand,#count,#notes,#ov,#ovhead,#help,#spotlight,#inktools,#ink,#btn-print-float{display:none!important}
+  #deck{position:static!important}
+  .slide{position:relative!important;top:auto!important;left:auto!important;right:auto!important;bottom:auto!important;
+    opacity:1!important;visibility:visible!important;transform:none!important;height:100vh!important;
+    page-break-after:always;break-after:page}
+  .reveal{animation:none!important;opacity:1!important;transform:none!important}
+  .quiz-a{opacity:1!important}
+}
+@media (max-width:760px){
+  .stats{grid-template-columns:repeat(2,1fr)} .two{grid-template-columns:1fr}
+  .steps.n3,.steps.n4{grid-template-columns:1fr 1fr} .opts{grid-template-columns:1fr}
+  .slide{padding:8vh 8vw}
+}
+/* ===== AMÉLIORATIONS V2 ===== */
+/* 1. Timer circulaire */
+.timer-ring{width:clamp(80px,10vw,120px);height:clamp(80px,10vw,120px);flex-shrink:0}
+.timer-arc{transition:stroke-dashoffset 1s linear}
+/* 3. Transitions directionnelles */
+@keyframes slideOutLeft{to{opacity:0;transform:translateX(-60px) scale(.97)}}
+@keyframes slideInRight{from{opacity:0;transform:translateX(60px) scale(.97)}to{opacity:1;transform:none}}
+@keyframes slideOutRight{to{opacity:0;transform:translateX(60px) scale(.97)}}
+@keyframes slideInLeft{from{opacity:0;transform:translateX(-60px) scale(.97)}to{opacity:1;transform:none}}
+.slide.leave-left{animation:slideOutLeft .38s cubic-bezier(.4,0,.2,1) forwards;z-index:3}
+.slide.enter-right{animation:slideInRight .38s cubic-bezier(.4,0,.2,1) forwards}
+.slide.leave-right{animation:slideOutRight .38s cubic-bezier(.4,0,.2,1) forwards;z-index:3}
+.slide.enter-left{animation:slideInLeft .38s cubic-bezier(.4,0,.2,1) forwards}
+/* 4. Divider animé */
+.slide.s-divider{background:linear-gradient(135deg,#0a0a0a 0%,#1a0a0a 50%,#0a0a0a 100%);background-size:400% 400%;animation:divPulse 6s ease infinite}
+@keyframes divPulse{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+.s-divider .title::after{content:'';display:block;height:3px;background:var(--red,#E2001A);width:0;margin-top:.5rem;animation:lineGrow 1s .3s ease forwards}
+.slide.active.s-divider .title::after{animation:lineGrow 1s .3s ease forwards}
+@keyframes lineGrow{to{width:80px}}
+/* 5. Spotlight laser */
+#spotlight{position:fixed;inset:0;pointer-events:none;z-index:500;display:none}
+#spotlight.on{display:block;background:radial-gradient(circle 90px at var(--mx,50%) var(--my,50%),transparent 0%,rgba(0,0,0,.75) 100%)}
+/* 6. Barre numérotée */
+#bar{overflow:visible}
+#bar-num{position:absolute;right:8px;top:8px;background:var(--yellow);color:var(--ink);font-family:var(--ui);font-weight:800;font-size:11px;padding:2px 8px;border-radius:10px;cursor:pointer;z-index:51;white-space:nowrap;letter-spacing:.04em;box-shadow:0 1px 4px rgba(0,0,0,.25)}
+/* 8. Print amélioré */
+@media print{
+  #spotlight,#bar-num{display:none!important}
+}
+
+/* ===== V3 : schémas animés, stagger étendu ===== */
+.slide.active .reveal:nth-child(7){animation-delay:.36s}
+.slide.active .reveal:nth-child(8){animation-delay:.42s}
+.slide.active .reveal:nth-child(9){animation-delay:.48s}
+.slide.active .reveal:nth-child(10){animation-delay:.54s}
+.svgcap{font-family:var(--ui);color:var(--muted);font-size:clamp(11px,1.1vw,16px);margin-top:1.2vh;max-width:90ch}
+.s-svg .svgwrap{margin-top:1.6vh}
+.s-svg .svgwrap svg{max-height:66vh}
+.svgwrap .t-title{font-family:var(--disp);text-transform:uppercase;letter-spacing:.01em}
+.svgwrap .t-ui{font-family:var(--ui);font-weight:700}
+.svgwrap .t-body{font-family:var(--body)}
+/* tracés qui se dessinent (pathLength="1") */
+.slide .a-draw{stroke-dasharray:1;stroke-dashoffset:1}
+.slide.active .a-draw{animation:drawLine .9s cubic-bezier(.4,0,.2,1) var(--d,0s) forwards}
+@keyframes drawLine{to{stroke-dashoffset:0}}
+/* éléments qui apparaissent */
+.slide .a-pop{opacity:0;transform-box:fill-box;transform-origin:center}
+.slide.active .a-pop{animation:popIn .55s cubic-bezier(.22,.61,.36,1) var(--d,0s) forwards}
+@keyframes popIn{from{opacity:0;transform:scale(.6)}to{opacity:1;transform:none}}
+.slide .a-fade{opacity:0}
+.slide.active .a-fade{animation:fadeIn .6s ease var(--d,0s) forwards}
+@keyframes fadeIn{to{opacity:1}}
+/* barres qui grandissent */
+.slide .a-growx{transform-box:fill-box;transform-origin:left center;transform:scaleX(0)}
+.slide.active .a-growx{animation:growX .9s cubic-bezier(.22,.61,.36,1) var(--d,0s) forwards}
+@keyframes growX{to{transform:scaleX(1)}}
+.slide .a-growy{transform-box:fill-box;transform-origin:center bottom;transform:scaleY(0)}
+.slide.active .a-growy{animation:growY .9s cubic-bezier(.22,.61,.36,1) var(--d,0s) forwards}
+@keyframes growY{to{transform:scaleY(1)}}
+/* pulsation d'un point d'attention */
+.slide.active .a-pulse{animation:pulseRing 1.8s ease-out calc(var(--d,0s) + .6s) infinite;transform-box:fill-box;transform-origin:center}
+@keyframes pulseRing{0%{opacity:.75;transform:scale(1)}100%{opacity:0;transform:scale(1.9)}}
+@media print{
+  .a-draw{stroke-dashoffset:0!important;animation:none!important}
+  .a-pop,.a-fade{opacity:1!important;animation:none!important;transform:none!important}
+  .a-growx,.a-growy{transform:none!important;animation:none!important}
+  .a-pulse{display:none!important}
+}
+</style>
+</head>
+<body>
+<script>if(localStorage.getItem('cgt_auth')!=='ok'&&localStorage.getItem('cgt_stagiaire_auth')!=='ok'){location.replace('/login.html?from='+encodeURIComponent(location.pathname));}</script>
+<div id="bar"><i></i><span id="bar-num" title="Aller à l'aperçu (O)">1 / 40</span></div>
+<div id="deck"></div>
+<div id="brand">CGT</div>
+<div class="hud" id="count"><b>01</b> / 40</div>
+<div class="hud" id="ctrl">
+  <button class="cb" id="bPrev" title="Précédent (←)">&#8249;</button>
+  <button class="cb" id="bNext" title="Suivant (→)">&#8250;</button>
+  <button class="cb" id="bOv" title="Vue d'ensemble (O)">&#9638;</button>
+  <button class="cb" id="bNotes" title="Notes formateur (N)">&#9998;</button>
+  <button class="cb" id="bFull" title="Plein écran (F)">&#9974;</button>
+  <button class="cb" id="bInk" title="Stylo (A)">&#9998;</button>
+  <button class="cb" id="bPres" title="Mode présentateur (P)">&#10697;</button>
+  <button class="cb" id="bHelp" title="Aide (?)">?</button>
+  <button class="cb" id="bPrint" title="Exporter PDF (Impr)" onclick="window.print()">&#11015;</button>
+</div>
+<div id="notes">
+  <div id="notes-handle" title="Faire glisser pour redimensionner"></div>
+  <div id="notes-head">
+    <span class="n-label">✎ Notes formateur</span>
+    <span class="n-slide" id="notes-slide-num"></span>
+    <button class="notes-btn" id="notes-min" onclick="miniNotes()" title="Réduire / agrandir">−</button>
+    <button class="notes-btn" id="notes-close" onclick="toggleNotes()" title="Fermer (N)">✕</button>
+  </div>
+  <div id="notes-body"><div class="nbody"></div></div>
+</div>
+<canvas id="ink"></canvas>
+<div id="inktools">
+  <button class="it pen act" data-tool="pen" title="Stylo rouge">&#9998;</button>
+  <button class="it hl" data-tool="hl" title="Surligneur jaune">&#9646;</button>
+  <button class="it" data-tool="erase" title="Gomme">&#8867;</button>
+  <button class="it" id="inkClearBtn" title="Tout effacer">&#10005;</button>
+  <button class="it" id="inkCloseBtn" title="Fermer (A)">&#9167;</button>
+</div>
+<div id="ovhead">Vue d'ensemble — cliquez une diapo</div>
+<div id="ov"></div>
+<div id="help"><div class="helpcard">
+  <h3>Raccourcis</h3>
+  <dl>
+    <dt><kbd>&#8594;</kbd> <kbd>Espace</kbd></dt><dd>Diapo suivante</dd>
+    <dt><kbd>&#8592;</kbd></dt><dd>Diapo précédente</dd>
+    <dt><kbd>O</kbd></dt><dd>Vue d'ensemble</dd>
+    <dt><kbd>P</kbd></dt><dd>Mode présentateur</dd>
+    <dt><kbd>A</kbd></dt><dd>Stylo / surligneur</dd>
+    <dt><kbd>N</kbd></dt><dd>Notes formateur</dd>
+    <dt><kbd>F</kbd></dt><dd>Plein écran</dd>
+    <dt><kbd>Échap</kbd></dt><dd>Fermer un panneau</dd>
+  </dl>
+</div></div>
+<script>
+const CONFIG = { logo: "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAQDAwQDAwQEBAQFBQQFBwsHBwYGBw4KCggLEA4RERAOEA8SFBoWEhMYEw8QFh8XGBsbHR0dERYgIh8cIhocHRz/2wBDAQUFBQcGBw0HBw0cEhASHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBz/wAARCAIwAXoDASIAAhEBAxEB/8QAHQABAAICAwEBAAAAAAAAAAAAAAcIBgkBBAUDAv/EAF0QAAEDAwIDBAQGDQcHCQcFAAEAAgMEBREGBxIhMQgTQVFhcYGRFCIyN6GzFTZCUmJydHWUsbLB0RgjM1WCkqIWJDRDc8PSFzVEU1RWY5XjJSZGhMLh8UVkg5Pw/8QAHAEBAAIDAQEBAAAAAAAAAAAAAAUGAwQHAgEI/8QARxEAAQMCAgYGBgcGBgICAwAAAQACAwQRBSEGEjFBUWETcYGRobEHFCIywdEVMzRCUuHwFiM1YnKyNkNUgpLxg6IkwhdT4v/aAAwDAQACEQMRAD8AjdERU1fqJERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERZ3ttt/Lq66CSsimjs8A45ZAC3vT4MafT4kdAFr1dXFSQunmNmhYKmpjpojLKbALBo43zSNjjY58juTWtGSfUAvZfo3UMcBnfY7i2EDiLzTuwB59FaPTukLNpaHgtlEyJ5OXTO+NK71vPP2L3PaVRqnTmz7U8V28zn3DZ4qpz6VnWtDHlzOfhs8VSYgtJBBBHIg+C4Up716Tda70L3EWfBbi7hc0AAtlA58gOhAznrnKixXXD61ldTsqI9jh3HeOxWmiqmVcDZmb/A7wiIi3FtIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiKUdqNuBqGcXe6w5tULv5qMn+nkBHUfeD6fetOvroaGAzzHIeJ4BatZVx0kRmlOQ8eQTbLa92oZPsleYZ4bbGWmKJzeH4V58+vD05jqp/hhpLRQMhjbFTUNLHhrc8LI2D19Auter9btOUElXcKmOCGNuQMjidjwa3qfDkFXbXW6Vw1ex1FCz4Haw4nu2uPHMPDjP7hyXOhFX6S1HSO9mIHsHVxP6yCpAjrMdm1zkwdw6uJ/WQWe603rit076LT7Iat7Wlr6t+SxjvDhH3Xr6LN9vLxcb/pOhuN04TVTl54msDA5gcQ04HoCrDpyw1WprzS2yjA76c83Hoxo5ucfQArfUNHFbqKnpIGhsFPG2NgHgAMBetJaKiw2njpYG+2TcnfbZ4nyXvHKSloYWU8Q9s5k77fn8FHu+L3N0RwgfFfWRBx8vlH9arept3v1hBNDHpymDJXB7Z55WvB7stJwzHgfE+xQkrVonBJDhzekFrkkdRsrBo5E+OiGuLXJPZkiIisqnkRERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERERFl2hNB1etq9zGmWnt8QPe1YZxBrscmjJGSVhqKmKmiM0xs0bSsM88dPGZZTYBeptrtxPqurjr62MtskT/AI5JwZyOrG45j0n2KfLvdrXoiwfCJmdzQUjWxRwwtBPXAa0ZXTvl6t23ml4nOY4RU8Ygp444zh7w34oOOQyRnJ9KrNqXVFy1ZcBW3OVr5Q0Maxg4WMHkAqFHT1OktR08p1YGnIcernxO5U+OGfHZ+lkOrE05flz4ncu3rfWFVrO8vrJsspo8spoDj+aZ/E9SVjYGSAOp5Ipj2l21fVTU+oLtE5tPGeOlgcP6Qj7pwI+T4jzVvqqqmwik1jk1osBx5frrVlqJ4MMpr7AMgOPL596ynaPQJ09Q/ZevjAudYwd20gh0ERHySD0cT19gWban1DS6Ys1RcKmaKMsaRE2QnEkmDwt5c+ZC9dzg0FziABzJJ5BVl3R11Nqm7y0ULmfYmilIh4QD3jhyL8+nngdMLnFBTT6QYiZZvdGZ5DcB+uJVIo4JcZrS+XZtPIcB+uawarq5q+qnqqh5fPO90kjj4uJyV8URdaAAFgujgACwRERfV9REREREREREREREREREREREREREREREREREREREREREREREREREREREREREREREREREREREXLWl7g1oJJ5AAZJRF3rNaKq+3Knt9FE+WedwADRnA8XH0Ac1a20WW36I06+no2EU9JG+aR5PxpHAZc4nzOPZyWObUaMp9O2OGvcyU3O4RtdL3zOAxDwjAPTnzz4qN91txPs7VfY21VUot0WWTfFLO8eCQcHOXNI8CPBc/wAQml0grRRU+UTDmeJ/VwO9Uutlkxmq9VgyjZtPx+SxvX+sZ9WXuokiqp32kOa6ngecNZ8QA8vPOViS/TI3yvDGNc97ujWjJPsUz7f7OieKgvN7e9vxhM2gdH8pvgH56ZPPHkrVUVdHg1K0ONmgWA3n9byrDNUU2F04DsgMgN5/W8rx9t9q5b+6K53qEtsskRfE1svC+Y5wOnMN6+vkrDsYI2NY0Ya0BoA8AOi4jjjgibHGxkcbBhrWgBrQPADwCiHcHeFtvk+x+nJYJ5S1wlq/lCM9AGeBcOuTkdFzeaWu0jq7MGQ2Dc0c+fmqRLJV41UWaOobgOf6zXS3a3Ja5v2EslaCDxsrZY+YxzaYskeskhQmuXOL3Fzjkk5J9K4XTsMw2HDoBBEOs7yeavlBQx0UIij7TxRERSC3kREREREREREREREREREREREREREREREREREREREREREREREREREREREREREREREREREREREREUtbOaDdc6qLUdTK+KCjmBp2sxmR7eucj5Iz4dfYsJ0LpZ+r9RU1vy5lOMy1EjerYx1x6TyA9atLRUdBpqztp4cU9uooyRxvLgxgyTkn2qn6VYz6tH6nAf3j9vIH4ny7FWNIcT6FnqsR9t23q+Z8liG5G4tPpOlkoaZwku08TuANIJgJHxXuHp549Srhb7bW3mtjpKGnlqquUnhYwZc7xK9/UdbWbgauqay30Ushq5RFBG1vgBhoJ6ZwMlWC290fT6TsULfg3dXGoaHVT3uDnl33uRywPIfStds0GjdA2zbzPtcX38+Q2LA2WLA6QWF5X2uOfPkPFdfb7QFLpC2wvnhglvLgTLUtbktz9w0noAOXp5rNl86ieKlglnmkbHDE0ve9xwGtHUkqKdxd06SGwmkstU11wrMxvx8qnjxzJ8nEdPEZzyKpkUFZjNVrZkuOZ3D5AKsxxVOJVF9pcdu4fIBeVu9uMHg2GzVmWkOZWyR4IPh3YPUEYOcepQoiLrmGYdFh0Agi7TvJ4ldHoKGOihEUfaeJRERb63UREREREREREREREREREREREREREREREREREREREREREREREREREREREREREREREREREREREREXLWlzg0Akk4AHiuFImzumHXzVEdbLEXUNt/nnOI+K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" };
+function logoMark(){ return CONFIG.logo
+  ? `<img class="logo-img" src="${CONFIG.logo}" alt="CGT">`
+  : `<span class="wordmark">CGT</span>`; }
+
+const SLIDES = [
+
+{type:"title",
+  eyebrow:"Formation syndicale CGT Occitanie · Module AT/MP",
+  title:["Recours &", "<span class='em'>contestations</span>", "face à la CPAM"],
+  lede:"CRA, CMRA, pôle social, CRRMP, faute inexcusable : les délais, les procédures et les arguments juridiques pour défendre les victimes.",
+  foot:"CGT Occitanie — Comité régional",
+  notes:"<b>Poser l'enjeu : une décision de la CPAM n'est jamais une fin en soi.</b> Refus de reconnaissance d'un accident ou d'une maladie professionnelle, taux d'incapacité sous-évalué, consolidation trop précoce, rechute refusée : toutes ces décisions se contestent, dans des délais courts et selon des voies précises. Une erreur de voie ou un délai dépassé, et le droit est perdu. <b>Objectif du module :</b> savoir quel recours engager, dans quel délai, avec quels arguments ; savoir engager la faute inexcusable de l'employeur. <b>Question d'ouverture :</b> « Avez-vous déjà vu un collègue renoncer après un refus de la CPAM ? Pourquoi ? » (réponses fréquentes : découragement, méconnaissance des délais, peur du coût). <span class='cgt'>Fil rouge CGT : la contestation n'est pas une procédure réservée aux avocats. Les recours amiables sont gratuits, sans avocat obligatoire, et le syndicat peut accompagner la victime à chaque étape. Beaucoup de décisions défavorables sont réformées quand la victime conteste.</span> <span class='ref'>Ce module complète la formation AT/MP 2 jours. Toujours vérifier les délais indiqués sur la notification reçue.</span>"},
+
+{type:"callout", mode:"red", kicker:"Le réflexe à installer", title:"Une décision de la CPAM se conteste",
+  big:"2 mois. C'est le délai de droit commun pour contester. Après, c'est trop tard.",
+  sub:"Le délai court à partir de la réception de la notification. La notification doit indiquer les voies et délais de recours : sinon, le délai ne court pas.",
+  notes:"<b>Le délai : la première arme et le premier piège.</b> La plupart des recours (commission de recours amiable, commission médicale de recours amiable, tribunal) doivent être engagés dans les <b>2 mois</b> suivant la notification. Le délai court à compter de la <b>réception</b> du courrier (d'où l'importance de garder l'enveloppe et l'accusé de réception). <b>Argument juridique clé :</b> la notification doit mentionner les voies et délais de recours ; si elle ne le fait pas, ou de façon erronée, le délai n'est pas opposable à l'assuré (R.142-1 ; jurisprudence constante). <span class='cgt'>Réflexe syndical : dès qu'un salarié reçoit une décision défavorable, noter la date de réception, faire une copie, et préparer le recours sans attendre. En cas de doute sur la voie, il vaut mieux saisir dans le délai et se faire réorienter que de laisser passer le délai.</span> <span class='ref'>Réf. R.142-1 et R.142-1-A CSS.</span>"},
+
+{type:"divider", kicker:"Partie 1", title:["Les voies", "de recours"], lede:"Quel recours pour quelle décision ?",
+  notes:"<b>Cartographier les recours avant d'entrer dans les arguments.</b> Trois questions à se poser devant toute décision : (1) est-ce une décision <b>administrative</b> (refus de reconnaissance, montant d'indemnités, prescription) ou <b>médicale</b> (taux d'incapacité, date de consolidation, état de santé) ? (2) Quel est le délai ? (3) Quelles pièces réunir ? <span class='cgt'>Une erreur fréquente : contester une décision médicale devant la CRA, ou l'inverse. Ce n'est pas toujours fatal, mais cela fait perdre du temps : bien identifier la nature de la décision.</span>"},
+
+{type:"svg", kicker:"Schéma des recours", title:"Quel recours pour quelle décision ?",
+  caption:"Le recours amiable préalable (CRA ou CMRA) est obligatoire avant de saisir le tribunal. Délais à compter de la notification.",
+  svg:`<svg viewBox="0 0 1100 470" role="img" aria-label="Schéma des voies de recours contre les décisions de la CPAM">
+  <g fill="none" stroke="#141414" stroke-width="4">
+    <path class="a-draw" pathLength="1" style="--d:.5s" d="M250 120 H 330"/>
+    <path class="a-draw" pathLength="1" style="--d:.6s" d="M250 330 H 330"/>
+    <path class="a-draw" pathLength="1" style="--d:1.1s" d="M560 120 C 610 120, 610 225, 660 225"/>
+    <path class="a-draw" pathLength="1" style="--d:1.2s" d="M560 330 C 610 330, 610 225, 660 225"/>
+    <path class="a-draw" pathLength="1" style="--d:1.8s" d="M890 225 H 930"/>
+  </g>
+  <g fill="#141414" class="a-fade" style="--d:2.1s"><path d="M333 120 l-14 -8 v16z"/><path d="M333 330 l-14 -8 v16z"/><path d="M663 225 l-14 -8 v16z"/><path d="M933 225 l-14 -8 v16z"/></g>
+  <g class="t-ui" font-size="16" text-anchor="middle">
+    <g class="a-pop" style="--d:.1s"><rect x="10" y="60" width="240" height="120" rx="10" fill="#F1EFE8" stroke="#141414" stroke-width="2"/>
+      <text x="130" y="96" fill="#E2001A">DÉCISION ADMINISTRATIVE</text><text x="130" y="124" fill="#141414" font-size="14">refus AT/MP, rechute,</text><text x="130" y="146" fill="#141414" font-size="14">indemnités, prescription,</text><text x="130" y="168" fill="#141414" font-size="14">avis du CRRMP</text></g>
+    <g class="a-pop" style="--d:.2s"><rect x="10" y="270" width="240" height="120" rx="10" fill="#F1EFE8" stroke="#141414" stroke-width="2"/>
+      <text x="130" y="306" fill="#E2001A">DÉCISION MÉDICALE</text><text x="130" y="334" fill="#141414" font-size="14">taux d'incapacité, date de</text><text x="130" y="356" fill="#141414" font-size="14">consolidation ou guérison,</text><text x="130" y="378" fill="#141414" font-size="14">invalidité, soins, arrêts</text></g>
+    <g class="a-pop" style="--d:.7s"><rect x="330" y="70" width="230" height="100" rx="10" fill="#141414"/><text x="445" y="108" fill="#FFD200" font-size="20">CRA</text><text x="445" y="134" fill="#fff" font-size="14">commission de recours amiable</text><text x="445" y="156" fill="#fff" font-size="14">saisie sous 2 mois</text></g>
+    <g class="a-pop" style="--d:.8s"><rect x="330" y="280" width="230" height="100" rx="10" fill="#141414"/><text x="445" y="318" fill="#FFD200" font-size="20">CMRA</text><text x="445" y="344" fill="#fff" font-size="14">commission médicale</text><text x="445" y="366" fill="#fff" font-size="14">saisie sous 2 mois</text></g>
+    <g class="a-pop" style="--d:1.4s"><rect x="660" y="165" width="230" height="120" rx="10" fill="#E2001A"/><text x="775" y="203" fill="#fff" font-size="19">Pôle social du</text><text x="775" y="227" fill="#fff" font-size="19">tribunal judiciaire</text><text x="775" y="257" fill="#FFD200" font-size="14">sous 2 mois après le rejet</text></g>
+    <g class="a-pop" style="--d:2s"><rect x="930" y="175" width="160" height="100" rx="10" fill="#FFD200"/><text x="1010" y="211" fill="#141414" font-size="15">Cour d'appel</text><text x="1010" y="233" fill="#141414" font-size="13">1 mois</text><text x="1010" y="259" fill="#141414" font-size="13">puis cassation 2 mois</text></g>
+  </g>
+  <g class="t-ui" font-size="14" fill="#6C6A63" text-anchor="middle">
+    <text class="a-fade" style="--d:1.6s" x="445" y="198">silence 2 mois = rejet</text>
+    <text class="a-fade" style="--d:1.6s" x="445" y="408">silence 4 mois = rejet</text>
+  </g>
+  <g class="a-fade" style="--d:2.4s"><rect x="10" y="425" width="1080" height="38" rx="8" fill="#FFD200"/><text x="550" y="450" text-anchor="middle" class="t-ui" font-size="15" fill="#141414">Faute inexcusable : pas de CRA — demande de conciliation à la CPAM, puis saisine directe du pôle social (prescription 2 ans)</text></g>
+</svg>`,
+  notes:"<b>La carte des recours (schéma animé).</b> <b>Décisions administratives</b> (refus de reconnaissance d'un AT, d'une MP, d'une rechute ; montant ou durée des indemnités ; refus après avis du CRRMP ; prescription opposée) : recours préalable obligatoire devant la <b>commission de recours amiable (CRA)</b> de la caisse, dans les 2 mois. Sans réponse dans les 2 mois, la demande est rejetée implicitement. <b>Décisions médicales</b> (taux d'incapacité permanente, date de consolidation ou de guérison, invalidité, justification médicale des soins et arrêts) : recours préalable obligatoire devant la <b>commission médicale de recours amiable (CMRA)</b>, dans les 2 mois ; elle dispose de 4 mois pour statuer, son silence vaut rejet. Depuis le 1er janvier 2022, l'ancienne « expertise médicale technique » a été supprimée : les litiges médicaux passent par la CMRA. <b>Ensuite :</b> pôle social du tribunal judiciaire dans les 2 mois de la décision de rejet (explicite ou implicite), puis appel (1 mois) et cassation (2 mois). <b>Faute inexcusable</b> : procédure à part (diapo dédiée). <span class='cgt'>Le recours amiable est gratuit et rapide : ne jamais s'en priver. Mais le préparer sérieusement, car le dossier constitué servira devant le tribunal.</span> <span class='ref'>Réf. L.142-4, R.142-1, R.142-6, R.142-8 et s., R.142-10-1 CSS ; art. 538 et 612 CPC.</span>"},
+
+{type:"steps", kicker:"Les délais à retenir", title:"Le calendrier d'un recours",
+  items:[
+    {big:"2 mois",nm:"Saisir la CRA ou la CMRA",ds:"À compter de la réception de la notification. Lettre recommandée avec accusé de réception, ou en ligne."},
+    {big:"2 / 4 mois",nm:"Réponse de la commission",ds:"CRA : silence de 2 mois = rejet. CMRA : 4 mois. On peut alors saisir le tribunal."},
+    {big:"2 mois",nm:"Saisir le pôle social",ds:"À compter du rejet explicite ou implicite. Requête au greffe du tribunal judiciaire."},
+    {big:"1 mois",nm:"Faire appel",ds:"À compter de la notification du jugement. Pourvoi en cassation : 2 mois."}
+  ],
+  notes:"<b>Un calendrier à afficher dans chaque local syndical.</b> (1) <b>2 mois</b> pour saisir la commission (CRA ou CMRA) : envoi recommandé avec accusé de réception ou dépôt en ligne sur le compte ameli, en gardant une preuve. (2) La CRA a <b>2 mois</b> pour répondre ; la CMRA, <b>4 mois</b> ; le silence vaut rejet et ouvre la voie du tribunal. (3) <b>2 mois</b> pour saisir le pôle social du tribunal judiciaire après le rejet ; la procédure est orale, gratuite (pas de frais de justice), l'avocat n'est pas obligatoire en première instance. (4) Appel : <b>1 mois</b> ; cassation : <b>2 mois</b>. <span class='cgt'>Tenir un échéancier pour chaque dossier suivi par le syndicat. Un délai manqué, c'est un droit perdu pour la victime. En cas de rejet implicite, ne pas attendre une réponse écrite qui ne viendra peut-être jamais : le délai de 2 mois pour saisir le tribunal court quand même.</span> <span class='ref'>Réf. R.142-1, R.142-6, R.142-8-5 et R.142-10-1 CSS ; procédure devant le pôle social : R.142-10 et s.</span>"},
+
+{type:"content", kicker:"Méthode", title:"Rédiger un recours qui tient",
+  bullets:[
+    "<b>Identifier</b> la décision contestée : date, référence, objet",
+    "<b>Exposer les faits</b> de façon chronologique, précise et vérifiable",
+    "<b>Argumenter en droit</b> : présomption, conditions du tableau, irrégularités de procédure",
+    "<b>Joindre les pièces</b> : certificats médicaux, témoignages, fiches de poste, DUERP, PV du CSE",
+    "<b>Demander</b> clairement : reconnaissance, nouveau taux, nouvelle date, communication du dossier"
+  ],
+  strip:"Toujours demander la copie du dossier de la caisse et du rapport médical : on ne conteste bien que ce qu'on a lu.",
+  notes:"<b>Un recours efficace tient en une ou deux pages bien construites.</b> (1) <b>Objet</b> : « recours contre la décision du … refusant la prise en charge de … ». (2) <b>Faits</b> : date, heure, lieu, circonstances, témoins, premiers soins, déclaration. (3) <b>Droit</b> : rappeler la règle (présomption d'imputabilité, conditions du tableau, délai de prise en charge) et montrer qu'elle s'applique ; relever les irrégularités de procédure (délais non respectés, dossier non communiqué). (4) <b>Pièces</b> numérotées. (5) <b>Demande</b> précise. <b>Pièces clés</b> : certificat médical initial et de prolongation, attestations de témoins (formulaire avec copie de pièce d'identité), fiche de poste, plannings, DUERP, comptes rendus d'inspection et PV du CSE, échanges écrits avec l'employeur. <span class='cgt'>Le dossier de la caisse est consultable : le demander systématiquement. Il contient souvent les réserves de l'employeur et le questionnaire qu'il a rempli, qu'il faut contredire point par point. Les documents produits par le CSE (alertes, inspections, enquêtes) sont des pièces précieuses.</span> <span class='ref'>Réf. R.441-14 et R.461-10 CSS (consultation du dossier) ; art. 202 CPC (attestations).</span>"},
+
+{type:"two", kicker:"Deux commissions, deux logiques", title:"CRA ou CMRA ?",
+  a:{h:"CRA — commission de recours amiable",t:"Composée d'administrateurs de la caisse (représentants des assurés et des employeurs). Examine les décisions <b>administratives</b> : reconnaissance, prestations, procédure. Silence de 2 mois = rejet.",style:"plain"},
+  b:{h:"CMRA — commission médicale",t:"Composée de médecins. Examine les décisions <b>médicales</b> : taux d'incapacité, consolidation, guérison, invalidité. Peut examiner l'assuré. Le rapport médical est transmis au médecin désigné par l'assuré. Silence de 4 mois = rejet.",style:"black"},
+  notes:"<b>Bien choisir la commission.</b> La <b>CRA</b> est une émanation du conseil de la caisse, où siègent des représentants des assurés désignés par les organisations syndicales : c'est un lieu où la qualité du dossier et l'argumentation juridique comptent. La <b>CMRA</b>, régionale, est composée de deux médecins (un médecin-conseil et un médecin expert indépendant) ; elle statue sur pièces et peut convoquer l'assuré. Point essentiel : l'assuré peut demander que le <b>rapport médical</b> (par exemple le rapport d'évaluation des séquelles) soit transmis au médecin qu'il désigne, pour préparer ses observations. <span class='cgt'>Devant la CMRA, le recours doit être médicalement argumenté : faire rédiger par le médecin traitant ou un spécialiste un courrier détaillé (séquelles, retentissement, traitements, pronostic). Les administrateurs CGT des caisses peuvent aussi éclairer sur le fonctionnement de la CRA locale.</span> <span class='ref'>Réf. R.142-1 à R.142-7 (CRA) ; L.142-6, R.142-8 à R.142-8-5 (CMRA) CSS.</span>"},
+
+{type:"content", kicker:"Décisions médicales", title:"Contester le taux d'incapacité permanente",
+  bullets:[
+    "Le taux tient compte de la <b>nature des séquelles</b>, de l'état général, de l'âge, des facultés et des <b>aptitudes et qualification professionnelles</b> (L.434-2)",
+    "Le barème est <b>indicatif</b> : le médecin-conseil doit motiver",
+    "Revendiquer un <b>coefficient professionnel</b> en cas d'inaptitude, de perte d'emploi ou de déclassement",
+    "Faire décrire par son médecin <b>toutes</b> les séquelles, y compris psychiques et douleurs",
+    "Demander la <b>transmission du rapport médical</b> au médecin de son choix"
+  ],
+  strip:"Chaque point de taux compte : il détermine la rente versée à vie.",
+  notes:"<b>Le taux d'incapacité est souvent sous-évalué — et il se conteste.</b> La loi impose de tenir compte non seulement des séquelles médicales mais aussi des <b>aptitudes et de la qualification professionnelles</b> : c'est le fondement du « taux professionnel » (ou coefficient socio-professionnel), qui s'ajoute au taux médical quand les séquelles entraînent une inaptitude, un licenciement, un déclassement ou une perte de revenus. Le barème indicatif d'invalidité AT/MP n'est qu'un guide : le médecin-conseil peut et doit s'en écarter en motivant. <b>Arguments à faire valoir :</b> séquelles oubliées (douleurs chroniques, limitation de mouvements, troubles psychiques, acouphènes), retentissement sur le métier, licenciement pour inaptitude intervenu depuis la consolidation. <span class='cgt'>Rappeler l'enjeu financier : avec la règle du taux utile, chaque point au-dessus de 50 % compte une fois et demie. Passer de 8 % (capital) à 10 % (rente à vie) change tout. Ne jamais laisser passer un taux qui ne tient pas compte de la perte d'emploi.</span> <span class='ref'>Réf. L.434-2, R.434-32 CSS et annexe I (barème indicatif) ; Cass. soc. jurisprudence constante sur le coefficient professionnel.</span>"},
+
+{type:"content", kicker:"Décisions médicales", title:"Contester la consolidation, la guérison, une rechute",
+  bullets:[
+    "<b>Consolidation trop précoce</b> : les lésions ne sont pas stabilisées, des soins actifs sont en cours",
+    "<b>Guérison</b> déclarée alors que des séquelles persistent : demander une consolidation avec séquelles",
+    "<b>Rechute</b> : aggravation ou nouvelle lésion en lien avec l'accident initial, sur certificat médical",
+    "<b>Nouvelle lésion</b> apparue avant consolidation : présomption d'imputabilité",
+    "Recours devant la <b>CMRA</b> (2 mois), avec un avis médical argumenté"
+  ],
+  notes:"<b>Des décisions médicales lourdes de conséquences.</b> La <b>consolidation</b> marque la fin des indemnités journalières et l'évaluation des séquelles : fixée trop tôt, elle prive la victime d'indemnités et de soins pris en charge. La <b>guérison</b> sans séquelles écarte toute rente. La <b>rechute</b> (aggravation de la lésion ou apparition d'une nouvelle lésion résultant de l'accident après consolidation) rouvre les droits : IJ AT/MP, soins à 100 %, protection de l'emploi. <b>Arguments :</b> soins actifs en cours (rééducation, intervention prévue), avis du spécialiste, imagerie récente. Pour la rechute, il appartient à la victime de démontrer le lien avec l'accident initial : d'où l'importance d'un certificat médical précis. En revanche, pour les lésions apparues <b>avant</b> la consolidation, la présomption d'imputabilité s'applique. <span class='cgt'>Depuis 2022, ces contestations passent par la CMRA. Ne pas laisser un salarié reprendre le travail en force après une consolidation contestable sans avoir engagé le recours : organiser une visite de pré-reprise avec le médecin du travail.</span> <span class='ref'>Réf. L.443-1, L.443-2, R.443-1 et s. (rechute) ; L.142-6 CSS (CMRA).</span>"},
+
+{type:"divider", kicker:"Partie 2", title:["Les arguments", "juridiques"], lede:"Présomption, tableaux, procédure : ce qui fait gagner",
+  notes:"<b>Passer de la procédure au fond.</b> Une fois la bonne voie choisie, il faut des arguments. Trois familles : (1) la <b>présomption</b>, qui renverse la charge de la preuve ; (2) les <b>conditions</b> des tableaux de maladies professionnelles et la voie du CRRMP ; (3) les <b>irrégularités de procédure</b> de la caisse. <span class='cgt'>La force des victimes, c'est le droit : la présomption d'imputabilité est l'une des conquêtes majeures du mouvement ouvrier (loi de 1898). La faire respecter, c'est défendre ce principe.</span>"},
+
+{type:"content", kicker:"Accident du travail", title:"La présomption d'imputabilité",
+  bullets:[
+    "Tout accident survenu <b>au temps et au lieu du travail</b> est présumé d'origine professionnelle (L.411-1)",
+    "C'est à la caisse ou à l'employeur de prouver une <b>cause totalement étrangère</b> au travail",
+    "Le <b>malaise</b> ou la lésion psychique soudaine au travail est un accident du travail",
+    "La présomption couvre les <b>soins et arrêts</b> jusqu'à la guérison ou la consolidation",
+    "Hors temps et lieu de travail : la victime doit prouver le lien avec le travail"
+  ],
+  notes:"<b>L'argument central en matière d'accident du travail.</b> L'accident survenu par le fait ou à l'occasion du travail est présumé professionnel ; dès lors qu'il survient au temps et au lieu du travail, la victime n'a pas à prouver le lien : c'est à la caisse ou à l'employeur d'établir que la lésion a une cause totalement étrangère au travail (un état antérieur seul ne suffit pas s'il a été révélé ou aggravé par le travail). <b>Jurisprudence utile :</b> le malaise cardiaque au travail est présumé accident du travail ; un choc psychologique soudain (entretien violent, annonce brutale, agression) aussi ; la présomption s'étend à toute la durée d'incapacité jusqu'à la guérison ou la consolidation, ce qui fait échec aux contestations de la durée des arrêts par l'employeur. <span class='cgt'>Face à des réserves de l'employeur (« état antérieur », « aucun témoin »), rappeler que la présomption s'applique et que les réserves doivent être motivées. L'absence de témoin n'empêche pas la reconnaissance si des éléments concordants existent (déclaration rapide, constat médical le jour même).</span> <span class='ref'>Réf. L.411-1 CSS ; Cass. soc. 2 avr. 2003 (malaise) ; Cass. 2e civ., jurisprudence constante sur l'étendue de la présomption aux arrêts jusqu'à consolidation.</span>"},
+
+{type:"content", kicker:"Maladie professionnelle", title:"Les arguments en maladie professionnelle",
+  bullets:[
+    "<b>Tableau</b> : si les conditions sont remplies, la maladie est présumée professionnelle",
+    "<b>Date de première constatation médicale</b> : elle peut être antérieure au certificat initial (examen, arrêt, imagerie)",
+    "<b>Liste indicative</b> des travaux : tout travail exposant au risque suffit",
+    "Une condition manque : <b>CRRMP</b> (alinéa 6) ; hors tableau avec IPP ≥ 25 % : <b>CRRMP</b> (alinéa 7)",
+    "Refus après avis du CRRMP : le tribunal doit consulter <b>un autre CRRMP</b>"
+  ],
+  notes:"<b>Les leviers propres aux maladies professionnelles.</b> (1) <b>Présomption du tableau</b> : maladie désignée, délai de prise en charge respecté, travaux de la liste (limitative ou indicative), durée d'exposition le cas échéant. (2) La <b>date de première constatation médicale</b> est celle à laquelle les premières manifestations ont été constatées par un médecin, même avant le diagnostic définitif : elle peut sauver un dossier où le délai de prise en charge semble dépassé. (3) Quand la liste est <b>indicative</b>, la caisse ne peut pas refuser au motif que le métier n'est pas cité. (4) Si une condition manque, ou si la maladie n'est pas inscrite (avec une incapacité prévisible d'au moins 25 %), la caisse saisit le <b>CRRMP</b>. (5) Si la caisse refuse après l'avis du CRRMP, le tribunal ne peut statuer qu'après avoir recueilli l'avis d'un <b>second CRRMP</b>. <span class='cgt'>Le taux de 25 % de l'alinéa 7 est un taux prévisible au moment de la demande : le faire évaluer en décrivant toutes les conséquences de la maladie (notamment pour les pathologies psychiques). La CGT revendique la suppression de ce seuil.</span> <span class='ref'>Réf. L.461-1, L.461-2 CSS ; R.142-17-2 (second CRRMP) ; R.461-8 (seuil de 25 %).</span>"},
+
+{type:"content", kicker:"Les fautes de la caisse", title:"Les irrégularités de procédure",
+  bullets:[
+    "<b>Délais d'instruction</b> dépassés (AT : 30 jours, ou 90 jours en cas d'enquête ; MP : 120 jours, + 120 avec CRRMP) : <b>reconnaissance implicite</b>",
+    "<b>Dossier</b> non mis à disposition ou délai de consultation non respecté",
+    "<b>Notification</b> sans mention des voies et délais de recours : délai non opposable",
+    "<b>Décision non motivée</b> ou fondée sur des faits erronés",
+    "<b>Prescription</b> opposée à tort : 2 ans à partir du certificat qui fait le lien avec le travail (MP)"
+  ],
+  notes:"<b>Les erreurs de la caisse profitent à la victime.</b> (1) <b>Délais d'instruction</b> : depuis le décret du 23 avril 2019, la caisse dispose de 30 jours francs pour statuer sur un accident (ou de 90 jours si elle engage des investigations), et de 120 jours francs pour une maladie professionnelle (plus 120 jours si le CRRMP est saisi). À défaut de décision dans ces délais, le caractère professionnel est reconnu (reconnaissance implicite) : la jurisprudence récente l'applique strictement, la preuve de l'envoi dans le délai pesant sur la caisse. (2) <b>Contradictoire</b> : la victime et l'employeur doivent pouvoir consulter le dossier et formuler des observations avant la décision. (3) <b>Mentions obligatoires</b> de la notification. (4) <b>Prescription</b> : en MP, le délai de 2 ans court à partir de la date à laquelle la victime est informée par un certificat médical du lien possible entre sa maladie et son activité professionnelle. <span class='cgt'>Reconstituer systématiquement la chronologie du dossier (dates de réception de la déclaration, du certificat, des courriers de la caisse) : une décision tardive peut transformer un refus en reconnaissance. Vérifier les dates précises, les délais courant à compter de la réception des pièces.</span> <span class='ref'>Réf. R.441-7, R.441-8, R.441-18 (AT) ; R.461-9 et R.461-10 (MP) ; L.461-1 et L.431-2 (prescription) CSS ; décret n° 2019-356.</span>"},
+
+{type:"two", kicker:"Ne pas confondre", title:"Quand l'employeur conteste : l'inopposabilité",
+  a:{h:"Ce que l'employeur peut obtenir",t:"Que la décision de reconnaissance lui soit <b>inopposable</b> : les dépenses ne sont pas imputées sur son compte et ses cotisations AT/MP n'augmentent pas.",style:"plain"},
+  b:{h:"Ce que cela ne change pas",t:"La victime <b>garde tous ses droits</b> : reconnaissance, soins, indemnités, rente. Les rapports caisse-victime et caisse-employeur sont indépendants.",style:"red"},
+  notes:"<b>Rassurer les victimes inquiètes d'une contestation patronale.</b> L'employeur peut contester la décision de la caisse pour des raisons de procédure (non-respect du contradictoire, délais) ou de fond (durée des arrêts, imputabilité des lésions). S'il obtient gain de cause, la décision lui est seulement <b>inopposable</b> : le coût de l'accident n'est pas imputé sur son compte, ses cotisations n'augmentent pas. Mais la décision reste <b>acquise à la victime</b> : c'est le principe d'indépendance des rapports entre la caisse, l'assuré et l'employeur. <span class='cgt'>Ces contestations, souvent confiées à des cabinets spécialisés, visent à faire baisser les cotisations patronales : c'est la collectivité qui paie. Les élus du CSE peuvent demander, dans la BDESE, le nombre d'accidents et de maladies contestés par l'employeur : c'est un indicateur révélateur de sa politique de prévention. Rappeler aussi que la faute inexcusable reste possible même si la décision est inopposable à l'employeur (il pourra seulement discuter le caractère professionnel dans ce cadre).</span> <span class='ref'>Réf. R.441-18, R.461-10 CSS ; principe d'indépendance des rapports (jurisprudence constante).</span>"},
+
+{type:"divider", kicker:"Partie 3", title:["La faute", "inexcusable"], lede:"Obtenir la réparation de tous les préjudices",
+  notes:"<b>La procédure la plus puissante pour la victime.</b> La reconnaissance en AT/MP ouvre une réparation forfaitaire (indemnités, rente). La faute inexcusable de l'employeur ouvre une réparation bien plus large : majoration de la rente au maximum et indemnisation des préjudices personnels. <span class='cgt'>C'est aussi un outil de prévention : l'employeur condamné supporte la charge financière (via la caisse qui la récupère). La CGT revendique la réparation intégrale de tous les préjudices pour toutes les victimes du travail.</span>"},
+
+{type:"def", title:"La faute inexcusable de l'employeur",
+  term:"Article L.452-1 du Code de la sécurité sociale",
+  text:"Il y a faute inexcusable lorsque l'employeur avait ou aurait dû avoir conscience du danger auquel était exposé le salarié et n'a pas pris les mesures nécessaires pour l'en préserver.",
+  extra:"Il suffit que la faute soit <b>une cause nécessaire</b> du dommage, même si d'autres fautes y ont concouru, y compris celle de la victime (Cass. ass. plén. 24 juin 2005). Elle est <b>de droit</b> si le risque avait été signalé à l'employeur (L.4131-4) ou pour un CDD ou intérimaire affecté à un poste à risque sans formation renforcée (L.4154-3).",
+  notes:"<b>La définition à connaître par cœur.</b> Deux conditions : (1) la <b>conscience du danger</b> — l'employeur savait ou aurait dû savoir (en tant que professionnel organisant le travail) ; (2) l'<b>absence de mesures</b> nécessaires pour protéger le salarié. La faute n'a pas à être la cause déterminante : il suffit qu'elle soit une cause nécessaire, même si la victime a elle aussi commis une imprudence. <b>Faute inexcusable de droit</b> (la victime n'a rien à prouver d'autre) : quand un salarié ou un élu du CSE avait signalé le risque qui s'est matérialisé (L.4131-4) ; quand un salarié en CDD ou intérimaire victime était affecté à un poste à risques particuliers sans formation renforcée à la sécurité (L.4154-3). <span class='cgt'>C'est ici que le travail des élus prend tout son sens : une alerte écrite, un compte rendu d'inspection, un PV du CSE signalant le risque font basculer le dossier. Penser aussi à l'intérim : la faute de l'entreprise utilisatrice est imputable à l'employeur juridique (l'entreprise de travail temporaire), qui dispose d'un recours contre elle.</span> <span class='ref'>Réf. L.452-1 CSS ; L.4131-4 et L.4154-3 CT ; L.412-6 CSS (intérim) ; Cass. soc. 28 fév. 2002 ; Cass. ass. plén. 24 juin 2005.</span>"},
+
+{type:"svg", kicker:"La procédure", title:"Engager la faute inexcusable, étape par étape",
+  caption:"La victime (ou ses ayants droit) agit dans les 2 ans. La caisse avance les sommes, puis les récupère auprès de l'employeur.",
+  svg:`<svg viewBox="0 0 1100 470" role="img" aria-label="Procédure de faute inexcusable">
+  <g fill="none" stroke="#141414" stroke-width="4">
+    <path class="a-draw" pathLength="1" style="--d:.4s" d="M215 110 H 255"/>
+    <path class="a-draw" pathLength="1" style="--d:.8s" d="M465 110 H 505"/>
+    <path class="a-draw" pathLength="1" style="--d:1.2s" d="M715 110 H 755"/>
+    <path class="a-draw" pathLength="1" style="--d:1.6s" d="M860 160 V 230"/>
+    <path class="a-draw" pathLength="1" style="--d:2s" d="M755 290 H 715"/>
+    <path class="a-draw" pathLength="1" style="--d:2.4s" d="M505 290 H 465"/>
+  </g>
+  <g fill="#141414" class="a-fade" style="--d:2.6s"><path d="M258 110 l-14 -8 v16z"/><path d="M508 110 l-14 -8 v16z"/><path d="M758 110 l-14 -8 v16z"/><path d="M860 233 l-8 -14 h16z"/><path d="M712 290 l14 -8 v16z"/><path d="M462 290 l14 -8 v16z"/></g>
+  <g class="t-ui" font-size="15" text-anchor="middle">
+    <g class="a-pop" style="--d:.1s"><rect x="10" y="60" width="205" height="100" rx="8" fill="#E2001A"/><text x="112" y="96" fill="#fff">1. AT ou MP</text><text x="112" y="120" fill="#fff">reconnu (ou en cours)</text><text x="112" y="144" fill="#FFD200" font-size="13">la FI peut être demandée</text></g>
+    <g class="a-pop" style="--d:.5s"><rect x="255" y="60" width="210" height="100" rx="8" fill="#141414"/><text x="360" y="96" fill="#FFD200">2. Demande à la CPAM</text><text x="360" y="120" fill="#fff">tentative de</text><text x="360" y="144" fill="#fff">conciliation</text></g>
+    <g class="a-pop" style="--d:.9s"><rect x="505" y="60" width="210" height="100" rx="8" fill="#141414"/><text x="610" y="96" fill="#FFD200">3. Pôle social</text><text x="610" y="120" fill="#fff">saisi par la victime</text><text x="610" y="144" fill="#fff">(CPAM et employeur appelés)</text></g>
+    <g class="a-pop" style="--d:1.3s"><rect x="755" y="60" width="210" height="100" rx="8" fill="#FFD200"/><text x="860" y="96" fill="#141414">4. Jugement :</text><text x="860" y="120" fill="#141414">faute reconnue</text><text x="860" y="144" fill="#141414">rente majorée au max.</text></g>
+    <g class="a-pop" style="--d:1.7s"><rect x="755" y="240" width="210" height="100" rx="8" fill="#F1EFE8" stroke="#141414" stroke-width="2"/><text x="860" y="276" fill="#141414">5. Expertise médicale</text><text x="860" y="300" fill="#141414">des préjudices</text><text x="860" y="324" fill="#6C6A63" font-size="13">ordonnée par le juge</text></g>
+    <g class="a-pop" style="--d:2.1s"><rect x="505" y="240" width="210" height="100" rx="8" fill="#F1EFE8" stroke="#E2001A" stroke-width="3"/><text x="610" y="276" fill="#141414">6. Indemnisation</text><text x="610" y="300" fill="#141414">des préjudices</text><text x="610" y="324" fill="#E2001A" font-size="13">avancée par la CPAM</text></g>
+    <g class="a-pop" style="--d:2.5s"><rect x="255" y="240" width="210" height="100" rx="8" fill="#141414"/><text x="360" y="276" fill="#FFD200">7. La CPAM récupère</text><text x="360" y="300" fill="#fff">les sommes auprès</text><text x="360" y="324" fill="#fff">de l'employeur</text></g>
+  </g>
+  <g class="a-fade" style="--d:2.9s"><rect x="10" y="375" width="1080" height="80" rx="8" fill="#FFD200"/>
+    <text x="550" y="407" text-anchor="middle" class="t-ui" font-size="17" fill="#141414">Délai : 2 ans à compter de l'accident ou de la fin du versement des IJ</text>
+    <text x="550" y="435" text-anchor="middle" class="t-ui" font-size="15" fill="#141414">(interrompu notamment par l'action en reconnaissance du caractère professionnel ou une action pénale)</text></g>
+</svg>`,
+  notes:"<b>La procédure pas à pas (schéma animé).</b> (1) La faute inexcusable suppose un accident du travail ou une maladie professionnelle (la demande peut être engagée pendant l'instruction ou le contentieux de reconnaissance). (2) La victime adresse une demande à la caisse, qui organise une <b>tentative de conciliation</b> entre la victime et l'employeur. (3) À défaut d'accord (ou sans attendre la fin de la conciliation), la victime saisit le <b>pôle social</b> du tribunal judiciaire ; la caisse et l'employeur sont dans la cause. (4) Si la faute est reconnue : <b>majoration de la rente</b> au maximum (ou du capital). (5) Le juge ordonne en général une <b>expertise médicale</b> pour évaluer les préjudices, et peut accorder une provision. (6) La <b>caisse verse</b> l'indemnisation à la victime — même si l'employeur a disparu ou est insolvable. (7) La caisse <b>récupère</b> ensuite les sommes auprès de l'employeur. <b>Délai</b> : 2 ans à compter du jour de l'accident ou de la cessation du paiement des indemnités journalières ; la prescription est interrompue par l'action en reconnaissance du caractère professionnel et par l'action pénale. <span class='cgt'>Ne pas attendre : rassembler très tôt les preuves de la conscience du danger (diapo suivante). L'assistance d'un avocat spécialisé est fortement recommandée ; l'UD CGT et les associations de victimes (FNATH, ANDEVA pour l'amiante) peuvent orienter.</span> <span class='ref'>Réf. L.452-1 à L.452-5, L.431-2 CSS ; L.452-3 (avance par la caisse).</span>"},
+
+{type:"content", kicker:"Prouver la faute", title:"Les preuves de la conscience du danger",
+  bullets:[
+    "<b>DUERP</b> : le risque y figure (l'employeur le connaissait) ou n'y figure pas (il ne l'a pas évalué)",
+    "<b>PV du CSE</b>, alertes, comptes rendus d'inspection, enquêtes après accident",
+    "<b>Accidents ou incidents antérieurs</b> similaires, signalements des salariés",
+    "<b>Réglementation</b> non respectée : formation, vérification des machines, protections collectives",
+    "<b>Mises en demeure</b> ou procès-verbaux de l'inspection du travail, injonctions CARSAT"
+  ],
+  strip:"Tout ce que le CSE écrit aujourd'hui peut devenir la preuve de demain.",
+  notes:"<b>Construire la preuve.</b> La conscience du danger s'apprécie objectivement : l'employeur, professionnel de son activité, ne peut pas ignorer les risques connus du métier ou signalés. <b>Pièces décisives :</b> le DUERP (s'il mentionne le risque sans mesure adaptée, la conscience est établie ; s'il ne le mentionne pas, l'employeur a manqué à son obligation d'évaluer) ; les PV et alertes du CSE ; les comptes rendus d'inspection ; les accidents antérieurs sur le même poste ; l'absence de formation obligatoire (CACES, travail en hauteur, risque chimique) ; l'absence de vérification périodique des équipements ; les injonctions de la CARSAT et les observations de l'inspection du travail ; les témoignages des collègues. <span class='cgt'>C'est le lien direct entre l'action quotidienne des élus et la défense des victimes : chaque risque signalé par écrit, chaque inspection consignée, construit le dossier. Les victimes et leurs avocats ont accès à ces documents : les élus doivent les conserver et les transmettre (avec l'accord de la victime).</span> <span class='ref'>Réf. L.4121-1 à L.4121-3 CT ; L.4131-4 (faute de droit) ; R.4141-1 et s. (formation à la sécurité).</span>"},
+
+{type:"content", kicker:"Ce que la victime obtient", title:"Les préjudices indemnisés en cas de faute inexcusable",
+  bullets:[
+    "<b>Majoration de la rente</b> au maximum (ou du capital)",
+    "<b>Souffrances</b> physiques et morales, <b>préjudice esthétique</b>, <b>préjudice d'agrément</b>",
+    "<b>Perte ou diminution des possibilités de promotion</b> professionnelle",
+    "<b>Déficit fonctionnel permanent</b> (depuis 2023), déficit temporaire, préjudice sexuel",
+    "<b>Frais</b> d'aménagement du logement et du véhicule, assistance par une tierce personne avant consolidation",
+    "En cas de décès : <b>préjudice moral</b> des ayants droit"
+  ],
+  notes:"<b>Une réparation bien plus large que la réparation forfaitaire.</b> La loi prévoit la majoration de la rente et l'indemnisation des souffrances, du préjudice esthétique, du préjudice d'agrément et de la perte de chance de promotion (L.452-3). Depuis la décision du Conseil constitutionnel du 18 juin 2010, la victime peut demander réparation de <b>tous les préjudices non couverts</b> par la réparation forfaitaire : déficit fonctionnel temporaire, préjudice sexuel, aménagement du logement et du véhicule, assistance par une tierce personne avant consolidation, etc. Depuis deux arrêts de l'assemblée plénière de la Cour de cassation du 20 janvier 2023, la rente ne répare plus le <b>déficit fonctionnel permanent</b>, qui peut donc être indemnisé en plus. <b>En cas de décès</b>, les ayants droit obtiennent la réparation de leur préjudice moral. <span class='cgt'>Ces avancées sont le fruit de combats menés par les victimes, leurs associations et leurs syndicats. La CGT revendique désormais la <b>réparation intégrale</b> de tous les préjudices pour toutes les victimes du travail, sans avoir à prouver une faute.</span> <span class='ref'>Réf. L.452-2, L.452-3 CSS ; Cons. const. 18 juin 2010 n° 2010-8 QPC ; Cass. ass. plén. 20 janv. 2023 n° 21-23.947 et 20-23.673.</span>"},
+
+{type:"quiz", title:"Quiz — Quel recours ?",
+  q:"La CPAM fixe le taux d'incapacité permanente d'un salarié à 6 %, sans tenir compte de son licenciement pour inaptitude. Que faire ?",
+  opts:[{k:"A",t:"Saisir directement le conseil de prud'hommes"},{k:"B",t:"Saisir la commission de recours amiable (CRA)"},{k:"C",t:"Saisir la commission médicale de recours amiable (CMRA) dans les 2 mois et demander un coefficient professionnel"},{k:"D",t:"Rien : le taux fixé par le médecin-conseil est définitif"}],
+  ans:2,
+  explain:"Le taux d'incapacité est une décision d'ordre médical : recours préalable obligatoire devant la CMRA, dans les 2 mois. Le licenciement pour inaptitude justifie de demander un coefficient professionnel (L.434-2).",
+  notes:"<b>Vérifier qu'on sait aiguiller.</b> Le taux d'incapacité relève de la CMRA (décision médicale), pas de la CRA. Le prud'hommes est compétent pour le licenciement, pas pour le taux. L'enjeu : à 6 %, la victime touche un capital ; à 10 % ou plus, une rente à vie. Le licenciement pour inaptitude consécutif aux séquelles est l'argument type pour obtenir un taux professionnel. <span class='cgt'>Réflexe : coupler les deux combats — contestation du taux devant la CMRA, et vérification des droits liés à l'inaptitude d'origine professionnelle (indemnité doublée, reclassement) devant le prud'hommes si nécessaire.</span>"},
+
+{type:"quiz", title:"Quiz — La caisse a-t-elle le droit ?",
+  q:"Une salariée a déclaré une maladie professionnelle. La CPAM lui notifie un refus 150 jours après avoir reçu le dossier complet, sans avoir saisi le CRRMP. Quel argument soulever ?",
+  opts:[{k:"A",t:"Aucun : la caisse peut prendre le temps nécessaire"},{k:"B",t:"Le délai de 120 jours francs est dépassé : le caractère professionnel est implicitement reconnu"},{k:"C",t:"Il faut recommencer la déclaration depuis le début"},{k:"D",t:"Saisir l'inspection du travail"}],
+  ans:1,
+  explain:"Faute de décision dans le délai de 120 jours francs (hors saisine du CRRMP), le caractère professionnel est reconnu. Vérifier précisément les dates de réception, la preuve de l'envoi dans le délai pesant sur la caisse.",
+  notes:"<b>Un argument de procédure qui fait gagner.</b> La caisse dispose de 120 jours francs à compter de la réception de la déclaration et du certificat médical pour statuer ou saisir le CRRMP. Au-delà, sans décision, le caractère professionnel est reconnu. La jurisprudence récente des cours d'appel l'applique strictement. <span class='cgt'>Tenir la chronologie de chaque dossier : date d'envoi de la déclaration, accusé de réception, courriers de la caisse. C'est souvent sur ces dates que se gagne un recours.</span> <span class='ref'>Réf. R.461-9 CSS.</span>"},
+
+{type:"case", title:"Cas pratique — Karim, cariste, refus et taux contesté",
+  scenario:"Karim, 49 ans, cariste depuis 18 ans dans un entrepôt, a déclaré une hernie discale L5-S1 avec sciatique. La CPAM refuse la prise en charge au titre du tableau 98, au motif que « la manutention n'était pas habituelle » (questionnaire employeur). Le CSE avait pourtant signalé en 2023 l'absence de transpalettes électriques et des charges de plus de 25 kg. Par ailleurs, pour un accident survenu il y a 2 ans, Karim a été consolidé avec un taux de 5 % ; il vient d'être licencié pour inaptitude.",
+  questions:["Groupe A — Quel(s) recours contre le refus de la maladie professionnelle ? Dans quels délais ? Quels arguments et quelles pièces ?","Groupe B — Peut-on encore contester le taux de 5 % ? Sinon, quelles autres voies pour améliorer sa situation ?","Groupe C — La faute inexcusable de l'employeur est-elle envisageable ? Sur quelles preuves ? Quelle procédure ?"],
+  minutes:25,
+  notes:"<b>Atelier en 3 groupes (15 min) + restitution (10 min).</b> <b>Groupe A :</b> refus administratif → CRA dans les 2 mois, puis pôle social. Arguments : conditions du tableau 98 (manutention manuelle habituelle de charges lourdes, 5 ans d'exposition, délai de 6 mois, hernie avec atteinte radiculaire concordante) ; contredire le questionnaire employeur par des attestations de collègues, les fiches de poste, le PV du CSE de 2023, des photos ; demander la copie du dossier ; vérifier les délais d'instruction (reconnaissance implicite éventuelle) ; si une condition manque vraiment, demander la saisine du CRRMP. <b>Groupe B :</b> le taux de 5 % ne peut plus être contesté si le délai de 2 mois est expiré (vérifier que la notification mentionnait bien les voies et délais de recours : sinon, le délai ne court pas). Autres voies : demande de révision pour aggravation ; droits liés à l'inaptitude d'origine professionnelle (indemnité spéciale doublée, reclassement). <b>Groupe C :</b> faute inexcusable envisageable (et même de droit si le risque avait été signalé, L.4131-4) : PV du CSE de 2023, absence d'aides à la manutention, DUERP ; demande à la CPAM pour conciliation, puis pôle social, dans les 2 ans. <span class='cgt'>Point fort : le PV du CSE de 2023 sert à la fois la reconnaissance de la maladie (exposition) et la faute inexcusable (conscience du danger). C'est la démonstration concrète de l'utilité des écrits des élus.</span>"},
+
+{type:"content", kicker:"À retenir", title:"Les réflexes du militant",
+  bullets:[
+    "<b>Noter la date de réception</b> de chaque décision — et ne jamais laisser passer 2 mois",
+    "<b>Identifier la voie</b> : CRA (administratif), CMRA (médical), pôle social, faute inexcusable",
+    "<b>Demander le dossier</b> de la caisse et le rapport médical",
+    "<b>Vérifier la procédure</b> : délais d'instruction, contradictoire, mentions de la notification",
+    "<b>Argumenter</b> : présomption, tableau, date de première constatation, coefficient professionnel",
+    "<b>Penser faute inexcusable</b> dès qu'un risque avait été signalé ou une règle non respectée"
+  ],
+  strip:"Ne jamais laisser une victime seule face à la caisse : le syndicat accompagne, l'UD appuie, l'avocat plaide quand il le faut.",
+  notes:"<b>Six réflexes à emporter.</b> (1) La date de réception et le délai de 2 mois. (2) La bonne voie de recours. (3) La copie du dossier. (4) Les failles de procédure. (5) Les arguments de fond. (6) La faute inexcusable, à envisager systématiquement quand des preuves de la conscience du danger existent. <span class='cgt'>Message de fin : le droit des victimes du travail est une conquête collective, qui ne vit que si on le fait respecter. Chaque recours gagné fait aussi reculer la sous-déclaration et rappelle aux employeurs que la santé des salariés a un prix. Organiser dans l'UD un suivi des dossiers de recours (échéancier, modèles de courriers, contacts d'avocats spécialisés).</span>"},
+
+{type:"closing",
+  title:"Recours\\n& contestations",
+  sub:"Formation syndicale CGT Occitanie — Module AT/MP",
+  contacts:"CGT Comité Régional Occitanie · Secteur privé",
+  notes:"<b>Clôture.</b> Tour de table : « une voie de recours ou un argument que je ne connaissais pas ». Distribuer les modèles de courriers (recours CRA, recours CMRA, demande de communication du dossier, demande de faute inexcusable) et l'échéancier des délais. <span class='cgt'>Rappeler les contacts : UD CGT, collectifs santé-travail, associations de victimes, avocats partenaires. Ne jamais laisser un dossier de faute inexcusable ou de décès sans accompagnement juridique.</span> <span class='ref'>Avant toute utilisation sur un dossier réel : vérifier les délais indiqués sur la notification et la version en vigueur des textes sur Légifrance.</span>"}
+
+];
+/* ===================== MOTEUR ===================== */
+let cur=0, timerInt=null, timerSec=0, timerRunning=false;
+const deck=document.getElementById('deck');
+const notesEl=document.getElementById('notes');
+const notesBody=notesEl.querySelector('.nbody');
+const countEl=document.getElementById('count');
+const barFill=document.querySelector('#bar i');
+const ovEl=document.getElementById('ov');
+const inkCanvas=document.getElementById('ink');
+const inkTools=document.getElementById('inktools');
+const ctx=inkCanvas.getContext('2d');
+let inkOn=false, inkTool='pen', drawing=false, lastX=0, lastY=0;
+
+function resizeCanvas(){inkCanvas.width=window.innerWidth;inkCanvas.height=window.innerHeight;}
+resizeCanvas(); window.addEventListener('resize',resizeCanvas);
+
+function logoMark(){ return CONFIG.logo
+  ? `<img class="logo-img" src="${CONFIG.logo}" alt="CGT">`
+  : `<span class="wordmark">CGT</span>`; }
+
+function buildSlide(s,i){
+  const div=document.createElement('div');
+  const types={'title':'s-title','divider':'s-divider','content':'s-content','stats':'s-stats',
+    'steps':'s-steps','two':'s-two','callout':'s-callout','def':'s-def','case':'s-case',
+    'quiz':'s-quiz','closing':'s-closing','svg':'s-svg'};
+  div.className=`slide ${types[s.type]||''} ${s.dark?'dark':''}`;
+  div.dataset.idx=i;
+  if(s.type==='title'){
+    div.innerHTML=`
+      <div class="lockup reveal">${logoMark()}</div>
+      <div class="kicker reveal"><span class="dot"></span>${s.eyebrow||''}</div>
+      <h1 class="title reveal">${Array.isArray(s.title)?s.title.join('<br>'):s.title}</h1>
+      <div class="accent reveal"></div>
+      <p class="lede reveal">${s.lede||''}</p>
+      <div class="foot reveal">${s.foot||''}</div>`;
+  } else if(s.type==='divider'){
+    div.innerHTML=`
+      <div class="kicker reveal"><span class="dot"></span>${s.kicker||''}</div>
+      <h1 class="title reveal">${Array.isArray(s.title)?s.title.join('<br>'):s.title}</h1>
+      <div class="barline reveal"></div>
+      ${s.lede?`<p class="lede reveal">${s.lede}</p>`:''}`;
+  } else if(s.type==='content'){
+    const strip=s.strip?`<div class="note-strip reveal">${s.strip}</div>`:'';
+    const n=s.bullets.length;
+    const ulCls=n>=7?'bullets dense':n>=5?'bullets md':'bullets';
+    const titleSz=n>=7?'clamp(24px,3.6vw,56px)':n>=5?'clamp(26px,4vw,64px)':'clamp(28px,4.5vw,72px)';
+    div.innerHTML=`
+      <div class="kicker reveal"><span class="dot"></span>${s.kicker||'Points clés'}</div>
+      <h2 class="title reveal" style="font-size:${titleSz}">${s.title}</h2>
+      <ul class="${ulCls}">
+        ${s.bullets.map(b=>`<li class="reveal">${b}</li>`).join('')}
+      </ul>
+      ${strip}`;
+  } else if(s.type==='stats'){
+    const src=s.source?`<p class="source reveal">${s.source}</p>`:'';
+    div.innerHTML=`
+      <div class="kicker reveal"><span class="dot"></span>${s.kicker||'Chiffres clés'}</div>
+      <h2 class="title reveal" style="font-size:clamp(28px,4.5vw,72px)">${s.title}</h2>
+      <div class="stats">
+        ${s.items.map(it=>`<div class="stat reveal"><div class="num" data-val="${it.v}" data-pre="${it.p||''}" data-suf="${it.s||''}">${it.p||''}0${it.s||''}</div><div class="lab">${it.l}</div></div>`).join('')}
+      </div>${src}`;
+  } else if(s.type==='steps'){
+    const n=s.items.length;
+    const titleSz=n>=5?'clamp(24px,3.5vw,56px)':n>=4?'clamp(26px,4vw,64px)':'clamp(28px,4.5vw,72px)';
+    div.innerHTML=`
+      <div class="kicker reveal"><span class="dot"></span>${s.kicker||'Étapes'}</div>
+      <h2 class="title reveal" style="font-size:${titleSz}">${s.title}</h2>
+      <div class="steps n${n}">
+        ${s.items.map(it=>`<div class="step reveal"><div class="big">${it.big}</div><div class="nm">${it.nm}</div><div class="ds">${it.ds}</div></div>`).join('')}
+      </div>`;
+  } else if(s.type==='two'){
+    const src=s.source?`<p class="source reveal" style="margin-top:2vh">${s.source}</p>`:'';
+    const sa=s.a.style||'plain', sb=s.b.style||'plain';
+    div.innerHTML=`
+      <div class="kicker reveal"><span class="dot"></span>${s.kicker||'Comparaison'}</div>
+      <h2 class="title reveal" style="font-size:clamp(28px,4.5vw,72px)">${s.title}</h2>
+      <div class="two">
+        <div class="tc ${sa} reveal"><h3>${s.a.h}</h3><p>${s.a.t}</p></div>
+        <div class="tc ${sb} reveal"><h3>${s.b.h}</h3><p>${s.b.t}</p></div>
+      </div>${src}`;
+  } else if(s.type==='callout'){
+    div.innerHTML=`
+      <div class="kicker reveal"><span class="dot"></span>${s.kicker||'Point clé'}</div>
+      <h2 class="title reveal" style="font-size:clamp(28px,4.5vw,72px)">${s.title}</h2>
+      <div class="callout ${s.mode||'black'} reveal">
+        <div class="big">${s.big}</div>
+        <div class="sub">${s.sub||''}</div>
+      </div>`;
+  } else if(s.type==='def'){
+    const extra=s.extra?`<div class="defextra reveal">${s.extra}</div>`:'';
+    div.innerHTML=`
+      <div class="kicker reveal"><span class="dot"></span>Définition</div>
+      <h2 class="title reveal" style="font-size:clamp(28px,4.5vw,72px)">${s.title}</h2>
+      <div class="defbox reveal">
+        <div class="term">${s.term}</div>
+        <div class="txt">${s.text}</div>
+      </div>${extra}`;
+  } else if(s.type==='quiz'){
+    div.innerHTML=`
+      <div class="kicker reveal"><span class="dot"></span>Quiz</div>
+      <h2 class="title reveal" style="font-size:clamp(26px,3.8vw,64px)">${s.title}</h2>
+      <p class="quiz-q reveal">${s.q}</p>
+      <div class="opts">
+        ${s.opts.map((o,j)=>`<button class="opt reveal" data-idx="${j}"><span class="k">${o.k}</span>${o.t}</button>`).join('')}
+      </div>
+      <div class="quiz-a">${s.explain||''}</div>`;
+    setTimeout(()=>{
+      div.querySelectorAll('.opt').forEach(btn=>{
+        btn.addEventListener('click',()=>{
+          const j=+btn.dataset.idx;
+          div.querySelectorAll('.opt').forEach((b,k)=>{
+            b.classList.toggle('good',k===s.ans);
+            b.classList.toggle('bad',k!==s.ans);
+          });
+          div.querySelector('.quiz-a').classList.add('show');
+        });
+      });
+    },100);
+  } else if(s.type==='case'){
+    const qs=Array.isArray(s.questions)?s.questions.map((q,i)=>`<li><span class="qi">${i+1}</span>${q.replace(/^[①②③④⑤⑥]/,'').trim()}</li>`).join(''):'';
+    div.innerHTML=`
+      <div class="kicker reveal"><span class="dot"></span>Cas pratique</div>
+      <h2 class="title reveal" style="font-size:clamp(26px,3.8vw,64px)">${s.title}</h2>
+      <div class="case-sc reveal">${s.scenario}</div>
+      <ul class="case-q bullets reveal" style="margin-top:1.6vh">${qs}</ul>
+      <div class="timer reveal" data-min="${s.minutes}">
+        <svg class="timer-ring" viewBox="0 0 100 100">
+          <circle cx="50" cy="50" r="42" fill="none" stroke="#333" stroke-width="6"/>
+          <circle cx="50" cy="50" r="42" fill="none" stroke="var(--yellow)" stroke-width="6"
+            stroke-dasharray="264" stroke-dashoffset="0" stroke-linecap="round"
+            transform="rotate(-90 50 50)" class="timer-arc"/>
+          <text x="50" y="44" text-anchor="middle" fill="white" font-family="var(--disp,Anton)" font-size="22" font-weight="bold" class="timer-min">${s.minutes}</text>
+          <text x="50" y="60" text-anchor="middle" fill="#888" font-family="var(--ui,sans-serif)" font-size="10">min</text>
+        </svg>
+        <div style="display:flex;flex-direction:column;gap:.6rem">
+          <button class="tbtn t-start" id="ts${i}">▶ Démarrer ${s.minutes} min</button>
+          <button class="tbtn ghost t-reset" id="tr${i}">↺ Réinitialiser</button>
+        </div>
+      </div>`;
+    setTimeout(()=>{
+      const arc=div.querySelector('.timer-arc');
+      const minTxt=div.querySelector('.timer-min');
+      const startBtn=div.querySelector(`#ts${i}`);
+      const resetBtn=div.querySelector(`#tr${i}`);
+      let sec=s.minutes*60, running=false, intv=null;
+      const total=s.minutes*60;
+      const fmt=t=>`${Math.floor(t/60)}:${String(t%60).padStart(2,'0')}`;
+      const updateArc=()=>{
+        const pct=sec/total;
+        if(arc){arc.setAttribute('stroke-dashoffset',String(264*(1-pct)));arc.style.stroke=sec<60?'var(--red)':'var(--yellow)';}
+        if(minTxt){minTxt.textContent=fmt(sec);}
+      };
+      updateArc();
+      startBtn.addEventListener('click',()=>{
+        if(!running){running=true;startBtn.textContent='⏸ Pause';
+          intv=setInterval(()=>{if(sec>0){sec--;updateArc();}else{clearInterval(intv);startBtn.textContent='✓ Terminé';if(arc)arc.style.stroke='var(--red)';}},1000);
+        } else {clearInterval(intv);running=false;startBtn.textContent='▶ Reprendre';}
+      });
+      resetBtn.addEventListener('click',()=>{clearInterval(intv);running=false;sec=total;updateArc();startBtn.textContent=`▶ Démarrer ${s.minutes} min`;});
+    },100);
+  } else if(s.type==='svg'){
+    div.innerHTML=`
+      <div class="kicker reveal"><span class="dot"></span>${s.kicker||'Schéma'}</div>
+      <h2 class="title reveal" style="font-size:clamp(26px,3.8vw,62px)">${s.title}</h2>
+      <div class="svgwrap">${s.svg}</div>
+      ${s.caption?`<p class="svgcap reveal">${s.caption}</p>`:''}`;
+  } else if(s.type==='closing'){
+    div.innerHTML=`
+      <div class="lockup reveal">${logoMark()}</div>
+      <h1 class="title reveal">${(s.title||'').replace(/\\n/g,'<br>')}</h1>
+      <p class="sub reveal">${s.sub||''}</p>
+      <div class="contacts reveal">${s.contacts||''}</div>`;
+  }
+  return div;
+}
+
+SLIDES.forEach((s,i)=>deck.appendChild(buildSlide(s,i)));
+const allSlides=deck.querySelectorAll('.slide');
+
+function goTo(n){
+  const prev=cur;
+  const nCur=Math.max(0,Math.min(n,SLIDES.length-1));
+  // Directional transitions
+  if(nCur!==prev){
+    const dir=nCur>prev?1:-1;
+    allSlides[prev].classList.add(dir>0?'leave-left':'leave-right');
+    allSlides[nCur].classList.add(dir>0?'enter-right':'enter-left');
+    setTimeout(()=>{
+      allSlides[prev].classList.remove('leave-left','leave-right');
+      allSlides[nCur].classList.remove('enter-right','enter-left');
+    },400);
+  }
+  allSlides[cur].classList.remove('active');
+  cur=nCur;
+  allSlides[cur].classList.add('active');
+  countEl.innerHTML=`<b>${String(cur+1).padStart(2,'0')}</b> / ${SLIDES.length}`;
+  barFill.style.width=`${((cur+1)/SLIDES.length)*100}%`;
+  const barNum=document.getElementById('bar-num');if(barNum)barNum.textContent=(cur+1)+' / '+SLIDES.length;
+  notesBody.innerHTML=(SLIDES[cur].notes||'<em>Aucune note pour cette diapositive.</em>').replace(/\n/g,'<br>');
+  // Compteurs animés stats (easing sqrt, toLocaleString fr-FR, data-animated flag)
+  allSlides[cur].querySelectorAll('[data-val]').forEach(el=>{
+    if(el.dataset.animated)return;
+    el.dataset.animated='1';
+    const target=+el.dataset.val, pre=el.dataset.pre||'', suf=el.dataset.suf||'';
+    let t0=null;
+    requestAnimationFrame(function step(now){
+      if(t0===null)t0=now;
+      const t=Math.min(Math.max(0,now-t0),1200);
+      el.textContent=pre+Math.floor(Math.sqrt(t/1200)*target).toLocaleString('fr-FR')+suf;
+      if(t<1200)requestAnimationFrame(step);
+    });
+  });
+  const nsEl=document.getElementById('notes-slide-num');
+  if(nsEl)nsEl.textContent='Diapo '+(cur+1)+' / '+SLIDES.length;
+  if(typeof updatePresenter==='function')updatePresenter();
+  // localStorage
+  try{localStorage.setItem('cgt-recours-slide',cur);}catch(e){}
+}
+
+// resume
+try{const saved=localStorage.getItem('cgt-recours-slide');if(saved!==null)goTo(+saved);else goTo(0);}catch(e){goTo(0);}
+
+// Overview
+function buildOv(){
+  ovEl.innerHTML='';
+  SLIDES.forEach((s,i)=>{
+    const c=document.createElement('div');
+    c.className=`ovc ${s.type==='divider'?'div':''}`;
+    c.innerHTML=`<div class="n">${String(i+1).padStart(2,'0')}</div>
+      ${s.kicker||s.eyebrow?`<div class="k">${s.kicker||s.eyebrow}</div>`:''}
+      <div class="t">${Array.isArray(s.title)?s.title[0]:s.title||s.type}</div>`;
+    c.addEventListener('click',()=>{ovEl.classList.remove('show');goTo(i);});
+    ovEl.appendChild(c);
+  });
+}
+buildOv();
+
+// Nav
+document.addEventListener('keydown',e=>{
+  if(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA')return;
+  if(e.key==='ArrowRight'||e.key===' '||e.key==='ArrowDown'){e.preventDefault();goTo(cur+1);}
+  else if(e.key==='ArrowLeft'||e.key==='ArrowUp'){e.preventDefault();goTo(cur-1);}
+  else if(e.key==='Home'){goTo(0);}
+  else if(e.key==='End'){goTo(SLIDES.length-1);}
+  else if(e.key.toLowerCase()==='o'){ovEl.classList.toggle('show');}
+  else if(e.key.toLowerCase()==='n'){notesEl.classList.toggle('show');}
+  else if(e.key.toLowerCase()==='f'){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen();}
+  else if(e.key.toLowerCase()==='a'){toggleInk();}
+  else if(e.key.toLowerCase()==='l'){document.getElementById('spotlight').classList.toggle('on');}
+  else if(e.key.toLowerCase()==='p'){openPresenter();}
+  else if(e.key==='Escape'){ovEl.classList.remove('show');notesEl.classList.remove('show');document.getElementById('help').classList.remove('show');if(inkOn)toggleInk();}
+  else if(e.key==='?'){document.getElementById('help').classList.toggle('show');}
+});
+document.getElementById('bPrev').addEventListener('click',()=>goTo(cur-1));
+document.getElementById('bNext').addEventListener('click',()=>goTo(cur+1));
+document.getElementById('bOv').addEventListener('click',()=>{buildOv();ovEl.classList.toggle('show');});
+document.getElementById('bNotes').addEventListener('click',()=>notesEl.classList.toggle('show'));
+function toggleNotes(){notesEl.classList.toggle('show');}
+function miniNotes(){notesEl.classList.toggle("mini");}
+
+/* drag resize du panneau notes */
+(function(){
+  const handle=document.getElementById("notes-handle");
+  let dragging=false,startY=0,startH=0;
+  handle.addEventListener("mousedown",e=>{
+    dragging=true;startY=e.clientY;startH=notesEl.offsetHeight;
+    document.body.style.userSelect="none";
+  });
+  document.addEventListener("mousemove",e=>{
+    if(!dragging)return;
+    const delta=startY-e.clientY;
+    const newH=Math.min(Math.max(54,startH+delta),window.innerHeight*.85);
+    notesEl.style.height=newH+"px";
+    if(newH<=60)notesEl.classList.add("mini"); else notesEl.classList.remove("mini");
+  });
+  document.addEventListener("mouseup",()=>{dragging=false;document.body.style.userSelect="";});
+  handle.addEventListener("touchstart",e=>{dragging=true;startY=e.touches[0].clientY;startH=notesEl.offsetHeight;},{passive:true});
+  document.addEventListener("touchmove",e=>{
+    if(!dragging)return;
+    const delta=startY-e.touches[0].clientY;
+    const newH=Math.min(Math.max(54,startH+delta),window.innerHeight*.85);
+    notesEl.style.height=newH+"px";
+    if(newH<=60)notesEl.classList.add("mini"); else notesEl.classList.remove("mini");
+  },{passive:true});
+  document.addEventListener("touchend",()=>{dragging=false;});
+})();
+document.getElementById('bFull').addEventListener('click',()=>document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen());
+document.getElementById('bHelp').addEventListener('click',()=>document.getElementById('help').classList.toggle('show'));
+document.getElementById('bar-num').addEventListener('click',()=>{buildOv();ovEl.classList.toggle('show');});
+// Spotlight mousemove
+document.addEventListener('mousemove',e=>{const sp=document.getElementById('spotlight');if(sp&&sp.classList.contains('on')){sp.style.setProperty('--mx',e.clientX+'px');sp.style.setProperty('--my',e.clientY+'px');}});
+
+// Swipe
+let touchStartX=0;
+document.addEventListener('touchstart',e=>touchStartX=e.touches[0].clientX,{passive:true});
+document.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-touchStartX;if(Math.abs(dx)>40){if(dx<0)goTo(cur+1);else goTo(cur-1);}});
+
+// Ink
+function toggleInk(){
+  inkOn=!inkOn;
+  inkCanvas.classList.toggle('on',inkOn);
+  inkTools.classList.toggle('on',inkOn);
+  document.getElementById('bInk').classList.toggle('cb-on',inkOn);
+}
+document.getElementById('bInk').addEventListener('click',toggleInk);
+document.getElementById('inkClearBtn').addEventListener('click',()=>ctx.clearRect(0,0,inkCanvas.width,inkCanvas.height));
+document.getElementById('inkCloseBtn').addEventListener('click',()=>{if(inkOn)toggleInk();});
+document.querySelectorAll('.it[data-tool]').forEach(b=>{
+  b.addEventListener('click',()=>{
+    inkTool=b.dataset.tool;
+    document.querySelectorAll('.it[data-tool]').forEach(x=>x.classList.remove('act'));
+    b.classList.add('act');
+  });
+});
+inkCanvas.addEventListener('pointerdown',e=>{if(!inkOn)return;drawing=true;lastX=e.offsetX;lastY=e.offsetY;});
+inkCanvas.addEventListener('pointermove',e=>{
+  if(!inkOn||!drawing)return;
+  ctx.save();
+  if(inkTool==='pen'){ctx.strokeStyle='rgba(226,0,26,0.9)';ctx.lineWidth=3;ctx.globalCompositeOperation='source-over';}
+  else if(inkTool==='hl'){ctx.strokeStyle='rgba(255,210,0,0.35)';ctx.lineWidth=24;ctx.globalCompositeOperation='source-over';}
+  else{ctx.lineWidth=28;ctx.globalCompositeOperation='destination-out';}
+  ctx.lineCap='round';ctx.lineJoin='round';
+  ctx.beginPath();ctx.moveTo(lastX,lastY);ctx.lineTo(e.offsetX,e.offsetY);ctx.stroke();
+  ctx.restore();
+  lastX=e.offsetX;lastY=e.offsetY;
+});
+inkCanvas.addEventListener('pointerup',()=>drawing=false);
+allSlides.forEach(s=>s.addEventListener('click',e=>{
+  if(inkOn||e.target.classList.contains('opt')||e.target.closest('.tbtn')||e.target.closest('.it'))return;
+  const x=e.clientX/window.innerWidth;
+  if(x>0.6)goTo(cur+1);else if(x<0.4)goTo(cur-1);
+}));
+
+// Presenter window — même ergonomie que la présentation AT/MP
+// cur est déclaré avec let : invisible via window.cur, d'où ces fonctions exposées à la fenêtre présentateur
+window.__next=()=>goTo(cur+1); window.__prev=()=>goTo(cur-1);
+var presWin=null, presClock=null, presStart=0;
+function plainText(h){const d=document.createElement('div');d.innerHTML=String(h||'');return d.textContent||'';}
+function slideSummary(s){
+  const T=Array.isArray(s.title)?s.title.join(' '):String(s.title||'').replace(/\\n/g,' ');
+  const k=s.kicker||s.eyebrow||'';
+  let body='';
+  if(s.bullets)body=s.bullets.map(b=>'• '+b).join('<br>');
+  else if(s.items&&s.type==='stats')body=s.items.map(it=>`<b>${it.p||''}${Number(it.v).toLocaleString('fr-FR')}${it.s||''}</b> — ${it.l}`).join('<br>');
+  else if(s.items)body=s.items.map(it=>`<b>${it.big}</b> ${it.nm} — ${it.ds}`).join('<br>');
+  else if(s.type==='two')body=`<b>${s.a.h}</b><br>${s.a.t}<br><br><b>${s.b.h}</b><br>${s.b.t}`;
+  else if(s.type==='callout')body=`<b>${s.big||''}</b><br>${s.sub||''}`;
+  else if(s.type==='def')body=`<b>${s.term}</b><br>${s.text}${s.extra?'<br><br>'+s.extra:''}`;
+  else if(s.type==='quiz')body=`${s.q}<br>`+s.opts.map((o,j)=>`${j===s.ans?'✅':'▫️'} <b>${o.k}</b> ${o.t}`).join('<br>')+(s.explain?`<br><br><i>${s.explain}</i>`:'');
+  else if(s.type==='case')body=`${s.scenario}<br><br>`+(s.questions||[]).map((q,j)=>`${j+1}. ${q}`).join('<br>');
+  else if(s.type==='svg')body=s.caption||'Schéma animé — commenter au fil de l\'apparition des éléments.';
+  else body=s.lede||s.sub||'';
+  if(s.strip)body+=`<span class="strip">${s.strip}</span>`;
+  return {T,k,body};
+}
+function openPresenter(){
+  if(presWin&&!presWin.closed){presWin.focus();updatePresenter();return;}
+  presWin=window.open('','cgtPres','width=1280,height=820,menubar=no,toolbar=no,location=no,status=no');
+  if(!presWin)return;
+  presStart=Date.now();
+  const d=presWin.document;d.open();
+  d.write(`<!doctype html><html lang="fr"><head><meta charset="utf-8"><title>Présentateur · CGT</title>
+<style>
+*{margin:0;box-sizing:border-box}
+body{background:#0d0d0d;color:#e8e8e8;font-family:Archivo,Arial,sans-serif;display:grid;grid-template-rows:auto 1fr auto;height:100vh;overflow:hidden}
+.topbar{background:#161616;border-bottom:3px solid #E2001A;display:flex;align-items:center;gap:16px;padding:10px 18px}
+.cgt-badge{font-family:Anton,Impact,sans-serif;background:#E2001A;color:#FFD200;padding:3px 10px;font-size:13px;letter-spacing:.12em}
+.tb-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.15em;color:#aaa;flex:1}
+.tb-count{font-family:Anton,Impact,sans-serif;font-size:20px;color:#E2001A}
+.tb-elapsed{font-family:Anton,Impact,sans-serif;font-size:20px;color:#FFD200}
+.tb-clock{font-family:Anton,Impact,sans-serif;font-size:22px;color:#fff}
+.tb-sep{width:1px;height:24px;background:#333}
+.main{display:grid;grid-template-columns:1.1fr 1fr;min-height:0}
+.col-left{display:flex;flex-direction:column;border-right:1px solid #222;padding:20px 22px;gap:10px;overflow:hidden}
+.label{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.18em;color:#666}
+.cur-kicker{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.18em;color:#FFD200}
+.cur-title{font-family:Anton,Impact,sans-serif;font-size:clamp(22px,2.6vw,36px);text-transform:uppercase;color:#fff;line-height:1.05;margin:4px 0 6px}
+.cur-body{font-family:Georgia,serif;font-size:15px;line-height:1.6;color:#c8c8c8;overflow-y:auto;flex:1}
+.cur-body b{color:#fff}
+.cur-body .strip{display:block;margin-top:10px;background:#1e1e1e;border-left:4px solid #FFD200;padding:8px 12px;font-size:13px;color:#FFD200;font-weight:700}
+.col-right{display:flex;flex-direction:column;padding:20px 22px;gap:10px;overflow:hidden}
+.notes-area{flex:1;overflow-y:auto;background:#111;border-left:5px solid #FFD200;padding:14px 16px;border-radius:0 6px 6px 0}
+.notes-area .nbody{font-family:Georgia,serif;font-size:17px;line-height:1.65;color:#ddd}
+.notes-area .nbody b{color:#fff}
+.notes-area .nbody .cgt{display:block;margin-top:.7em;color:#FFD200;font-weight:700;background:rgba(255,210,0,.06);border-left:3px solid #FFD200;padding:.5em .8em}
+.notes-area .nbody .ref{color:#90b8ff;font-style:italic;font-size:15px}
+.next-box{background:#191919;border-left:5px solid #E2001A;padding:12px 14px;border-radius:0 6px 6px 0}
+.next-title{font-family:Anton,Impact,sans-serif;font-size:18px;text-transform:uppercase;color:#fff}
+.next-type{font-size:11px;color:#888;margin:3px 0}
+.botbar{background:#161616;border-top:1px solid #222;display:flex;align-items:center;gap:10px;padding:10px 18px}
+.nav-btn{font-weight:800;text-transform:uppercase;letter-spacing:.06em;border:2px solid #E2001A;padding:9px 20px;cursor:pointer;font-size:13px}
+.nav-btn.prev{background:transparent;color:#fff;border-color:#444}
+.nav-btn.next{background:#E2001A;color:#fff}
+.hint{font-size:11px;color:#555;margin-left:auto}
+</style></head><body>
+<div class="topbar"><span class="cgt-badge">CGT</span><span class="tb-title">Mode présentateur · Recours & contestations</span>
+<span class="tb-sep"></span><span class="tb-count" id="pc">— / —</span><span class="tb-sep"></span>
+<span class="tb-elapsed" id="pe">⏱ 00:00</span><span class="tb-sep"></span><span class="tb-clock" id="pcl"></span></div>
+<div class="main">
+ <div class="col-left"><div><div class="label">Diapo en cours</div><div class="cur-kicker" id="pk"></div><div class="cur-title" id="pt"></div></div>
+  <div class="label">Contenu</div><div class="cur-body" id="pb"></div></div>
+ <div class="col-right"><div class="label">Notes du formateur</div><div class="notes-area"><div class="nbody" id="pno">—</div></div>
+  <div class="next-box"><div class="label">Diapo suivante</div><div class="next-type" id="pn-type"></div><div class="next-title" id="pn-title">—</div></div></div>
+</div>
+<div class="botbar"><button class="nav-btn prev" onclick="window.opener.__prev()">‹ Précédent</button>
+<button class="nav-btn next" onclick="window.opener.__next()">Suivant ›</button>
+<span class="hint">← → sur cette fenêtre ou la fenêtre projetée</span></div>
+<script>document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();window.opener.__next();}else if(e.key==='ArrowLeft'){e.preventDefault();window.opener.__prev();}});<\/script>
+</body></html>`);
+  d.close();
+  if(presClock)clearInterval(presClock);
+  presClock=setInterval(()=>{
+    if(!presWin||presWin.closed){clearInterval(presClock);return;}
+    const t=new Date();
+    const cl=presWin.document.getElementById('pcl');
+    if(cl)cl.textContent=String(t.getHours()).padStart(2,'0')+':'+String(t.getMinutes()).padStart(2,'0');
+    const sec=Math.floor((Date.now()-presStart)/1000);
+    const ee=presWin.document.getElementById('pe');
+    if(ee)ee.textContent='⏱ '+String(Math.floor(sec/60)).padStart(2,'0')+':'+String(sec%60).padStart(2,'0');
+  },1000);
+  setTimeout(updatePresenter,120);
+}
+function updatePresenter(){
+  if(!presWin||presWin.closed)return;
+  const d=presWin.document; if(!d.getElementById('pt'))return;
+  const c=slideSummary(SLIDES[cur]);
+  d.getElementById('pk').textContent=plainText(c.k);
+  d.getElementById('pt').innerHTML=c.T;
+  d.getElementById('pb').innerHTML=c.body;
+  d.getElementById('pno').innerHTML=(SLIDES[cur].notes||"<i style='color:#555'>Aucune note pour cette diapo.</i>").replace(/\n/g,'<br>');
+  d.getElementById('pc').textContent=String(cur+1).padStart(2,'0')+' / '+SLIDES.length;
+  const lab={content:'Contenu',stats:'Chiffres',steps:'Étapes',two:'Comparaison',callout:'Point clé',def:'Définition',case:'Atelier',quiz:'Quiz',divider:'Séquence',svg:'Schéma animé',closing:'Clôture',title:'Titre'};
+  const nx=SLIDES[cur+1];
+  d.getElementById('pn-title').innerHTML=nx?slideSummary(nx).T:'— Fin de la présentation —';
+  d.getElementById('pn-type').textContent=nx?(lab[nx.type]||nx.type):'';
+}
+document.getElementById('bPres').addEventListener('click',openPresenter);
+</script>
+
+<!-- Bouton impression -->
+<style>
+#btn-print-float{position:fixed;bottom:1.25rem;right:1.25rem;z-index:9999;background:#E2001A;color:#fff;border:none;border-radius:0;padding:.55rem .9rem;font-family:sans-serif;font-size:.75rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;display:flex;align-items:center;gap:.4rem;box-shadow:0 2px 8px rgba(0,0,0,.35);transition:background .15s;}
+#btn-print-float:hover{background:#c40017;}
+@media print{#btn-print-float{display:none!important;}}
+</style>
+<div id="spotlight"></div>
+<button id="btn-print-float" onclick="window.print()">
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+  Imprimer
+</button>
+</body>
+</html>
