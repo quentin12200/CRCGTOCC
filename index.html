@@ -1221,21 +1221,21 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script type="module">
-  // Inscription des stagiaires : QR code vers /inscription.html?s=<session> et liste en direct
+  // Inscription des stagiaires : QR code vers /inscription.html?s=<session> et liste en direct (Firestore, collection inscriptions)
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-  import { getDatabase, ref, onValue, remove } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+  import { getFirestore, collection, query, where, onSnapshot, writeBatch, doc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
   import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
+  // Projet Firebase CROCC (Firestore), comme le calendrier des formations
   const app = initializeApp({
-    apiKey: "AIzaSyBtu2Vmipa2CU8Pro0kXvnesqpUxf-7Z8c",
-    authDomain: "cgt-occitanie-quiz.firebaseapp.com",
-    databaseURL: "https://cgt-occitanie-quiz-default-rtdb.europe-west1.firebasedatabase.app",
-    projectId: "cgt-occitanie-quiz",
-    storageBucket: "cgt-occitanie-quiz.firebasestorage.app",
-    messagingSenderId: "420650097260",
-    appId: "1:420650097260:web:50bdd6dfcc4930a9139649"
+    apiKey: "AIzaSyCFPpNMQ5iJldJmRZgPgA5RQ90vr8j4GbA",
+    authDomain: "crocc-b499f.firebaseapp.com",
+    projectId: "crocc-b499f",
+    storageBucket: "crocc-b499f.firebasestorage.app",
+    messagingSenderId: "821380640870",
+    appId: "1:821380640870:web:06ad904523d2452ada3da7"
   });
-  const db = getDatabase(app);
+  const db = getFirestore(app);
   const auth = getAuth(app);
   const $ = id => document.getElementById(id);
   const esc = t => String(t || '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
@@ -1272,9 +1272,8 @@
     if (!$('insc-overlay').hidden) qr($('insc-qr-grand'), 512);
     if (stop) stop();
     inscrits = []; connus = new Set();
-    stop = onValue(ref(db, `sessions/inscriptions/${session}`), snap => {
-      const v = snap.val() || {};
-      inscrits = Object.entries(v).map(([id, x]) => ({ id, ...x })).sort((a, b) => (a.date || '').localeCompare(b.date || ''));
+    stop = onSnapshot(query(collection(db, 'inscriptions'), where('session', '==', session)), snap => {
+      inscrits = snap.docs.map(d => ({ id: d.id, ...d.data() })).sort((a, b) => (a.date || '').localeCompare(b.date || ''));
       $('insc-login').hidden = true;
       render();
     }, () => {
@@ -1332,7 +1331,9 @@
   $('insc-vider').onclick = async () => {
     if (!inscrits.length) return;
     if (!confirm(`Supprimer les ${inscrits.length} inscription(s) de la session « ${session} » ? Cette action est irréversible.`)) return;
-    await remove(ref(db, `sessions/inscriptions/${session}`));
+    const lot = writeBatch(db);
+    inscrits.forEach(i => lot.delete(doc(db, 'inscriptions', i.id)));
+    await lot.commit();
     msg('Liste vidée.');
   };
   const fermer = () => { $('insc-overlay').hidden = true; };

@@ -1,0 +1,38 @@
+rules_version = '2';
+// Règles Firestore du projet CROCC (crocc-b499f)
+// À coller dans la console Firebase : Firestore > Règles, puis « Publier ».
+// Remplacer REMPLACER_PAR_UID_FORMATEUR par l'UID du compte formateur
+// (Authentication > Users).
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function formateur() {
+      return request.auth != null && request.auth.uid == 'REMPLACER_PAR_UID_FORMATEUR';
+    }
+
+    // Calendrier des formations (calendrier-formations.html) : inchangé, ouvert
+    match /calendrier/{docId} {
+      allow read, write: if true;
+    }
+
+    // Veille juridique : lecture publique ; l'écriture passe par /api/veille-sync
+    // (compte de service, non concerné par ces règles)
+    match /veille/{docId} {
+      allow read: if true;
+      allow write: if formateur();
+    }
+
+    // Inscriptions des stagiaires (inscription.html) :
+    // tout le monde peut s'inscrire, seul le compte formateur lit et supprime
+    match /inscriptions/{docId} {
+      allow create: if request.resource.data.keys().hasOnly(['session', 'nom', 'prenom', 'email', 'date'])
+        && request.resource.data.session is string && request.resource.data.session.size() <= 60
+        && request.resource.data.nom is string && request.resource.data.nom.size() > 0 && request.resource.data.nom.size() <= 80
+        && request.resource.data.prenom is string && request.resource.data.prenom.size() > 0 && request.resource.data.prenom.size() <= 80
+        && request.resource.data.email is string && request.resource.data.email.size() <= 120
+        && request.resource.data.email.matches('^[^@ ]+@[^@ ]+[.][^@ ]+$')
+        && request.resource.data.date is string && request.resource.data.date.size() <= 40;
+      allow read, delete: if formateur();
+    }
+  }
+}
