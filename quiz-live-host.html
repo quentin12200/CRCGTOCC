@@ -66,7 +66,22 @@
     const asked = new URLSearchParams(location.search).get('set');
     // Si la banque demandée n'est pas chargée, on retombe sur le quiz AT/MP plutôt que de planter
     const SET = SETS[asked] && Array.isArray(SETS[asked].questions) ? asked : 'atmp';
-    const QUESTIONS = SETS[SET].questions;
+    // Mélange l'ordre des réponses à chaque session pour que la bonne réponse ne soit pas
+    // toujours à la même lettre : sa position tourne de façon équilibrée entre A, B, C et D.
+    function melangerQuestions(liste) {
+      const aleatoire = n => Math.floor(Math.random() * n);
+      const melanger = t => { for (let i = t.length - 1; i > 0; i--) { const j = aleatoire(i + 1); [t[i], t[j]] = [t[j], t[i]]; } return t; };
+      let cycle = [];
+      return liste.map(q => {
+        const n = q.choices.length;
+        if (!cycle.length) cycle = melanger([0, 1, 2, 3]);
+        const cible = Math.min(cycle.shift(), n - 1);
+        const autres = melanger(q.choices.map((_, i) => i).filter(i => i !== q.correct));
+        const ordre = autres.slice(0, cible).concat([q.correct], autres.slice(cible));
+        return { ...q, choices: ordre.map(i => q.choices[i]), correct: cible };
+      });
+    }
+    const QUESTIONS = melangerQuestions(SETS[SET].questions);
     const SET_TITLE = SETS[SET].title;
     document.addEventListener('DOMContentLoaded', () => {
       document.getElementById('intro-title').textContent = SET_TITLE + ' — Session en direct';
