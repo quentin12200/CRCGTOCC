@@ -1,4 +1,4 @@
-const CACHE = 'cgt-atmp-v26';
+const CACHE = 'cgt-atmp-v27';
 const PRECACHE = [
   '/', '/index.html', '/stagiaires.html', '/carnet-atmp.html',
   '/fiche-delegue.html', '/argumentaire.html', '/lexique.html',
@@ -8,7 +8,7 @@ const PRECACHE = [
   '/quiz/quiz-prevoyance.html', '/quiz/quiz-handicap.html', '/quiz/quiz-fp.html',
   '/fiches-memo/index.html', '/fiches-memo/fiche-atmp.html', '/fiches-memo/fiche-sst.html',
   '/fiches-memo/fiche-prevoyance.html', '/fiches-memo/fiche-handicap.html', '/fiches-memo/fiche-atmp-fp.html',
-  '/assets/style.css', '/assets/cgt-ui.js', '/assets/favicon.svg', '/assets/icons.svg',
+  '/assets/style.css', '/assets/cgt-ui.js', '/assets/motion.js', '/assets/favicon.svg', '/assets/icons.svg',
   'https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&display=swap'
 ];
 
