@@ -593,6 +593,12 @@
     .insc-table td { padding: .45rem .6rem; border-top: 1px solid var(--border-card); word-break: break-word; }
     .insc-table tr.insc-new td { animation: inscNew 1.6s ease-out; }
     @keyframes inscNew { from { background: rgba(255,210,0,.45); } to { background: transparent; } }
+    .insc-login { border: 1px dashed var(--accent); padding: .8rem; margin-bottom: .8rem; font-size: .82rem; }
+    .insc-login[hidden] { display: none; }
+    .insc-login-row { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .5rem; }
+    .insc-login-row .insc-input { flex: 1 1 180px; max-width: none; }
+    .insc-compte { font-size: .74rem; color: var(--texte-muted); margin-top: .4rem; }
+    .insc-compte button { background: none; border: none; color: var(--accent); text-decoration: underline; cursor: pointer; font: inherit; }
     .insc-vide { color: var(--texte-muted); text-align: center; font-style: italic; }
     .insc-msg { font-size: .78rem; color: var(--accent); min-height: 1.1em; margin-top: .5rem; }
     .insc-overlay { position: fixed; inset: 0; z-index: 10001; background: rgba(10,14,22,.92); display: flex; align-items: center; justify-content: center; padding: 1rem; }
@@ -1003,6 +1009,14 @@
           <button type="button" class="insc-btn insc-btn-danger" id="insc-vider">Vider</button>
         </div>
       </div>
+      <form class="insc-login" id="insc-login" hidden>
+        <p><strong>Liste protégée.</strong> Connectez-vous avec le compte formateur Firebase pour voir les inscrits.</p>
+        <div class="insc-login-row">
+          <input class="insc-input" id="insc-login-email" type="email" placeholder="Email du compte formateur" autocomplete="username" required>
+          <input class="insc-input" id="insc-login-mdp" type="password" placeholder="Mot de passe" autocomplete="current-password" required>
+          <button type="submit" class="insc-btn">Se connecter</button>
+        </div>
+      </form>
       <div class="insc-table-wrap">
         <table class="insc-table">
           <thead><tr><th>Nom</th><th>Prénom</th><th>Email</th><th>Heure</th></tr></thead>
@@ -1010,6 +1024,7 @@
         </table>
       </div>
       <div class="insc-msg" id="insc-msg" role="status"></div>
+      <div class="insc-compte" id="insc-compte" hidden>Connecté·e : <span id="insc-compte-email"></span> · <button type="button" id="insc-deconnexion">Se déconnecter</button></div>
     </div>
   </div>
   <div class="insc-overlay" id="insc-overlay" hidden>
@@ -1209,6 +1224,7 @@
   // Inscription des stagiaires : QR code vers /inscription.html?s=<session> et liste en direct
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
   import { getDatabase, ref, onValue, remove } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+  import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
   const app = initializeApp({
     apiKey: "AIzaSyBtu2Vmipa2CU8Pro0kXvnesqpUxf-7Z8c",
@@ -1220,6 +1236,7 @@
     appId: "1:420650097260:web:50bdd6dfcc4930a9139649"
   });
   const db = getDatabase(app);
+  const auth = getAuth(app);
   const $ = id => document.getElementById(id);
   const esc = t => String(t || '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 
@@ -1258,9 +1275,32 @@
     stop = onValue(ref(db, `sessions/inscriptions/${session}`), snap => {
       const v = snap.val() || {};
       inscrits = Object.entries(v).map(([id, x]) => ({ id, ...x })).sort((a, b) => (a.date || '').localeCompare(b.date || ''));
+      $('insc-login').hidden = true;
       render();
+    }, () => {
+      // Lecture refusée par les règles Firebase : il faut le compte formateur
+      stop = null;
+      $('insc-login').hidden = false;
+      $('insc-liste').innerHTML = '<tr><td colspan="4" class="insc-vide">Connexion formateur requise pour afficher la liste.</td></tr>';
     });
   }
+
+  // Compte formateur Firebase : seul compte autorisé à lire et vider les inscriptions
+  onAuthStateChanged(auth, user => {
+    $('insc-compte').hidden = !user;
+    $('insc-compte-email').textContent = user ? user.email : '';
+    if (user && session) choisirSession($('insc-session').value);
+  });
+  $('insc-login').addEventListener('submit', async e => {
+    e.preventDefault();
+    try {
+      await signInWithEmailAndPassword(auth, $('insc-login-email').value.trim(), $('insc-login-mdp').value);
+      $('insc-login-mdp').value = '';
+    } catch (ex) {
+      msg('Connexion refusée : vérifiez l\'email et le mot de passe du compte formateur.');
+    }
+  });
+  $('insc-deconnexion').onclick = () => signOut(auth).then(() => choisirSession($('insc-session').value));
 
   function emails() { return [...new Set(inscrits.map(i => i.email).filter(Boolean))]; }
 
