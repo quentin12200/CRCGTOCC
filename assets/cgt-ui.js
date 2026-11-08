@@ -458,6 +458,8 @@
   function injectDarkToggle() {
     var path = window.location.pathname;
     if (path.indexOf('/presentations/') !== -1 || path.indexOf('login') !== -1) return;
+    // La page a déjà son propre bouton de thème (en-tête) : pas de doublon flottant
+    if (document.querySelector('#theme-toggle, #dark-toggle, .theme-toggle')) return;
 
     var style = document.createElement('style');
     style.textContent = [
@@ -496,6 +498,29 @@
     });
 
     document.body.appendChild(btn);
+
+    // Autres boutons flottants en bas à droite (imprimer, haut de page) : on se place au-dessus
+    var autres = document.querySelectorAll('#btn-print, #back-top, #back-to-top, .back-to-top');
+    var bas = 40;
+    Array.prototype.forEach.call(autres, function (el) {
+      var cs = getComputedStyle(el);
+      if (cs.position !== 'fixed' || cs.display === 'none' || parseFloat(cs.right) > 120) return;
+      bas = Math.max(bas, (parseFloat(cs.bottom) || 0) + el.offsetHeight + 10);
+    });
+    btn.style.bottom = bas + 'px';
+  }
+
+  /* ── Lien « Accueil » pour les stagiaires ──────────────── */
+  // L'accueil formateur demande le code formateur : un stagiaire est renvoyé vers son espace
+  function fixLiensAccueil() {
+    var ls = window.localStorage;
+    try {
+      if (ls.getItem('cgt_auth') === 'ok' || ls.getItem('cgt_stagiaire_auth') !== 'ok') return;
+    } catch (e) { return; }
+    document.querySelectorAll('a[href="/"], a[href="/index.html"], .cgt-breadcrumb a:first-child').forEach(function (a) {
+      if (a.closest('.cgt-footer-links')) return;
+      a.setAttribute('href', '/stagiaires.html');
+    });
   }
 
   /* ── Animations et accessibilité communes (assets/motion.js, assets/a11y.js) ── */
@@ -527,6 +552,7 @@
     initGlossaire();
     injectQuestionDuJour();
     injectDarkToggle();
+    fixLiensAccueil();
   });
 
   if ('serviceWorker' in navigator) {

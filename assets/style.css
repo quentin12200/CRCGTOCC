@@ -201,6 +201,3 @@ a { transition: color var(--trans); }
   a[href]::after { content: " (" attr(href) ")"; font-size: 8pt; color: #555; }
   a[href^="/"]:after, a[href^="#"]:after { content: ""; }
 }
-
-/* Accessibilité : pastille « retour » flottante (fond toujours blanc) lisible dans les deux thèmes */
-a.back-nav { color: #1A5FAD !important; border-color: #1A5FAD !important; }
