@@ -387,6 +387,25 @@ function fmtDate(d) {
   return `${parseInt(j)} ${mois[parseInt(m)-1]} ${y}`;
 }
 
+// Le contenu de la veille vient d'une IA nourrie de sources externes : on échappe le texte
+// et on ne garde du HTML d'analyse que quelques balises de mise en forme, sans attributs.
+const escV = t => String(t ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const BALISES_OK = new Set(['UL', 'OL', 'LI', 'P', 'BR', 'STRONG', 'B', 'EM', 'I']);
+function nettoyerHTML(html) {
+  const tpl = document.createElement('template');
+  tpl.innerHTML = String(html ?? '');
+  (function walk(node) {
+    Array.from(node.childNodes).forEach(n => {
+      if (n.nodeType === 1) {
+        if (!BALISES_OK.has(n.tagName)) { n.replaceWith(document.createTextNode(n.textContent)); return; }
+        Array.from(n.attributes).forEach(a => n.removeAttribute(a.name));
+        walk(n);
+      } else if (n.nodeType !== 3) n.remove();
+    });
+  })(tpl.content);
+  return tpl.innerHTML;
+}
+
 function buildItem(item) {
   const el = document.createElement('article');
   el.className = 'feed-item';
@@ -395,21 +414,21 @@ function buildItem(item) {
 
   el.innerHTML = `
     <div class="item-top">
-      <span class="item-cat cat-${item.cat}">${CAT_LABELS[item.cat]}</span>
+      <span class="item-cat cat-${escV(item.cat)}">${escV(CAT_LABELS[item.cat] || item.cat)}</span>
       <div class="item-meta">
-        <span class="item-date">${fmtDate(item.date)}</span>
+        <span class="item-date">${escV(fmtDate(item.date))}</span>
         ${item.isNew ? '<span class="item-new">Nouveau</span>' : ''}
       </div>
     </div>
-    <div class="item-title">${item.title}</div>
-    ${item.ref ? `<div class="item-ref">${item.ref}</div>` : ''}
-    <div class="item-body">${item.body}</div>
+    <div class="item-title">${escV(item.title)}</div>
+    ${item.ref ? `<div class="item-ref">${escV(item.ref)}</div>` : ''}
+    <div class="item-body">${nettoyerHTML(item.body)}</div>
     <div class="item-impact">
       <span class="impact-label">Impact :</span>
-      <span class="impact-tag impact-${item.impact}">${item.impactLabel}</span>
+      <span class="impact-tag impact-${escV(item.impact)}">${escV(item.impactLabel)}</span>
     </div>
-    <div class="item-expand" id="expand-${item.id}">${item.detail}</div>
-    <button class="btn-more" data-id="${item.id}">+ Voir le détail pratique</button>
+    <div class="item-expand" id="expand-${escV(item.id)}">${nettoyerHTML(item.detail)}</div>
+    <button class="btn-more" data-id="${escV(item.id)}">+ Voir le détail pratique</button>
   `;
 
   el.querySelector('.btn-more').addEventListener('click', function() {

@@ -155,13 +155,24 @@
 
 <script>
 /* Modifier le code stagiaire ici */
-const CODE = 'STAGCGT';
+// Empreinte SHA-256 du code (le code lui-même n'apparaît plus dans la page)
+const CODE_SHA256 = 'b66042898c7d9f02e7ed83d3694c6e932397d259fd3be0e53505e8bd8f2f56ba';
 
-function valider() {
+async function empreinte(txt) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(txt));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+}
+// Retour uniquement vers une page du site (pas de redirection vers un autre domaine)
+function pageRetour(defaut) {
+  const p = new URLSearchParams(location.search).get('from') || '';
+  return /^\/(?![\/\\])/.test(p) ? p : defaut;
+}
+
+async function valider() {
   const v = document.getElementById('code').value.trim().toUpperCase();
-  if (v === CODE) {
+  if (await empreinte(v) === CODE_SHA256) {
     localStorage.setItem('cgt_stagiaire_auth', 'ok');
-    const p = new URLSearchParams(location.search).get('from') || '/stagiaires.html';
+    const p = pageRetour('/stagiaires.html');
     location.replace(p);
   } else {
     document.getElementById('error').style.display = 'block';
@@ -175,7 +186,7 @@ document.getElementById('code').addEventListener('keydown', e => {
 });
 
 if (localStorage.getItem('cgt_stagiaire_auth') === 'ok') {
-  const p = new URLSearchParams(location.search).get('from') || '/stagiaires.html';
+  const p = pageRetour('/stagiaires.html');
   location.replace(p);
 }
 </script>
