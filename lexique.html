@@ -157,8 +157,8 @@
     footer strong { color: #B8001A; }
 
     /* Accessibilité : rouge et bleu éclaircis sur fond sombre (contraste ≥ 4,5:1) */
-    :root[data-theme="dark"] footer strong { color: #FF6B7D; }
-    @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) footer strong { color: #FF6B7D; } }
+    :root[data-theme="dark"] footer:not(.cgt-footer) strong { color: #FF6B7D; }
+    @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) footer:not(.cgt-footer) strong { color: #FF6B7D; } }
 </style>
 </head>
 <body>

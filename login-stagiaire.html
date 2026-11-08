@@ -154,11 +154,13 @@
 </div>
 
 <script>
-/* Modifier le code stagiaire ici */
+/* Changer le code stagiaire : remplacer CODE_SHA256 par l'empreinte SHA-256 du nouveau code écrit en MAJUSCULES
+   (ex. en terminal : printf 'NOUVEAUCODE' | sha256sum). */
 // Empreinte SHA-256 du code (le code lui-même n'apparaît plus dans la page)
 const CODE_SHA256 = 'b66042898c7d9f02e7ed83d3694c6e932397d259fd3be0e53505e8bd8f2f56ba';
 
 async function empreinte(txt) {
+  if (!window.crypto || !crypto.subtle) throw new Error('Connexion non sécurisée : ouvrez le site en https://');
   const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(txt));
   return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
 }
@@ -170,7 +172,10 @@ function pageRetour(defaut) {
 
 async function valider() {
   const v = document.getElementById('code').value.trim().toUpperCase();
-  if (await empreinte(v) === CODE_SHA256) {
+  let ok = false;
+  try { ok = await empreinte(v) === CODE_SHA256; }
+  catch (e) { document.getElementById('error').textContent = e.message; document.getElementById('error').style.display = 'block'; return; }
+  if (ok) {
     localStorage.setItem('cgt_stagiaire_auth', 'ok');
     const p = pageRetour('/stagiaires.html');
     location.replace(p);

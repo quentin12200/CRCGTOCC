@@ -31,17 +31,13 @@
     document.head.appendChild(st);
   }
 
-  function accessibleText(el) {
-    return (el.getAttribute('aria-label') || el.getAttribute('title') || el.textContent || '').replace(/\s+/g, ' ').trim();
-  }
-
   /* 1. Cliquables non natifs */
   function fixClickables(root) {
     root.querySelectorAll('[onclick]').forEach(function (el) {
       if (el.matches(NATIVE) || el.hasAttribute('data-cgt-btn')) return;
       if (/^(HTML|BODY|TR|TD|TH|TABLE|TBODY|LABEL|IMG|SVG)$/i.test(el.tagName)) return;
-      // Un parent déjà interactif suffit
-      if (el.parentElement && el.parentElement.closest('[data-cgt-btn], button, a[href]')) return;
+      // Déjà dans un lien ou un vrai bouton : rien à ajouter
+      if (el.parentElement && el.parentElement.closest('button, a[href]')) return;
       el.setAttribute('data-cgt-btn', '');
       if (!el.hasAttribute('role')) {
         // Ligne de case à cocher (listes de contrôle) : rôle case à cocher
@@ -99,7 +95,12 @@
       for (var i = 0; n && i < 3 && !field; i++, n = n.nextElementSibling) {
         if (n.matches('input, select, textarea')) field = n;
         else if (n.tagName === 'LABEL') break;
-        else field = n.querySelector('input:not([type=hidden]), select, textarea');
+        else {
+          // Un bloc de plusieurs champs (boutons radio, cases) n'a pas une étiquette unique
+          var champs = n.querySelectorAll('input:not([type=hidden]), select, textarea');
+          if (champs.length > 1) break;
+          field = champs[0] || null;
+        }
       }
       if (!field || field.labels && field.labels.length) return;
       if (!field.id) field.id = 'cgt-champ-' + (++uid);
@@ -142,8 +143,12 @@
     var pending = false;
     new MutationObserver(function (muts) {
       if (pending) return;
-      for (var i = 0; i < muts.length; i++) {
-        if (muts[i].addedNodes.length) { pending = true; break; }
+      // Seuls les ajouts d'éléments comptent (pas le texte d'un chrono mis à jour chaque seconde)
+      for (var i = 0; i < muts.length && !pending; i++) {
+        for (var j = 0; j < muts[i].addedNodes.length; j++) {
+          var n = muts[i].addedNodes[j];
+          if (n.nodeType === 1 && !(n.classList && n.classList.contains('cgt-m-ripple'))) { pending = true; break; }
+        }
       }
       if (!pending) return;
       setTimeout(function () { pending = false; run(document); }, 80);

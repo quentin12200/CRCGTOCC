@@ -233,8 +233,8 @@
     @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .btn-ouvrir { background-color: #2E6DB4; border-color: #2E6DB4; } }
 
     /* Accessibilité : rouge et bleu éclaircis sur fond sombre (contraste ≥ 4,5:1) */
-    :root[data-theme="dark"] .welcome-box h2, :root[data-theme="dark"] .welcome-box .welcome-cgt, :root[data-theme="dark"] footer strong { color: #FF6B7D; }
-    @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .welcome-box h2, :root:not([data-theme="light"]) .welcome-box .welcome-cgt, :root:not([data-theme="light"]) footer strong { color: #FF6B7D; } }
+    :root[data-theme="dark"] .welcome-box h2, :root[data-theme="dark"] .welcome-box .welcome-cgt, :root[data-theme="dark"] footer:not(.cgt-footer) strong { color: #FF6B7D; }
+    @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .welcome-box h2, :root:not([data-theme="light"]) .welcome-box .welcome-cgt, :root:not([data-theme="light"]) footer:not(.cgt-footer) strong { color: #FF6B7D; } }
 </style>
   <link rel="manifest" href="/manifest.json">
   <meta name="theme-color" content="#E2001A">
