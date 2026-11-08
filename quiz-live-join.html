@@ -83,13 +83,17 @@
     }
 
     async function rejoindre() {
-      const name = document.getElementById('prenom').value.trim();
-      if (!name) return;
+      const name = document.getElementById('prenom').value.trim().slice(0, 30);
+      if (!name) {
+        document.getElementById('join-error').textContent = 'Indiquez votre prénom pour rejoindre le quiz.';
+        document.getElementById('prenom').focus();
+        return;
+      }
 
       // Vérifier que la session existe
       const snap = await get(ref(db, `sessions/${sessionId}`));
       if (!snap.exists()) {
-        document.getElementById('join-error').textContent = 'Session introuvable. Vérifiez le code.';
+        document.getElementById('join-error').textContent = 'Session introuvable ou terminée. Scannez à nouveau le QR code affiché à l\'écran.';
         return;
       }
 
@@ -441,10 +445,10 @@
       <div id="join-screen">
         <div>
           <label for="prenom">Votre prénom</label>
-          <input type="text" id="prenom" placeholder="Marie, Pierre..." autocomplete="off" autofocus>
+          <input type="text" id="prenom" placeholder="Ex. : Marie" maxlength="30" autocomplete="given-name" autofocus>
         </div>
         <button class="btn-join" onclick="rejoindre()">Rejoindre la session</button>
-        <div class="join-error" id="join-error"></div>
+        <div class="join-error" id="join-error" role="alert"></div>
       </div>
 
       <!-- WAIT -->
@@ -452,7 +456,7 @@
         <div class="wait-icon">⏳</div>
         <div class="wait-msg">
           <strong id="wait-name"></strong>
-          Le formateur va lancer le quiz<span class="dots"></span>
+          Le quiz va bientôt commencer<span class="dots"></span>
         </div>
       </div>
 

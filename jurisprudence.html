@@ -169,7 +169,11 @@
       .card-header { flex-direction: column; gap: .5rem; }
       .card-theme-tag { align-self: flex-start; }
     }
-  </style>
+  
+    /* Accessibilité : texte blanc lisible sur le bouton bleu en thème sombre */
+    :root[data-theme="dark"] .filter-btn.active { background-color: #2E6DB4; border-color: #2E6DB4; }
+    @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .filter-btn.active { background-color: #2E6DB4; border-color: #2E6DB4; } }
+</style>
 </head>
 <body>
 

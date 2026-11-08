@@ -144,10 +144,10 @@
   <div class="form-block">
     <div class="field">
       <label for="code">Code d'accès</label>
-      <input type="password" id="code" placeholder="••••••••" autocomplete="off" autofocus>
+      <input type="password" id="code" placeholder="••••••••" autocomplete="off" aria-label="Code d'accès stagiaire" autofocus>
     </div>
     <button class="btn-login" onclick="valider()">Entrer</button>
-    <div class="error" id="error">Code incorrect — réessayez.</div>
+    <div class="error" id="error" role="alert">Code incorrect. Le code vous est donné en début de formation : demandez-le à votre formateur ou formatrice.</div>
     <p class="alt-link">Formateur ? <a href="/login.html">Accès formateur →</a></p>
   </div>
   <div class="footer">Formation syndicale — CGT Occitanie</div>
