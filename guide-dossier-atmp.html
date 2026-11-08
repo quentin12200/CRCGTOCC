@@ -16,21 +16,25 @@
       --vert: #2E7D32; --vert-bg: rgba(46,125,50,.08);
       --orange: #E65100; --orange-bg: rgba(230,81,0,.08);
       --fond: #101620; --fond-card: #172033; --fond-hover: #1E2D47;
-      --texte: #E6ECF5; --texte-muted: #7D8FA8; --border: #253047; --border-card: #1E2D47;
+      --texte: #E6ECF5; --texte-muted: #9AAAC2; --border: #253047; --border-card: #1E2D47;
+      --rouge-txt: #FF6B7D; --accent-txt: #7FB2E8; --vert-txt: #4CC07F;
     }
     :root[data-theme="light"] {
       --fond: #F4F6FA; --fond-card: #FFFFFF; --fond-hover: #EEF2F8;
       --texte: #1A2540; --texte-muted: #5A6A84; --border: #D8DEE8; --border-card: #E4E9F2;
+      --rouge-txt: #B8001A; --accent-txt: #1A5FAD; --vert-txt: #1A6B2A;
     }
     @media (prefers-color-scheme: light) {
       :root:not([data-theme="dark"]) {
         --fond: #F4F6FA; --fond-card: #FFFFFF; --fond-hover: #EEF2F8;
         --texte: #1A2540; --texte-muted: #5A6A84; --border: #D8DEE8; --border-card: #E4E9F2;
+        --rouge-txt: #B8001A; --accent-txt: #1A5FAD; --vert-txt: #1A6B2A;
       }
     }
     :root[data-theme="dark"] {
       --fond: #101620; --fond-card: #172033; --fond-hover: #1E2D47;
-      --texte: #E6ECF5; --texte-muted: #7D8FA8; --border: #253047; --border-card: #1E2D47;
+      --texte: #E6ECF5; --texte-muted: #9AAAC2; --border: #253047; --border-card: #1E2D47;
+      --rouge-txt: #FF6B7D; --accent-txt: #7FB2E8; --vert-txt: #4CC07F;
     }
 
     body { background: var(--fond); color: var(--texte); font-family: 'Archivo', sans-serif; min-height: 100vh; }
@@ -38,7 +42,7 @@
     .topbar { background: var(--rouge); padding: .85rem 1.5rem; display: flex; align-items: center; gap: 1rem; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,.3); }
     .topbar-badge { font-family: 'Anton', sans-serif; font-size: 1.1rem; color: var(--jaune); letter-spacing: .06em; }
     .topbar-title { font-family: 'Anton', sans-serif; font-size: .95rem; color: #fff; letter-spacing: .03em; }
-    .topbar-back { margin-left: auto; color: rgba(255,255,255,.75); font-size: .78rem; text-decoration: none; border: 1px solid rgba(255,255,255,.3); padding: .25rem .65rem; }
+    .topbar-back { margin-left: auto; color: #fff; font-size: .78rem; text-decoration: none; border: 1px solid rgba(255,255,255,.3); padding: .25rem .65rem; }
     .topbar-back:hover { color: #fff; background: rgba(255,255,255,.1); }
     .stripe { height: 4px; background: var(--jaune); }
 
@@ -47,7 +51,7 @@
     .tab-btn { font-family: 'Archivo', sans-serif; font-size: .82rem; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; padding: .9rem 1.4rem; border: none; background: none; color: var(--texte-muted); cursor: pointer; white-space: nowrap; border-bottom: 3px solid transparent; transition: all .15s; }
     .tab-btn:hover { color: var(--texte); }
     .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
-    .tab-btn.at.active { color: var(--rouge); border-bottom-color: var(--rouge); }
+    .tab-btn.at.active { color: var(--rouge-txt); border-bottom-color: var(--rouge); }
     .tab-btn.mp-t.active { color: var(--vert); border-bottom-color: var(--vert); }
     .tab-btn.mp-ht.active { color: var(--orange); border-bottom-color: var(--orange); }
 
@@ -61,7 +65,7 @@
     .panel-hero h2 { font-family: 'Anton', sans-serif; font-size: 1.6rem; letter-spacing: .03em; margin-bottom: .4rem; }
     .panel-hero p { font-size: .9rem; color: var(--texte-muted); line-height: 1.6; max-width: 68ch; }
     .hero-badge { display: inline-flex; align-items: center; gap: .5rem; font-size: .72rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; padding: .3rem .8rem; margin-bottom: .8rem; }
-    .badge-at  { background: rgba(226,0,26,.12); color: var(--rouge); border: 1px solid rgba(226,0,26,.25); }
+    .badge-at  { background: rgba(226,0,26,.12); color: var(--rouge-txt); border: 1px solid rgba(226,0,26,.25); }
     .badge-mp-t { background: var(--vert-bg); color: var(--vert); border: 1px solid rgba(46,125,50,.25); }
     .badge-mp-ht { background: var(--orange-bg); color: var(--orange); border: 1px solid rgba(230,81,0,.25); }
 
@@ -96,9 +100,9 @@
     .item-text { font-size: .88rem; line-height: 1.45; font-weight: 500; }
     .item-sub { font-size: .77rem; color: var(--texte-muted); margin-top: .25rem; line-height: 1.4; }
     .item-delay { font-size: .7rem; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; padding: .15rem .5rem; border-radius: 3px; margin-top: .3rem; display: inline-block; }
-    .delay-urgent { background: rgba(226,0,26,.12); color: var(--rouge); }
-    .delay-normal { background: rgba(26,95,173,.1); color: var(--accent); }
-    .delay-long   { background: rgba(46,125,50,.1); color: var(--vert); }
+    .delay-urgent { background: rgba(226,0,26,.12); color: var(--rouge-txt); }
+    .delay-normal { background: rgba(26,95,173,.1); color: var(--accent-txt); }
+    .delay-long   { background: rgba(46,125,50,.1); color: var(--vert-txt); }
 
     /* DOCS BOX */
     .docs-box { background: var(--fond-card); border: 1px solid var(--border-card); border-left: 4px solid var(--accent); padding: 1.1rem 1.2rem; margin-bottom: 1.5rem; }
@@ -109,12 +113,12 @@
     .doc-name { flex: 1; font-weight: 500; }
     .doc-note { font-size: .74rem; color: var(--texte-muted); }
     .doc-req { font-size: .68rem; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; padding: .12rem .45rem; border-radius: 2px; }
-    .req-obl { background: rgba(226,0,26,.1); color: var(--rouge); }
+    .req-obl { background: rgba(226,0,26,.1); color: var(--rouge-txt); }
     .req-util { background: rgba(26,95,173,.08); color: var(--accent); }
 
     /* ALERTE */
     .alerte { background: rgba(226,0,26,.07); border: 1px solid rgba(226,0,26,.2); border-left: 4px solid var(--rouge); padding: .9rem 1.1rem; margin-bottom: 1.2rem; font-size: .85rem; line-height: 1.5; }
-    .alerte strong { color: var(--rouge); }
+    .alerte strong { color: var(--rouge-txt); }
     .info-box { background: var(--accent-muted); border: 1px solid rgba(26,95,173,.2); border-left: 4px solid var(--accent); padding: .9rem 1.1rem; margin-bottom: 1.2rem; font-size: .85rem; line-height: 1.5; color: var(--texte); }
     [data-theme="dark"] .info-box { background: rgba(26,95,173,.1); }
     .info-box strong { color: var(--accent); }

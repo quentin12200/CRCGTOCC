@@ -16,7 +16,7 @@
     body { background: var(--fond); color: var(--texte); font-family: 'Inter', sans-serif; min-height: 100vh; display: flex; flex-direction: column; }
     .topbar { background: #0C1220; border-bottom: 3px solid var(--rouge); padding: .75rem 1.5rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
     .topbar-title { font-family: 'Anton', sans-serif; font-size: 1rem; letter-spacing: .05em; color: #fff; }
-    .topbar a { font-size: .72rem; color: rgba(255,255,255,.8); text-decoration: none; border: 1px solid rgba(255,255,255,.3); padding: .25rem .6rem; transition: background .15s; }
+    .topbar a { font-size: .72rem; color: #fff; text-decoration: none; border: 1px solid rgba(255,255,255,.3); padding: .25rem .6rem; transition: background .15s; }
     .topbar a:hover { background: rgba(255,255,255,.1); }
     .stripe { height: 5px; background: var(--jaune); }
     .progress-bar-wrap { background: var(--card-bg); border-bottom: 1px solid var(--border); padding: .6rem 1.5rem; display: flex; align-items: center; gap: 1rem; }
@@ -79,7 +79,11 @@
     .btn-modules:hover { border-color: var(--accent); color: var(--texte); }
     .hidden { display: none !important; }
     @media (max-width: 560px) { .choices { grid-template-columns: 1fr; } .topbar { padding: .65rem 1rem; } }
-  </style>
+  
+    /* Accessibilité : texte blanc lisible sur les boutons bleus en thème sombre (contraste ≥ 4,5:1) */
+    :root[data-theme="dark"] .btn-suivant, :root[data-theme="dark"] .btn-refaire { background-color: #2E6DB4; border-color: #2E6DB4; }
+    @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .btn-suivant, :root:not([data-theme="light"]) .btn-refaire { background-color: #2E6DB4; border-color: #2E6DB4; } }
+</style>
 </head>
 <body>
 <script src="/assets/cgt-ui.js"></script>

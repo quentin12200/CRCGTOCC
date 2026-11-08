@@ -85,14 +85,14 @@
 
     .header-title span {
       font-size: 0.78rem;
-      color: rgba(255,255,255,0.75);
+      color: #fff;
       font-weight: 400;
       letter-spacing: 0.02em;
     }
 
     .access-badge {
       font-size: 0.68rem;
-      color: rgba(255,255,255,0.6);
+      color: #fff;
       border: 1px solid rgba(255,255,255,0.3);
       padding: 0.3rem 0.65rem;
       white-space: nowrap;
@@ -284,11 +284,12 @@
       padding: 1.1rem 1.5rem;
       text-align: center;
       font-size: 0.73rem;
-      color: var(--texte-muted);
+      color: #4A5568;
       letter-spacing: 0.02em;
     }
 
-    footer strong { color: var(--rouge); }
+    footer strong { color: #B8001A; }
+    footer a { color: #B8001A; }
 
     /* ── HERO ── */
     .hero {
@@ -335,7 +336,7 @@
     }
     .hero-sub {
       font-size: .9rem;
-      color: rgba(255,255,255,.8);
+      color: #fff;
       line-height: 1.6;
       max-width: 520px;
       margin-bottom: 1.2rem;
@@ -551,7 +552,12 @@
     @media (max-width: 640px) {
       .modules-grid, .modules-grid--famille { grid-template-columns: 1fr; }
       .ressources-grid { grid-template-columns: 1fr; }
+      /* En-tête sur deux lignes : les boutons passent sous le titre au lieu de déborder */
+      header { flex-wrap: wrap; }
+      .header-title { flex: 1 1 200px; }
     }
+    /* Accessibilité : liens des cartes assez hauts pour le doigt (cible ≥ 24 px) */
+    .card-body li a { display: inline-block; padding: .3rem 0; }
     @media (max-width: 520px) {
       header { padding: 0.75rem 1rem; gap: 0.75rem; }
       .logo-wrap img { height: 44px; }
@@ -611,7 +617,15 @@
     #insc-qr-grand img, #insc-qr-grand canvas { width: min(60vh, 80vw) !important; height: auto !important; }
     .insc-overlay-count { font-family: 'Anton', sans-serif; font-size: 1.4rem; margin: 1rem 0; color: var(--rouge); }
     @media (max-width: 720px) { .insc-wrap { grid-template-columns: 1fr; } }
-  </style>
+  
+    /* Accessibilité : texte blanc lisible sur les boutons bleus en thème sombre (contraste ≥ 4,5:1) */
+    :root[data-theme="dark"] .btn-ouvrir, :root[data-theme="dark"] .insc-btn-ghost:hover { background-color: #2E6DB4; border-color: #2E6DB4; }
+    @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .btn-ouvrir, :root:not([data-theme="light"]) .insc-btn-ghost:hover { background-color: #2E6DB4; border-color: #2E6DB4; } }
+
+    /* Accessibilité : rouge et bleu éclaircis sur fond sombre (contraste ≥ 4,5:1) */
+    :root[data-theme="dark"] .insc-btn-danger, :root[data-theme="dark"] .philo-title { color: #FF6B7D !important; }
+    @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .insc-btn-danger, :root:not([data-theme="light"]) .philo-title { color: #FF6B7D !important; } }
+</style>
   <link rel="manifest" href="/manifest.json">
   <meta name="theme-color" content="#E2001A">
 </head>
@@ -738,7 +752,7 @@ document.addEventListener('DOMContentLoaded', function () {
     <p class="hero-sub">Chaque droit individuel est un levier collectif. Chaque obligation de l'employeur est assortie de sa sanction. Formez, exigez, agissez.</p>
     <form class="hero-search" onsubmit="(function(f){var q=f.querySelector('input').value.trim();if(q)location.href='/recherche.html?q='+encodeURIComponent(q);})(this);return false;">
       <svg class="search-icon-hero" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-      <input type="search" placeholder="Rechercher une fiche, un quiz, une procédure…" autocomplete="off" id="hero-search-input">
+      <input type="search" aria-label="Rechercher dans le site" placeholder="Rechercher une fiche, un quiz, une procédure…" autocomplete="off" id="hero-search-input">
       <button type="submit">Rechercher</button>
     </form>
   </div>
@@ -755,7 +769,7 @@ document.addEventListener('DOMContentLoaded', function () {
   </nav>
 
   <div style="background:#fff;border-left:5px solid #E2001A;padding:1.1rem 1.4rem;margin-bottom:2rem">
-    <div style="font-family:'Anton',sans-serif;font-size:.85rem;letter-spacing:.06em;text-transform:uppercase;color:#E2001A;margin-bottom:.5rem">Philosophie pédagogique CGT</div>
+    <div class="philo-title" style="font-family:'Anton',sans-serif;font-size:.85rem;letter-spacing:.06em;text-transform:uppercase;color:#E2001A;margin-bottom:.5rem">Philosophie pédagogique CGT</div>
     <p style="font-size:.875rem;color:#1A1A1A;line-height:1.7">La formation syndicale CGT n'est pas une transmission neutre de règles juridiques. Elle est un outil d'émancipation et d'action collective : chaque droit individuel devient levier collectif, chaque obligation de l'employeur est assortie de sa sanction, chaque procédure individuelle ouvre sur l'action du CSE, de la F3SCT ou de la négociation. Le formateur ne délivre pas un cours — il arme des militants. L'objectif de chaque session : que chaque participant reparte avec au moins un outil concret utilisable dès le lendemain pour défendre un·e collègue.</p>
   </div>
 
@@ -1007,7 +1021,7 @@ document.addEventListener('DOMContentLoaded', function () {
   <div class="section-label">Inscription des stagiaires <span class="section-sub">QR code à projeter en début de formation</span></div>
   <div class="insc-wrap">
     <div class="insc-qr-col">
-      <div id="insc-qr" class="insc-qr" aria-label="QR code d'inscription"></div>
+      <div id="insc-qr" class="insc-qr" role="img" aria-label="QR code d'inscription des stagiaires"></div>
       <div class="insc-url" id="insc-url"></div>
       <div class="insc-actions">
         <button type="button" class="insc-btn" id="insc-plein-ecran">Projeter en plein écran</button>
@@ -1030,8 +1044,8 @@ document.addEventListener('DOMContentLoaded', function () {
       <form class="insc-login" id="insc-login" hidden>
         <p><strong>Liste protégée.</strong> Connectez-vous avec le compte formateur Firebase pour voir les inscrits.</p>
         <div class="insc-login-row">
-          <input class="insc-input" id="insc-login-email" type="email" placeholder="Email du compte formateur" autocomplete="username" required>
-          <input class="insc-input" id="insc-login-mdp" type="password" placeholder="Mot de passe" autocomplete="current-password" required>
+          <input class="insc-input" id="insc-login-email" type="email" aria-label="Email du compte formateur" placeholder="Email du compte formateur" autocomplete="username" required>
+          <input class="insc-input" id="insc-login-mdp" type="password" aria-label="Mot de passe" placeholder="Mot de passe" autocomplete="current-password" required>
           <button type="submit" class="insc-btn">Se connecter</button>
         </div>
       </form>
@@ -1142,7 +1156,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 <footer>
   <strong>CGT</strong> Comité Régional Occitanie — Formation syndicale secteur privé
-  &nbsp;·&nbsp; <a href="/stagiaires.html" style="color:var(--rouge);text-decoration:underline">Espace stagiaire →</a>
+  &nbsp;·&nbsp; <a href="/stagiaires.html" style="text-decoration:underline">Espace stagiaire →</a>
 </footer>
 
 <button id="back-top" aria-label="Retour en haut" onclick="window.scrollTo({top:0,behavior:'smooth'})">

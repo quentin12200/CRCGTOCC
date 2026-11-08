@@ -140,12 +140,12 @@
       'font-family:"Anton",sans-serif;font-size:1rem;color:#FFD200}',
       '.cgt-footer-name{text-align:left}',
       '.cgt-footer-name strong{display:block;color:#B0BDD0;font-size:.85rem}',
-      '.cgt-footer-name span{font-size:.72rem;color:#5A6A84}',
+      '.cgt-footer-name span{font-size:.72rem;color:#8A9AB3}',
       '.cgt-footer-links{display:flex;flex-wrap:wrap;gap:.75rem;',
       'justify-content:center;margin:.75rem 0}',
-      '.cgt-footer-links a{color:#5A6A84;text-decoration:none;transition:color .15s}',
+      '.cgt-footer-links a{color:#8A9AB3;text-decoration:none;transition:color .15s;display:inline-block;padding:.3rem .1rem}',
       '.cgt-footer-links a:hover{color:#4A8FD4}',
-      '.cgt-footer-copy{font-size:.72rem;color:#3A4A5E;margin-top:.5rem}',
+      '.cgt-footer-copy{font-size:.72rem;color:#7A8AA3;margin-top:.5rem}',
       '@media print{.cgt-footer{display:none}}'
     ].join('');
     document.head.appendChild(style);
@@ -233,12 +233,13 @@
     if (parts[0] === 'fiches-memo') crumbs.push({ label: 'Fiches mémo', href: base + '/fiches-memo/index.html' });
     if (parts[0] === 'quiz') crumbs.push({ label: 'Quiz', href: base + '/quiz/index.html' });
     var style = document.createElement('style');
-    style.textContent = '.cgt-breadcrumb{padding:.4rem 1.5rem;font-size:.78rem;font-family:"Inter",sans-serif;color:#5A6A84;border-bottom:1px solid #1E2D47;background:#0C1220}.cgt-breadcrumb a{color:#5A6A84;text-decoration:none;transition:color .15s}.cgt-breadcrumb a:hover{color:#4A8FD4}.cgt-breadcrumb span{margin:0 .35rem;opacity:.4}@media print{.cgt-breadcrumb{display:none}}';
+    style.textContent = '.cgt-breadcrumb{padding:.4rem 1.5rem;font-size:.78rem;font-family:"Inter",sans-serif;color:#8A9AB3;border-bottom:1px solid #1E2D47;background:#0C1220}.cgt-breadcrumb a{color:#8A9AB3;text-decoration:none;transition:color .15s;display:inline-block;padding:.25rem 0}.cgt-breadcrumb a:hover{color:#7FB2E8}.cgt-breadcrumb .sep{margin:0 .35rem;opacity:.5}.cgt-breadcrumb .cur{color:#C9D3E2}@media print{.cgt-breadcrumb{display:none}}';
     document.head.appendChild(style);
-    var html = crumbs.map(function(c){ return '<a href="'+c.href+'">'+c.label+'</a><span>›</span>'; }).join('') +
-      '<span style="color:#999">' + document.title.split('·')[0].trim() + '</span>';
+    var html = crumbs.map(function(c){ return '<a href="'+c.href+'">'+c.label+'</a><span class="sep" aria-hidden="true">›</span>'; }).join('') +
+      '<span class="cur" aria-current="page">' + document.title.split('·')[0].trim() + '</span>';
     var el = document.createElement('nav');
     el.className = 'cgt-breadcrumb';
+    el.setAttribute('aria-label', 'Fil d\'Ariane');
     el.innerHTML = html;
     var ref = document.body.children[1];
     document.body.insertBefore(el, ref || null);
@@ -271,19 +272,6 @@
       try { localStorage.setItem('cgt_last_visit', JSON.stringify(visited)); } catch(e) {}
     }
   }
-
-  /* ── Init ──────────────────────────────────────────────── */
-  injectLoader();
-
-  document.addEventListener('DOMContentLoaded', function () {
-    injectIcons();
-    injectTicker();
-    injectFooter();
-    initReveal();
-    initKeyboard();
-    injectBreadcrumb();
-    initUpdateBadges();
-  });
 
   /* ── 9. Glossaire interactif ────────────────────────────── */
   var GLOSSAIRE = {
@@ -510,14 +498,18 @@
     document.body.appendChild(btn);
   }
 
-  /* ── Animations communes (assets/motion.js) ─────────────── */
-  function loadMotion() {
-    if (window.__cgtMotion || document.querySelector('script[src*="motion.js"]')) return;
+  /* ── Animations et accessibilité communes (assets/motion.js, assets/a11y.js) ── */
+  function loadAsset(name) {
+    if (document.querySelector('script[src*="' + name + '"]')) return;
     var me = document.querySelector('script[src*="cgt-ui.js"]');
     var s = document.createElement('script');
-    s.src = me ? me.getAttribute('src').replace('cgt-ui.js', 'motion.js') : '/assets/motion.js';
+    s.src = me ? me.getAttribute('src').replace('cgt-ui.js', name) : '/assets/' + name;
     s.defer = true;
     document.head.appendChild(s);
+  }
+  function loadMotion() {
+    if (!window.__cgtMotion) loadAsset('motion.js');
+    if (!window.__cgtA11y) loadAsset('a11y.js');
   }
 
   /* ── Init ──────────────────────────────────────────────── */

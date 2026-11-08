@@ -21,13 +21,13 @@
     @media (prefers-color-scheme: dark) {
       :root:not([data-theme="light"]) {
         --fond:#101620;--fond-card:#172033;--fond-hover:#1E2D47;--blanc:#172033;
-        --texte:#E6ECF5;--texte-muted:#7D8FA8;--muted:#7D8FA8;--border:#253047;--border-card:#1E2D47;
+        --texte:#E6ECF5;--texte-muted:#9AAAC2;--muted:#9AAAC2;--border:#253047;--border-card:#1E2D47;
         --accent:#4A8FD4;--accent-dark:#3A7BBF;
       }
     }
     :root[data-theme="dark"] {
       --fond:#101620;--fond-card:#172033;--fond-hover:#1E2D47;--blanc:#172033;
-      --texte:#E6ECF5;--texte-muted:#7D8FA8;--muted:#7D8FA8;--border:#253047;--border-card:#1E2D47;
+      --texte:#E6ECF5;--texte-muted:#9AAAC2;--muted:#9AAAC2;--border:#253047;--border-card:#1E2D47;
       --accent:#4A8FD4;--accent-dark:#3A7BBF;
     }
     body{background:var(--fond);color:var(--texte);font-family:'Archivo',sans-serif;font-size:.95rem;line-height:1.6}
@@ -36,11 +36,11 @@
     .site-header{background:var(--rouge);padding:.9rem 2rem;display:flex;align-items:center;gap:1rem;position:sticky;top:0;z-index:100}
     .site-header img{height:52px;width:auto}
     .site-header-text h1{font-family:'Anton',sans-serif;font-size:1.1rem;letter-spacing:.05em;color:#fff;line-height:1.2}
-    .site-header-text p{font-size:.75rem;color:rgba(255,255,255,.75);margin-top:.1rem}
+    .site-header-text p{font-size:.75rem;color: #fff;margin-top:.1rem}
     .header-stripe{height:5px;background:var(--jaune)}
 
     /* NAV */
-    .back-nav{padding:.6rem 2rem;background:#fff;border-bottom:1px solid var(--border);font-size:.8rem}
+    .back-nav{padding:.6rem 2rem;background:var(--fond-card);border-bottom:1px solid var(--border);font-size:.8rem}
     .back-nav a{color:var(--accent);text-decoration:none;font-weight:600}
     .back-nav a:hover{text-decoration:underline}
 
@@ -61,11 +61,11 @@
     /* SEARCH & FILTERS */
     .controls{display:flex;gap:.75rem;margin-bottom:1.25rem;flex-wrap:wrap;align-items:center}
     .search-wrap{position:relative;flex:1;min-width:220px}
-    .search-wrap input{width:100%;padding:.65rem 1rem .65rem 2.4rem;border:2px solid var(--border);background:#fff;font-family:'Archivo',sans-serif;font-size:.9rem;color:var(--texte);outline:none;transition:border-color .15s}
+    .search-wrap input{width:100%;padding:.65rem 1rem .65rem 2.4rem;border:2px solid var(--border);background:var(--fond-card);font-family:'Archivo',sans-serif;font-size:.9rem;color:var(--texte);outline:none;transition:border-color .15s}
     .search-wrap input:focus{border-color:var(--accent)}
     .search-wrap svg{position:absolute;left:.7rem;top:50%;transform:translateY(-50%);color:var(--muted)}
     .filters{display:flex;gap:.4rem;flex-wrap:wrap}
-    .filter-btn{padding:.38rem .75rem;border:2px solid var(--border);background:#fff;font-family:'Archivo',sans-serif;font-size:.75rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;transition:.15s;color:var(--muted)}
+    .filter-btn{padding:.38rem .75rem;border:2px solid var(--border);background:var(--fond-card);font-family:'Archivo',sans-serif;font-size:.75rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;transition:.15s;color:var(--muted)}
     .filter-btn:hover,.filter-btn.active{background:var(--accent);border-color:var(--accent);color:#fff}
     #search-count{font-size:.8rem;color:var(--muted);white-space:nowrap;align-self:center}
 
@@ -85,7 +85,7 @@
     .mp-card[data-cat="chimique"] .tab-num{color:#7B2D8B}
     .mp-card[data-cat="physique"] .tab-num{color:#0066CC}
     .mp-card[data-cat="biologique"] .tab-num{color:var(--vert)}
-    .mp-card[data-cat="tms"] .tab-num{color:#E67E00}
+    .mp-card[data-cat="tms"] .tab-num{color:#B26100}
     .mp-card[data-cat="cancer"] .tab-num{color:#8B0000}
     .mp-card[data-cat="amiante"] .tab-num{color:#333}
 
@@ -208,7 +208,29 @@
     @media print{#btn-print,.controls,.back-nav,.filters,.filter-btn,.mp-toggle{display:none!important}.mp-body{display:block!important}.site-header{position:static}}
     @media(max-width:640px){main{padding:1rem 1rem 3rem}.mp-body{padding-left:1.1rem}.stats-bar{gap:.6rem}}
     @media(max-width:480px){.mp-grid{grid-template-columns:1fr}.site-header{padding:.7rem 1rem}.tab-num{font-size:1.1rem}.controls{flex-direction:column}.filters{width:100%}.filter-btn{font-size:.7rem}}
-  </style>
+  
+    /* Accessibilité : texte blanc lisible sur les boutons bleus en thème sombre (contraste ≥ 4,5:1) */
+    :root[data-theme="dark"] .filter-btn:hover, :root[data-theme="dark"] .filter-btn.active, :root[data-theme="dark"] #btn-print { background-color: #2E6DB4; border-color: #2E6DB4; }
+    @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .filter-btn:hover, :root:not([data-theme="light"]) .filter-btn.active, :root:not([data-theme="light"]) #btn-print { background-color: #2E6DB4; border-color: #2E6DB4; } }
+
+    /* Accessibilité : numéros de tableau lisibles en thème sombre (contraste ≥ 4,5:1) */
+    :root[data-theme="dark"] .mp-card[data-cat="chimique"] .tab-num{color:#C07CD0}
+    :root[data-theme="dark"] .mp-card[data-cat="physique"] .tab-num{color:#6AA8F0}
+    :root[data-theme="dark"] .mp-card[data-cat="biologique"] .tab-num{color:#4CC07F}
+    :root[data-theme="dark"] .mp-card[data-cat="tms"] .tab-num{color:#F0A040}
+    :root[data-theme="dark"] .mp-card[data-cat="cancer"] .tab-num{color:#FF7373}
+    :root[data-theme="dark"] .mp-card[data-cat="amiante"] .tab-num{color:#C9D3E2}
+    @media (prefers-color-scheme: dark){
+      :root:not([data-theme="light"]) .mp-card[data-cat="chimique"] .tab-num{color:#C07CD0}
+      :root:not([data-theme="light"]) .mp-card[data-cat="physique"] .tab-num{color:#6AA8F0}
+      :root:not([data-theme="light"]) .mp-card[data-cat="biologique"] .tab-num{color:#4CC07F}
+      :root:not([data-theme="light"]) .mp-card[data-cat="tms"] .tab-num{color:#F0A040}
+      :root:not([data-theme="light"]) .mp-card[data-cat="cancer"] .tab-num{color:#FF7373}
+      :root:not([data-theme="light"]) .mp-card[data-cat="amiante"] .tab-num{color:#C9D3E2}
+    }
+    :root[data-theme="dark"] .intro-warn a, :root[data-theme="dark"] .guide a { color: #7FB2E8; }
+    @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .intro-warn a, :root:not([data-theme="light"]) .guide a { color: #7FB2E8; } }
+</style>
 </head>
 <body>
 <a href="/index.html" class="back-nav" style="position:fixed;top:12px;left:14px;z-index:200;display:flex;align-items:center;gap:6px;font-size:12px;font-weight:700;text-decoration:none;color:var(--accent,#1A5FAD);background:rgba(255,255,255,.92);border:1.5px solid var(--accent,#1A5FAD);padding:5px 12px 5px 8px;border-radius:20px;letter-spacing:.03em;box-shadow:0 2px 8px rgba(0,0,0,.12);backdrop-filter:blur(4px)">
@@ -382,7 +404,7 @@
   <div class="controls">
     <div class="search-wrap">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-      <input type="text" id="search" placeholder="Rechercher un tableau, une maladie, un produit, un métier…" autocomplete="off">
+      <input type="text" id="search" aria-label="Rechercher un tableau, une maladie, un produit ou un métier" placeholder="Rechercher un tableau, une maladie, un produit, un métier…" autocomplete="off">
     </div>
     <div class="filters">
       <button class="filter-btn active" data-cat="all">Tous</button>

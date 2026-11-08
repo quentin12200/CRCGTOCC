@@ -49,7 +49,7 @@
   <div id="table-of-contents" class="toc">
     <div class="toc-header">
       <h2>Sommaire</h2>
-      <button id="close-toc" class="close-toc">×</button>
+      <button id="close-toc" class="close-toc" aria-label="Fermer le sommaire">×</button>
     </div>
     <div class="toc-content">
       <ul>
@@ -101,7 +101,7 @@
 
         <div class="time-control">
           <div class="time-input">
-            ⏱ Heure de début : <input type="time" id="startHour0" onchange="calcEnd(0)">
+            ⏱ Heure de début : <input type="time" aria-label="Heure de début" id="startHour0" onchange="calcEnd(0)">
           </div>
           <div class="time-output">
             Fin prévue : <span id="end-time0"></span>
@@ -135,7 +135,7 @@
 
         <div class="time-control">
           <div class="time-input">
-            ⏱ Heure de début : <input type="time" id="startHour1" onchange="calcEnd(1)">
+            ⏱ Heure de début : <input type="time" aria-label="Heure de début" id="startHour1" onchange="calcEnd(1)">
           </div>
           <div class="time-output">
             Fin prévue : <span id="end-time1"></span>
@@ -167,7 +167,7 @@
 
         <div class="time-control">
           <div class="time-input">
-            ⏱ Heure de début : <input type="time" id="startHour2" onchange="calcEnd(2)">
+            ⏱ Heure de début : <input type="time" aria-label="Heure de début" id="startHour2" onchange="calcEnd(2)">
           </div>
           <div class="time-output">
             Fin prévue : <span id="end-time2"></span>
@@ -200,7 +200,7 @@
 
         <div class="time-control">
           <div class="time-input">
-            ⏱ Heure de début : <input type="time" id="startHour3" onchange="calcEnd(3)">
+            ⏱ Heure de début : <input type="time" aria-label="Heure de début" id="startHour3" onchange="calcEnd(3)">
           </div>
           <div class="time-output">
             Fin prévue : <span id="end-time3"></span>
@@ -234,7 +234,7 @@
 
         <div class="time-control">
           <div class="time-input">
-            ⏱ Heure de début : <input type="time" id="startHour4" onchange="calcEnd(4)">
+            ⏱ Heure de début : <input type="time" aria-label="Heure de début" id="startHour4" onchange="calcEnd(4)">
           </div>
           <div class="time-output">
             Fin prévue : <span id="end-time4"></span>
@@ -268,7 +268,7 @@
 
         <div class="time-control">
           <div class="time-input">
-            ⏱ Heure de début : <input type="time" id="startHour5" onchange="calcEnd(5)">
+            ⏱ Heure de début : <input type="time" aria-label="Heure de début" id="startHour5" onchange="calcEnd(5)">
           </div>
           <div class="time-output">
             Fin prévue : <span id="end-time5"></span>
@@ -304,7 +304,7 @@
 
         <div class="time-control">
           <div class="time-input">
-            ⏱ Heure de début : <input type="time" id="startHour6" onchange="calcEnd(6)">
+            ⏱ Heure de début : <input type="time" aria-label="Heure de début" id="startHour6" onchange="calcEnd(6)">
           </div>
           <div class="time-output">
             Fin prévue : <span id="end-time6"></span>
@@ -336,7 +336,7 @@
 
         <div class="time-control">
           <div class="time-input">
-            ⏱ Heure de début : <input type="time" id="startHour7" onchange="calcEnd(7)">
+            ⏱ Heure de début : <input type="time" aria-label="Heure de début" id="startHour7" onchange="calcEnd(7)">
           </div>
           <div class="time-output">
             Fin prévue : <span id="end-time7"></span>
@@ -367,7 +367,7 @@
 
         <div class="time-control">
           <div class="time-input">
-            ⏱ Heure de début : <input type="time" id="startHour8" onchange="calcEnd(8)">
+            ⏱ Heure de début : <input type="time" aria-label="Heure de début" id="startHour8" onchange="calcEnd(8)">
           </div>
           <div class="time-output">
             Fin prévue : <span id="end-time8"></span>
@@ -865,5 +865,6 @@
   <script src="js/outils-animation.js"></script>
   <script src="js/reveal.js"></script>
 <script src="../assets/motion.js" defer></script>
+<script src="../assets/a11y.js" defer></script>
 </body>
 </html>

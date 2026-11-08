@@ -23,14 +23,14 @@
     @media (prefers-color-scheme: dark) {
       :root:not([data-theme="light"]) {
         --fond: #101620; --fond-card: #172033; --fond-hover: #1E2D47;
-        --texte: #E6ECF5; --texte-muted: #7D8FA8;
+        --texte: #E6ECF5; --texte-muted: #9AAAC2;
         --border: #253047; --border-card: #1E2D47;
         --accent: #4A8FD4; --accent-dark: #3A7BBF;
       }
     }
     :root[data-theme="dark"] {
       --fond: #101620; --fond-card: #172033; --fond-hover: #1E2D47;
-      --texte: #E6ECF5; --texte-muted: #7D8FA8;
+      --texte: #E6ECF5; --texte-muted: #9AAAC2;
       --border: #253047; --border-card: #1E2D47;
       --accent: #4A8FD4; --accent-dark: #3A7BBF;
     }
@@ -42,9 +42,9 @@
     .logo-wrap img { height: 56px; width: auto; background: white; padding: 3px 5px; }
     .header-divider { width: 2px; height: 42px; background: rgba(255,255,255,.3); flex-shrink: 0; }
     .header-title h1 { font-family: 'Anton', sans-serif; font-size: 1.1rem; letter-spacing: .04em; color: #fff; line-height: 1.2; }
-    .header-title span { font-size: .75rem; color: rgba(255,255,255,.75); }
+    .header-title span { font-size: .75rem; color: #fff; }
     .header-back { margin-left: auto; }
-    .header-back a { font-size: .75rem; color: rgba(255,255,255,.8); text-decoration: none; border: 1px solid rgba(255,255,255,.3); padding: .3rem .7rem; letter-spacing: .04em; transition: background .15s; }
+    .header-back a { font-size: .75rem; color: #fff; text-decoration: none; border: 1px solid rgba(255,255,255,.3); padding: .3rem .7rem; letter-spacing: .04em; transition: background .15s; }
     .header-back a:hover { background: rgba(255,255,255,.1); color: #fff; }
     .stripe { height: 5px; background: var(--jaune); }
 
@@ -107,7 +107,11 @@
       font-size: .62rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase;
       padding: .15rem .45rem; margin-left: auto;
     }
-    .tag-theme.atmp { background: #FFE8EA; color: var(--rouge); }
+    .tag-theme.atmp { background: #FFE8EA; color: #B8001A; }
+    /* Encadré « Point syndical » : fond clair fixe, texte foncé dans les deux thèmes */
+    .cgt-militant { color: #1A2540; }
+    .cgt-militant strong { color: #B8001A !important; }
+    .cgt-militant .cgt-gloss { color: inherit; }
     .tag-theme.prevoyance { background: #FFF8D6; color: #8A6D00; }
     .entry-def { font-size: .875rem; color: var(--texte-muted); line-height: 1.7; }
     .entry-def strong { color: var(--texte); font-weight: 600; }
@@ -145,7 +149,17 @@
       .logo-wrap img { height: 44px; }
       main { padding: 1.5rem 1rem; }
     }
-  </style>
+  
+    /* Accessibilité : texte blanc lisible sur les boutons bleus en thème sombre (contraste ≥ 4,5:1) */
+    :root[data-theme="dark"] .filter-btn.active, :root[data-theme="dark"] .alpha-btn:hover, :root[data-theme="dark"] .alpha-btn.has-terms:hover, :root[data-theme="dark"] .btn-print { background-color: #2E6DB4; border-color: #2E6DB4; }
+    @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .filter-btn.active, :root:not([data-theme="light"]) .alpha-btn:hover, :root:not([data-theme="light"]) .alpha-btn.has-terms:hover, :root:not([data-theme="light"]) .btn-print { background-color: #2E6DB4; border-color: #2E6DB4; } }
+
+    footer strong { color: #B8001A; }
+
+    /* Accessibilité : rouge et bleu éclaircis sur fond sombre (contraste ≥ 4,5:1) */
+    :root[data-theme="dark"] footer strong { color: #FF6B7D; }
+    @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) footer strong { color: #FF6B7D; } }
+</style>
 </head>
 <body>
 <a href="/index.html" class="back-nav" style="position:fixed;top:12px;left:14px;z-index:200;display:flex;align-items:center;gap:6px;font-size:12px;font-weight:700;text-decoration:none;color:var(--accent,#1A5FAD);background:rgba(255,255,255,.92);border:1.5px solid var(--accent,#1A5FAD);padding:5px 12px 5px 8px;border-radius:20px;letter-spacing:.03em;box-shadow:0 2px 8px rgba(0,0,0,.12);backdrop-filter:blur(4px)">
@@ -183,7 +197,7 @@
 
   <div class="search-bar">
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-    <input type="text" id="search" placeholder="Rechercher un terme…" autocomplete="off">
+    <input type="text" id="search" aria-label="Rechercher un terme" placeholder="Rechercher un terme…" autocomplete="off">
   </div>
 
   <div class="filters">
