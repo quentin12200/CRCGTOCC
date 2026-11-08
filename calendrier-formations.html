@@ -211,7 +211,7 @@ body { font-family: Arial, sans-serif; background: var(--fond); color: var(--tex
   <div id="cal-wrap">
     <div class="cal-header">
       <!-- REMPLACER PAR L'URL DU LOGO -->
-      <img class="cal-logo" id="cal-logo-img" src="/assets/logo-cgt-occitanie.jpg" alt="CGT Occitanie" onerror="this.style.display='none'">
+      <img class="cal-logo" id="cal-logo-img" src="/assets/logo-cgt-occitanie-web.jpg" alt="CGT Occitanie" onerror="this.style.display='none'">
       <div class="cal-titles">
         <div class="cal-title" id="cal-title">Planning formations AT/MP – CGT Occitanie – 2e semestre 2026</div>
         <div class="cal-sub">AT/MP · Secteur privé · Document transmis à la CARSAT</div>
@@ -637,7 +637,7 @@ let logoB64 = null;
     c.getContext('2d').drawImage(img, 0, 0);
     try { logoB64 = c.toDataURL('image/jpeg', 0.9); } catch(e) {}
   };
-  img.src = '/assets/logo-cgt-occitanie.jpg';
+  img.src = '/assets/logo-cgt-occitanie-web.jpg';
 })();
 
 // ── INDICATEUR DE SYNC ────────────────────────────────────────────────────────
