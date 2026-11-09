@@ -60,10 +60,10 @@
     .header-divider { width: 2px; height: 44px; background: rgba(255,255,255,.3); flex-shrink: 0; }
     .header-title { flex: 1; min-width: 160px; }
     .header-title h1 { font-family: 'Anton', sans-serif; font-size: 1.15rem; letter-spacing: .04em; color: #fff; line-height: 1.2; }
-    .header-title span { font-size: .78rem; color: rgba(255,255,255,.75); }
+    .header-title span { font-size: .78rem; color: #fff; }
     .header-nav { display: flex; gap: .75rem; align-items: center; }
     .header-nav a {
-      color: rgba(255,255,255,.85);
+      color: #fff;
       text-decoration: none;
       font-size: .82rem;
       font-weight: 500;
@@ -259,7 +259,7 @@
 
 <header>
   <div class="logo-wrap">
-    <img src="/assets/logo-cgt-occitanie.jpg" alt="CGT Comité Régional Occitanie">
+    <img src="/assets/logo-cgt-occitanie-web.jpg" alt="CGT Comité Régional Occitanie">
   </div>
   <div class="header-divider"></div>
   <div class="header-title">
@@ -283,7 +283,7 @@
     <p>Droits, définitions, démarches, calculs — tout le contenu du site en une recherche.</p>
     <div class="search-wrap">
       <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-      <input type="search" id="search-input" placeholder="Ex. : faute inexcusable, IJ, délai déclaration…" autocomplete="off" autocorrect="off" spellcheck="false">
+      <input type="search" id="search-input" aria-label="Rechercher dans tout le site" placeholder="Ex. : faute inexcusable, IJ, délai déclaration…" autocomplete="off" autocorrect="off" spellcheck="false">
       <button class="search-clear" id="search-clear" aria-label="Effacer">✕</button>
     </div>
   </section>

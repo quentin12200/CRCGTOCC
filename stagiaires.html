@@ -66,7 +66,7 @@
     .header-divider { width: 2px; height: 48px; background: rgba(255,255,255,.3); flex-shrink: 0; }
     .header-title { flex: 1; }
     .header-title h1 { font-family: 'Anton', sans-serif; font-size: 1.2rem; letter-spacing: .04em; color: #fff; line-height: 1.2; }
-    .header-title span { font-size: .78rem; color: rgba(255,255,255,.75); font-weight: 400; }
+    .header-title span { font-size: .78rem; color: #fff; font-weight: 400; }
     .access-badge {
       font-size: .68rem; color: #1A1A1A; background: #FFD200;
       padding: .3rem .65rem; white-space: nowrap; letter-spacing: .04em; font-weight: 700;
@@ -94,7 +94,7 @@
     .hero-content { position: relative; z-index: 2; padding: 2rem 2.5rem 2rem; max-width: 660px; }
     .hero-kicker { font-size: .65rem; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: var(--jaune); margin-bottom: .5rem; }
     .hero-title { font-family: 'Anton', sans-serif; font-size: clamp(1.6rem, 3.5vw, 2.6rem); color: #fff; line-height: 1.1; letter-spacing: .02em; margin-bottom: .6rem; }
-    .hero-sub { font-size: .85rem; color: rgba(255,255,255,.8); line-height: 1.6; max-width: 480px; }
+    .hero-sub { font-size: .85rem; color: #fff; line-height: 1.6; max-width: 480px; }
     .hero-stripe { height: 5px; background: var(--jaune); }
 
     /* ── CARD ICON ── */
@@ -125,6 +125,7 @@
     .welcome-box .icon { font-size: 1.8rem; flex-shrink: 0; }
     .welcome-box h2 { font-family: 'Anton', sans-serif; font-size: 1rem; letter-spacing: .04em; color: var(--rouge); margin-bottom: .25rem; }
     .welcome-box p { font-size: .85rem; color: var(--texte-muted); line-height: 1.6; }
+    .welcome-box .welcome-cgt { color: #C40017; }
 
     /* ── SEARCH ── */
     .search-wrap {
@@ -226,7 +227,15 @@
       main { padding: 1.75rem 1rem 1.5rem; }
       .card { padding: 1.25rem; }
     }
-  </style>
+  
+    /* Accessibilité : texte blanc lisible sur les boutons bleus en thème sombre (contraste ≥ 4,5:1) */
+    :root[data-theme="dark"] .btn-ouvrir { background-color: #2E6DB4; border-color: #2E6DB4; }
+    @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .btn-ouvrir { background-color: #2E6DB4; border-color: #2E6DB4; } }
+
+    /* Accessibilité : rouge et bleu éclaircis sur fond sombre (contraste ≥ 4,5:1) */
+    :root[data-theme="dark"] .welcome-box h2, :root[data-theme="dark"] .welcome-box .welcome-cgt, :root[data-theme="dark"] footer:not(.cgt-footer) strong { color: #FF6B7D; }
+    @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .welcome-box h2, :root:not([data-theme="light"]) .welcome-box .welcome-cgt, :root:not([data-theme="light"]) footer:not(.cgt-footer) strong { color: #FF6B7D; } }
+</style>
   <link rel="manifest" href="/manifest.json">
   <meta name="theme-color" content="#E2001A">
 </head>
@@ -301,7 +310,7 @@
 
 <header>
   <div class="logo-wrap">
-    <img src="/assets/logo-cgt-occitanie.jpg" alt="CGT Comité Régional Occitanie">
+    <img src="/assets/logo-cgt-occitanie-web.jpg" alt="CGT Comité Régional Occitanie">
   </div>
   <div class="header-divider"></div>
   <div class="header-title">
@@ -335,7 +344,7 @@
 <div class="stripe"></div>
 
 <div class="hero">
-  <img src="/assets/Hero banner — espace stagiaire.png" alt="Accompagnement CGT après un accident du travail">
+  <img src="/assets/hero-stagiaire.webp" width="1600" height="549" fetchpriority="high" alt="Accompagnement CGT après un accident du travail">
   <div class="hero-overlay"></div>
   <div class="hero-content">
     <div class="hero-kicker">Espace stagiaire — Formation AT/MP CGT Occitanie</div>
@@ -352,7 +361,7 @@
     <div>
       <h2>Bienvenue dans votre espace de formation</h2>
       <p>Retrouvez ici les supports de votre formation AT/MP CGT Occitanie : présentations, tableaux de maladies professionnelles, lexique et modèles de courriers. Ces documents sont réservés aux stagiaires de la session en cours.</p>
-      <p style="margin-top:.6rem;font-size:.85rem;color:#E2001A;font-weight:600">Cette formation ne vise pas seulement à vous informer — elle est là pour former des militants capables de défendre leurs collègues, d'exercer des droits, d'agir collectivement et de contester ce qui doit l'être.</p>
+      <p class="welcome-cgt" style="margin-top:.6rem;font-size:.85rem;font-weight:600">Cette formation ne vise pas seulement à vous informer — elle est là pour former des militants capables de défendre leurs collègues, d'exercer des droits, d'agir collectivement et de contester ce qui doit l'être.</p>
     </div>
   </div>
 
@@ -378,7 +387,7 @@
     <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
       <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
     </svg>
-    <input id="search-modules" type="search" placeholder="Rechercher un module ou une ressource…" autocomplete="off">
+    <input id="search-modules" type="search" aria-label="Rechercher un module ou une ressource" placeholder="Rechercher un module ou une ressource…" autocomplete="off">
   </div>
   <div class="no-results" id="no-results">Aucun module trouvé.</div>
 

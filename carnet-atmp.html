@@ -44,7 +44,7 @@
     .header-divider { width: 2px; height: 40px; background: rgba(255,255,255,.3); flex-shrink: 0; }
     .header-title { flex: 1; }
     .header-title h1 { font-family: 'Anton', sans-serif; font-size: 1.15rem; letter-spacing: .04em; color: #fff; line-height: 1.2; }
-    .header-title span { font-size: .75rem; color: rgba(255,255,255,.75); font-weight: 400; }
+    .header-title span { font-size: .75rem; color: #fff; font-weight: 400; }
     .header-badge { font-size: .65rem; color: #1A1A1A; background: var(--jaune); padding: .3rem .65rem; white-space: nowrap; letter-spacing: .04em; font-weight: 700; }
     .stripe { height: 5px; background: var(--jaune); }
 
@@ -58,11 +58,11 @@
     }
     .sidebar-logo { padding: 0 1.25rem 1.25rem; border-bottom: 1px solid rgba(255,255,255,.1); }
     .sidebar-logo .brand { font-family: 'Anton', sans-serif; font-size: 1.1rem; color: var(--jaune); }
-    .sidebar-logo .sub { font-size: .72rem; color: rgba(255,255,255,.5); margin-top: .15rem; }
+    .sidebar-logo .sub { font-size: .72rem; color: rgba(255,255,255,.8); margin-top: .15rem; }
     nav.sidebar ul { list-style: none; padding: .75rem 0; }
     nav.sidebar ul li a {
       display: block; padding: .5rem 1.25rem;
-      color: rgba(255,255,255,.65); text-decoration: none; font-size: .84rem;
+      color: rgba(255,255,255,.8); text-decoration: none; font-size: .84rem;
       border-left: 3px solid transparent;
       transition: all .15s;
     }
@@ -94,7 +94,7 @@
     }
     .moment-fort .mf-label {
       font-size: .7rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
-      color: rgba(255,255,255,.45); margin-bottom: 1.25rem;
+      color: rgba(255,255,255,.8); margin-bottom: 1.25rem;
     }
     .moment-fort .mf-chiffre {
       font-family: 'Anton', sans-serif;
@@ -106,12 +106,12 @@
     .moment-fort .mf-chiffre.rouge { color: var(--rouge); }
     .moment-fort .mf-sub {
       font-size: clamp(1rem, 2.5vw, 1.3rem);
-      color: rgba(255,255,255,.75);
+      color: #fff;
       line-height: 1.4;
       font-weight: 500;
     }
     .moment-fort .mf-detail {
-      margin-top: 1rem; font-size: .88rem; color: rgba(255,255,255,.45); line-height: 1.6;
+      margin-top: 1rem; font-size: .88rem; color: rgba(255,255,255,.8); line-height: 1.6;
     }
 
     .developpement {
@@ -145,7 +145,7 @@
     }
     .cas-pratique .bloc-label {
       font-size: .7rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
-      color: #a07c00; margin-bottom: 1rem;
+      color: #7A5C00; margin-bottom: 1rem;
     }
     .cas-pratique .scenario {
       font-style: italic; color: #555; font-size: .93rem; line-height: 1.7;
@@ -212,6 +212,8 @@
     :root[data-theme="dark"] .cas-pratique .scenario { background: rgba(255,255,255,.04); border-color: #3a3200; color: #bbb; }
     :root[data-theme="dark"] .cas-pratique .question { color: #ccc; }
     :root[data-theme="dark"] .point-syndical { background: #1f0d0d; border-left-color: var(--rouge); }
+    :root[data-theme="dark"] .point-syndical .bloc-label { color: #FF5A6E; }
+    :root[data-theme="dark"] .cas-pratique .bloc-label { color: #E0B400; }
     :root[data-theme="dark"] .point-syndical p, :root[data-theme="dark"] .point-syndical li { color: var(--texte-muted); }
     :root[data-theme="dark"] .point-syndical strong { color: var(--texte); }
 
@@ -245,7 +247,10 @@
       nav.sidebar { top: 52px; height: calc(100vh - 52px); }
       .stripe { height: 3px; }
     }
-  </style>
+  
+    /* Accessibilité : rouge éclairci sur les fonds sombres des « moments forts » (contraste ≥ 4,5:1) */
+    .moment-fort { --rouge: #FF6B7D; }
+</style>
 </head>
 <body>
 <script src="/assets/cgt-ui.js"></script>
@@ -313,7 +318,7 @@
       <h2>1. L'ampleur du problème</h2>
 
       <div style="margin-bottom:1.5rem;border-radius:6px;overflow:hidden;position:relative;">
-        <img src="/assets/Bandeau-contextuel.png" alt="" style="width:100%;height:200px;object-fit:cover;object-position:center;display:block;">
+        <img src="/assets/bandeau-contextuel.webp" loading="lazy" alt="" style="width:100%;height:200px;object-fit:cover;object-position:center;display:block;">
         <div style="position:absolute;inset:0;background:linear-gradient(to right,rgba(10,10,10,.7) 0%,transparent 60%);display:flex;align-items:center;padding:1.5rem 2rem;">
           <div style="font-family:'Anton',sans-serif;font-size:clamp(1rem,2.5vw,1.5rem);color:#fff;line-height:1.2;letter-spacing:.03em;">Le travail tue.<br><span style="color:#FFD200">1 331 morts en 2025.</span></div>
         </div>

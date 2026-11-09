@@ -37,14 +37,14 @@
     .topbar { background: var(--rouge); padding: 1rem 1.5rem; display: flex; align-items: center; gap: 1rem; position: sticky; top: 0; z-index: 100; }
     .topbar-badge { font-family: 'Anton', sans-serif; font-size: 1.1rem; color: var(--jaune); letter-spacing: .06em; }
     .topbar-title { font-family: 'Anton', sans-serif; font-size: 1rem; color: #fff; letter-spacing: .04em; }
-    .topbar-back { margin-left: auto; color: rgba(255,255,255,.75); font-size: .8rem; text-decoration: none; }
+    .topbar-back { margin-left: auto; color: #fff; font-size: .8rem; text-decoration: none; }
     .topbar-back:hover { color: #fff; }
     .stripe { height: 4px; background: var(--jaune); }
 
     .hero { background: linear-gradient(135deg, #0D1A35 0%, #0A1525 100%); border-bottom: 1px solid var(--border); padding: 2rem 1.5rem 1.5rem; text-align: center; }
     .hero-icon { font-size: 2.5rem; margin-bottom: .75rem; }
     .hero h1 { font-family: 'Anton', sans-serif; font-size: clamp(1.4rem, 4vw, 2rem); color: var(--jaune); letter-spacing: .04em; margin-bottom: .5rem; }
-    .hero p { font-size: .9rem; color: rgba(255,255,255,.7); max-width: 52ch; margin: 0 auto; line-height: 1.6; }
+    .hero p { font-size: .9rem; color: #fff; max-width: 52ch; margin: 0 auto; line-height: 1.6; }
 
     .content { max-width: 740px; margin: 0 auto; padding: 1.5rem 1rem 0; }
 
@@ -134,7 +134,11 @@
       .faq-q { font-size: .84rem; padding: .85rem 2.75rem .85rem .85rem; }
       .faq-a { padding: .85rem 1rem 1rem; font-size: .84rem; }
     }
-  </style>
+  
+    /* Accessibilité : rouge et bleu éclaircis sur fond sombre (contraste ≥ 4,5:1) */
+    :root[data-theme="dark"] .filter-btn.active { color: #7FB2E8; border-color: #7FB2E8; }
+    @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .filter-btn.active { color: #7FB2E8; border-color: #7FB2E8; } }
+</style>
 </head>
 <body>
 <script src="/assets/cgt-ui.js"></script>
@@ -160,7 +164,7 @@
 <div class="content">
   <div class="search-wrap">
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-    <input type="text" id="search" placeholder="Rechercher une question…" autocomplete="off">
+    <input type="text" id="search" aria-label="Rechercher une question" placeholder="Rechercher une question…" autocomplete="off">
   </div>
 
   <div class="filters">

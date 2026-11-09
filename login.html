@@ -136,7 +136,7 @@
 
 <div class="login-box">
   <div class="logo-block">
-    <img src="/assets/logo-cgt-occitanie.jpg" alt="CGT Comité Régional Occitanie">
+    <img src="/assets/logo-cgt-occitanie-web.jpg" alt="CGT Comité Régional Occitanie">
     <h1>Espace Formateur CGT</h1>
     <p class="subtitle">CGT Occitanie — Accès réservé</p>
   </div>
@@ -144,24 +144,40 @@
   <div class="form-block">
     <div class="field">
       <label for="code">Code d'accès</label>
-      <input type="password" id="code" placeholder="••••••••" autocomplete="off" autofocus>
+      <input type="password" id="code" placeholder="••••••••" autocomplete="current-password" aria-label="Code d'accès formateur" autofocus>
     </div>
     <button class="btn-login" onclick="valider()">Entrer</button>
-    <div class="error" id="error">Code incorrect — réessayez.</div>
+    <div class="error" id="error" role="alert">Code incorrect. Vérifiez-le et réessayez.</div>
     <p class="alt-link">Stagiaire ? <a href="/login-stagiaire.html">Accès stagiaire →</a></p>
   </div>
   <div class="footer">Formation syndicale — CGT Occitanie</div>
 </div>
 
 <script>
-/* Modifier le code ici */
-const CODE = 'CGTOCC';
+/* Changer le code : remplacer CODE_SHA256 par l'empreinte SHA-256 du nouveau code écrit en MAJUSCULES
+   (ex. en terminal : printf 'NOUVEAUCODE' | sha256sum). */
+// Empreinte SHA-256 du code (le code lui-même n'apparaît plus dans la page)
+const CODE_SHA256 = 'd6b15953d26c6930826dbfd281084b2d36d8e294c4018ae25a028edbd8d94740';
 
-function valider() {
+async function empreinte(txt) {
+  if (!window.crypto || !crypto.subtle) throw new Error('Connexion non sécurisée : ouvrez le site en https://');
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(txt));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+}
+// Retour uniquement vers une page du site (pas de redirection vers un autre domaine)
+function pageRetour(defaut) {
+  const p = new URLSearchParams(location.search).get('from') || '';
+  return /^\/(?![\/\\])/.test(p) ? p : defaut;
+}
+
+async function valider() {
   const v = document.getElementById('code').value.trim().toUpperCase();
-  if (v === CODE) {
+  let ok = false;
+  try { ok = await empreinte(v) === CODE_SHA256; }
+  catch (e) { document.getElementById('error').textContent = e.message; document.getElementById('error').style.display = 'block'; return; }
+  if (ok) {
     localStorage.setItem('cgt_auth', 'ok');
-    const p = new URLSearchParams(location.search).get('from') || '/';
+    const p = pageRetour('/');
     location.replace(p);
   } else {
     document.getElementById('error').style.display = 'block';
@@ -176,7 +192,7 @@ document.getElementById('code').addEventListener('keydown', e => {
 
 /* Déjà connecté → rediriger */
 if (localStorage.getItem('cgt_auth') === 'ok') {
-  const p = new URLSearchParams(location.search).get('from') || '/';
+  const p = pageRetour('/');
   location.replace(p);
 }
 </script>

@@ -43,11 +43,11 @@
     .logo-wrap img { height: 56px; width: auto; background: white; padding: 3px 5px; }
     .header-divider { width: 2px; height: 42px; background: rgba(255,255,255,.3); flex-shrink: 0; }
     .header-title h1 { font-family: 'Anton', sans-serif; font-size: 1.1rem; letter-spacing: .04em; color: #fff; line-height: 1.2; }
-    .header-title span { font-size: .75rem; color: rgba(255,255,255,.75); }
+    .header-title span { font-size: .75rem; color: #fff; }
     .header-actions { margin-left: auto; display: flex; align-items: center; gap: .75rem; }
-    .header-back a { font-size: .75rem; color: rgba(255,255,255,.8); text-decoration: none; border: 1px solid rgba(255,255,255,.3); padding: .3rem .7rem; letter-spacing: .04em; transition: background .15s; white-space: nowrap; }
+    .header-back a { font-size: .75rem; color: #fff; text-decoration: none; border: 1px solid rgba(255,255,255,.3); padding: .3rem .7rem; letter-spacing: .04em; transition: background .15s; white-space: nowrap; }
     .header-back a:hover { background: rgba(255,255,255,.1); color: #fff; }
-    .btn-print { font-family: 'Archivo', sans-serif; font-size: .75rem; font-weight: 600; letter-spacing: .04em; color: rgba(255,255,255,.8); background: none; border: 1px solid rgba(255,255,255,.3); padding: .3rem .7rem; cursor: pointer; transition: background .15s; display: flex; align-items: center; gap: .4rem; white-space: nowrap; }
+    .btn-print { font-family: 'Archivo', sans-serif; font-size: .75rem; font-weight: 600; letter-spacing: .04em; color: #fff; background: none; border: 1px solid rgba(255,255,255,.3); padding: .3rem .7rem; cursor: pointer; transition: background .15s; display: flex; align-items: center; gap: .4rem; white-space: nowrap; }
     .btn-print:hover { background: rgba(255,255,255,.1); color: #fff; }
     .stripe { height: 5px; background: var(--jaune); }
 
@@ -169,12 +169,13 @@
       .card-header { flex-direction: column; gap: .5rem; }
       .card-theme-tag { align-self: flex-start; }
     }
-  </style>
+  
+    /* Accessibilité : texte blanc lisible sur le bouton bleu en thème sombre */
+    :root[data-theme="dark"] .filter-btn.active { background-color: #2E6DB4; border-color: #2E6DB4; }
+    @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .filter-btn.active { background-color: #2E6DB4; border-color: #2E6DB4; } }
+</style>
 </head>
 <body>
-<a href="/index.html" class="back-nav" style="position:fixed;top:12px;left:14px;z-index:200;display:flex;align-items:center;gap:6px;font-size:12px;font-weight:700;text-decoration:none;color:var(--accent,#1A5FAD);background:rgba(255,255,255,.92);border:1.5px solid var(--accent,#1A5FAD);padding:5px 12px 5px 8px;border-radius:20px;letter-spacing:.03em;box-shadow:0 2px 8px rgba(0,0,0,.12);backdrop-filter:blur(4px)">
-  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>Accueil
-</a>
 
 <header>
   <div class="logo-wrap">
@@ -206,7 +207,7 @@
   <div class="toolbar">
     <div class="search-wrap">
       <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-      <input type="search" id="search-input" placeholder="Rechercher un arrêt, un principe, un mot-clé…" autocomplete="off" spellcheck="false">
+      <input type="search" id="search-input" aria-label="Rechercher un arrêt, un principe ou un mot-clé" placeholder="Rechercher un arrêt, un principe, un mot-clé…" autocomplete="off" spellcheck="false">
     </div>
     <div class="filters" role="group" aria-label="Filtrer par thème">
       <button class="filter-btn active" data-filter="all">Tous</button>

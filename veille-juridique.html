@@ -37,9 +37,9 @@
     .logo-sq { width: 44px; height: 44px; background: #fff; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-family: 'Anton', sans-serif; font-size: 1rem; color: var(--rouge); flex-shrink: 0; }
     .header-divider { width: 2px; height: 38px; background: rgba(255,255,255,.3); flex-shrink: 0; }
     .header-title h1 { font-family: 'Anton', sans-serif; font-size: 1.05rem; letter-spacing: .04em; color: #fff; line-height: 1.2; }
-    .header-title span { font-size: .75rem; color: rgba(255,255,255,.75); }
+    .header-title span { font-size: .75rem; color: #fff; }
     .header-actions { margin-left: auto; display: flex; gap: .6rem; }
-    .btn-hdr { font-family: 'Archivo', sans-serif; font-size: .75rem; font-weight: 600; letter-spacing: .04em; color: rgba(255,255,255,.85); background: none; border: 1px solid rgba(255,255,255,.3); padding: .3rem .7rem; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: .35rem; transition: background .15s; white-space: nowrap; }
+    .btn-hdr { font-family: 'Archivo', sans-serif; font-size: .75rem; font-weight: 600; letter-spacing: .04em; color: #fff; background: none; border: 1px solid rgba(255,255,255,.3); padding: .3rem .7rem; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: .35rem; transition: background .15s; white-space: nowrap; }
     .btn-hdr:hover { background: rgba(255,255,255,.12); color: #fff; }
     .stripe { height: 5px; background: var(--jaune); }
 
@@ -80,7 +80,7 @@
     .cat-decret { background: rgba(0,87,168,.1);  color: #0057A8; border: 1px solid rgba(0,87,168,.2); }
     .cat-circulaire { background: rgba(46,125,50,.1); color: #2E7D32; border: 1px solid rgba(46,125,50,.2); }
     .cat-rapport { background: rgba(106,27,154,.1); color: #6A1B9A; border: 1px solid rgba(106,27,154,.2); }
-    .cat-pratique      { background: rgba(245,168,0,.15); color: #A07000; border: 1px solid rgba(245,168,0,.25); }
+    .cat-pratique      { background: rgba(245,168,0,.15); color: #7A5600; border: 1px solid rgba(245,168,0,.25); }
     .cat-jurisprudence { background: rgba(226,0,26,.12); color: #C40017; border: 1px solid rgba(226,0,26,.2); }
     [data-theme="dark"] .cat-arret  { background: rgba(226,0,26,.2);  color: #FF6666; }
     [data-theme="dark"] .cat-decret { background: rgba(0,87,168,.2);  color: #7AB4FF; }
@@ -100,7 +100,7 @@
     .item-impact { display: flex; align-items: center; gap: .4rem; margin-top: .9rem; padding-top: .75rem; border-top: 1px solid var(--border); }
     .impact-label { font-size: .65rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--texte-muted); }
     .impact-tag { font-size: .7rem; padding: .15em .45em; border-radius: 2px; font-weight: 600; }
-    .impact-high { background: rgba(226,0,26,.1); color: var(--rouge); }
+    .impact-high { background: rgba(226,0,26,.1); color: #B8001A; }
     .impact-med  { background: rgba(245,168,0,.15); color: #A07000; }
     .impact-low  { background: rgba(46,125,50,.1); color: #2E7D32; }
     [data-theme="dark"] .impact-high { background: rgba(226,0,26,.25); color: #FF8888; }
@@ -154,9 +154,6 @@
   </style>
 </head>
 <body>
-<a href="/index.html" class="back-nav" style="position:fixed;top:12px;left:14px;z-index:200;display:flex;align-items:center;gap:6px;font-size:12px;font-weight:700;text-decoration:none;color:var(--accent,#1A5FAD);background:rgba(255,255,255,.92);border:1.5px solid var(--accent,#1A5FAD);padding:5px 12px 5px 8px;border-radius:20px;letter-spacing:.03em;box-shadow:0 2px 8px rgba(0,0,0,.12);backdrop-filter:blur(4px)">
-  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>Accueil
-</a>
 <script src="/assets/cgt-ui.js"></script>
 <script>if(localStorage.getItem('cgt_auth')!=='ok'){location.replace('/login.html?from='+encodeURIComponent(location.pathname));}</script>
 
@@ -189,7 +186,7 @@
       <span class="search-icon">
         <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
       </span>
-      <input type="text" id="search-input" placeholder="Rechercher dans la veille… (ex: faute inexcusable, rechute, DUER)">
+      <input type="text" id="search-input" aria-label="Rechercher dans la veille juridique" placeholder="Rechercher dans la veille… (ex: faute inexcusable, rechute, DUER)">
     </div>
 
     <div class="filters-bar">
@@ -387,6 +384,25 @@ function fmtDate(d) {
   return `${parseInt(j)} ${mois[parseInt(m)-1]} ${y}`;
 }
 
+// Le contenu de la veille vient d'une IA nourrie de sources externes : on échappe le texte
+// et on ne garde du HTML d'analyse que quelques balises de mise en forme, sans attributs.
+const escV = t => String(t ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const BALISES_OK = new Set(['UL', 'OL', 'LI', 'P', 'BR', 'STRONG', 'B', 'EM', 'I']);
+function nettoyerHTML(html) {
+  const tpl = document.createElement('template');
+  tpl.innerHTML = String(html ?? '');
+  (function walk(node) {
+    Array.from(node.childNodes).forEach(n => {
+      if (n.nodeType === 1) {
+        if (!BALISES_OK.has(n.tagName)) { n.replaceWith(document.createTextNode(n.textContent)); return; }
+        Array.from(n.attributes).forEach(a => n.removeAttribute(a.name));
+        walk(n);
+      } else if (n.nodeType !== 3) n.remove();
+    });
+  })(tpl.content);
+  return tpl.innerHTML;
+}
+
 function buildItem(item) {
   const el = document.createElement('article');
   el.className = 'feed-item';
@@ -395,21 +411,21 @@ function buildItem(item) {
 
   el.innerHTML = `
     <div class="item-top">
-      <span class="item-cat cat-${item.cat}">${CAT_LABELS[item.cat]}</span>
+      <span class="item-cat cat-${escV(item.cat)}">${escV(CAT_LABELS[item.cat] || item.cat)}</span>
       <div class="item-meta">
-        <span class="item-date">${fmtDate(item.date)}</span>
+        <span class="item-date">${escV(fmtDate(item.date))}</span>
         ${item.isNew ? '<span class="item-new">Nouveau</span>' : ''}
       </div>
     </div>
-    <div class="item-title">${item.title}</div>
-    ${item.ref ? `<div class="item-ref">${item.ref}</div>` : ''}
-    <div class="item-body">${item.body}</div>
+    <div class="item-title">${escV(item.title)}</div>
+    ${item.ref ? `<div class="item-ref">${escV(item.ref)}</div>` : ''}
+    <div class="item-body">${nettoyerHTML(item.body)}</div>
     <div class="item-impact">
       <span class="impact-label">Impact :</span>
-      <span class="impact-tag impact-${item.impact}">${item.impactLabel}</span>
+      <span class="impact-tag impact-${escV(item.impact)}">${escV(item.impactLabel)}</span>
     </div>
-    <div class="item-expand" id="expand-${item.id}">${item.detail}</div>
-    <button class="btn-more" data-id="${item.id}">+ Voir le détail pratique</button>
+    <div class="item-expand" id="expand-${escV(item.id)}">${nettoyerHTML(item.detail)}</div>
+    <button class="btn-more" data-id="${escV(item.id)}">+ Voir le détail pratique</button>
   `;
 
   el.querySelector('.btn-more').addEventListener('click', function() {

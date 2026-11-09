@@ -71,9 +71,7 @@ const TYPES = {
 };
 
 module.exports = async function handler(req, res) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  // Pas d'en-tête CORS : seules les pages du site (même origine) peuvent appeler ce service
 
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
@@ -82,9 +80,11 @@ module.exports = async function handler(req, res) {
     return res.status(500).json({ error: 'OPENAI_API_KEY manquante' });
   }
 
-  let body = '';
-  req.on('data', c => body += c);
-  await new Promise(r => req.on('end', r));
+  // Corps limité à 20 Ko : évite les requêtes géantes facturées par l'API OpenAI
+  let body = '', tropGros = false;
+  req.on('data', c => { body += c; if (body.length > 20000) { tropGros = true; req.destroy(); } });
+  await new Promise(r => { req.on('end', r); req.on('close', r); });
+  if (tropGros) return res.status(413).json({ error: 'Demande trop volumineuse' });
 
   let data;
   try { data = JSON.parse(body); } catch {

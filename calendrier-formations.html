@@ -170,16 +170,16 @@ body { font-family: Arial, sans-serif; background: var(--fond); color: var(--tex
   <div>
     <h2>Période affichée</h2>
     <div class="period-row">
-      <select id="sel-start-month">
+      <select id="sel-start-month" aria-label="Mois de début">
         <option value="0">Jan</option><option value="1">Fév</option><option value="2">Mar</option>
         <option value="3">Avr</option><option value="4">Mai</option><option value="5">Jun</option>
         <option value="6">Jul</option><option value="7">Aoû</option><option value="8" selected>Sep</option>
         <option value="9">Oct</option><option value="10">Nov</option><option value="11">Déc</option>
       </select>
-      <select id="sel-start-year">
+      <select id="sel-start-year" aria-label="Année de début">
         <option value="2025">2025</option><option value="2026" selected>2026</option><option value="2027">2027</option>
       </select>
-      <select id="sel-nb-months">
+      <select id="sel-nb-months" aria-label="Nombre de mois affichés">
         <option value="3">3 mois</option><option value="4" selected>4 mois</option>
         <option value="5">5 mois</option><option value="6">6 mois</option>
       </select>
@@ -211,7 +211,7 @@ body { font-family: Arial, sans-serif; background: var(--fond); color: var(--tex
   <div id="cal-wrap">
     <div class="cal-header">
       <!-- REMPLACER PAR L'URL DU LOGO -->
-      <img class="cal-logo" id="cal-logo-img" src="/assets/logo-cgt-occitanie.jpg" alt="CGT Occitanie" onerror="this.style.display='none'">
+      <img class="cal-logo" id="cal-logo-img" src="/assets/logo-cgt-occitanie-web.jpg" alt="CGT Occitanie" onerror="this.style.display='none'">
       <div class="cal-titles">
         <div class="cal-title" id="cal-title">Planning formations AT/MP – CGT Occitanie – 2e semestre 2026</div>
         <div class="cal-sub">AT/MP · Secteur privé · Document transmis à la CARSAT</div>
@@ -270,7 +270,7 @@ function renderSidebar() {
         <strong>${s.ud}${s.ville ? ' – ' + s.ville : ''}</strong>
         <span>${fmtDate(s.j1)}${s.j2 ? ' → ' + fmtDate(s.j2) : ''}</span>
       </div>
-      <button class="btn-del" onclick="deleteSession(${s.id})">✕</button>
+      <button class="btn-del" onclick="deleteSession(${s.id})" aria-label="Supprimer cette session">✕</button>
     </div>
   `).join('');
 }
@@ -637,7 +637,7 @@ let logoB64 = null;
     c.getContext('2d').drawImage(img, 0, 0);
     try { logoB64 = c.toDataURL('image/jpeg', 0.9); } catch(e) {}
   };
-  img.src = '/assets/logo-cgt-occitanie.jpg';
+  img.src = '/assets/logo-cgt-occitanie-web.jpg';
 })();
 
 // ── INDICATEUR DE SYNC ────────────────────────────────────────────────────────

@@ -94,7 +94,7 @@
       border-color: #E2001A;
       box-shadow: 0 0 0 3px rgba(226,0,26,.2);
     }
-    .field input::placeholder { color: #555; }
+    .field input::placeholder { color: #8A8A8A; }
     .btn-login {
       background: #E2001A;
       color: #fff;
@@ -117,14 +117,14 @@
     }
     .alt-link {
       font-size: .72rem;
-      color: #555;
+      color: #9A9A9A;
       text-align: center;
     }
-    .alt-link a { color: #777; text-decoration: underline; }
+    .alt-link a { color: #B0B0B0; text-decoration: underline; }
     .alt-link a:hover { color: #aaa; }
     .footer {
       font-size: .72rem;
-      color: #555;
+      color: #9A9A9A;
       text-align: center;
       padding: 1.25rem 1.75rem 1.5rem;
       background: #0F0F0F;
@@ -136,7 +136,7 @@
 
 <div class="login-box">
   <div class="logo-block">
-    <img src="/assets/logo-cgt-occitanie.jpg" alt="CGT Comité Régional Occitanie">
+    <img src="/assets/logo-cgt-occitanie-web.jpg" alt="CGT Comité Régional Occitanie">
     <h1>Espace Stagiaire CGT</h1>
     <p class="subtitle">CGT Occitanie — Accès réservé</p>
   </div>
@@ -144,24 +144,40 @@
   <div class="form-block">
     <div class="field">
       <label for="code">Code d'accès</label>
-      <input type="password" id="code" placeholder="••••••••" autocomplete="off" autofocus>
+      <input type="password" id="code" placeholder="••••••••" autocomplete="off" aria-label="Code d'accès stagiaire" autofocus>
     </div>
     <button class="btn-login" onclick="valider()">Entrer</button>
-    <div class="error" id="error">Code incorrect — réessayez.</div>
+    <div class="error" id="error" role="alert">Code incorrect. Le code vous est donné en début de formation : demandez-le à votre formateur ou formatrice.</div>
     <p class="alt-link">Formateur ? <a href="/login.html">Accès formateur →</a></p>
   </div>
   <div class="footer">Formation syndicale — CGT Occitanie</div>
 </div>
 
 <script>
-/* Modifier le code stagiaire ici */
-const CODE = 'STAGCGT';
+/* Changer le code stagiaire : remplacer CODE_SHA256 par l'empreinte SHA-256 du nouveau code écrit en MAJUSCULES
+   (ex. en terminal : printf 'NOUVEAUCODE' | sha256sum). */
+// Empreinte SHA-256 du code (le code lui-même n'apparaît plus dans la page)
+const CODE_SHA256 = 'b66042898c7d9f02e7ed83d3694c6e932397d259fd3be0e53505e8bd8f2f56ba';
 
-function valider() {
+async function empreinte(txt) {
+  if (!window.crypto || !crypto.subtle) throw new Error('Connexion non sécurisée : ouvrez le site en https://');
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(txt));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+}
+// Retour uniquement vers une page du site (pas de redirection vers un autre domaine)
+function pageRetour(defaut) {
+  const p = new URLSearchParams(location.search).get('from') || '';
+  return /^\/(?![\/\\])/.test(p) ? p : defaut;
+}
+
+async function valider() {
   const v = document.getElementById('code').value.trim().toUpperCase();
-  if (v === CODE) {
+  let ok = false;
+  try { ok = await empreinte(v) === CODE_SHA256; }
+  catch (e) { document.getElementById('error').textContent = e.message; document.getElementById('error').style.display = 'block'; return; }
+  if (ok) {
     localStorage.setItem('cgt_stagiaire_auth', 'ok');
-    const p = new URLSearchParams(location.search).get('from') || '/stagiaires.html';
+    const p = pageRetour('/stagiaires.html');
     location.replace(p);
   } else {
     document.getElementById('error').style.display = 'block';
@@ -175,7 +191,7 @@ document.getElementById('code').addEventListener('keydown', e => {
 });
 
 if (localStorage.getItem('cgt_stagiaire_auth') === 'ok') {
-  const p = new URLSearchParams(location.search).get('from') || '/stagiaires.html';
+  const p = pageRetour('/stagiaires.html');
   location.replace(p);
 }
 </script>

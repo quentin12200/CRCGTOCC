@@ -18,21 +18,28 @@
       --texte: #E6ECF5; --texte-muted: #7D8FA8; --border: #253047; --border-card: #1E2D47;
       --vert: #2ECC71; --vert-bg: #0D2B1A;
       --orange: #F57C00; --orange-bg: #1C1206;
+      --jaune-txt: #FFD200; --rose-txt: #FF8A95; --violet-txt: #D98FFF; --rouge-txt: #FF6B7D;
     }
     :root[data-theme="light"] {
       --accent: #1A5FAD; --accent-dark: #144D8E; --accent-muted: #E8F0FB;
       --fond: #F4F6FA; --fond-card: #FFFFFF; --fond-hover: #EEF2F8;
       --texte: #1A2540; --texte-muted: #5A6A84; --border: #D8DEE8; --border-card: #E4E9F2;
+      --vert: #1A7340; --vert-bg: #E8F5EC; --orange: #B26100; --orange-bg: #FFF3E0;
+      --titre-hero: #C40017; --jaune-txt: #7A5C00; --menthe-txt: #1A6B2A; --rose-txt: #B8001A; --violet-txt: #7B2D8B; --rouge-txt: #B8001A;
     }
     @media (prefers-color-scheme: light) {
       :root:not([data-theme="dark"]) {
         --accent: #1A5FAD; --fond: #F4F6FA; --fond-card: #FFFFFF; --fond-hover: #EEF2F8;
         --texte: #1A2540; --texte-muted: #5A6A84; --border: #D8DEE8; --border-card: #E4E9F2;
+        --vert: #1A7340; --vert-bg: #E8F5EC; --orange: #B26100; --orange-bg: #FFF3E0;
+        --titre-hero: #C40017; --jaune-txt: #7A5C00; --menthe-txt: #1A6B2A; --rose-txt: #B8001A; --violet-txt: #7B2D8B; --rouge-txt: #B8001A;
       }
     }
     :root[data-theme="dark"] {
       --accent: #4A8FD4; --fond: #101620; --fond-card: #172033; --fond-hover: #1E2D47;
-      --texte: #E6ECF5; --texte-muted: #7D8FA8; --border: #253047; --border-card: #1E2D47;
+      --texte: #E6ECF5; --texte-muted: #9AAAC2; --border: #253047; --border-card: #1E2D47;
+      --vert: #2ECC71; --vert-bg: #0D2B1A; --orange: #F57C00; --orange-bg: #1C1206;
+      --jaune-txt: #FFD200; --rose-txt: #FF8A95; --violet-txt: #D98FFF; --rouge-txt: #FF6B7D;
     }
     body {
       background: var(--fond); color: var(--texte);
@@ -49,7 +56,7 @@
     .topbar-badge { font-family: 'Anton', sans-serif; font-size: 1.1rem; color: var(--jaune); letter-spacing: .06em; }
     .topbar-title { font-family: 'Anton', sans-serif; font-size: 1rem; color: #fff; letter-spacing: .04em; }
     .stripe { height: 4px; background: var(--jaune); }
-    .topbar-back { margin-left: auto; color: rgba(255,255,255,.75); font-size: .8rem; text-decoration: none; }
+    .topbar-back { margin-left: auto; color: #fff; font-size: .8rem; text-decoration: none; }
     .topbar-back:hover { color: #fff; }
 
     /* HERO */
@@ -60,7 +67,7 @@
       text-align: center;
     }
     .hero-icon { font-size: 2.5rem; margin-bottom: .75rem; }
-    .hero h1 { font-family: 'Anton', sans-serif; font-size: clamp(1.4rem, 4vw, 2rem); color: var(--jaune); letter-spacing: .04em; margin-bottom: .5rem; }
+    .hero h1 { font-family: 'Anton', sans-serif; font-size: clamp(1.4rem, 4vw, 2rem); color: var(--titre-hero, var(--jaune)); letter-spacing: .04em; margin-bottom: .5rem; }
     .hero p { font-size: .9rem; color: var(--muted); max-width: 50ch; margin: 0 auto; line-height: 1.6; }
 
     /* URGENCE BANNER */
@@ -69,7 +76,7 @@
       margin: 1.5rem auto; max-width: 720px; padding: .85rem 1.25rem;
       font-size: .85rem; line-height: 1.6; color: var(--texte-muted);
     }
-    .urgence-banner strong { color: #fff; }
+    .urgence-banner strong { color: var(--texte); }
 
     /* LAYOUT */
     .content { max-width: 720px; margin: 0 auto; padding: 0 1rem; }
@@ -123,21 +130,21 @@
       text-transform: uppercase; letter-spacing: .08em;
       padding: .15rem .5rem; border-radius: 2px; margin-top: .4rem;
     }
-    .tag-urgent { background: var(--fond-card); color: #FF8A95; border: 1px solid #FF8A9550; }
+    .tag-urgent { background: var(--fond-card); color: var(--rose-txt); border: 1px solid #FF8A9550; }
     .tag-cpam { background: var(--accent-muted); color: var(--accent); }
-    .tag-employeur { background: var(--fond-hover); color: var(--jaune); }
-    .tag-medical { background: var(--vert-bg); color: #5EE898; }
-    .tag-cgt { background: var(--fond-hover); color: #D98FFF; }
+    .tag-employeur { background: var(--fond-hover); color: var(--jaune-txt); }
+    .tag-medical { background: var(--vert-bg); color: var(--menthe-txt, #5EE898); }
+    .tag-cgt { background: var(--fond-hover); color: var(--violet-txt); }
 
     /* DÉLAIS RECAP */
     .delais-card {
       background: var(--fond-card); border: 1px solid var(--border-card);
       border-radius: 10px; padding: 1.25rem; margin-bottom: 2rem;
     }
-    .delais-title { font-family: 'Anton', sans-serif; font-size: .9rem; color: var(--jaune); letter-spacing: .04em; margin-bottom: .85rem; }
+    .delais-title { font-family: 'Anton', sans-serif; font-size: .9rem; color: var(--jaune-txt); letter-spacing: .04em; margin-bottom: .85rem; }
     .delai-row { display: flex; align-items: center; gap: .75rem; padding: .4rem 0; border-bottom: 1px solid var(--border); font-size: .82rem; }
     .delai-row:last-child { border-bottom: none; }
-    .delai-time { font-family: 'Anton', sans-serif; font-size: .95rem; color: var(--rouge); min-width: 90px; }
+    .delai-time { font-family: 'Anton', sans-serif; font-size: .95rem; color: var(--rouge-txt); min-width: 90px; }
     .delai-time.orange { color: var(--orange); }
     .delai-time.vert { color: var(--vert); }
     .delai-desc { color: var(--texte-muted); line-height: 1.4; }
@@ -148,7 +155,7 @@
     .contact-card:hover { border-color: var(--accent); }
     .contact-name { font-weight: 700; font-size: .85rem; color: var(--texte); margin-bottom: .2rem; }
     .contact-role { font-size: .72rem; color: var(--texte-muted); margin-bottom: .4rem; }
-    .contact-info { font-size: .8rem; color: var(--jaune); font-weight: 600; }
+    .contact-info { font-size: .8rem; color: var(--jaune-txt); font-weight: 600; }
 
     /* PRINT */
     .btn-print {
@@ -185,7 +192,10 @@
       .delais-card, .contact-card { border: 1px solid #ccc; background: #fafafa; }
       .urgence-banner { background: #fff3f3; border-left-color: #E2001A; color: #900; }
     }
-  </style>
+  
+    /* Accessibilité : texte blanc lisible sur le bouton bleu en thème sombre */
+    :root[data-theme="dark"] .btn-print { background-color: #2E6DB4; border-color: #2E6DB4; }
+</style>
 </head>
 <body>
 <script src="/assets/cgt-ui.js"></script>

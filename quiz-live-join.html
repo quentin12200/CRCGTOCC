@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex, nofollow">
   <title>Quiz Live — CGT Occitanie</title>
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%23E2001A'/%3E%3Ctext x='16' y='23' text-anchor='middle' font-family='sans-serif' font-weight='bold' font-size='16' fill='%23FFD200'%3ECGT%3C/text%3E%3C/svg%3E">
@@ -29,6 +29,8 @@
     let uid = null;
     let currentQ = -1;
     let answered = false;
+    // Échappe le texte venu de la base (prénoms, choix) avant de l'insérer dans la page
+    const esc = t => String(t ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
     let myScore = 0;
     let totalQ = 12;
     let myLastCorrect = false;
@@ -81,13 +83,17 @@
     }
 
     async function rejoindre() {
-      const name = document.getElementById('prenom').value.trim();
-      if (!name) return;
+      const name = document.getElementById('prenom').value.trim().slice(0, 30);
+      if (!name) {
+        document.getElementById('join-error').textContent = 'Indiquez votre prénom pour rejoindre le quiz.';
+        document.getElementById('prenom').focus();
+        return;
+      }
 
       // Vérifier que la session existe
       const snap = await get(ref(db, `sessions/${sessionId}`));
       if (!snap.exists()) {
-        document.getElementById('join-error').textContent = 'Session introuvable. Vérifiez le code.';
+        document.getElementById('join-error').textContent = 'Session introuvable ou terminée. Scannez à nouveau le QR code affiché à l\'écran.';
         return;
       }
 
@@ -103,7 +109,7 @@
         const data = snap.val();
         if (!data) return;
 
-        if (data.totalQ) totalQ = data.totalQ;
+        if (data.totalQ) totalQ = Number(data.totalQ) || totalQ;
 
         if (data.status === 'question' && data.currentQ !== currentQ) {
           currentQ = data.currentQ;
@@ -140,7 +146,7 @@
       document.getElementById('choices-join').innerHTML = (data.choices || []).map((c, i) =>
         `<button class="choice-btn" id="choice-${i}" onclick="choisir(${i})">
           <span class="cl">${letters[i]}</span>
-          <span class="cl-text">${c}</span>
+          <span class="cl-text">${esc(c)}</span>
         </button>`
       ).join('');
       const w = document.getElementById('wait-answer');
@@ -202,7 +208,7 @@
           podiumEl.classList.remove('hidden');
           podiumEl.innerHTML = '<div class="podium-live-title">Classement en cours</div>' +
             sorted.map((p, i) =>
-              `<div class="podium-live-row">${medals[i]} <span>${p.name}</span><strong>${p.score}</strong></div>`
+              `<div class="podium-live-row">${medals[i]} <span>${esc(p.name)}</span><strong>${Number(p.score) || 0}</strong></div>`
             ).join('');
         }
       }
@@ -439,10 +445,10 @@
       <div id="join-screen">
         <div>
           <label for="prenom">Votre prénom</label>
-          <input type="text" id="prenom" placeholder="Marie, Pierre..." autocomplete="off" autofocus>
+          <input type="text" id="prenom" placeholder="Ex. : Marie" maxlength="30" autocomplete="given-name" autofocus>
         </div>
         <button class="btn-join" onclick="rejoindre()">Rejoindre la session</button>
-        <div class="join-error" id="join-error"></div>
+        <div class="join-error" id="join-error" role="alert"></div>
       </div>
 
       <!-- WAIT -->
@@ -450,7 +456,7 @@
         <div class="wait-icon">⏳</div>
         <div class="wait-msg">
           <strong id="wait-name"></strong>
-          Le formateur va lancer le quiz<span class="dots"></span>
+          Le quiz va bientôt commencer<span class="dots"></span>
         </div>
       </div>
 
@@ -493,5 +499,6 @@
   </div>
 
 <script src="assets/motion.js" defer></script>
+<script src="assets/a11y.js" defer></script>
 </body>
 </html>

@@ -43,9 +43,9 @@
     .header-divider { width: 2px; height: 42px; background: rgba(255,255,255,.3); flex-shrink: 0; }
     .header-title { flex: 1; }
     .header-title h1 { font-family: 'Anton', sans-serif; font-size: 1.1rem; letter-spacing: .04em; color: #fff; line-height: 1.2; }
-    .header-title span { font-size: .75rem; color: rgba(255,255,255,.75); }
+    .header-title span { font-size: .75rem; color: #fff; }
     .header-back { margin-left: auto; }
-    .header-back a { font-size: .75rem; color: rgba(255,255,255,.8); text-decoration: none; border: 1px solid rgba(255,255,255,.3); padding: .3rem .7rem; transition: background .15s; }
+    .header-back a { font-size: .75rem; color: #fff; text-decoration: none; border: 1px solid rgba(255,255,255,.3); padding: .3rem .7rem; transition: background .15s; }
     .header-back a:hover { background: rgba(255,255,255,.1); color: #fff; }
     .stripe { height: 5px; background: var(--jaune); }
 
@@ -120,7 +120,7 @@
 <script>if(localStorage.getItem('cgt_auth')!=='ok'&&localStorage.getItem('cgt_stagiaire_auth')!=='ok'){location.replace('/login.html?from='+encodeURIComponent(location.pathname));}</script>
 
 <header>
-  <div class="logo-wrap"><img src="/assets/logo-cgt-occitanie.jpg" alt="CGT Comité Régional Occitanie"></div>
+  <div class="logo-wrap"><img src="/assets/logo-cgt-occitanie-web.jpg" alt="CGT Comité Régional Occitanie"></div>
   <div class="header-divider"></div>
   <div class="header-title">
     <h1>Modèles de courriers AT/MP</h1>
@@ -136,9 +136,9 @@
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
     </div>
     <div style="flex:1">
-      <div style="font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.7);margin-bottom:.2rem">Nouveau</div>
+      <div style="font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color: #fff;margin-bottom:.2rem">Nouveau</div>
       <div style="font-family:'Anton',sans-serif;font-size:1.05rem;color:#fff;letter-spacing:.02em">Générateur de courrier assisté par IA</div>
-      <div style="font-size:.78rem;color:rgba(255,255,255,.75);margin-top:.2rem">Remplissez un formulaire · L'IA rédige un courrier juridiquement précis · 9 types de courriers</div>
+      <div style="font-size:.78rem;color: #fff;margin-top:.2rem">Remplissez un formulaire · L'IA rédige un courrier juridiquement précis · 9 types de courriers</div>
     </div>
     <div style="font-family:'Anton',sans-serif;font-size:.78rem;color:#FFD200;letter-spacing:.05em;white-space:nowrap">Essayer →</div>
   </a>
