@@ -366,6 +366,11 @@ document.querySelectorAll('.filter-btn').forEach(btn => {
   });
 });
 
+// Lien direct depuis la recherche : ?q=terme pré-remplit la recherche
+(function(){
+  const q = new URLSearchParams(location.search).get('q');
+  if (q) { document.getElementById('search').value = q; searchQuery = q; }
+})();
 render();
 </script>
 </body>

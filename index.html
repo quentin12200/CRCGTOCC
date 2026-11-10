@@ -665,6 +665,10 @@
       .hero { height: auto !important; min-height: 220px; }
       .hero-overlay { background: linear-gradient(180deg, rgba(10,10,10,.82) 0%, rgba(10,10,10,.74) 55%, rgba(110,0,14,.82) 100%) !important; }
     }
+
+    /* Recherche instantanée : la liste des résultats déborde du bandeau photo */
+    .hero { overflow: visible; }
+    .hero > img, .hero-overlay { border-radius: inherit; }
 </style>
   <link rel="manifest" href="/manifest.json">
   <meta name="theme-color" content="#E2001A">
@@ -792,7 +796,7 @@ document.addEventListener('DOMContentLoaded', function () {
     <p class="hero-sub">Chaque droit individuel est un levier collectif. Chaque obligation de l'employeur est assortie de sa sanction. Formez, exigez, agissez.</p>
     <form class="hero-search" onsubmit="(function(f){var q=f.querySelector('input').value.trim();if(q)location.href='/recherche.html?q='+encodeURIComponent(q);})(this);return false;">
       <svg class="search-icon-hero" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-      <input type="search" aria-label="Rechercher dans le site" placeholder="Rechercher une fiche, un quiz, une procédure…" autocomplete="off" id="hero-search-input">
+      <input type="search" aria-label="Rechercher dans le site" placeholder="Rechercher un module, une fiche, un terme, un tableau MP…" autocomplete="off" id="hero-search-input" data-cgt-recherche>
       <button type="submit">Rechercher</button>
     </form>
   </div>
@@ -1204,5 +1208,6 @@ document.addEventListener('DOMContentLoaded', function () {
   $('insc-overlay').addEventListener('click', e => { if (e.target.id === 'insc-overlay') fermer(); });
   document.addEventListener('keydown', e => { if (e.key === 'Escape') fermer(); });
 </script>
+<script src="/assets/recherche.js" defer></script>
 </body>
 </html>

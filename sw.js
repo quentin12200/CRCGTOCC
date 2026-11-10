@@ -10,7 +10,7 @@
      ligne seulement (jamais servis depuis le cache).
    Changer CACHE (numéro de version) à chaque modification de la liste.
 ═══════════════════════════════════════════════════════════════ */
-const CACHE = 'cgt-atmp-v31';
+const CACHE = 'cgt-atmp-v32';
 
 const PRECACHE = [
   // Pages d'accueil et outils
@@ -35,7 +35,7 @@ const PRECACHE = [
   // Fichiers communs
   '/manifest.json', '/assets/style.css', '/assets/cgt-ui.js', '/assets/motion.js', '/assets/a11y.js',
   '/assets/documents.js', '/assets/documents-meta.js', '/assets/modules-data.js', '/assets/modules.js',
-  '/assets/recherche-index.js', '/assets/questions-du-jour.js',
+  '/assets/recherche.js', '/assets/recherche-index.js', '/assets/questions-du-jour.js',
   '/assets/favicon.svg', '/assets/icons.svg', '/assets/icon-192.png', '/assets/icon-512.png',
   '/assets/logo-cgt-occitanie-web.jpg', '/assets/hero-stagiaire.webp', '/assets/hero-formateur.webp',
   '/assets/bandeau-contextuel.webp'

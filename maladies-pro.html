@@ -714,6 +714,7 @@ function render(){
     const card = document.createElement('div');
     card.className = 'mp-card';
     card.dataset.cat = item.cat;
+    card.id = 'tableau-' + String(item.n).replace(/\s+/g, '-');
 
     const tagCat = {chimique:'Chimique',physique:'Physique',biologique:'Biologique',tms:'TMS / Rachis',cancer:'Cancer',amiante:'Amiante'}[item.cat]||item.cat;
     const stat = item.stat ? `<span class="mp-tag tag-stat">${Number(item.stat[1]).toLocaleString('fr-FR')} reconnue${item.stat[1]>1?'s':''} en ${item.stat[0]}</span>` : '';
@@ -796,7 +797,24 @@ document.querySelectorAll('#finder button').forEach(btn=>{
   });
 });
 
+// Liens directs depuis la recherche : ?q=mot pré-remplit la recherche, #tableau-57 ouvre ce tableau
+(function(){
+  const q = new URLSearchParams(location.search).get('q');
+  if (q) { document.getElementById('search').value = q; currentSearch = q; }
+})();
 render();
+function ouvrirTableauDuLien(){
+  const m = location.hash.match(/^#tableau-(.+)$/);
+  if (!m) return;
+  let card = document.getElementById('tableau-' + m[1]);
+  if (!card) { currentSearch = ''; currentCat = 'all'; currentMetier = null; document.getElementById('search').value = ''; render(); card = document.getElementById('tableau-' + m[1]); }
+  if (!card) return;
+  const body = card.querySelector('.mp-body');
+  if (body && !body.classList.contains('open')) card.querySelector('.mp-header').click();
+  card.scrollIntoView({ block: 'start' });
+}
+ouvrirTableauDuLien();
+window.addEventListener('hashchange', ouvrirTableauDuLien);
 </script>
 </body>
 </html>
