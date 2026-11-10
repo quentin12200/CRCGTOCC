@@ -186,6 +186,10 @@ window.CGT_MODULES = [
     {
      "t": "Quiz solo — Droits & réparation",
      "href": "/quiz/quiz-atmp.html"
+    },
+    {
+     "t": "Quiz solo — complet (25 questions)",
+     "href": "/quiz-atmp.html"
     }
    ],
    "evaluation": [
