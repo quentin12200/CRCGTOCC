@@ -669,6 +669,16 @@
     /* Recherche instantanée : la liste des résultats déborde du bandeau photo */
     .hero { overflow: visible; }
     .hero > img, .hero-overlay { border-radius: inherit; }
+
+    /* Sessions d'inscription */
+    .insc-session-row { display: flex; gap: .5rem; flex-wrap: wrap; align-items: center; }
+    .insc-session-row select { flex: 1 1 240px; max-width: none; }
+    .insc-form-session { margin-top: .75rem; padding: .9rem; border: 1px dashed var(--accent); background: var(--fond); }
+    .insc-champs { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: .6rem; margin-bottom: .7rem; }
+    .insc-champs label { display: grid; gap: .25rem; font-size: .72rem; font-weight: 700; letter-spacing: .04em; color: var(--texte-muted); }
+    .insc-champs .insc-input { max-width: none; font-weight: 400; }
+    .insc-champs label[hidden] { display: none; }
+    .insc-overlay-session { font-weight: 700; color: #1A2540 !important; margin: -.6rem 0 .8rem !important; }
 </style>
   <link rel="manifest" href="/manifest.json">
   <meta name="theme-color" content="#E2001A">
@@ -862,12 +872,36 @@ document.addEventListener('DOMContentLoaded', function () {
     </div>
     <div class="insc-list-col">
       <label class="insc-label" for="insc-session">Session</label>
-      <input id="insc-session" class="insc-input" type="text" maxlength="60" spellcheck="false">
-      <p class="insc-hint">Un nom par formation : chaque session a son propre QR code et sa propre liste.</p>
+      <div class="insc-session-row">
+        <select id="insc-session" class="insc-input"></select>
+        <button type="button" class="insc-btn insc-btn-ghost" id="insc-nouvelle" aria-expanded="false" aria-controls="insc-form-session">+ Nouvelle session</button>
+      </div>
+      <form class="insc-form-session" id="insc-form-session" hidden>
+        <div class="insc-champs">
+          <label>Formation
+            <select id="insc-f-formation" class="insc-input" required></select>
+          </label>
+          <label id="insc-f-autre-wrap" hidden>Intitulé de la formation
+            <input id="insc-f-autre" class="insc-input" type="text" maxlength="80">
+          </label>
+          <label>Date
+            <input id="insc-f-date" class="insc-input" type="date" required>
+          </label>
+          <label>Lieu
+            <input id="insc-f-lieu" class="insc-input" type="text" maxlength="60" placeholder="Ex. : UD 31, Toulouse" required>
+          </label>
+        </div>
+        <div class="insc-actions" style="justify-content:flex-start">
+          <button type="submit" class="insc-btn">Créer la session</button>
+          <button type="button" class="insc-btn insc-btn-ghost" id="insc-f-annuler">Annuler</button>
+        </div>
+      </form>
+      <p class="insc-hint" id="insc-session-info">Chaque session a son propre QR code et sa propre liste d'inscrits.</p>
       <div class="insc-head">
         <strong><span id="insc-count">0</span> inscrit·e(s)</strong>
         <div class="insc-actions">
           <button type="button" class="insc-btn insc-btn-ghost" id="insc-copier-emails">Copier les emails</button>
+          <button type="button" class="insc-btn" id="insc-emargement">Feuille d'émargement (PDF)</button>
           <button type="button" class="insc-btn insc-btn-ghost" id="insc-csv">Exporter CSV</button>
           <button type="button" class="insc-btn insc-btn-danger" id="insc-vider">Vider</button>
           <button type="button" class="insc-btn insc-btn-ghost" id="insc-deconnexion" hidden>Se déconnecter</button>
@@ -894,6 +928,7 @@ document.addEventListener('DOMContentLoaded', function () {
   <div class="insc-overlay" id="insc-overlay" hidden>
     <div class="insc-overlay-box">
       <h2>Inscrivez-vous à la formation</h2>
+      <p class="insc-overlay-session" id="insc-overlay-session"></p>
       <p>Scannez ce QR code avec l'appareil photo de votre téléphone</p>
       <div id="insc-qr-grand"></div>
       <div class="insc-overlay-count"><span id="insc-count-grand">0</span> inscrit·e(s)</div>
@@ -1087,7 +1122,7 @@ document.addEventListener('DOMContentLoaded', function () {
 <script type="module">
   // Inscription des stagiaires : QR code vers /inscription.html?s=<session> et liste en direct (Firestore, collection inscriptions)
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-  import { getFirestore, collection, query, where, onSnapshot, writeBatch, doc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+  import { getFirestore, collection, query, where, onSnapshot, writeBatch, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
   import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
   // Projet Firebase CROCC (Firestore), comme le calendrier des formations
@@ -1105,6 +1140,14 @@ document.addEventListener('DOMContentLoaded', function () {
   const esc = t => String(t || '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 
   let session = '', url = '', inscrits = [], connus = new Set(), stop = null;
+  // Sessions : enregistrées dans Firestore (collection sessions-inscription, compte formateur),
+  // avec une copie sur ce navigateur pour fonctionner avant la connexion
+  let sessions = {}, stopSessions = null, stopToutes = null;
+  const CLE_LOCALE = 'cgt_insc_sessions';
+  try { sessions = JSON.parse(localStorage.getItem(CLE_LOCALE)) || {}; } catch (e) {}
+  const sauverLocal = () => { try { localStorage.setItem(CLE_LOCALE, JSON.stringify(sessions)); } catch (e) {} };
+  const dateFr = d => d ? new Date(d + 'T12:00:00').toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }) : '';
+  const libelle = x => x.formation ? [x.formation, dateFr(x.date), x.lieu].filter(Boolean).join(' — ') : x.id;
 
   function slug(t) {
     return t.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^\w-]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 60);
@@ -1127,10 +1170,41 @@ document.addEventListener('DOMContentLoaded', function () {
     connus = new Set(inscrits.map(i => i.id));
   }
 
-  function choisirSession(nom) {
-    session = slug(nom) || 'formation';
-    try { localStorage.setItem('cgt_insc_session', nom); } catch (e) {}
-    url = `${location.origin}/inscription.html?s=${encodeURIComponent(session)}`;
+  function listeSessions() {
+    const sel = $('insc-session'), garde = session;
+    const toutes = Object.values(sessions).sort((a, b) => (b.date || '').localeCompare(a.date || '') || a.id.localeCompare(b.id));
+    sel.innerHTML = toutes.length
+      ? toutes.map(x => `<option value="${esc(x.id)}">${esc(libelle(x))}</option>`).join('')
+      : '<option value="">Aucune session : créez-en une</option>';
+    if (garde && sessions[garde]) sel.value = garde;
+  }
+  function ajouterSession(x) {
+    if (!x || !x.id) return;
+    sessions[x.id] = Object.assign({}, sessions[x.id], x);
+    sauverLocal();
+  }
+  function suivreSessions() {
+    if (stopSessions) stopSessions();
+    if (stopToutes) stopToutes();
+    // Sessions décrites (formation, date, lieu)
+    stopSessions = onSnapshot(collection(db, 'sessions-inscription'), snap => {
+      snap.docs.forEach(d => ajouterSession({ id: d.id, ...d.data() }));
+      listeSessions();
+    }, () => { stopSessions = null; });
+    // Sessions qui ont déjà des inscrits (y compris les anciennes, nommées par date)
+    stopToutes = onSnapshot(collection(db, 'inscriptions'), snap => {
+      snap.docs.forEach(d => { const id = d.data().session; if (id && !sessions[id]) ajouterSession({ id }); });
+      listeSessions();
+    }, () => { stopToutes = null; });
+  }
+
+  function choisirSession(id) {
+    session = id || '';
+    try { localStorage.setItem('cgt_insc_session', session); } catch (e) {}
+    const info = sessions[session] || { id: session };
+    $('insc-session-info').textContent = session ? 'Session : ' + libelle(info) + '. QR code et liste propres à cette session.' : 'Créez une session pour obtenir son QR code.';
+    $('insc-overlay-session').textContent = info.formation ? libelle(info) : '';
+    url = `${location.origin}/inscription.html?s=${encodeURIComponent(session)}` + (info.formation ? '&t=' + encodeURIComponent(libelle(info)) : '');
     $('insc-url').textContent = url;
     qr($('insc-qr'), 200);
     if (!$('insc-overlay').hidden) qr($('insc-qr-grand'), 512);
@@ -1152,7 +1226,7 @@ document.addEventListener('DOMContentLoaded', function () {
   onAuthStateChanged(auth, user => {
     $('insc-compte').hidden = $('insc-deconnexion').hidden = !user;
     $('insc-compte-email').textContent = user ? user.email : '';
-    if (user && session) choisirSession($('insc-session').value);
+    if (user) { suivreSessions(); if (session) choisirSession(session); }
   });
   $('insc-login').addEventListener('submit', async e => {
     e.preventDefault();
@@ -1163,19 +1237,113 @@ document.addEventListener('DOMContentLoaded', function () {
       msg('Connexion refusée : vérifiez l\'email et le mot de passe du compte formateur.');
     }
   });
-  $('insc-deconnexion').onclick = () => signOut(auth).then(() => { msg('Déconnecté·e du compte formateur.'); choisirSession($('insc-session').value); });
+  $('insc-deconnexion').onclick = () => signOut(auth).then(() => { msg('Déconnecté·e du compte formateur.'); choisirSession(session); });
   // Déconnexion de l'espace formateur (bouton de l'en-tête) : ferme aussi la session Firebase
   window.cgtDeconnexionFirebase = () => signOut(auth).catch(() => {});
 
   function emails() { return [...new Set(inscrits.map(i => i.email).filter(Boolean))]; }
 
-  const saisie = $('insc-session');
-  let defaut = '';
-  try { defaut = localStorage.getItem('cgt_insc_session') || ''; } catch (e) {}
-  saisie.value = defaut || ('formation-' + new Date().toISOString().slice(0, 10));
-  let t;
-  saisie.addEventListener('input', () => { clearTimeout(t); t = setTimeout(() => choisirSession(saisie.value), 500); });
-  choisirSession(saisie.value);
+  // Choix et création des sessions
+  const sel = $('insc-session');
+  sel.addEventListener('change', () => choisirSession(sel.value));
+  const fForm = $('insc-f-formation');
+  fForm.innerHTML = (window.CGT_MODULES || []).map(m => `<option>${esc(m.titre)}</option>`).join('') + '<option value="__autre">Autre formation…</option>';
+  fForm.addEventListener('change', () => { $('insc-f-autre-wrap').hidden = fForm.value !== '__autre'; $('insc-f-autre').required = fForm.value === '__autre'; });
+  const basculerForm = ouvert => {
+    $('insc-form-session').hidden = !ouvert;
+    $('insc-nouvelle').setAttribute('aria-expanded', ouvert ? 'true' : 'false');
+    if (ouvert) { $('insc-f-date').value = new Date().toISOString().slice(0, 10); fForm.focus(); }
+  };
+  $('insc-nouvelle').onclick = () => basculerForm($('insc-form-session').hidden);
+  $('insc-f-annuler').onclick = () => basculerForm(false);
+  $('insc-form-session').addEventListener('submit', async e => {
+    e.preventDefault();
+    const formation = (fForm.value === '__autre' ? $('insc-f-autre').value : fForm.value).trim();
+    const date = $('insc-f-date').value, lieu = $('insc-f-lieu').value.trim();
+    if (!formation || !date || !lieu) return;
+    const id = [date, slug(formation).slice(0, 28), slug(lieu).slice(0, 20)].filter(Boolean).join('-').toLowerCase().slice(0, 60);
+    const x = { id, formation, date, lieu, cree: new Date().toISOString() };
+    ajouterSession(x);
+    listeSessions();
+    sel.value = id;
+    choisirSession(id);
+    basculerForm(false);
+    try {
+      await setDoc(doc(db, 'sessions-inscription', id), { formation, date, lieu, cree: x.cree });
+      msg('Session créée.');
+    } catch (ex) {
+      msg('Session créée sur cet appareil. Connectez-vous (ou mettez à jour les règles Firestore) pour la retrouver ailleurs.');
+    }
+  });
+  listeSessions();
+  let derniere = '';
+  try { derniere = localStorage.getItem('cgt_insc_session') || ''; } catch (e) {}
+  if (derniere && !sessions[derniere]) { ajouterSession({ id: derniere }); listeSessions(); }
+  const initiale = sessions[derniere] ? derniere : (sel.value || '');
+  if (initiale) sel.value = initiale;
+  choisirSession(initiale);
+
+  // Feuille d'émargement PDF (jsPDF chargé à la demande)
+  function chargerJsPDF() {
+    if (window.jspdf) return Promise.resolve(window.jspdf.jsPDF);
+    return new Promise((ok, ko) => {
+      const sc = document.createElement('script');
+      sc.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
+      sc.onload = () => ok(window.jspdf.jsPDF); sc.onerror = ko;
+      document.head.appendChild(sc);
+    });
+  }
+  $('insc-emargement').onclick = async () => {
+    let JsPDF;
+    try { JsPDF = await chargerJsPDF(); } catch (e) { return msg('Génération du PDF impossible hors connexion.'); }
+    const info = sessions[session] || { id: session };
+    const pdf = new JsPDF({ unit: 'mm', format: 'a4' });
+    const W = 210, M = 12, liste = inscrits.slice().sort((a, b) => (a.nom || '').localeCompare(b.nom || '', 'fr'));
+    const lignes = liste.concat(Array(Math.max(5, 14 - liste.length)).fill(null)); // lignes vides pour les arrivées sur place
+    const cols = [{ t: 'N°', w: 10 }, { t: 'NOM', w: 46 }, { t: 'Prénom', w: 40 }, { t: 'Signature matin', w: 45 }, { t: 'Signature après-midi', w: 45 }];
+    const H = 11;
+    let page = 1, y;
+    function entete() {
+      pdf.setFillColor(226, 0, 26); pdf.rect(0, 0, W, 16, 'F');
+      pdf.setTextColor(255, 255, 255); pdf.setFont('helvetica', 'bold'); pdf.setFontSize(13);
+      pdf.text("CGT Occitanie — Feuille d'émargement", M, 10.5);
+      pdf.setTextColor(26, 37, 64); pdf.setFontSize(11);
+      pdf.text(pdf.splitTextToSize(info.formation || 'Formation : ' + (info.id || ''), W - 2 * M), M, 25);
+      pdf.setFont('helvetica', 'normal'); pdf.setFontSize(10);
+      pdf.text('Date : ' + (dateFr(info.date) || '..............................') + '      Lieu : ' + (info.lieu || '..............................'), M, 32);
+      pdf.text('Formateur·ice : ..................................................      Nombre de participant·es : ' + liste.length, M, 38);
+      y = 44;
+      let x = M;
+      pdf.setFillColor(238, 242, 248); pdf.rect(M, y, W - 2 * M, 8, 'F');
+      pdf.setFont('helvetica', 'bold'); pdf.setFontSize(9);
+      cols.forEach(c => { pdf.text(c.t, x + 2, y + 5.4); x += c.w; });
+      y += 8;
+      pdf.setFont('helvetica', 'normal');
+    }
+    function pied() {
+      pdf.setFontSize(8); pdf.setTextColor(90, 106, 132);
+      pdf.text('Feuille générée le ' + new Date().toLocaleDateString('fr-FR') + ' — session ' + (info.id || ''), M, 290);
+      pdf.text('Page ' + page, W - M, 290, { align: 'right' });
+      pdf.setTextColor(26, 37, 64);
+    }
+    entete();
+    lignes.forEach((ins, i) => {
+      if (y + H > 282) { pied(); pdf.addPage(); page++; entete(); }
+      let x = M;
+      pdf.setDrawColor(200, 206, 216);
+      cols.forEach(c => { pdf.rect(x, y, c.w, H); x += c.w; });
+      pdf.setFontSize(9.5);
+      pdf.text(String(i + 1), M + 2, y + 7);
+      if (ins) {
+        pdf.text(pdf.splitTextToSize(String(ins.nom || '').toUpperCase(), cols[1].w - 3)[0], M + cols[0].w + 2, y + 7);
+        pdf.text(pdf.splitTextToSize(String(ins.prenom || ''), cols[2].w - 3)[0], M + cols[0].w + cols[1].w + 2, y + 7);
+      }
+      y += H;
+    });
+    pied();
+    pdf.save('emargement-' + (session || 'formation') + '.pdf');
+    msg('Feuille d\'émargement téléchargée (' + liste.length + ' inscrit·e·s et ' + (lignes.length - liste.length) + ' lignes libres).');
+  };
 
   $('insc-copier-lien').onclick = () => navigator.clipboard.writeText(url).then(() => msg('Lien copié.'));
   $('insc-copier-emails').onclick = () => {
