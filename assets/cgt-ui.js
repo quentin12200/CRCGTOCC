@@ -535,6 +535,7 @@
   function loadMotion() {
     if (!window.__cgtMotion) loadAsset('motion.js');
     if (!window.__cgtA11y) loadAsset('a11y.js');
+    if (!window.__cgtDocs) loadAsset('documents.js');
   }
 
   /* ── Init ──────────────────────────────────────────────── */
