@@ -47,7 +47,7 @@
         '<div class="card-meta">' +
           (m.duree ? '<span class="tag-duree">' + esc(m.duree) + '</span>' : '') +
           '<span class="tag-type">' + esc(m.type) + '</span>' +
-          (m.horsligne ? '<span class="tag-horsligne" title="Après une première visite en ligne, ce module reste consultable sans réseau">Disponible hors-ligne</span>' : '') +
+          (m.horsligne ? '<span class="tag-horsligne" data-url="' + esc(m.ouvrir.href) + '" title="Le diaporama est enregistré sur cet appareil dès la première visite du site : il reste consultable sans réseau">Hors-ligne après une 1re visite</span>' : '') +
         '</div>' +
         '<h2>' + esc(m.titre) + '</h2>' +
         '<p>' + esc(m.desc) + '</p>' +
@@ -72,6 +72,26 @@
     }).join('');
     conteneur.insertAdjacentHTML('beforebegin', html);
     conteneur.remove();
+  };
+
+  /* Indicateur hors-ligne : le service worker dit ce qui est réellement enregistré */
+  window.CGT_etatHorsLigne = function () {
+    var tags = document.querySelectorAll('.tag-horsligne[data-url]');
+    if (!tags.length || !('serviceWorker' in navigator)) return;
+    navigator.serviceWorker.addEventListener('message', function (e) {
+      if (!e.data || e.data.type !== 'etat-hors-ligne') return;
+      var ok = {};
+      e.data.etat.forEach(function (x) { ok[x[0]] = x[1]; });
+      tags.forEach(function (t) {
+        if (!ok[t.dataset.url]) return;
+        t.classList.add('est-dispo');
+        t.textContent = 'Disponible hors-ligne';
+      });
+    });
+    navigator.serviceWorker.ready.then(function (reg) {
+      var urls = Array.prototype.map.call(tags, function (t) { return t.dataset.url; });
+      (navigator.serviceWorker.controller || reg.active).postMessage({ type: 'etat-hors-ligne', urls: urls });
+    });
   };
 
   /* Tableau des manques : ✓ / À venir pour chaque rubrique */

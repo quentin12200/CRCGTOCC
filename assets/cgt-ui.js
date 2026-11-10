@@ -510,6 +510,22 @@
     btn.style.bottom = bas + 'px';
   }
 
+  /* ── Bandeau « hors connexion » ─────────────────────────── */
+  function initHorsConnexion() {
+    var b = document.createElement('div');
+    b.className = 'cgt-offline';
+    b.setAttribute('role', 'status');
+    b.textContent = 'Hors connexion : les diaporamas, fiches mémo, lexique et tableaux MP déjà enregistrés restent consultables. Quiz live et inscriptions indisponibles.';
+    var st = document.createElement('style');
+    st.textContent = '.cgt-offline{position:fixed;left:0;right:0;top:0;z-index:10001;background:#1A2540;color:#fff;font:600 .8rem/1.4 system-ui,sans-serif;padding:.55rem 1rem;text-align:center;transform:translateY(-100%);transition:transform .25s}.cgt-offline.on{transform:none}@media print{.cgt-offline{display:none}}';
+    document.head.appendChild(st);
+    document.body.appendChild(b);
+    function maj() { b.classList.toggle('on', navigator.onLine === false); }
+    window.addEventListener('online', maj);
+    window.addEventListener('offline', maj);
+    maj();
+  }
+
   /* ── Lien « Accueil » pour les stagiaires ──────────────── */
   // L'accueil formateur demande le code formateur : un stagiaire est renvoyé vers son espace
   function fixLiensAccueil() {
@@ -554,6 +570,7 @@
     injectQuestionDuJour();
     injectDarkToggle();
     fixLiensAccueil();
+    initHorsConnexion();
   });
 
   if ('serviceWorker' in navigator) {

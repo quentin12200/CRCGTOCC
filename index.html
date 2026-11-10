@@ -639,10 +639,11 @@
     .kit-live { font-size: .62rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; background: #C40017; color: #fff; padding: .05rem .35rem; vertical-align: .1em; }
     .kit-plus { font-size: .78rem !important; margin: -.4rem 0 1rem; }
     .kit-plus a { color: var(--accent); font-weight: 600; }
-    .tag-horsligne { font-size: .66rem; font-weight: 700; letter-spacing: .04em; color: #1A6B2A; background: #E8F5EC; padding: .15rem .5rem; }
-    .tag-horsligne::before { content: '✓ '; }
-    :root[data-theme="dark"] .tag-horsligne { color: #7FD99A; background: #12301E; }
-    @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .tag-horsligne { color: #7FD99A; background: #12301E; } }
+    .tag-horsligne { font-size: .66rem; font-weight: 700; letter-spacing: .04em; color: var(--texte-muted); border: 1px dashed var(--border); padding: .1rem .5rem; }
+    .tag-horsligne.est-dispo { color: #1A6B2A; background: #E8F5EC; border-color: transparent; }
+    .tag-horsligne.est-dispo::before { content: '✓ '; }
+    :root[data-theme="dark"] .tag-horsligne.est-dispo { color: #7FD99A; background: #12301E; }
+    @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .tag-horsligne.est-dispo { color: #7FD99A; background: #12301E; } }
     .card .card-body { display: flex; flex-direction: column; }
     .card .btn-ouvrir { margin-top: auto; align-self: flex-start; }
     .manques-box { margin: .5rem 0 2rem; background: var(--fond-card); border: 1px solid var(--border-card); }
@@ -810,7 +811,7 @@ document.addEventListener('DOMContentLoaded', function () {
   <div id="modules-catalogue"></div>
   <script src="/assets/modules-data.js"></script>
   <script src="/assets/modules.js"></script>
-  <script>CGT_afficherModules(document.getElementById('modules-catalogue'));</script>
+  <script>CGT_afficherModules(document.getElementById('modules-catalogue')); CGT_etatHorsLigne();</script>
   <details class="manques-box" id="modules-manques"></details>
   <script>CGT_tableauManques(document.getElementById('modules-manques'));</script>
   </section>
