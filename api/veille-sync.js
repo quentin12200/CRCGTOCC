@@ -270,10 +270,25 @@ async function collectSources() {
   ]);
 
   // Pratiques syndicales en priorité, puis jurisprudence, puis institutionnel
-  const all = [...cgt, ...nvo, ...santeT, ...inrs, ...courCass, ...anact, ...minTravail, ...legifrance, ...has, ...servicePublic];
-  console.log(`[collect] Total : ${all.length} articles collectés (CGT:${cgt.length} NVO:${nvo.length} INRS:${inrs.length} CassSoc:${courCass.length})`);
+  const tous = [...cgt, ...nvo, ...santeT, ...inrs, ...courCass, ...anact, ...minTravail, ...legifrance, ...has, ...servicePublic];
+  // Ne garder que ce qui touche à la santé au travail, aux AT/MP et à la protection sociale :
+  // sans ce filtre, des articles sur les salaires ou les grèves étaient reformulés de force en « AT/MP »
+  const all = tous.filter(it => MOTS_ATMP.test(`${it.title || ''} ${it.desc || ''}`));
+  console.log(`[collect] Total : ${tous.length} articles collectés, ${all.length} en rapport avec la santé au travail (CGT:${cgt.length} NVO:${nvo.length} INRS:${inrs.length} CassSoc:${courCass.length})`);
   return all;
 }
+
+// Mots qui signalent un article en rapport avec la formation (AT/MP, santé-sécurité, protection sociale)
+const MOTS_ATMP = new RegExp([
+  'accidents? du travail', 'accidents? de (trajet|service)', 'maladies? professionnelles?', '\\bAT\\s*/\\s*MP\\b', '\\bATMP\\b',
+  'sant[ée] (au|et s[ée]curit[ée] au) travail', 's[ée]curit[ée] au travail', 'pr[ée]vention des risques', 'risques? professionnels?',
+  'risques? psychosociaux', '\\bRPS\\b', 'burn.?out', '[ée]puisement professionnel', 'souffrance au travail', 'harc[eè]lement',
+  'inaptitude', 'invalidit[ée]', 'pr[ée]voyance', 'incapacit[ée]', 'indemnit[ée]s? journali[eè]res?', 'arr[eê]ts? de travail',
+  'rente', 'consolidation', '\\bIPP\\b', 'faute inexcusable', 'CRRMP', 'tableaux? de maladies', 'amiante', 'cancer', 'silice',
+  '\\bTMS\\b', 'troubles musculo', 'p[ée]nibilit[ée]', 'chaleur', 'canicule', '\\bDUERP?\\b', '\\bCSSCT\\b', '\\bF3SCT\\b',
+  'm[ée]decin(e)? du travail', 'service de pr[ée]vention', 'CARSAT', 'INRS', 'exposition', 'morts? au travail', 'd[ée]c[eè]s au travail',
+  'travailleurs? handicap', '\\bRQTH\\b', 'Agefiph', 'reclassement'
+].join('|'), 'i');
 
 // ── Analyse GPT avec angle syndical CGT ───────────────────────────────────────
 async function resumeWithGPT(item) {
@@ -285,8 +300,13 @@ Titre : ${item.title}
 ${item.desc ? 'Contenu : ' + item.desc : ''}
 ${item.link ? 'Lien : ' + item.link : ''}
 
-Produis une fiche pratique CGT. Réponds UNIQUEMENT en JSON valide (pas de texte autour) :
+Si cette actualité n'a pas de lien réel avec les accidents du travail, les maladies professionnelles,
+la santé-sécurité au travail, l'invalidité, la prévoyance ou le handicap au travail, réponds seulement {"pertinent": false}.
+N'invente jamais de lien avec les AT/MP.
+
+Sinon, produis une fiche pratique CGT. Réponds UNIQUEMENT en JSON valide (pas de texte autour) :
 {
+  "pertinent": true,
   "title": "Titre percutant pour militant CGT, 80 caractères max",
   "body": "Résumé factuel en 2-3 phrases : ce qui change et pourquoi c'est important pour les salariés victimes d'AT/MP",
   "detail": "Analyse syndicale en HTML (<ul><li>). Inclure : 1) Ce que ça change concrètement pour le salarié victime d'AT/MP, 2) Ce que le délégué CGT doit faire en pratique (vérifier, revendiquer, agir), 3) L'argument CGT à utiliser en formation ou en négociation, 4) Les pièges à éviter",
@@ -470,6 +490,12 @@ module.exports = async function handler(req, res) {
           continue;
         }
         const fiche = await resumeWithGPT(item);
+        if (fiche.pertinent === false) {
+          console.log(`[skip] Hors sujet AT/MP : "${item.title.slice(0, 50)}"`);
+          results.push({ ok: false, reason: 'hors sujet', title: item.title.slice(0, 60) });
+          continue;
+        }
+        delete fiche.pertinent;
         fiche.source    = item.source;
         fiche.sourceUrl = item.link || '';
         fiche.date      = item.date
