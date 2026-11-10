@@ -134,7 +134,7 @@ window.CGT_MODULES = [
  {
   "id": "atmp",
   "famille": "sante-travail",
-  "titre": "Accidents du Travail & Maladies Professionnelles",
+  "titre": "Accidents du travail & maladies professionnelles",
   "duree": "2 jours",
   "type": "Présentation diaporama",
   "desc": "Régime AT/MP, reconnaissance, réparation, droits des accidenté·es et malades. Module complet pour militant·es et élu·es du CSE.",
@@ -335,7 +335,7 @@ window.CGT_MODULES = [
  {
   "id": "atmp-fp",
   "famille": "sante-travail",
-  "titre": "AT/MP dans la Fonction Publique",
+  "titre": "AT/MP dans la fonction publique",
   "duree": "Demi-journée",
   "type": "Présentation diaporama",
   "desc": "FPE, FPT, FPH : accident de service, maladie professionnelle, droits, indemnisations, F3SCT, CNRACL. Angle militant CGT avec notes formateur pour chaque diapo.",
@@ -402,10 +402,6 @@ window.CGT_MODULES = [
     {
      "t": "Modèle d'accord handicap à compléter",
      "href": "/documents/Modele_CGT_accord_handicap_a_completer.docx"
-    },
-    {
-     "t": "Fiche mémo Handicap & Agefiph",
-     "href": "/fiches-memo/fiche-handicap.html"
     }
    ],
    "quiz": [
