@@ -583,6 +583,7 @@
     .insc-actions { display: flex; flex-wrap: wrap; gap: .4rem; justify-content: center; }
     .insc-btn { background: var(--rouge); color: #fff; border: 1px solid var(--rouge); font-family: 'Archivo', sans-serif; font-size: .78rem; font-weight: 600; padding: .45rem .8rem; cursor: pointer; }
     .insc-btn:hover { background: var(--rouge-dark); }
+    .insc-btn:disabled { opacity: .5; cursor: not-allowed; }
     .insc-btn-ghost { background: transparent; color: var(--accent); border-color: var(--accent); }
     .insc-btn-ghost:hover { background: var(--accent); color: #fff; }
     .insc-btn-danger { background: transparent; color: var(--rouge); }
@@ -1205,6 +1206,17 @@ document.addEventListener('DOMContentLoaded', function () {
     $('insc-session-info').textContent = session ? 'Session : ' + libelle(info) + '. QR code et liste propres à cette session.' : 'Créez une session pour obtenir son QR code.';
     $('insc-overlay-session').textContent = info.formation ? libelle(info) : '';
     url = `${location.origin}/inscription.html?s=${encodeURIComponent(session)}` + (info.formation ? '&t=' + encodeURIComponent(libelle(info)) : '');
+    // Pas encore de session : pas de QR code qui mènerait à une liste sans nom
+    if (!session) {
+      url = '';
+      $('insc-url').textContent = '';
+      $('insc-qr').innerHTML = '<p style="line-height:1.45;font-size:.82rem;color:#4A5568;max-width:180px">Créez d\'abord une session (formation, date, lieu) : son QR code s\'affichera ici.</p>';
+      $('insc-plein-ecran').disabled = $('insc-copier-lien').disabled = $('insc-emargement').disabled = true;
+      if (stop) { stop(); stop = null; }
+      inscrits = []; render();
+      return;
+    }
+    $('insc-plein-ecran').disabled = $('insc-copier-lien').disabled = $('insc-emargement').disabled = false;
     $('insc-url').textContent = url;
     qr($('insc-qr'), 200);
     if (!$('insc-overlay').hidden) qr($('insc-qr-grand'), 512);

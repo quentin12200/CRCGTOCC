@@ -160,6 +160,9 @@
     .veille-etat.est-alerte, .veille-etat.est-erreur { padding: .75rem 1rem; border-left: 4px solid #B26100; background: rgba(245,168,0,.12); color: var(--texte); }
     .veille-etat.est-erreur { border-left-color: #B8001A; background: rgba(226,0,26,.08); }
     .veille-reessayer { margin-left: .4rem; font: inherit; font-weight: 700; color: #fff; background: #B8001A; border: 0; padding: .3rem .7rem; cursor: pointer; }
+
+    /* Mobile : l'en-tête passe sur deux lignes au lieu de déborder (boutons blancs restés sur fond rouge) */
+    @media (max-width: 640px) { header { flex-wrap: wrap; padding: .8rem 1rem; gap: .6rem; } .header-divider { display: none; } }
 </style>
 </head>
 <body>
