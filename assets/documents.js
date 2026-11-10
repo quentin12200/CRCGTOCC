@@ -66,8 +66,8 @@
     var st = document.createElement('style');
     st.textContent =
       '.cgt-doc-info{display:inline-block;font-size:.72em;font-weight:600;letter-spacing:.02em;padding:.05em .45em;' +
-      'border:1px solid currentColor;border-radius:3px;opacity:.85;white-space:nowrap;vertical-align:.1em;margin-left:.15em}' +
-      '.cgt-doc-alt{font-size:.85em;white-space:nowrap}' +
+      'border:1px solid currentColor;border-radius:3px;white-space:nowrap;vertical-align:.1em;margin-left:.15em}' +
+      '.cgt-doc-alt{display:inline-flex;align-items:center;gap:.2em;min-height:26px;font-size:.85em;white-space:nowrap}' +
       '@media print{.cgt-doc-info,.cgt-doc-alt{display:none}}';
     document.head.appendChild(st);
   }

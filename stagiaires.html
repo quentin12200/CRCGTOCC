@@ -235,6 +235,13 @@
     /* Accessibilité : rouge et bleu éclaircis sur fond sombre (contraste ≥ 4,5:1) */
     :root[data-theme="dark"] .welcome-box h2, :root[data-theme="dark"] .welcome-box .welcome-cgt, :root[data-theme="dark"] footer:not(.cgt-footer) strong { color: #FF6B7D; }
     @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .welcome-box h2, :root:not([data-theme="light"]) .welcome-box .welcome-cgt, :root:not([data-theme="light"]) footer:not(.cgt-footer) strong { color: #FF6B7D; } }
+
+    /* Accessibilité : sur mobile le texte du bandeau occupe toute la largeur de la photo ;
+       voile sombre uniforme (contraste ≥ 4,5:1) et hauteur adaptée au texte */
+    @media (max-width: 640px) {
+      .hero { height: auto !important; min-height: 220px; }
+      .hero-overlay { background: linear-gradient(180deg, rgba(10,10,10,.82) 0%, rgba(10,10,10,.74) 55%, rgba(110,0,14,.82) 100%) !important; }
+    }
 </style>
   <link rel="manifest" href="/manifest.json">
   <meta name="theme-color" content="#E2001A">

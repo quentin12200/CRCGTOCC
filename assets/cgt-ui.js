@@ -88,7 +88,10 @@
       '.ticker-track{display:flex;overflow:hidden;flex:1;position:relative}',
       '.ticker-inner{display:flex;white-space:nowrap;',
       'animation:tickerScroll 40s linear infinite}',
-      '.ticker-inner:hover{animation-play-state:paused}',
+      '.ticker-inner:hover,.ticker-wrap.en-pause .ticker-inner{animation-play-state:paused}',
+      '.ticker-pause{flex-shrink:0;height:100%;width:34px;border:0;border-left:1px solid #2E3B57;background:#1A2540;color:#E6ECF5;cursor:pointer;display:flex;align-items:center;justify-content:center}',
+      '.ticker-pause:hover,.ticker-pause:focus-visible{background:#2E3B57}',
+      '@media (prefers-reduced-motion: reduce){.ticker-wrap.en-pause .ticker-inner{animation:none}.ticker-wrap.en-pause .ticker-track{overflow-x:auto}}',
       '@keyframes tickerScroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}',
       '.ticker-sep{margin:0 28px;opacity:.5}',
       '@media print{.ticker-wrap{display:none}}'
@@ -103,18 +106,42 @@
       '📅 84 millions de journées de travail perdues',
       '🔴 693 718 sinistres AT au total — CGT exige un plan national de prévention'
     ];
-    var items = (stats.concat(stats)).map(function (s) {
-      return '<span>' + s + '</span><span class="ticker-sep">·</span>';
-    }).join('');
+    // La liste est doublée pour un défilement continu ; la copie est masquée aux lecteurs d'écran
+    var item = function (s) { return '<span>' + s + '</span><span class="ticker-sep" aria-hidden="true">·</span>'; };
+    var items = stats.map(item).join('') + '<span aria-hidden="true" style="display:contents">' + stats.map(item).join('') + '</span>';
 
     var el = document.createElement('div');
     el.className = 'ticker-wrap';
+    el.setAttribute('role', 'region');
+    el.setAttribute('aria-label', 'Chiffres clés AT/MP');
     el.innerHTML = [
       '<div class="ticker-label">CGT 2026</div>',
       '<div class="ticker-track">',
       '  <div class="ticker-inner">' + items + '</div>',
-      '</div>'
+      '</div>',
+      '<button type="button" class="ticker-pause"></button>'
     ].join('');
+
+    // Bouton pause (WCAG 2.2.2) : choix mémorisé ; à l'arrêt d'office si l'appareil demande moins d'animations
+    var PAUSE = '<svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><rect x="2" y="1.5" width="2.6" height="9" fill="currentColor"/><rect x="7.4" y="1.5" width="2.6" height="9" fill="currentColor"/></svg>';
+    var LECTURE = '<svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 1.5l7 4.5-7 4.5z" fill="currentColor"/></svg>';
+    var reduit = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var enPause = reduit;
+    try { var m = localStorage.getItem('cgt_ticker_pause'); if (m !== null) enPause = m === '1'; } catch (e) {}
+    var bp = el.querySelector('.ticker-pause');
+    function majPause() {
+      el.classList.toggle('en-pause', enPause);
+      bp.innerHTML = enPause ? LECTURE : PAUSE;
+      bp.setAttribute('aria-label', enPause ? 'Relancer le défilement des chiffres' : 'Mettre en pause le défilement des chiffres');
+      bp.setAttribute('aria-pressed', enPause ? 'true' : 'false');
+      bp.title = bp.getAttribute('aria-label');
+    }
+    bp.addEventListener('click', function () {
+      enPause = !enPause;
+      try { localStorage.setItem('cgt_ticker_pause', enPause ? '1' : '0'); } catch (e) {}
+      majPause();
+    });
+    majPause();
 
     document.body.appendChild(el);
   }
@@ -154,7 +181,7 @@
     el.className = 'cgt-footer';
     el.innerHTML = [
       '<div class="cgt-footer-logo">',
-      '  <div class="cgt-footer-sq">CGT</div>',
+      '  <div class="cgt-footer-sq" role="img" aria-label="Logo CGT">CGT</div>',
       '  <div class="cgt-footer-name">',
       '    <strong>CGT Occitanie</strong>',
       '    <span>Centre de ressources AT/MP — Version 2025</span>',

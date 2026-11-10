@@ -410,7 +410,7 @@
     .btn-masquer {
       font-family: 'Archivo', sans-serif; font-size: .72rem; font-weight: 700; letter-spacing: .04em; text-transform: none;
       color: var(--texte-muted); background: transparent; border: 1px solid var(--border); border-radius: 4px;
-      padding: .28rem .6rem; cursor: pointer; display: inline-flex; align-items: center; gap: .35rem; white-space: nowrap;
+      padding: .28rem .6rem; min-height: 28px; cursor: pointer; display: inline-flex; align-items: center; gap: .35rem; white-space: nowrap;
     }
     .btn-masquer:hover { color: var(--accent); border-color: var(--accent); }
     .btn-masquer svg { transition: transform .2s; }
@@ -658,6 +658,13 @@
     :root[data-theme="dark"] .manques td.ok { color: #7FD99A; } :root[data-theme="dark"] .manques td.manque { color: #FF6B7D; }
     @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .manques td.ok { color: #7FD99A; } :root:not([data-theme="light"]) .manques td.manque { color: #FF6B7D; } }
     @media (max-width: 420px) { .kit-row { grid-template-columns: 1fr; gap: 0; } }
+
+    /* Accessibilité : sur mobile le texte du bandeau occupe toute la largeur de la photo ;
+       voile sombre uniforme (contraste ≥ 4,5:1) et hauteur adaptée au texte */
+    @media (max-width: 640px) {
+      .hero { height: auto !important; min-height: 220px; }
+      .hero-overlay { background: linear-gradient(180deg, rgba(10,10,10,.82) 0%, rgba(10,10,10,.74) 55%, rgba(110,0,14,.82) 100%) !important; }
+    }
 </style>
   <link rel="manifest" href="/manifest.json">
   <meta name="theme-color" content="#E2001A">
