@@ -27,7 +27,9 @@
       ':focus-visible{outline:3px solid #1A5FAD;outline-offset:2px}' +
       '[data-theme="dark"] :focus-visible{outline-color:#7FB2E8}' +
       '@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) :focus-visible{outline-color:#7FB2E8}}' +
-      '[data-cgt-btn]{cursor:pointer}';
+      '[data-cgt-btn]{cursor:pointer}' +
+      '.cgt-skip{position:fixed;left:8px;top:-60px;z-index:10002;background:#1A2540;color:#fff;font:700 .9rem/1 system-ui,sans-serif;padding:.75rem 1rem;text-decoration:none;transition:top .15s}' +
+      '.cgt-skip:focus{top:8px}main:focus{outline:none}';
     document.head.appendChild(st);
   }
 
@@ -128,6 +130,19 @@
     });
   }
 
+  /* 6. Lien d'évitement « Aller au contenu » (premier arrêt de la touche Tab) */
+  function lienEvitement() {
+    var main = document.querySelector('main');
+    if (!main || document.querySelector('.cgt-skip')) return;
+    if (!main.id) main.id = 'contenu';
+    if (!main.hasAttribute('tabindex')) main.setAttribute('tabindex', '-1');
+    var a = document.createElement('a');
+    a.className = 'cgt-skip';
+    a.href = '#' + main.id;
+    a.textContent = 'Aller au contenu';
+    document.body.insertBefore(a, document.body.firstChild);
+  }
+
   function run(root) {
     root = root || document;
     fixClickables(root);
@@ -138,6 +153,7 @@
 
   function init() {
     injectCSS();
+    lienEvitement();
     run(document);
     if (!window.MutationObserver) return;
     var pending = false;

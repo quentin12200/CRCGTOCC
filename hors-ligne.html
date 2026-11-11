@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hors connexion · CGT Occitanie</title>
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="/manifest.json">
+  <style>
+    :root { --rouge: #E2001A; --fond: #F4F6FA; --carte: #fff; --texte: #1A2540; --muted: #5A6A84; --accent: #1A5FAD; }
+    @media (prefers-color-scheme: dark) { :root { --fond: #101620; --carte: #172033; --texte: #E6ECF5; --muted: #9AAAC2; --accent: #7FB2E8; } }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: system-ui, -apple-system, 'Segoe UI', sans-serif; background: var(--fond); color: var(--texte); min-height: 100vh; }
+    header { background: var(--rouge); color: #fff; padding: .9rem 1.25rem; font-weight: 700; letter-spacing: .03em; }
+    main { max-width: 640px; margin: 0 auto; padding: 2rem 1.25rem 3rem; }
+    h1 { font-size: 1.5rem; margin-bottom: .6rem; }
+    p { color: var(--muted); line-height: 1.6; margin-bottom: 1rem; }
+    ul { list-style: none; display: grid; gap: .5rem; margin: 1rem 0 1.5rem; }
+    a { color: var(--accent); font-weight: 600; }
+    li a { display: block; background: var(--carte); padding: .8rem 1rem; border-left: 4px solid var(--rouge); text-decoration: none; }
+    button { font: inherit; font-weight: 700; background: var(--rouge); color: #fff; border: 0; padding: .7rem 1.2rem; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <header>CGT Occitanie · Formation syndicale</header>
+  <main>
+    <h1>Pas de connexion pour cette page</h1>
+    <p>Cette page n'est pas enregistrée sur cet appareil, ou elle a besoin d'Internet pour fonctionner (quiz live, inscriptions, évaluations).</p>
+    <p>Ces contenus restent consultables sans réseau :</p>
+    <ul id="dispo">
+      <li><a href="/stagiaires.html">Espace stagiaire</a></li>
+      <li><a href="/maladies-pro.html">Tableaux des maladies professionnelles</a></li>
+      <li><a href="/lexique.html">Lexique</a></li>
+      <li><a href="/fiches-memo/index.html">Fiches mémo</a></li>
+      <li><a href="/presentations/Presentation_AT-MP_CGT.html">Diaporama AT/MP</a></li>
+    </ul>
+    <button type="button" onclick="location.reload()">Réessayer</button>
+  </main>
+</body>
+</html>

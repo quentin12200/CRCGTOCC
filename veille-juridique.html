@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#E2001A">
   <meta name="robots" content="noindex, nofollow">
   <title>Veille Juridique AT/MP — CGT Occitanie</title>
   <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
@@ -151,7 +153,17 @@
     .sync-status.error { display: block; border-color: #C00; background: rgba(200,0,0,.07); color: #C00; }
     [data-theme="dark"] .sync-status.ok    { color: #7FD47F; }
     [data-theme="dark"] .sync-status.error { color: #FF8888; }
-  </style>
+  
+    /* État de la veille (dernière mise à jour, source indisponible) */
+    .veille-etat { font-size: .8rem; color: var(--texte-muted); margin-bottom: .9rem; line-height: 1.5; }
+    .veille-etat:empty { display: none; }
+    .veille-etat.est-alerte, .veille-etat.est-erreur { padding: .75rem 1rem; border-left: 4px solid #B26100; background: rgba(245,168,0,.12); color: var(--texte); }
+    .veille-etat.est-erreur { border-left-color: #B8001A; background: rgba(226,0,26,.08); }
+    .veille-reessayer { margin-left: .4rem; font: inherit; font-weight: 700; color: #fff; background: #B8001A; border: 0; padding: .3rem .7rem; cursor: pointer; }
+
+    /* Mobile : l'en-tête passe sur deux lignes au lieu de déborder (boutons blancs restés sur fond rouge) */
+    @media (max-width: 640px) { header { flex-wrap: wrap; padding: .8rem 1rem; gap: .6rem; } .header-divider { display: none; } }
+</style>
 </head>
 <body>
 <script src="/assets/cgt-ui.js"></script>
@@ -199,6 +211,7 @@
       <button class="filter-btn" data-f="pratique">Pratique syndicale</button>
     </div>
 
+    <div class="veille-etat" id="veille-etat" role="status"></div>
     <div class="feed" id="feed"></div>
     <div class="no-result" id="no-result">Aucun résultat pour cette recherche.</div>
   </div>
@@ -504,38 +517,53 @@ function firestoreToItem(doc, idx) {
 
 async function loadFromFirebase() {
   const feed = document.getElementById('feed');
+  const etat = document.getElementById('veille-etat');
   feed.innerHTML = '<div style="padding:2rem;color:var(--texte-muted);font-size:.88rem">⟳ Chargement de la veille…</div>';
+  etat.className = 'veille-etat';
+  etat.textContent = '';
 
+  let docs = null, erreur = '', depuisCopie = null;
   try {
+    // 8 s maximum : au-delà, on considère que la source ne répond pas
+    const ctrl = new AbortController();
+    const minuteur = setTimeout(() => ctrl.abort(), 8000);
     const url = `https://firestore.googleapis.com/v1/projects/${FIREBASE_PROJECT}/databases/(default)/documents/veille?orderBy=createdAt%20desc&pageSize=50`;
-    const res = await fetch(url);
-    if (!res.ok) throw new Error('Firestore ' + res.status);
-    const data = await res.json();
-
-    const docs = data.documents || [];
-    if (docs.length > 0) {
-      // Firebase a des données — on les utilise
-      ALL_ITEMS = docs.map((doc, i) => firestoreToItem(doc, i));
-    } else {
-      // Pas encore de données Firebase → fallback statique
-      ALL_ITEMS = FEED;
-    }
-  } catch(e) {
-    console.warn('Firebase non disponible, fallback statique', e);
-    ALL_ITEMS = FEED;
+    const res = await fetch(url, { signal: ctrl.signal });
+    clearTimeout(minuteur);
+    if (!res.ok) throw new Error('réponse ' + res.status);
+    docs = (await res.json()).documents || [];
+    try { localStorage.setItem('cgt_veille_copie', JSON.stringify({ quand: new Date().toISOString(), docs })); } catch (e) {}
+  } catch (e) {
+    erreur = navigator.onLine === false ? 'pas de connexion Internet' : (e.name === 'AbortError' ? 'délai dépassé' : e.message);
+    // Dernière copie reçue sur cet appareil
+    try { depuisCopie = JSON.parse(localStorage.getItem('cgt_veille_copie')); } catch (e2) {}
+    if (depuisCopie && depuisCopie.docs && depuisCopie.docs.length) docs = depuisCopie.docs;
   }
 
+  ALL_ITEMS = docs && docs.length ? docs.map((doc, i) => firestoreToItem(doc, i)) : FEED;
   prepareCache(ALL_ITEMS);
   renderFeed(getFiltered());
 
-  // Indicateur de source
-  const isLive = ALL_ITEMS !== FEED;
-  const badge = document.createElement('div');
-  badge.style.cssText = 'font-size:.72rem;color:var(--texte-muted);margin-bottom:.75rem;';
-  badge.textContent = isLive
-    ? `✓ ${ALL_ITEMS.length} articles chargés depuis la veille automatique`
-    : '⚠ Affichage des données statiques — la synchronisation automatique n\'a pas encore tourné';
-  document.getElementById('feed').parentNode.insertBefore(badge, document.getElementById('feed'));
+  // Date de la dernière mise à jour automatique (article le plus récent enregistré)
+  const derniere = (docs || []).map(d => (d.fields && d.fields.createdAt && d.fields.createdAt.timestampValue) || '').sort().pop();
+  const fmt = d => new Date(d).toLocaleString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' });
+  const jours = derniere ? Math.floor((Date.now() - new Date(derniere)) / 86400000) : null;
+
+  if (erreur) {
+    etat.classList.add('est-erreur');
+    etat.innerHTML = '<strong>La source de la veille ne répond pas</strong> (' + escV(erreur) + ').<br>' +
+      (depuisCopie && docs ? 'Affichage de la dernière copie reçue sur cet appareil, le ' + escV(fmt(depuisCopie.quand)) + '.'
+                           : 'Affichage des articles de référence enregistrés dans la page.') +
+      ' <button type="button" class="veille-reessayer">Réessayer</button>';
+    etat.querySelector('.veille-reessayer').onclick = loadFromFirebase;
+  } else if (!docs.length) {
+    etat.classList.add('est-alerte');
+    etat.textContent = 'La mise à jour automatique n\'a encore enregistré aucun article : affichage des articles de référence.';
+  } else {
+    etat.classList.toggle('est-alerte', jours > 3);
+    etat.innerHTML = '<strong>Dernière mise à jour automatique :</strong> ' + escV(fmt(derniere)) + ' · ' + docs.length + ' articles' +
+      (jours > 3 ? '<br>⚠ Aucune mise à jour depuis ' + jours + ' jours : la synchronisation quotidienne semble arrêtée (voir « Synchroniser »).' : '');
+  }
 }
 
 // ── INIT ─────────────────────────────────────────────────────────────────────

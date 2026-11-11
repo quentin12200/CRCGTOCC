@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#E2001A">
   <meta name="robots" content="noindex, nofollow">
   <title>Lexique — Formation CGT Occitanie</title>
   <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
@@ -364,6 +366,11 @@ document.querySelectorAll('.filter-btn').forEach(btn => {
   });
 });
 
+// Lien direct depuis la recherche : ?q=terme pré-remplit la recherche
+(function(){
+  const q = new URLSearchParams(location.search).get('q');
+  if (q) { document.getElementById('search').value = q; searchQuery = q; }
+})();
 render();
 </script>
 </body>

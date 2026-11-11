@@ -88,7 +88,10 @@
       '.ticker-track{display:flex;overflow:hidden;flex:1;position:relative}',
       '.ticker-inner{display:flex;white-space:nowrap;',
       'animation:tickerScroll 40s linear infinite}',
-      '.ticker-inner:hover{animation-play-state:paused}',
+      '.ticker-inner:hover,.ticker-wrap.en-pause .ticker-inner{animation-play-state:paused}',
+      '.ticker-pause{flex-shrink:0;height:100%;width:34px;border:0;border-left:1px solid #2E3B57;background:#1A2540;color:#E6ECF5;cursor:pointer;display:flex;align-items:center;justify-content:center}',
+      '.ticker-pause:hover,.ticker-pause:focus-visible{background:#2E3B57}',
+      '@media (prefers-reduced-motion: reduce){.ticker-wrap.en-pause .ticker-inner{animation:none}.ticker-wrap.en-pause .ticker-track{overflow-x:auto}}',
       '@keyframes tickerScroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}',
       '.ticker-sep{margin:0 28px;opacity:.5}',
       '@media print{.ticker-wrap{display:none}}'
@@ -103,18 +106,42 @@
       '📅 84 millions de journées de travail perdues',
       '🔴 693 718 sinistres AT au total — CGT exige un plan national de prévention'
     ];
-    var items = (stats.concat(stats)).map(function (s) {
-      return '<span>' + s + '</span><span class="ticker-sep">·</span>';
-    }).join('');
+    // La liste est doublée pour un défilement continu ; la copie est masquée aux lecteurs d'écran
+    var item = function (s) { return '<span>' + s + '</span><span class="ticker-sep" aria-hidden="true">·</span>'; };
+    var items = stats.map(item).join('') + '<span aria-hidden="true" style="display:contents">' + stats.map(item).join('') + '</span>';
 
     var el = document.createElement('div');
     el.className = 'ticker-wrap';
+    el.setAttribute('role', 'region');
+    el.setAttribute('aria-label', 'Chiffres clés AT/MP');
     el.innerHTML = [
       '<div class="ticker-label">CGT 2026</div>',
       '<div class="ticker-track">',
       '  <div class="ticker-inner">' + items + '</div>',
-      '</div>'
+      '</div>',
+      '<button type="button" class="ticker-pause"></button>'
     ].join('');
+
+    // Bouton pause (WCAG 2.2.2) : choix mémorisé ; à l'arrêt d'office si l'appareil demande moins d'animations
+    var PAUSE = '<svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><rect x="2" y="1.5" width="2.6" height="9" fill="currentColor"/><rect x="7.4" y="1.5" width="2.6" height="9" fill="currentColor"/></svg>';
+    var LECTURE = '<svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 1.5l7 4.5-7 4.5z" fill="currentColor"/></svg>';
+    var reduit = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var enPause = reduit;
+    try { var m = localStorage.getItem('cgt_ticker_pause'); if (m !== null) enPause = m === '1'; } catch (e) {}
+    var bp = el.querySelector('.ticker-pause');
+    function majPause() {
+      el.classList.toggle('en-pause', enPause);
+      bp.innerHTML = enPause ? LECTURE : PAUSE;
+      bp.setAttribute('aria-label', enPause ? 'Relancer le défilement des chiffres' : 'Mettre en pause le défilement des chiffres');
+      bp.setAttribute('aria-pressed', enPause ? 'true' : 'false');
+      bp.title = bp.getAttribute('aria-label');
+    }
+    bp.addEventListener('click', function () {
+      enPause = !enPause;
+      try { localStorage.setItem('cgt_ticker_pause', enPause ? '1' : '0'); } catch (e) {}
+      majPause();
+    });
+    majPause();
 
     document.body.appendChild(el);
   }
@@ -154,7 +181,7 @@
     el.className = 'cgt-footer';
     el.innerHTML = [
       '<div class="cgt-footer-logo">',
-      '  <div class="cgt-footer-sq">CGT</div>',
+      '  <div class="cgt-footer-sq" role="img" aria-label="Logo CGT">CGT</div>',
       '  <div class="cgt-footer-name">',
       '    <strong>CGT Occitanie</strong>',
       '    <span>Centre de ressources AT/MP — Version 2025</span>',
@@ -372,77 +399,94 @@
   /* ── 10. Question du jour (espace stagiaire) ────────────── */
   function injectQuestionDuJour() {
     if (window.location.pathname.indexOf('stagiaires') === -1) return;
-    var QUESTIONS = [
-      {q:'Quel délai pour déclarer un AT à l\'employeur ?',r:['24 heures','48 heures','5 jours','8 jours'],a:0,exp:'Le salarié doit informer l\'employeur dans les 24h (sauf cas de force majeure).'},
-      {q:'Combien de morts par AT en France en 2025 ?',r:['700','1 331','2 000','500'],a:1,exp:'1 331 décès par accident du travail selon les données Assurance Maladie / CGT 2026.'},
-      {q:'Le taux d\'IPP minimum pour bénéficier d\'une rente est de :',r:['5%','10%','15%','20%'],a:1,exp:'Une rente AT est attribuée si l\'IPP est évaluée à 10% ou plus.'},
-      {q:'Le droit de retrait s\'exerce en cas de :',r:['Fatigue excessive','Désaccord avec le chef','Danger grave et imminent','Maladie'],a:2,exp:'Le droit de retrait est réservé aux situations de danger grave et imminent pour la vie ou la santé.'},
-      {q:'L\'obligation de sécurité de l\'employeur est :',r:['De moyens','De résultat','Morale','Déclarative'],a:1,exp:'L\'employeur est tenu à une obligation de résultat en matière de sécurité (jurisprudence constante).'},
-      {q:'Les IJ AT représentent quel % du salaire journalier de base ?',r:['60% puis 80%','50% puis 75%','100% dès le 1er jour','80% dès le 1er jour'],a:0,exp:'60% du salaire journalier de base pour les 28 premiers jours, puis 80% à partir du 29e jour.'},
-      {q:'Le DUER doit être mis à jour au minimum :',r:['Tous les 3 ans','Chaque année','Tous les 5 ans','À chaque AT seulement'],a:1,exp:'Le Document Unique d\'Évaluation des Risques doit être mis à jour chaque année et à chaque changement.'},
-      {q:'RQTH signifie :',r:['Registre Qualifié Travail Handicap','Reconnaissance de la Qualité de Travailleur Handicapé','Règlement Qualité Travail Hygiène','Réseau Qualité Travail Humain'],a:1,exp:'La RQTH est délivrée par la MDPH et ouvre droit aux aides Agefiph et aménagements de poste.'},
-      {q:'Le taux d\'emploi obligatoire de travailleurs handicapés est de :',r:['4%','6%','8%','10%'],a:1,exp:'Toute entreprise de 20 salariés et plus doit employer au moins 6% de travailleurs handicapés.'},
-      {q:'Les IJ journalières AT représentent combien en 2025 ?',r:['2,1 Md€','3,8 Md€','5,4 Md€','7,2 Md€'],a:2,exp:'5,4 milliards d\'euros d\'indemnités journalières AT versés en 2025, en hausse de +10,5%.'},
-    ];
+    // Banque : assets/questions-du-jour.js (questions des quiz, avec explication, référence et fiche)
+    if (!window.CGT_QUESTIONS_DU_JOUR) {
+      var me = document.querySelector('script[src*="cgt-ui.js"]');
+      var sc = document.createElement('script');
+      sc.src = me ? me.getAttribute('src').replace('cgt-ui.js', 'questions-du-jour.js') : '/assets/questions-du-jour.js';
+      sc.onload = function () { if (window.CGT_QUESTIONS_DU_JOUR) afficherQuestionDuJour(); };
+      document.head.appendChild(sc);
+      return;
+    }
+    afficherQuestionDuJour();
+  }
 
-    var today = new Date().getDay(); // 0-6
-    var idx = (new Date().getDate() + new Date().getMonth() * 31) % QUESTIONS.length;
+  function afficherQuestionDuJour() {
+    var QUESTIONS = window.CGT_QUESTIONS_DU_JOUR;
+    if (!QUESTIONS || !QUESTIONS.length || document.querySelector('.qdj')) return;
+    // Une question par jour calendaire (heure de Paris), la même pour tout le monde
+    var jour = new Date().toLocaleDateString('fr-CA', { timeZone: 'Europe/Paris' }); // AAAA-MM-JJ
+    var num = Math.floor(Date.parse(jour + 'T00:00:00Z') / 86400000);
+    var idx = ((num % QUESTIONS.length) + QUESTIONS.length) % QUESTIONS.length;
     var q = QUESTIONS[idx];
+    var e = function (t) { return String(t).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
+    var dejaRepondu = null;
+    try { var m = JSON.parse(localStorage.getItem('cgt_qdj') || 'null'); if (m && m.jour === jour) dejaRepondu = m.choix; } catch (er) {}
 
     var style = document.createElement('style');
     style.textContent = [
-      '.qdj{background:#1A1A1A;border:1px solid #2C2C2C;border-radius:12px;',
-      'padding:1.5rem;margin:1.5rem 0;font-family:"Inter",sans-serif}',
-      '.qdj-label{font-size:.72rem;font-weight:700;letter-spacing:.8px;text-transform:uppercase;',
-      'color:#FFD200;margin-bottom:.75rem}',
+      '.qdj{background:#1A1A1A;border:1px solid #2C2C2C;border-radius:12px;padding:1.5rem;margin:1.5rem 0;font-family:"Inter",sans-serif}',
+      '.qdj-label{display:flex;justify-content:space-between;gap:1rem;font-size:.72rem;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:#FFD200;margin-bottom:.75rem}',
+      '.qdj-label span{color:#B0BDD0;font-weight:600;letter-spacing:.02em;text-transform:none}',
       '.qdj-q{font-size:1rem;font-weight:600;color:#FAFAFA;margin-bottom:1rem;line-height:1.4}',
       '.qdj-choices{display:grid;grid-template-columns:1fr 1fr;gap:.5rem}',
       '@media(max-width:480px){.qdj-choices{grid-template-columns:1fr}}',
-      '.qdj-btn{background:#111;border:1px solid #333;border-radius:6px;',
-      'padding:.6rem .9rem;color:#FAFAFA;font-size:.85rem;cursor:pointer;',
-      'text-align:left;transition:border-color .15s,background .15s}',
-      '.qdj-btn:hover{border-color:#1A5FAD;background:#162035}',
-      '.qdj-btn.correct{border-color:#2D7A2D;background:#0D1F0D;color:#7FD47F}',
-      '.qdj-btn.wrong{border-color:#7A2020;background:#1F0D0D;color:#D47F7F}',
-      '.qdj-exp{margin-top:.75rem;font-size:.82rem;color:#999;line-height:1.5;display:none}',
-      '.qdj-exp.show{display:block}'
+      '.qdj-btn{background:#111;border:1px solid #444;border-radius:6px;padding:.65rem .9rem;color:#FAFAFA;font-size:.85rem;cursor:pointer;text-align:left;transition:border-color .15s,background .15s;min-height:44px}',
+      '.qdj-btn:hover:not(:disabled){border-color:#7FB2E8;background:#162035}',
+      '.qdj-btn:disabled{cursor:default}',
+      '.qdj-btn.correct{border-color:#2D7A2D;background:#0D1F0D;color:#9BE09B}',
+      '.qdj-btn.correct::before{content:"✓ "}',
+      '.qdj-btn.wrong{border-color:#A03030;background:#1F0D0D;color:#F0A0A0}',
+      '.qdj-btn.wrong::before{content:"✗ "}',
+      '.qdj-res{margin-top:1rem;font-size:.86rem;color:#D8DEE8;line-height:1.55}',
+      '.qdj-res[hidden]{display:none}',
+      '.qdj-verdict{font-weight:700;margin-bottom:.35rem}',
+      '.qdj-verdict.ok{color:#9BE09B}.qdj-verdict.ko{color:#F0A0A0}',
+      '.qdj-ref{margin-top:.5rem;font-size:.78rem;color:#B0BDD0}',
+      '.qdj-ref strong{color:#FFD200;font-weight:700}',
+      '.qdj-fiche{display:inline-block;margin-top:.7rem;color:#7FB2E8;font-weight:700;font-size:.82rem}',
+      '.qdj-demain{margin-top:.6rem;font-size:.74rem;color:#8A9AB3}'
     ].join('');
     document.head.appendChild(style);
 
-    var el = document.createElement('div');
+    var el = document.createElement('section');
     el.className = 'qdj';
-    el.innerHTML = '<div class="qdj-label">⚡ Question du jour</div>' +
-      '<div class="qdj-q">' + q.q + '</div>' +
-      '<div class="qdj-choices">' +
-      q.r.map(function(r, i) {
-        return '<button class="qdj-btn" data-i="' + i + '">' + r + '</button>';
-      }).join('') +
-      '</div>' +
-      '<div class="qdj-exp" id="qdj-exp"></div>';
+    el.setAttribute('aria-labelledby', 'qdj-titre');
+    el.innerHTML =
+      '<div class="qdj-label" id="qdj-titre">⚡ Question du jour <span>' + e(new Date().toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' })) + '</span></div>' +
+      '<div class="qdj-q">' + e(q.q) + '</div>' +
+      '<div class="qdj-choices">' + q.choices.map(function (r, i) {
+        return '<button type="button" class="qdj-btn" data-i="' + i + '">' + e(r) + '</button>';
+      }).join('') + '</div>' +
+      '<div class="qdj-res" id="qdj-res" role="status" hidden></div>';
 
-    el.addEventListener('click', function(e) {
-      var btn = e.target.closest('.qdj-btn');
-      if (!btn || btn.disabled) return;
-      var i = parseInt(btn.dataset.i);
-      el.querySelectorAll('.qdj-btn').forEach(function(b, bi) {
+    function corriger(i, memoriser) {
+      el.querySelectorAll('.qdj-btn').forEach(function (b, bi) {
         b.disabled = true;
-        if (bi === q.a) b.classList.add('correct');
+        if (bi === q.correct) b.classList.add('correct');
         else if (bi === i) b.classList.add('wrong');
       });
-      var exp = el.querySelector('#qdj-exp');
-      exp.textContent = (i === q.a ? '✓ Correct ! ' : '✗ Incorrect. ') + q.exp;
-      exp.classList.add('show');
-    });
-
-    // Insérer avant le footer ou à la fin du main
-    var main = document.querySelector('main') || document.querySelector('.modules-grid') || document.querySelector('.content');
-    var target = main ? main.parentNode : document.body;
-    var ref = main ? main.nextSibling : document.querySelector('.cgt-footer');
-    if (main) {
-      main.appendChild(el);
-    } else {
-      target.insertBefore(el, ref);
+      var res = el.querySelector('#qdj-res');
+      var bon = i === q.correct;
+      res.innerHTML =
+        '<div class="qdj-verdict ' + (bon ? 'ok' : 'ko') + '">' + (bon ? 'Bonne réponse !' : 'Pas tout à fait. La bonne réponse : « ' + e(q.choices[q.correct]) + ' ».') + '</div>' +
+        '<div>' + e(q.exp) + '</div>' +
+        (q.ref ? '<div class="qdj-ref"><strong>Référence :</strong> ' + e(q.ref) + '</div>' : '') +
+        (q.fiche ? '<a class="qdj-fiche" href="' + e(q.fiche.href) + '">→ Pour aller plus loin : ' + e(q.fiche.t) + '</a>' : '') +
+        '<div class="qdj-demain">Une nouvelle question demain.</div>';
+      res.hidden = false;
+      if (memoriser) { try { localStorage.setItem('cgt_qdj', JSON.stringify({ jour: jour, choix: i })); } catch (er) {} }
     }
+    el.addEventListener('click', function (ev) {
+      var btn = ev.target.closest('.qdj-btn');
+      if (!btn || btn.disabled) return;
+      corriger(parseInt(btn.dataset.i, 10), true);
+    });
+    if (dejaRepondu !== null) corriger(dejaRepondu, false);
+
+    var main = document.querySelector('main') || document.querySelector('.modules-grid') || document.querySelector('.content');
+    if (main) main.appendChild(el);
+    else document.body.insertBefore(el, document.querySelector('.cgt-footer'));
   }
 
   /* ── 11. Toggle thème sombre/clair ─────────────────────── */
@@ -510,6 +554,22 @@
     btn.style.bottom = bas + 'px';
   }
 
+  /* ── Bandeau « hors connexion » ─────────────────────────── */
+  function initHorsConnexion() {
+    var b = document.createElement('div');
+    b.className = 'cgt-offline';
+    b.setAttribute('role', 'status');
+    b.textContent = 'Hors connexion : les diaporamas, fiches mémo, lexique et tableaux MP déjà enregistrés restent consultables. Quiz live et inscriptions indisponibles.';
+    var st = document.createElement('style');
+    st.textContent = '.cgt-offline{position:fixed;left:0;right:0;top:0;z-index:10001;background:#1A2540;color:#fff;font:600 .8rem/1.4 system-ui,sans-serif;padding:.55rem 1rem;text-align:center;transform:translateY(-100%);transition:transform .25s}.cgt-offline.on{transform:none}@media print{.cgt-offline{display:none}}';
+    document.head.appendChild(st);
+    document.body.appendChild(b);
+    function maj() { b.classList.toggle('on', navigator.onLine === false); }
+    window.addEventListener('online', maj);
+    window.addEventListener('offline', maj);
+    maj();
+  }
+
   /* ── Lien « Accueil » pour les stagiaires ──────────────── */
   // L'accueil formateur demande le code formateur : un stagiaire est renvoyé vers son espace
   function fixLiensAccueil() {
@@ -535,6 +595,7 @@
   function loadMotion() {
     if (!window.__cgtMotion) loadAsset('motion.js');
     if (!window.__cgtA11y) loadAsset('a11y.js');
+    if (!window.__cgtDocs) loadAsset('documents.js');
   }
 
   /* ── Init ──────────────────────────────────────────────── */
@@ -553,6 +614,7 @@
     injectQuestionDuJour();
     injectDarkToggle();
     fixLiensAccueil();
+    initHorsConnexion();
   });
 
   if ('serviceWorker' in navigator) {

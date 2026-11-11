@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#E2001A">
   <title>Inscription à la formation · CGT Occitanie</title>
   <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
   <link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -25,6 +27,9 @@
 
     // ?s=… : identifiant de la session, fourni par le QR code du formateur
     const SESSION = (new URLSearchParams(location.search).get('s') || 'sans-session').replace(/[^\w-]/g, '').slice(0, 60) || 'sans-session';
+    // Intitulé de la session (formation — date — lieu), transmis par le QR code
+    const TITRE = (new URLSearchParams(location.search).get('t') || '').slice(0, 160);
+    if (TITRE) { const el = document.getElementById('session-titre'); el.textContent = TITRE; el.hidden = false; }
     const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
     async function inscrire(e) {
@@ -86,6 +91,7 @@
 
     .scene { max-width: 480px; margin: 0 auto; padding: 2rem 1.25rem 3rem; }
     .intro h2 { font-family: 'Anton', sans-serif; font-weight: 400; font-size: 1.6rem; letter-spacing: .02em; line-height: 1.15; }
+    .session-titre { font-weight: 700; color: var(--texte) !important; border-left: 4px solid var(--rouge); padding-left: .7rem; }
     .intro p { color: var(--texte-muted); font-size: .92rem; line-height: 1.6; margin-top: .6rem; }
 
     form { margin-top: 1.75rem; background: var(--fond-card); border: 1px solid var(--border-card); border-top: 4px solid var(--rouge); border-radius: 10px; padding: 1.4rem 1.25rem; }
@@ -130,6 +136,7 @@
     <section id="form-section">
       <div class="intro">
         <h2>Bienvenue à la formation</h2>
+        <p class="session-titre" id="session-titre" hidden></p>
         <p>Indiquez vos nom, prénom et adresse email. Le formateur ou la formatrice s'en servira pour vous envoyer les supports et les documents de la formation.</p>
       </div>
 
@@ -159,5 +166,6 @@
     </section>
   </main>
 <script src="/assets/a11y.js" defer></script>
+<script src="/assets/documents.js" defer></script>
 </body>
 </html>

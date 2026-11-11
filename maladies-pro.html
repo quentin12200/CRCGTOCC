@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#E2001A">
   <meta name="robots" content="noindex, nofollow">
   <title>Tableaux des maladies professionnelles — CGT Occitanie</title>
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%23E2001A'/%3E%3Ctext x='16' y='23' text-anchor='middle' font-family='sans-serif' font-weight='bold' font-size='16' fill='%23FFD200'%3ECGT%3C/text%3E%3C/svg%3E">
@@ -712,6 +714,7 @@ function render(){
     const card = document.createElement('div');
     card.className = 'mp-card';
     card.dataset.cat = item.cat;
+    card.id = 'tableau-' + String(item.n).replace(/\s+/g, '-');
 
     const tagCat = {chimique:'Chimique',physique:'Physique',biologique:'Biologique',tms:'TMS / Rachis',cancer:'Cancer',amiante:'Amiante'}[item.cat]||item.cat;
     const stat = item.stat ? `<span class="mp-tag tag-stat">${Number(item.stat[1]).toLocaleString('fr-FR')} reconnue${item.stat[1]>1?'s':''} en ${item.stat[0]}</span>` : '';
@@ -794,7 +797,24 @@ document.querySelectorAll('#finder button').forEach(btn=>{
   });
 });
 
+// Liens directs depuis la recherche : ?q=mot pré-remplit la recherche, #tableau-57 ouvre ce tableau
+(function(){
+  const q = new URLSearchParams(location.search).get('q');
+  if (q) { document.getElementById('search').value = q; currentSearch = q; }
+})();
 render();
+function ouvrirTableauDuLien(){
+  const m = location.hash.match(/^#tableau-(.+)$/);
+  if (!m) return;
+  let card = document.getElementById('tableau-' + m[1]);
+  if (!card) { currentSearch = ''; currentCat = 'all'; currentMetier = null; document.getElementById('search').value = ''; render(); card = document.getElementById('tableau-' + m[1]); }
+  if (!card) return;
+  const body = card.querySelector('.mp-body');
+  if (body && !body.classList.contains('open')) card.querySelector('.mp-header').click();
+  card.scrollIntoView({ block: 'start' });
+}
+ouvrirTableauDuLien();
+window.addEventListener('hashchange', ouvrirTableauDuLien);
 </script>
 </body>
 </html>

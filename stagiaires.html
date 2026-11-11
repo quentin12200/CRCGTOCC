@@ -235,6 +235,13 @@
     /* Accessibilité : rouge et bleu éclaircis sur fond sombre (contraste ≥ 4,5:1) */
     :root[data-theme="dark"] .welcome-box h2, :root[data-theme="dark"] .welcome-box .welcome-cgt, :root[data-theme="dark"] footer:not(.cgt-footer) strong { color: #FF6B7D; }
     @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .welcome-box h2, :root:not([data-theme="light"]) .welcome-box .welcome-cgt, :root:not([data-theme="light"]) footer:not(.cgt-footer) strong { color: #FF6B7D; } }
+
+    /* Accessibilité : sur mobile le texte du bandeau occupe toute la largeur de la photo ;
+       voile sombre uniforme (contraste ≥ 4,5:1) et hauteur adaptée au texte */
+    @media (max-width: 640px) {
+      .hero { height: auto !important; min-height: 220px; }
+      .hero-overlay { background: linear-gradient(180deg, rgba(10,10,10,.82) 0%, rgba(10,10,10,.74) 55%, rgba(110,0,14,.82) 100%) !important; }
+    }
 </style>
   <link rel="manifest" href="/manifest.json">
   <meta name="theme-color" content="#E2001A">
@@ -409,7 +416,7 @@
         <span class="tag-duree">2 jours</span>
         <span class="tag-type">Présentation diaporama</span>
       </div>
-      <h2>Accidents du Travail &amp; Maladies Professionnelles</h2>
+      <h2>Accidents du travail &amp; maladies professionnelles</h2>
       <p>Régime AT/MP, reconnaissance, réparation, droits des accidentés et malades. Support complet de la formation.</p>
       <a class="btn-ouvrir" href="/presentations/Presentation_AT-MP_CGT.html" target="_blank">
         Ouvrir
@@ -515,7 +522,7 @@
         <span class="tag-duree">Demi-journée</span>
         <span class="tag-type">Présentation diaporama</span>
       </div>
-      <h2>AT/MP dans la Fonction Publique</h2>
+      <h2>AT/MP dans la fonction publique</h2>
       <p>Accident de service, maladie professionnelle, droits et indemnisations dans les 3 versants (FPE, FPT, FPH). Spécificités par rapport au privé, rôle de la F3SCT, CNRACL.</p>
       <a class="btn-ouvrir" href="/presentations/ATMP_Fonction_Publique_CGT.html" target="_blank">
         Ouvrir
@@ -525,7 +532,7 @@
 
   </div>
 
-  <div class="section-label">Ressources Fonction Publique</div>
+  <div class="section-label">Ressources fonction publique</div>
 
   <div class="ressources-grid">
     <a class="ressource-item" href="/guide-atmp-fp.html">
@@ -533,7 +540,7 @@
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
       </div>
       <div class="ressource-text">
-        <span class="ressource-name">Guide complet AT/MP Fonction Publique</span>
+        <span class="ressource-name">Guide complet AT/MP fonction publique</span>
         <span class="ressource-desc">3 versants · procédures · droits · statistiques · contacts</span>
       </div>
     </a>
@@ -549,7 +556,7 @@
         <span class="tag-type">Quiz interactifs</span>
       </div>
       <h2>Quiz de formation — Tous modules</h2>
-      <p>5 quiz QCM couvrant AT/MP, SST, Prévoyance, Handicap et Fonction Publique. Correction immédiate + explication + section "À retenir" par module.</p>
+      <p>5 quiz QCM couvrant AT/MP, SST, Prévoyance, Handicap et fonction publique. Correction immédiate + explication + section "À retenir" par module.</p>
       <a class="btn-ouvrir" href="/quiz/">
         Accéder aux quiz
         <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H4M10 2V8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -587,7 +594,7 @@
         <span class="tag-duree">AT · MP tableau · MP hors tableau</span>
         <span class="tag-type">Guide complet dossier</span>
       </div>
-      <h2>Monter son dossier AT / MP</h2>
+      <h2>Monter son dossier AT/MP</h2>
       <p>Guide point par point avec checklist interactive : déclaration, instruction CPAM, documents obligatoires, délais, recours, faute inexcusable. 3 voies couvertes : AT, MP via tableau, MP hors tableau (CRRMP).</p>
       <a class="btn-ouvrir" href="/guide-dossier-atmp.html">
         Ouvrir
@@ -650,7 +657,7 @@
         <span class="tag-type">Imprimable A4</span>
       </div>
       <h2>Fiches mémo PDF</h2>
-      <p>Une fiche recto par module (AT/MP, SST, Prévoyance, Handicap, Fonction Publique). Format A4 optimisé impression, avec chiffres clés 2025, droits essentiels et contacts utiles.</p>
+      <p>Une fiche recto par module (AT/MP, SST, Prévoyance, Handicap, fonction publique). Format A4 optimisé impression, avec chiffres clés 2025, droits essentiels et contacts utiles.</p>
       <a class="btn-ouvrir" href="/fiches-memo/">
         Accéder
         <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H4M10 2V8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -670,7 +677,7 @@
     <div class="ressources-grid">
       <a class="ressource-item" href="/guide-dossier-atmp.html">
         <div class="ressource-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>
-        <div class="ressource-text"><span class="ressource-name">Guide dossier AT / MP</span><span class="ressource-desc">AT · MP tableau · hors tableau — étapes + documents</span></div>
+        <div class="ressource-text"><span class="ressource-name">Guide dossier AT/MP</span><span class="ressource-desc">AT · MP tableau · hors tableau — étapes + documents</span></div>
       </a>
       <a class="ressource-item" href="/carnet-atmp.html">
         <div class="ressource-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><line x1="12" y1="6" x2="12" y2="12"/><line x1="9" y1="9" x2="15" y2="9"/></svg></div>

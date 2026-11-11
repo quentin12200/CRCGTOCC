@@ -21,6 +21,11 @@ service cloud.firestore {
       allow write: if formateur();
     }
 
+    // Sessions d'inscription (formation, date, lieu) : compte formateur uniquement
+    match /sessions-inscription/{docId} {
+      allow read, write: if formateur();
+    }
+
     // Inscriptions des stagiaires (inscription.html) :
     // tout le monde peut s'inscrire, seul le compte formateur lit et supprime
     match /inscriptions/{docId} {

@@ -1,12 +1,22 @@
 {
-  "name": "CGT Occitanie — AT/MP",
-  "short_name": "CGT AT/MP",
-  "description": "Centre de ressources formations AT/MP CGT Occitanie",
-  "start_url": "/index.html",
+  "name": "CGT Occitanie — Formation AT/MP",
+  "short_name": "CGT Formation",
+  "description": "Centre de ressources des formations syndicales CGT Occitanie : diaporamas, fiches mémo, lexique, tableaux de maladies professionnelles, consultables hors connexion.",
+  "lang": "fr",
+  "start_url": "/stagiaires.html",
+  "scope": "/",
   "display": "standalone",
-  "background_color": "#0F0F0F",
+  "background_color": "#F4F6FA",
   "theme_color": "#E2001A",
   "icons": [
-    { "src": "/assets/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+    { "src": "/assets/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/assets/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/assets/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" },
+    { "src": "/assets/favicon.svg", "sizes": "any", "type": "image/svg+xml" }
+  ],
+  "shortcuts": [
+    { "name": "Tableaux des maladies professionnelles", "url": "/maladies-pro.html" },
+    { "name": "Lexique", "url": "/lexique.html" },
+    { "name": "Fiches mémo", "url": "/fiches-memo/index.html" }
   ]
 }
